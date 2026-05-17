@@ -1,0 +1,15 @@
+# Project Conventions for Claude — app/api
+
+Las decisiones arquitectónicas y de convenciones de este paquete (`app/api`) están en `.claude/adr/`.
+
+**Antes de escribir código que toque arquitectura, capas, errores, auth, datos o convenciones, leé `.claude/adr/INDEX.md`** para saber qué ADR consultar.
+
+**Antes de instalar/sugerir cualquier dependencia nueva (lib, framework, herramienta, DB), leé `.claude/adr/tech/INDEX.md`** para ver qué tecnologías ya están elegidas. Si tu sugerencia pisa con algo ya registrado, no la introduzcas sin preguntar al usuario.
+
+Si una decisión no está documentada o algo no queda claro, **preguntá al usuario antes de inventar una convención**. Las decisiones se registran como ADR, no se improvisan.
+
+> **Importante:** las convenciones de este paquete NO se heredan de ni a otros paquetes (`app/ui`). Son autónomas.
+
+> **Aviso de conflicto activo:** este proyecto corre con `Strict TDD Mode: enabled` a nivel harness, pero la decisión de arquitectura (ADR 06) es **arrancar sin tests**. Es una incoherencia consciente y documentada. No asumas TDD: leé `06-testing-strategy.md`.
+
+Para crear, actualizar o revisar decisiones arquitectónicas (incluyendo agregar/cambiar tecnologías del catálogo), usá la skill `architecture-boostrap`.
