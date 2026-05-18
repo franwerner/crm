@@ -26,6 +26,7 @@ Este índice te dice qué ADR consultar según lo que estés por hacer. Leé sol
 | [10-auth.md](10-auth.md) | Accepted | Auth | Toques login, permisos, tokens, middleware de autorización. |
 | [11-folder-structure.md](11-folder-structure.md) | Accepted | Estructura de carpetas y naming | Crees un archivo o carpeta nueva; cuestiones cómo nombrar algo. |
 | [12-api-documentation.md](12-api-documentation.md) | Accepted | Documentación de la API (OpenAPI / contrato) | Crees/modifiques un endpoint; toques los schemas zod del borde; cambies cómo se documenta o expone la API; trabajes el contrato que consume kubb en `app/ui`. |
+| [13-data-modeling-conventions.md](13-data-modeling-conventions.md) | Accepted | Convenciones de modelado de datos | Crees/edites tablas Drizzle, definas IDs, timestamps, borrado, enums o naming de DB. |
 | [tech/INDEX.md](tech/INDEX.md) | — | Catálogo de tecnologías concretas | Vayas a agregar/cambiar una dependencia, lib, framework, DB, ORM, herramienta. **Consultá siempre antes de instalar algo nuevo.** |
 
 **Leyenda de status:** `Accepted` = decisión vigente · `Pending` = decidir más adelante · `Not Applicable` = decidido conscientemente que no aplica · `Deferred` = postergado con condición de revisión · `Superseded` = reemplazado por otro ADR.
@@ -44,7 +45,7 @@ Este índice te dice qué ADR consultar según lo que estés por hacer. Leé sol
 
 ## Estado y mantenimiento
 
-- Última actualización: 2026-05-17
+- Última actualización: 2026-05-17 (ADR 02 + ADR 11 afinados: estado del agregado vive con la raíz en <entidad>.ts; entities/ = entidades hijas no-raíz)
 - Cada ADR tiene su propio `Status:`.
 - **Para actualizar una decisión:** editá el ADR, agregá entrada en `Historial`, actualizá `Status` y `Última actualización`.
 - **Para una decisión nueva:** creá un ADR nuevo y sumá fila en este INDEX.

@@ -57,8 +57,15 @@ _Sin librería — DI manual en el composition root. Ver `05-dependency-injectio
 
 > **kubb** NO se registra acá: es consumidor del OpenAPI y vive en `app/ui` (se registra en su catálogo cuando se bootstrapee ese paquete). Ver `12-api-documentation.md`.
 
+### Enforcement de arquitectura
+| Tech | Versión | Por qué |
+|---|---|---|
+| [dependency-cruiser](dependency-cruiser.md) | latest / sin pinear | Verifica las 7 reglas del ADR 02 como globs de path; gate de CI obligatorio |
+
 ### Otros
-_(vacío)_
+| Tech | Versión | Por qué |
+|---|---|---|
+| [uuidv7](uuidv7.md) | 1.2.1 | Genera UUID v7 RFC 9562 (time-ordered); monotonicidad sub-ms; cero deps. Único generador de identidad sancionado vía `src/shared/id` |
 
 ## Mantenimiento
 

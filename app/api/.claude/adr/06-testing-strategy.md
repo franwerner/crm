@@ -19,7 +19,7 @@ El usuario decidió, de forma consciente y tras pushback técnico explícito (da
 - **Trigger esperado:** cuando aparezca lógica de negocio no trivial (cálculos, reglas de deals, permisos) cuya rotura duela.
 - **Distinción registrada:** "sin TDD" (workflow, no test-first) ≠ "sin tests" (sin red de seguridad). El usuario optó por lo segundo *por ahora*; el riesgo (refactors sin red en un sistema con dominio real) fue explicado y asumido.
 
-> **⚠️ CONFLICTO ACTIVO con el harness.** El entorno del proyecto corre con `Strict TDD Mode: enabled` a nivel harness. Esta decisión lo contradice. La incoherencia se documenta acá conscientemente en vez de ocultarse. Para que "sin TDD" sea coherente de verdad, hay que revisar la configuración del harness (settings) aparte de este ADR. Hasta entonces: conflicto vigente y conocido.
+> **✅ CONFLICTO CON EL HARNESS — RESUELTO (2026-05-17).** El `~/.claude/CLAUDE.md` global declara `Strict TDD Mode: enabled` para todos los proyectos. Se resolvió la incoherencia mediante un **override de alcance proyecto** documentado en `app/api/CLAUDE.md`: para `crm/app/api` Strict TDD está DESACTIVADO, en coherencia con esta decisión. El global queda intacto (sin radio de impacto sobre otros repos). El aplazamiento del testing sigue vigente (Status: Pending) — lo que se resolvió es la coherencia operativa, no la decisión de testear.
 
 ## Alternativas consideradas
 
@@ -40,3 +40,4 @@ Ninguna mientras esté Pending. Al resolverse: definir runner (`bun test` es el 
 | Fecha | Cambio | Por |
 |---|---|---|
 | 2026-05-17 | Marcado como Pending — usuario decide arrancar sin tests pese a pushback; conflicto con Strict TDD Mode del harness documentado | ifran |
+| 2026-05-17 | Conflicto con harness RESUELTO vía override de alcance proyecto en `app/api/CLAUDE.md` (Strict TDD off solo para crm/app/api; global intacto). Decisión de testing sigue Pending | ifran |
