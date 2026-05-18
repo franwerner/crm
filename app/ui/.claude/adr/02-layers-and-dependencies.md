@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-17
+- **Última actualización:** 2026-05-17 (enforcement definido)
 - **Decisores:** ifran
 - **Fase del bootstrap:** 2
 
@@ -43,6 +43,23 @@ app/ui/
 
 > La regla #4 mantiene viva la decisión container/presentational del ADR 01. Es la que más se viola sin querer — vigilarla.
 
+## Enforcement (cómo se verifican estas reglas)
+
+**Decisión: `dependency-cruiser` (gate de CI autoritativo) + `eslint-plugin-boundaries` (feedback en editor).** Ver `tech/dependency-cruiser.md` y `tech/eslint-plugin-boundaries.md`. No es "either/or".
+
+- **dependency-cruiser:** traduce las 7 reglas a `.dependency-cruiser.js` y **falla el CI** ante violación. Es la fuente de verdad. Mismo tooling que `app/api` → consistencia en el monorepo.
+- **eslint-plugin-boundaries:** marca la violación **en el editor mientras escribís** (loop de feedback corto). NO reemplaza el gate de CI; si difieren, manda dependency-cruiser.
+
+Pasos (al scaffoldear el paquete, ANTES del primer feature):
+
+1. `dependency-cruiser` y `eslint-plugin-boundaries` como devDependencies.
+2. `.dependency-cruiser.js` + reglas de `boundaries` en la config de ESLint, ambas traduciendo las 7 reglas.
+3. Scripts: `"arch": "depcruise src"` y el `lint` que ya incluye boundaries.
+4. **Gate de CI obligatorio:** el pipeline corre `arch` y **falla ante cualquier violación**.
+5. (Opcional) pre-commit hook.
+
+> El gate de CI (paso 4) es lo que convierte estas 7 reglas en una convención real, no en un deseo.
+
 ## Alternativas consideradas
 
 - Organización por tipo de archivo — descartado (no escala, ver ADR 01).
@@ -58,3 +75,4 @@ app/ui/
 | Fecha | Cambio | Por |
 |---|---|---|
 | 2026-05-17 | Decisión inicial | ifran |
+| 2026-05-17 | Enforcement definido: dependency-cruiser (CI gate) + eslint-plugin-boundaries (editor) | ifran |

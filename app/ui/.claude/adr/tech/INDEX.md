@@ -43,6 +43,12 @@ _Pendiente de decidir — ver `06-testing-strategy.md` (Pending). Conflicto acti
 ### Observabilidad / error tracking
 _Pendiente de decidir — ver `04-error-handling.md` §4.3 (Pending). Recomendación no adoptada: error tracker tipo Sentry._
 
+### Enforcement de arquitectura
+| Tech | Versión | Por qué |
+|---|---|---|
+| [dependency-cruiser](dependency-cruiser.md) | latest / sin pinear | Gate de CI autoritativo: verifica las 7 reglas del ADR 02; mismo tooling que `app/api` |
+| [eslint-plugin-boundaries](eslint-plugin-boundaries.md) | latest / sin pinear | Feedback en editor de violaciones de las reglas del ADR 02 (no reemplaza el gate de CI) |
+
 ### Otros
 _(vacío)_
 
