@@ -1,0 +1,39 @@
+name: crm
+
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: crm
+      POSTGRES_USER: crm
+      POSTGRES_PASSWORD: crm
+    ports:
+      - "5433:5432"
+    volumes:
+      - crm-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crm -d crm"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./app/api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      APP_ENV: development
+      PORT: "3000"
+      DATABASE_URL: postgres://crm:crm@postgres:5432/crm
+      JWT_SECRET: dev-only-insecure-secret-change-me-1234567890
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app/api:/app
+      - /app/node_modules
+
+volumes:
+  crm-pgdata:
