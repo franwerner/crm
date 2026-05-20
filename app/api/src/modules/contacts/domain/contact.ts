@@ -1,11 +1,11 @@
-import { ValidationError, BusinessRuleError } from '../../../shared/errors'
-import type { PipelineState } from './types/pipeline-state'
-import type { EventType } from './types/event-type'
-import type { SourceChannel } from './types/source-channel'
-import type { InterestLevel } from './types/interest-level'
-import type { ContactEvent } from './entities/contact-event'
-import type { ContactStateChange } from './entities/contact-state-change'
-import { resolveTargetState, isForwardTransition } from './policies'
+import { ValidationError, BusinessRuleError } from '@shared/errors'
+import type { PipelineState } from '@modules/contacts/domain/types/pipeline-state'
+import type { EventType } from '@modules/contacts/domain/types/event-type'
+import type { SourceChannel } from '@modules/contacts/domain/types/source-channel'
+import type { InterestLevel } from '@modules/contacts/domain/types/interest-level'
+import type { ContactEvent } from '@modules/contacts/domain/entities/contact-event'
+import type { ContactStateChange } from '@modules/contacts/domain/entities/contact-state-change'
+import { resolveTargetState, isForwardTransition } from '@modules/contacts/domain/policies'
 
 export interface ContactProps {
   readonly id: string

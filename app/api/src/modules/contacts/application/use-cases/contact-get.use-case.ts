@@ -1,6 +1,6 @@
-import type { Contact } from '../../domain/contact'
-import type { ContactsRepository } from '../../domain/contact.repository'
-import { NotFoundError } from '../../../../shared/errors'
+import type { Contact } from '@modules/contacts/domain/contact'
+import type { ContactsRepository } from '@modules/contacts/domain/contact.repository'
+import { NotFoundError } from '@shared/errors'
 
 export interface GetContactInput {
   id: string

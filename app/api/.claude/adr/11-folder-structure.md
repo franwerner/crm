@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-20 (reversión consciente del "split plano": estructura por capas dentro del slice (`domain/` + `application/use-cases/` + `infrastructure/` + `http/` + `public/`) + sufijos `.use-case.ts` / `.in.ts` / `.out.ts` + orden `<sustantivo>-<acción>` para use-cases y DTOs in + archivos en singular)
+- **Última actualización:** 2026-05-20 (path aliases `@shared/*` y `@modules/*` adoptados como convención de imports; reversión consciente del "split plano": estructura por capas dentro del slice (`domain/` + `application/use-cases/` + `infrastructure/` + `http/` + `public/`) + sufijos `.use-case.ts` / `.in.ts` / `.out.ts` + orden `<sustantivo>-<acción>` para use-cases y DTOs in + archivos en singular)
 - **Decisores:** ifran
 - **Fase del bootstrap:** 5.7
 
@@ -60,6 +60,26 @@ La estructura de carpetas quedó definida en el ADR 02 (slices + shared kernel).
 - **NO barrel `index.ts`**. Imports directos al archivo.
 - La raíz del agregado vive en `domain/<entity>.ts`, nunca dentro de `entities/` (que es solo entidades hijas no-raíz).
 
+### Path aliases (imports absolutos)
+
+Configurados en `tsconfig.json` (Bun los resuelve nativamente; depcruise los normaliza a paths físicos vía `tsConfig`):
+
+```json
+"paths": {
+  "@shared/*": ["./src/shared/*"],
+  "@modules/*": ["./src/modules/*"]
+}
+```
+
+| Alias | Apunta a | Uso |
+|---|---|---|
+| `@shared/*` | `src/shared/*` | Shared kernel: `@shared/errors`, `@shared/schemas/pagination.schema`, `@shared/db/client`, `@shared/types/pagination`. |
+| `@modules/*` | `src/modules/*` | Módulos: `@modules/contacts/domain/contact`, `@modules/users/public/user.public`. |
+
+**Regla de uso (única)**: TODO import que resuelva dentro de `src/shared/*` o `src/modules/*` usa el alias correspondiente — incluso intra-slice. Imports a archivos vecinos NO bajo `shared/` ni `modules/` (`server.ts ↔ app.ts`, etc.) se dejan relativos. No se crean alias adicionales (la granularidad de dos alias es suficiente para single-package).
+
+**Por qué no `baseUrl`**: deprecado en TS 7.0. `paths` con valores relativos al tsconfig (`./src/...`) no lo necesita.
+
 ## Alternativas consideradas
 
 - Carpetas de feature en singular — no elegido (se prefiere plural por consistencia con colecciones).
@@ -96,3 +116,4 @@ La estructura de carpetas quedó definida en el ADR 02 (slices + shared kernel).
 | 2026-05-19 | Refina la entrada anterior del mismo día: presentation por slice queda en 3 archivos — `<feature>.routes.ts` (OpenAPIHono + createRoute + registro), `<feature>.controller.ts` (solo funciones handler), `<feature>.schemas.ts` (zod del borde). Sin cambios en reglas de dependencia. | ifran |
 | 2026-05-19 | Sumados sufijos `.public.ts` (contrato público del módulo) y `.public.impl.ts` (impl de API pública, wireada por el composition root). Mecánica y reglas en ADR 02 "Colaboración cross-slice". | ifran |
 | 2026-05-20 | **Reversión del split plano**: estructura por capas dentro del slice (`domain/`, `application/use-cases/`, `infrastructure/`, `http/`, `public/`). Archivos en singular (entidad), carpeta del slice en plural. Sufijos `.use-case.ts`, `.in.ts`, `.out.ts` explícitos. DTOs partidos en `http/dto/in/<entity>-<acción>.in.ts` + `http/dto/out/<entity>-<concepto>.out.ts` (cada archivo con su zod + `z.infer`). Orden `<sustantivo>-<acción>` para use-cases y DTOs in (revierte `<verbo-sustantivo>` original). Edge case auth: archivos nombrados por acción (`login.use-case.ts`). Carpetas vacías NO se crean. Razón: la raíz del slice acumulaba ~9 archivos sueltos al madurar y degradaba la lectura. | ifran |
+| 2026-05-20 | **Path aliases**: `@shared/*` → `src/shared/*` y `@modules/*` → `src/modules/*` (`tsconfig.paths`, sin `baseUrl`). Migrados los 39 archivos `.ts` de `src/` a alias absolutos para todo import que cae en `shared/` o `modules/`. Bun resuelve los paths nativamente; depcruise los normaliza por `tsConfig` (las reglas siguen escritas sobre `^src/...` físico). Razón: legibilidad y robustez a refactors estructurales (`../../../` quebraba al mover archivos). | ifran |

@@ -1,4 +1,4 @@
-import { config } from './shared/config'
+import { config } from '@shared/config'
 import { createApp } from './app'
 
 const app = createApp()

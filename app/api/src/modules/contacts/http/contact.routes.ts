@@ -1,15 +1,15 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
-import { authMiddleware } from '../../../shared/http/auth-middleware'
-import { ProblemSchema } from '../../../shared/schemas/problem.schema'
-import { PaginationQuerySchema } from '../../../shared/schemas/pagination.schema'
-import type { ContactsRepository } from '../domain/contact.repository'
-import { CreateContactBodySchema } from './dto/in/contact-create.in'
-import { RegisterEventBodySchema } from './dto/in/contact-register-event.in'
-import { ChangeStateBodySchema } from './dto/in/contact-change-state.in'
-import { ContactViewSchema } from './dto/out/contact.out'
-import { ContactListResponseSchema } from './dto/out/contact-list.out'
-import { ContactEventListResponseSchema } from './dto/out/contact-event-list.out'
-import { ContactStateChangeListResponseSchema } from './dto/out/contact-state-change-list.out'
+import { authMiddleware } from '@shared/http/auth-middleware'
+import { ProblemSchema } from '@shared/schemas/problem.schema'
+import { PaginationQuerySchema } from '@shared/schemas/pagination.schema'
+import type { ContactsRepository } from '@modules/contacts/domain/contact.repository'
+import { CreateContactBodySchema } from '@modules/contacts/http/dto/in/contact-create.in'
+import { RegisterEventBodySchema } from '@modules/contacts/http/dto/in/contact-register-event.in'
+import { ChangeStateBodySchema } from '@modules/contacts/http/dto/in/contact-change-state.in'
+import { ContactViewSchema } from '@modules/contacts/http/dto/out/contact.out'
+import { ContactListResponseSchema } from '@modules/contacts/http/dto/out/contact-list.out'
+import { ContactEventListResponseSchema } from '@modules/contacts/http/dto/out/contact-event-list.out'
+import { ContactStateChangeListResponseSchema } from '@modules/contacts/http/dto/out/contact-state-change-list.out'
 import {
   createContactHandler,
   getContactHandler,
@@ -19,7 +19,7 @@ import {
   listContactStateChangesHandler,
   changeContactStateHandler,
   deleteContactHandler,
-} from './contact.controller'
+} from '@modules/contacts/http/contact.controller'
 
 const createContactRoute = createRoute({
   method: 'post',

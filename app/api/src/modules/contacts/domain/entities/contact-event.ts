@@ -1,4 +1,4 @@
-import type { EventType } from '../types/event-type'
+import type { EventType } from '@modules/contacts/domain/types/event-type'
 
 export interface ContactEvent {
   readonly id: string

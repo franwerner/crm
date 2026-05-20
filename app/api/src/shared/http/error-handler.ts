@@ -1,7 +1,7 @@
 import type { Context } from 'hono'
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import { ZodError } from 'zod'
-import { DomainError, ValidationError, type FieldError } from '../errors'
+import { DomainError, ValidationError, type FieldError } from '@shared/errors'
 
 interface ProblemDetails {
   code: string

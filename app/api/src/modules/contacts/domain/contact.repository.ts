@@ -1,7 +1,7 @@
-import type { Contact } from './contact'
-import type { ContactEvent } from './entities/contact-event'
-import type { ContactStateChange } from './entities/contact-state-change'
-import type { Page, PageParams } from '../../../shared/types/pagination'
+import type { Contact } from '@modules/contacts/domain/contact'
+import type { ContactEvent } from '@modules/contacts/domain/entities/contact-event'
+import type { ContactStateChange } from '@modules/contacts/domain/entities/contact-state-change'
+import type { Page, PageParams } from '@shared/types/pagination'
 
 export interface ContactsRepository {
   findById(id: string): Promise<Contact | null>

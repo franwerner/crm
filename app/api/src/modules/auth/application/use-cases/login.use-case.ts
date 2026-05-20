@@ -1,5 +1,5 @@
-import { UnauthorizedError } from '../../../../shared/errors'
-import type { UsersPublicApi } from '../../../users/public/user.public'
+import { UnauthorizedError } from '@shared/errors'
+import type { UsersPublicApi } from '@modules/users/public/user.public'
 
 export interface LoginIdentity {
   readonly userId: string

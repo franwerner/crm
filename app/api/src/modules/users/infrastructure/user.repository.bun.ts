@@ -1,8 +1,9 @@
-import { eq } from 'drizzle-orm'
-import type { Db } from '../../../shared/db/client'
-import { users } from '../../../shared/db/schema'
-import { User } from '../domain/user'
-import type { UsersRepository } from '../domain/user.repository'
+import { and, desc, eq, isNull, sql } from 'drizzle-orm'
+import type { Db } from '@shared/db/client'
+import { users } from '@shared/db/schema'
+import { User } from '@modules/users/domain/user'
+import type { UsersRepository } from '@modules/users/domain/user.repository'
+import type { Page, PageParams } from '@shared/types/pagination'
 
 type UserRow = typeof users.$inferSelect
 
@@ -23,16 +24,38 @@ export class DrizzleUsersRepository implements UsersRepository {
 
   async findById(id: string): Promise<User | null> {
     const row = await this.db.query.users.findFirst({
-      where: eq(users.id, id),
+      where: and(eq(users.id, id), isNull(users.deleted_at)),
     })
     return row ? reconstitute(row) : null
   }
 
   async findByEmail(email: string): Promise<User | null> {
     const row = await this.db.query.users.findFirst({
-      where: eq(users.email, email.toLowerCase().trim()),
+      where: and(eq(users.email, email.toLowerCase().trim()), isNull(users.deleted_at)),
     })
     return row ? reconstitute(row) : null
+  }
+
+  async findMany(params: PageParams): Promise<Page<User>> {
+    const totalRow = await this.db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(users)
+      .where(isNull(users.deleted_at))
+    const total = totalRow[0]?.count ?? 0
+
+    const rows = await this.db.query.users.findMany({
+      where: isNull(users.deleted_at),
+      orderBy: [desc(users.created_at)],
+      limit: params.limit,
+      offset: params.offset,
+    })
+
+    return {
+      items: rows.map(reconstitute),
+      total,
+      limit: params.limit,
+      offset: params.offset,
+    }
   }
 
   async save(user: User): Promise<void> {

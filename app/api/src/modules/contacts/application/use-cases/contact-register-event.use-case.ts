@@ -1,8 +1,8 @@
-import type { Contact } from '../../domain/contact'
-import type { ContactsRepository } from '../../domain/contact.repository'
-import type { EventType } from '../../domain/types/event-type'
-import { NotFoundError } from '../../../../shared/errors'
-import { newId } from '../../../../shared/utils/id'
+import type { Contact } from '@modules/contacts/domain/contact'
+import type { ContactsRepository } from '@modules/contacts/domain/contact.repository'
+import type { EventType } from '@modules/contacts/domain/types/event-type'
+import { NotFoundError } from '@shared/errors'
+import { newId } from '@shared/utils/id'
 
 export interface RegisterEventInput {
   contactId: string

@@ -1,9 +1,9 @@
 import { setCookie, deleteCookie } from 'hono/cookie'
 import { sign } from 'hono/jwt'
 import type { Context } from 'hono'
-import { config } from '../../../shared/config'
-import type { UsersPublicApi } from '../../users/public/user.public'
-import { login } from '../application/use-cases/login.use-case'
+import { config } from '@shared/config'
+import type { UsersPublicApi } from '@modules/users/public/user.public'
+import { login } from '@modules/auth/application/use-cases/login.use-case'
 
 export async function loginHandler(c: Context, usersApi: UsersPublicApi): Promise<Response> {
   const body = c.req.valid('json' as never) as { email: string; password: string }

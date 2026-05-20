@@ -1,8 +1,8 @@
-import { Contact } from '../../domain/contact'
-import type { ContactsRepository } from '../../domain/contact.repository'
-import type { SourceChannel } from '../../domain/types/source-channel'
-import type { InterestLevel } from '../../domain/types/interest-level'
-import { newId } from '../../../../shared/utils/id'
+import { Contact } from '@modules/contacts/domain/contact'
+import type { ContactsRepository } from '@modules/contacts/domain/contact.repository'
+import type { SourceChannel } from '@modules/contacts/domain/types/source-channel'
+import type { InterestLevel } from '@modules/contacts/domain/types/interest-level'
+import { newId } from '@shared/utils/id'
 
 export interface CreateContactInput {
   name: string

@@ -1,5 +1,5 @@
-import type { UsersRepository } from '../domain/user.repository'
-import type { UsersPublicApi } from './user.public'
+import type { UsersRepository } from '@modules/users/domain/user.repository'
+import type { UsersPublicApi } from '@modules/users/public/user.public'
 
 export function createUsersPublicApi(repo: UsersRepository): UsersPublicApi {
   return {

@@ -1,7 +1,7 @@
-import type { ContactEvent } from '../../domain/entities/contact-event'
-import type { ContactsRepository } from '../../domain/contact.repository'
-import type { Page, PageParams } from '../../../../shared/types/pagination'
-import { NotFoundError } from '../../../../shared/errors'
+import type { ContactEvent } from '@modules/contacts/domain/entities/contact-event'
+import type { ContactsRepository } from '@modules/contacts/domain/contact.repository'
+import type { Page, PageParams } from '@shared/types/pagination'
+import { NotFoundError } from '@shared/errors'
 
 export interface ListContactEventsInput extends PageParams {
   contactId: string

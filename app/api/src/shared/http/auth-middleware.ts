@@ -1,8 +1,8 @@
 import type { Context, Next } from 'hono'
 import { getCookie } from 'hono/cookie'
 import { verify } from 'hono/jwt'
-import { config } from '../config'
-import { UnauthorizedError } from '../errors'
+import { config } from '@shared/config'
+import { UnauthorizedError } from '@shared/errors'
 
 declare module 'hono' {
   interface ContextVariableMap {

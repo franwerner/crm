@@ -1,4 +1,4 @@
-import { ValidationError } from '../../../shared/errors'
+import { ValidationError } from '@shared/errors'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -72,6 +72,28 @@ export class User {
   get createdAt(): Date { return this.props.createdAt }
   get updatedAt(): Date { return this.props.updatedAt }
   get deletedAt(): Date | null { return this.props.deletedAt }
+
+  rename(name: string, now: Date): User {
+    const trimmed = name.trim()
+    if (!trimmed) {
+      throw new ValidationError('User name cannot be empty', [
+        { field: 'name', message: 'Name is required' },
+      ])
+    }
+    if (trimmed === this.props.name) {
+      return this
+    }
+    return new User({ ...this.props, name: trimmed, updatedAt: now })
+  }
+
+  changePassword(passwordHash: string, now: Date): User {
+    if (!passwordHash.trim()) {
+      throw new ValidationError('Password hash cannot be empty', [
+        { field: 'passwordHash', message: 'passwordHash is required' },
+      ])
+    }
+    return new User({ ...this.props, passwordHash, updatedAt: now })
+  }
 
   softDelete(now: Date): User {
     if (this.props.deletedAt !== null) {

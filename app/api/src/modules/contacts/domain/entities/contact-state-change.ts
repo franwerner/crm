@@ -1,5 +1,5 @@
-import type { PipelineState } from '../types/pipeline-state'
-import type { StateChangeCause } from '../types/state-change-cause'
+import type { PipelineState } from '@modules/contacts/domain/types/pipeline-state'
+import type { StateChangeCause } from '@modules/contacts/domain/types/state-change-cause'
 
 export interface ContactStateChange {
   readonly id: string

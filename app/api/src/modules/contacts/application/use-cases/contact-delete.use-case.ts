@@ -1,5 +1,5 @@
-import type { ContactsRepository } from '../../domain/contact.repository'
-import { NotFoundError } from '../../../../shared/errors'
+import type { ContactsRepository } from '@modules/contacts/domain/contact.repository'
+import { NotFoundError } from '@shared/errors'
 
 export interface DeleteContactInput {
   id: string

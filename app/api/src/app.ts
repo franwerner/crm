@@ -1,15 +1,16 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { Scalar } from '@scalar/hono-api-reference'
-import { config } from './shared/config'
-import { db } from './shared/db/client'
-import { errorHandler } from './shared/http/error-handler'
+import { config } from '@shared/config'
+import { db } from '@shared/db/client'
+import { errorHandler } from '@shared/http/error-handler'
 
-import { ValidationError } from './shared/errors'
-import { DrizzleUsersRepository } from './modules/users/infrastructure/user.repository.bun'
-import { createUsersPublicApi } from './modules/users/public/user.public.impl'
-import { createAuthRouter } from './modules/auth/http/auth.routes'
-import { DrizzleContactsRepository } from './modules/contacts/infrastructure/contact.repository.bun'
-import { createContactsRouter } from './modules/contacts/http/contact.routes'
+import { ValidationError } from '@shared/errors'
+import { DrizzleUsersRepository } from '@modules/users/infrastructure/user.repository.bun'
+import { createUsersPublicApi } from '@modules/users/public/user.public.impl'
+import { createUsersRouter } from '@modules/users/http/user.routes'
+import { createAuthRouter } from '@modules/auth/http/auth.routes'
+import { DrizzleContactsRepository } from '@modules/contacts/infrastructure/contact.repository.bun'
+import { createContactsRouter } from '@modules/contacts/http/contact.routes'
 
 export function createApp() {
   const app = new OpenAPIHono({
@@ -48,6 +49,9 @@ export function createApp() {
   const usersApi = createUsersPublicApi(usersRepo)
   const authRouter = createAuthRouter(usersApi)
   app.route('/', authRouter)
+
+  const usersRouter = createUsersRouter(usersRepo)
+  app.route('/', usersRouter)
 
   const contactsRepo = new DrizzleContactsRepository(db)
   const contactsRouter = createContactsRouter(contactsRepo)

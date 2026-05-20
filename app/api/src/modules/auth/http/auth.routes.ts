@@ -1,9 +1,9 @@
 import { OpenAPIHono, createRoute } from '@hono/zod-openapi'
-import type { UsersPublicApi } from '../../users/public/user.public'
-import { LoginBodySchema } from './dto/in/login.in'
-import { LoginResponseSchema } from './dto/out/login.out'
-import { loginHandler, logoutHandler } from './auth.controller'
-import { ProblemSchema } from '../../../shared/schemas/problem.schema'
+import type { UsersPublicApi } from '@modules/users/public/user.public'
+import { LoginBodySchema } from '@modules/auth/http/dto/in/login.in'
+import { LoginResponseSchema } from '@modules/auth/http/dto/out/login.out'
+import { loginHandler, logoutHandler } from '@modules/auth/http/auth.controller'
+import { ProblemSchema } from '@shared/schemas/problem.schema'
 
 const loginRoute = createRoute({
   method: 'post',

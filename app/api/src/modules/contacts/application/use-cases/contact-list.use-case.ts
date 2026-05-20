@@ -1,6 +1,6 @@
-import type { Contact } from '../../domain/contact'
-import type { ContactsRepository } from '../../domain/contact.repository'
-import type { Page, PageParams } from '../../../../shared/types/pagination'
+import type { Contact } from '@modules/contacts/domain/contact'
+import type { ContactsRepository } from '@modules/contacts/domain/contact.repository'
+import type { Page, PageParams } from '@shared/types/pagination'
 
 export interface ListContactsInput extends PageParams {}
 

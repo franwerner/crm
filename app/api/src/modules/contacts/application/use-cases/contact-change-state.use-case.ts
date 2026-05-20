@@ -1,8 +1,8 @@
-import type { Contact } from '../../domain/contact'
-import type { ContactsRepository } from '../../domain/contact.repository'
-import type { PipelineState } from '../../domain/types/pipeline-state'
-import { NotFoundError } from '../../../../shared/errors'
-import { newId } from '../../../../shared/utils/id'
+import type { Contact } from '@modules/contacts/domain/contact'
+import type { ContactsRepository } from '@modules/contacts/domain/contact.repository'
+import type { PipelineState } from '@modules/contacts/domain/types/pipeline-state'
+import { NotFoundError } from '@shared/errors'
+import { newId } from '@shared/utils/id'
 
 export interface ChangeContactStateInput {
   contactId: string

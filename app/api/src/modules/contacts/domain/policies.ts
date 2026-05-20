@@ -1,5 +1,5 @@
-import { PipelineState } from './types/pipeline-state'
-import type { EventType } from './types/event-type'
+import { PipelineState } from '@modules/contacts/domain/types/pipeline-state'
+import type { EventType } from '@modules/contacts/domain/types/event-type'
 
 export const STATE_ORDER: Record<PipelineState, number> = {
   [PipelineState.Contact]: 0,
