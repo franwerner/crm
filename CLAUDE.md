@@ -74,8 +74,39 @@ La IA opera en **modo consultivo por defecto**. No toma decisiones unilaterales 
 
 ## 8. Comentarios en el Código
 
-- Comentar **solo lógica compleja**: algoritmos no triviales, decisiones de diseño no obvias, workarounds.
-- No comentar lo evidente. El código limpio es su propia documentación para lo básico.
+**Default: sin comentario.** Un comentario es una excepción que requiere justificación, no la norma. Si dudás si va, no va.
+
+### 8.1 Regla de oro
+
+Un comentario solo es válido si explica el **POR QUÉ**, nunca el **QUÉ** ni el **CÓMO**. El qué y el cómo ya los dice el código. El por qué (intención, restricción, tradeoff, contexto externo) no siempre.
+
+### 8.2 Test de eliminación (aplicar a cada comentario antes de escribirlo)
+
+Si un lector competente, leyendo solo el código, obtiene la misma información en menos de 10 segundos: **el comentario sobra, se borra.**
+
+### 8.3 Únicas excepciones permitidas
+
+1. Rationale de un algoritmo no trivial (por qué este enfoque y no el obvio).
+2. Decisión de diseño no deducible del código (tradeoff, restricción de negocio, requisito regulatorio).
+3. Workaround: qué se rompe sin él + link a issue/causa.
+4. Advertencia de consecuencia no obvia ("no reordenar: X depende del orden").
+
+Fuera de estos cuatro casos, no se comenta.
+
+### 8.4 Prohibido (sin excepción)
+
+- Comentarios que parafrasean o repiten el código (`// incrementa i`, `// retorna el usuario`).
+- Comentarios-título que separan secciones (`// ---- Helpers ----`, `// Validaciones`).
+- Docstrings/headers autogenerados que solo repiten la firma de la función.
+- Código comentado (se borra, el historial está en git).
+- `TODO`/`FIXME` sin contexto accionable ni referencia.
+- Comentarios obvios sobre lenguaje o framework (`// constructor`, `// useEffect que corre al montar`).
+- Narrar lo que hace un bloque evidente (`// recorre la lista y filtra`).
+
+### 8.5 Forma
+
+- Comentario al *por qué* de una decisión, no diario de cambios.
+- En español (sección 7), una o dos líneas, sin relleno.
 
 ---
 
@@ -254,26 +285,3 @@ Usuario pide feature
 
 **Incorrecto:**
 > Voy con paginación clásica que es lo más común. [empieza a codear]
-
-
-# CRM — Multi-package conventions
-
-Este repo contiene múltiples paquetes, cada uno con sus propias decisiones arquitectónicas independientes.
-
-**Antes de trabajar en código de un paquete específico:**
-1. Identificá en qué paquete estás (mirá el path del archivo).
-2. Leé `<paquete>/.claude/adr/INDEX.md` para las convenciones de ese paquete.
-3. Leé `<paquete>/.claude/adr/tech/INDEX.md` antes de instalar dependencias en ese paquete.
-
-**Importante:** las convenciones NO se heredan entre paquetes. Lo que vale en `app/api` no necesariamente vale en `app/ui`.
-
-## Paquetes registrados
-
-| Paquete | Stack | Convenciones |
-|---|---|---|
-| [app/api](app/api/.claude/adr/INDEX.md) | Bun + Hono + TypeScript (API REST) | ver INDEX |
-| [app/ui](app/ui/.claude/adr/INDEX.md) | Bun + React + Vite + TanStack Query + kubb (SPA) | ver INDEX |
-
-## Contrato compartido entre paquetes
-
-Lo único que comparten `app/api` y `app/ui` es el **contrato OpenAPI**: `app/api` lo autogenera (su ADR 12) y `app/ui` lo consume con kubb (su ADR 09). **Auth es cross-paquete**: cookie `httpOnly` same-site definida en conjunto (`app/api` ADR 10 ↔ `app/ui` ADR 10). Cualquier cambio en el contrato o en auth debe revisarse en AMBOS paquetes.
