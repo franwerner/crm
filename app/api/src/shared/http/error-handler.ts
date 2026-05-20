@@ -4,7 +4,7 @@ import { ZodError } from 'zod'
 import { DomainError, ValidationError, type FieldError } from '../errors'
 
 interface ProblemDetails {
-  type: string
+  code: string
   title: string
   status: number
   detail: string
@@ -23,7 +23,7 @@ export function errorHandler(err: Error, c: Context): Response {
 
   if (err instanceof DomainError) {
     const p: ProblemDetails = {
-      type: err.type,
+      code: err.code,
       title: err.title,
       status: err.status,
       detail: err.message,
@@ -37,7 +37,7 @@ export function errorHandler(err: Error, c: Context): Response {
 
   if (err instanceof ZodError) {
     return problem(c, {
-      type: 'about:blank#validation',
+      code: 'validation_failed',
       title: 'Validation failed',
       status: 400,
       detail: 'The request did not pass validation.',
@@ -51,7 +51,7 @@ export function errorHandler(err: Error, c: Context): Response {
 
   const errorId = crypto.randomUUID()
   return problem(c, {
-    type: 'about:blank#internal',
+    code: 'internal_error',
     title: 'Internal Server Error',
     status: 500,
     detail: `An unexpected error occurred. Reference: ${errorId}`,
