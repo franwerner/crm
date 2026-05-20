@@ -1,4 +1,4 @@
-import { ValidationError, BusinessRuleError } from '../../shared/errors'
+import { ValidationError, BusinessRuleError } from '../../../shared/errors'
 import type { PipelineState } from './types/pipeline-state'
 import type { EventType } from './types/event-type'
 import type { SourceChannel } from './types/source-channel'
@@ -7,7 +7,6 @@ import type { ContactEvent } from './entities/contact-event'
 import type { ContactStateChange } from './entities/contact-state-change'
 import { resolveTargetState, isForwardTransition } from './policies'
 
-// Shape de estado interno del agregado Contact
 export interface ContactProps {
   readonly id: string
   readonly name: string
@@ -163,7 +162,7 @@ export class Contact {
     return new Contact(nextProps, newPendingEvents, newPendingStateChanges)
   }
 
-  changeStateManualy(params: {
+  changeStateManually(params: {
     stateChangeId: string
     newState: PipelineState
     userId: string

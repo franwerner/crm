@@ -1,4 +1,4 @@
-import type { User } from './users'
+import type { User } from './user'
 
 export interface UsersRepository {
   findById(id: string): Promise<User | null>

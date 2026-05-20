@@ -3,45 +3,53 @@ module.exports = {
     {
       name: 'adr02-1-domain-purity',
       severity: 'error',
-      comment: 'ADR 02 #1: el conjunto de dominio del slice (agregado, types/, value-objects/, entities/, policies.ts) solo importa dentro de su propio slice de dominio y src/shared/errors.',
+      comment: 'ADR 02 #1: el conjunto de dominio puro del slice solo importa de su propio domain + src/shared/errors. El port (<entity>.repository.ts) está excluido — tiene regla propia (1b) más permisiva.',
       from: {
-        path: '^src/modules/([^/]+)/(?:[^/]+\\.ts|types/[^/]+\\.ts|value-objects/[^/]+\\.ts|entities/[^/]+\\.ts|policies\\.ts)$',
-        pathNot: '\\.(routes|repository|repository\\.bun)\\.ts$',
+        path: '^src/modules/([^/]+)/domain/',
+        pathNot: '\\.repository\\.ts$',
       },
-      to: { pathNot: ['^src/modules/$1/', '^src/shared/errors/'] },
+      to: { pathNot: ['^src/modules/$1/domain/', '^src/shared/errors/'] },
+    },
+    {
+      name: 'adr02-1b-port-contract',
+      severity: 'error',
+      comment: 'El port en domain (<entity>.repository.ts) puede importar su propio domain + shared/errors + shared/types (Page<T>, etc.). Nunca http, infrastructure, ni otro slice.',
+      from: { path: '^src/modules/([^/]+)/domain/[^/]+\\.repository\\.ts$' },
+      to: { pathNot: ['^src/modules/$1/domain/', '^src/shared/errors/', '^src/shared/types/'] },
     },
     {
       name: 'adr02-2-usecases-no-framework',
       severity: 'error',
-      comment: 'ADR 02 #2: los use-cases no conocen Hono ni el adapter concreto (*.repository.bun.ts).',
-      from: { path: '^src/modules/[^/]+/use-cases/' },
+      comment: 'ADR 02 #2: los use-cases (application/use-cases/**) no conocen Hono, ni infrastructure (adapter concreto), ni http (presentation).',
+      from: { path: '^src/modules/[^/]+/application/use-cases/' },
       to: {
         path: [
-          '^src/modules/[^/]+/[^/]+\\.repository\\.bun\\.ts$',
+          '^src/modules/[^/]+/infrastructure/',
+          '^src/modules/[^/]+/http/',
           'node_modules/(@hono|hono)/',
         ],
       },
     },
     {
-      name: 'adr02-3-routes-no-data',
+      name: 'adr02-3-presentation-no-data',
       severity: 'error',
-      comment: 'ADR 02 #3: las rutas no tocan DB ni el adapter concreto directamente.',
-      from: { path: '^src/modules/[^/]+/[^/]+\\.routes\\.ts$' },
+      comment: 'ADR 02 #3: la capa presentation (http/**) no toca DB ni infrastructure (adapter concreto).',
+      from: { path: '^src/modules/[^/]+/http/' },
       to: {
         path: [
           '^src/shared/db/',
-          '^src/modules/[^/]+/[^/]+\\.repository\\.bun\\.ts$',
+          '^src/modules/[^/]+/infrastructure/',
         ],
       },
     },
     {
       name: 'adr02-4-db-only-in-adapter',
       severity: 'error',
-      comment: 'ADR 02 #4: solo el adapter (*.repository.bun.ts), src/shared/db o el composition root acceden a Drizzle/DB.',
+      comment: 'ADR 02 #4: solo el adapter (infrastructure/<entity>.repository.bun.ts), src/shared/db o el composition root acceden a Drizzle/DB.',
       from: {
         path: '^src/',
         pathNot: [
-          '^src/modules/[^/]+/[^/]+\\.repository\\.bun\\.ts$',
+          '^src/modules/[^/]+/infrastructure/[^/]+\\.repository\\.bun\\.ts$',
           '^src/app\\.ts$',
           '^src/shared/db/',
         ],
@@ -51,9 +59,12 @@ module.exports = {
     {
       name: 'adr02-5-slices-isolated',
       severity: 'error',
-      comment: 'ADR 02 #5: un slice no importa de otro slice; la colaboración cross-slice pasa por el composition root.',
+      comment: 'ADR 02 #5: un slice no importa de otro slice; única excepción: el contrato público <m>/public/<entity>.public.ts (type-only). El composition root (app.ts) queda exento por no estar bajo src/modules/.',
       from: { path: '^src/modules/([^/]+)/' },
-      to: { path: '^src/modules/([^/]+)/', pathNot: '^src/modules/$1/' },
+      to: {
+        path: '^src/modules/([^/]+)/',
+        pathNot: ['^src/modules/$1/', '^src/modules/[^/]+/public/[^/]+\\.public\\.ts$'],
+      },
     },
     {
       name: 'adr02-6-shared-no-modules',
@@ -65,9 +76,14 @@ module.exports = {
     {
       name: 'adr02-7-only-root-wires-adapters',
       severity: 'error',
-      comment: 'ADR 02 #7: solo el composition root (src/app.ts) importa adapters concretos.',
+      comment: 'ADR 02 #7: solo el composition root (src/app.ts) importa adapters concretos (.repository.bun.ts) e impl de API pública (.public.impl.ts).',
       from: { path: '^src/', pathNot: '^src/app\\.ts$' },
-      to: { path: '^src/modules/[^/]+/[^/]+\\.repository\\.bun\\.ts$' },
+      to: {
+        path: [
+          '^src/modules/[^/]+/infrastructure/[^/]+\\.repository\\.bun\\.ts$',
+          '^src/modules/[^/]+/public/[^/]+\\.public\\.impl\\.ts$',
+        ],
+      },
     },
     {
       name: 'no-circular',

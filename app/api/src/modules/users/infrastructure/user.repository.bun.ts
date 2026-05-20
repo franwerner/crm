@@ -1,8 +1,8 @@
 import { eq } from 'drizzle-orm'
-import type { Db } from '../../shared/db/client'
-import { users } from '../../shared/db/schema'
-import { User } from './users'
-import type { UsersRepository } from './users.repository'
+import type { Db } from '../../../shared/db/client'
+import { users } from '../../../shared/db/schema'
+import { User } from '../domain/user'
+import type { UsersRepository } from '../domain/user.repository'
 
 type UserRow = typeof users.$inferSelect
 
