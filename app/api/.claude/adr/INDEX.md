@@ -27,6 +27,7 @@ Este índice te dice qué ADR consultar según lo que estés por hacer. Leé sol
 | [11-folder-structure.md](11-folder-structure.md) | Accepted | Estructura de carpetas y naming | Crees un archivo o carpeta nueva; cuestiones cómo nombrar algo. |
 | [12-api-documentation.md](12-api-documentation.md) | Accepted | Documentación de la API (OpenAPI / contrato) | Crees/modifiques un endpoint; toques los schemas zod del borde; cambies cómo se documenta o expone la API; trabajes el contrato que consume kubb en `app/ui`. |
 | [13-data-modeling-conventions.md](13-data-modeling-conventions.md) | Accepted | Convenciones de modelado de datos | Crees/edites tablas Drizzle, definas IDs, timestamps, borrado, enums o naming de DB. |
+| [14-pagination.md](14-pagination.md) | Accepted | Estándar de paginación compartido | Diseñes/toques un endpoint de listado; agregues un método paginado al repository; consumas/expongas el envelope `Page<T>` en OpenAPI. |
 | [tech/INDEX.md](tech/INDEX.md) | — | Catálogo de tecnologías concretas | Vayas a agregar/cambiar una dependencia, lib, framework, DB, ORM, herramienta. **Consultá siempre antes de instalar algo nuevo.** |
 
 **Leyenda de status:** `Accepted` = decisión vigente · `Pending` = decidir más adelante · `Not Applicable` = decidido conscientemente que no aplica · `Deferred` = postergado con condición de revisión · `Superseded` = reemplazado por otro ADR.
@@ -42,10 +43,11 @@ Este índice te dice qué ADR consultar según lo que estés por hacer. Leé sol
 | ADR 03 (§3.2) | Eventos de dominio in-process | Cuando la orquestación cross-slice ensucie el composition root |
 | ADR 09 (§tx) | Port de Unit of Work | Cuando un use-case necesite atomicidad sobre más de un repo |
 | ADR 10 (§refresh) | Refresh token + rotación | Cuando sesiones largas o revocación sean requisito real |
+| ADR 14 (§cursor) | Paginación cursor-based | Cuando offset no escale o el ordenamiento haga inestable la paginación offset |
 
 ## Estado y mantenimiento
 
-- Última actualización: 2026-05-17 (ADR 02 + ADR 11 afinados: estado del agregado vive con la raíz en <entidad>.ts; entities/ = entidades hijas no-raíz)
+- Última actualización: 2026-05-20 (reorganización mayor: estructura por capas dentro del slice — `domain/` + `application/use-cases/` + `infrastructure/` + `http/` con `dto/in/` + `dto/out/` + `public/`. Reversión consciente del split plano original. Sufijos `.use-case.ts` / `.in.ts` / `.out.ts`. Orden `<sustantivo>-<acción>` para use-cases y DTOs in. Archivos en singular, carpeta de slice en plural. Port movido a `domain/` (hexagonal-pure, flipea ADR 03 §3.3). 9 reglas en `.dependency-cruiser.js` (suma `adr02-1b-port-contract`). ADR 02/03/11 reescritos. Refactor aplicado a contacts, auth, users. Convención agregada en ADR 03 §3.1: DTOs zod NO importan closed types del dominio (wire independiente del dominio interno).)
 - Cada ADR tiene su propio `Status:`.
 - **Para actualizar una decisión:** editá el ADR, agregá entrada en `Historial`, actualizá `Status` y `Última actualización`.
 - **Para una decisión nueva:** creá un ADR nuevo y sumá fila en este INDEX.

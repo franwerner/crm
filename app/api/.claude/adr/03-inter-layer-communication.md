@@ -2,29 +2,72 @@
 
 - **Status:** Accepted (con sub-decisión §3.2 en Pending)
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-17
+- **Última actualización:** 2026-05-20
 - **Decisores:** ifran
 - **Fase del bootstrap:** 3
 
 ## Contexto
 
-Define cómo viajan los datos entre handler, use-case y repo dentro y entre slices.
+Define cómo viajan los datos entre handler, use-case y repo dentro y entre slices, y los contratos nombrados que separan cada borde.
 
 ## Decisión
 
-### 3.1 — DTOs vs entidades en los bordes
-**Mix.** La entrada SIEMPRE se valida a un input DTO antes del use-case. La salida se mapea a un response/view-model explícito. La entidad de dominio **nunca cruza el borde HTTP**. Esto desacopla el contrato público de API del modelo interno.
+### 3.1 — Contratos inter-capa con DTOs
+
+Tres contratos nombrados, cada uno con su forma TS concreta y dónde vive.
+
+**Borde HTTP (request / response): schema DTO zod.**
+- Definido en `<feature>.schemas.ts` con `z` de `@hono/zod-openapi`.
+- Una sola fuente de verdad: el mismo schema valida el input crudo, es el contrato OpenAPI, y emite el tipo TS.
+- El tipo TS se exporta con `z.infer` desde el MISMO archivo:
+  `export type CreateContactRequest = z.infer<typeof CreateContactBodySchema>` (ídem para responses/views).
+
+**Input del use-case: `interface XxxInput` TS puro, co-locado.**
+- Vive en el archivo del use-case (`use-cases/<verb-noun>.ts`).
+- Es un `interface` plano: SIN zod, SIN Hono, SIN imports de `*.schemas.ts`.
+- Mantiene al use-case libre de presentación → preserva ADR 02 regla #2.
+
+**Dependencias del use-case: `interface XxxDeps` TS puro, co-locado.**
+- Vive en el mismo archivo del use-case.
+- Hoy típicamente `{ repo: XxxRepository }`. Abierto a crecer con `clock`, `idGenerator`, `logger`, etc., sin tocar la firma semántica del input.
+
+**Firma estándar del use-case:**
+`export async function xxxVerb(input: XxxInput, deps: XxxDeps): Promise<...>`
+Input es el contrato semántico; deps son los servicios. Separados a propósito.
+
+**Salida del use-case: la entidad de dominio.**
+- El use-case devuelve la entidad (`Contact`) o una colección (`Page<Contact>`).
+- El controller mapea entidad → response schema DTO leyendo getters (patrón `toContactView`).
+- La entidad NO cruza el borde HTTP — solo el response DTO se serializa.
+
+**Flujo del controller (presentación):**
+1. Validar el request body/query con el schema zod (`c.req.valid(...)`).
+2. Construir el `XxxInput` mapeando del request DTO (incluye derivar `userId`/`createdBy` desde la sesión vía `c.get('userId')`).
+3. Armar `XxxDeps` con el repo (y eventuales servicios) recibidos del composition root.
+4. Invocar `xxxVerb(input, deps)`.
+5. Mapear la entidad devuelta al response schema DTO y devolverla con `c.json(view, status)`.
+
+> La asimetría input-interface vs output-entidad es deliberada. El input DTO existe para neutralizar un acoplamiento real (sin él, el use-case dependería de zod/presentación). En la salida ese riesgo no existe — la entidad sale de la aplicación y la presentación la consume legítimamente (dirección presentación → aplicación → dominio, no al revés).
+
+**Closed types del dominio en los DTOs zod.** Los DTOs zod del borde HTTP (`<entity>-<acción>.in.ts`, `<entity>-<concepto>.out.ts`) NO importan los closed types del dominio (`PipelineState`, `EventType`, etc. de `domain/types/`). Cada DTO redeclara su `z.enum([...])` con los valores válidos. Razón: el DTO es contrato del **WIRE**, independiente del dominio interno. Que dominio y wire evolucionen separados es una FEATURE de aislamiento — agregar un valor de dominio no debe filtrarse automáticamente al OpenAPI/clients (exposición opt-in), ni renombrar internamente debe romper backwards-compat de la API. La "drift bomb" potencial se mitiga con disciplina en PR review, no con acoplamiento. La cruiser rule #3 permite técnicamente `http → domain`, pero esta convención prohíbe ese import para preservar la independencia de la API pública.
+
+**Borde de MÓDULO (cross-slice).** La misma filosofía DTO-no-entidad aplica entre slices. El consumidor importa SOLO el contrato público `<m>.public.ts` del proveedor (`import type`); cruzan DTOs publicados, NUNCA la entidad de dominio ni el repository. La mecánica completa (contrato + impl + wiring en el composition root + condiciones de correctitud) está en ADR 02 → "Colaboración cross-slice (API pública por módulo)".
 
 ### 3.2 — Comunicación / side-effects  *(Accepted + sub-Pending)*
+
 **Accepted:** comunicación síncrona directa; la coordinación cross-slice se orquesta en el composition root (coherente con regla #5 del ADR 02).
 
 > **Sub-decisión Pending — eventos de dominio in-process.**
 > Status: Pending. Trigger: *cuando la orquestación cross-slice en el composition root se vuelva un nudo (varios side-effects colgando de una operación)*. No se cierra la puerta con un "nunca"; se reevalúa cuando aparezca la necesidad real.
 
-### 3.3 — Dónde vive el puerto del repo
-**Junto al use-case (nivel application del slice).** El use-case declara la interface que necesita (`*.repository.ts`); el adapter la implementa. El dominio puro no conoce persistencia.
+### 3.3 — Dónde vive el port del repo
+
+**En `domain/` (hexagonal-pure).** El port (`<entity>.repository.ts` dentro de `domain/`) ES el contrato del dominio con la persistencia: declara la interface abstracta que el dominio necesita, no su implementación. El dominio sigue sin conocer persistencia porque NO hay implementación en `domain/` — solo la interface (un tipo). El adapter (`<entity>.repository.bun.ts`) vive en `infrastructure/` e implementa el port. El use-case importa el port desde `domain/` por sus `Deps` (ver §3.1).
+
+> Esto FLIPEA la decisión original (2026-05-17 hasta 2026-05-20: "nivel application del slice"). Motivo del flip: cuando se reorganizó el slice a carpetas por capa (ADR 02, reversión 2026-05-20), poner el port en `application/` separaba el contrato del dominio que lo declara. La interpretación hexagonal-pure (port = parte del dominio) es más coherente con la estructura por capa elegida. Trade-off: el port puede importar `shared/types` (para `Page<T>`), lo que requirió la sub-regla `adr02-1b-port-contract` en ADR 02.
 
 ### 3.4 — Validación
+
 **En ambos (defensa en profundidad).**
 - **Borde:** `zod` valida forma y tipos del input crudo (¿es string?, ¿vino el campo?). Ver `tech/zod.md`.
 - **Dominio:** invariantes de negocio en constructores / value objects (formato de Email, amount no negativo, etc.). Una entidad inválida debe ser imposible de construir.
@@ -32,24 +75,34 @@ Define cómo viajan los datos entre handler, use-case y repo dentro y entre slic
 
 ## Alternativas consideradas
 
-- 3.1: "Entidades pueden cruzar" — descartado, ataría el contrato de API al modelo interno.
-- 3.2: "Sin eventos nunca" — descartado por absoluto; "message bus externo" — sobredimensionado para greenfield solo.
-- 3.4: "Solo borde" / "solo dominio" — descartados, menos robustos que defensa en profundidad.
+- **3.1: "Entidades pueden cruzar el borde HTTP"** — descartado, ataría el contrato de API al modelo interno.
+- **3.1: "Tipo TS a mano + zod aparte" para request/response** — descartado: duplica forma y abre drift; `z.infer` da una sola fuente sin coste extra de tipado.
+- **3.1: "Use-case input como `z.infer` del schema zod"** — descartado: viola ADR 02 regla #2 (use-case dependería de presentación + zod) y rompe la reusabilidad del use-case fuera de HTTP.
+- **3.1: "Output DTO simétrico en el use-case"** (opción B) — descartado HOY por YAGNI: añade una capa de mapeo extra sin beneficio mientras HTTP sea el único consumidor. **Trigger para reevaluar:** múltiples consumidores del use-case (worker, CLI, otro bounded context) o necesidad de que la aplicación sea un contrato duro independiente de refactors del dominio.
+- **3.2: "Sin eventos nunca"** — descartado por absoluto; **"message bus externo"** — sobredimensionado para greenfield solo.
+- **3.4: "Solo borde" / "solo dominio"** — descartados, menos robustos que defensa en profundidad.
 
 ## Consecuencias
 
-**Positivas:** contrato de API estable; dominio puro y testeable; validación robusta.
+**Positivas:** contrato de API estable; dominio puro y testeable; use-cases reusables fuera de HTTP; validación robusta.
 
 **Negativas / trade-offs:** mapeo input/output explícito (más código); coordinación cross-slice manual hasta que se resuelva el Pending de §3.2.
 
 ## Reglas concretas
 
-- Entrada: `zod` schema → input DTO tipado → use-case. (`@hono/zod-validator` en el handler.)
-- Salida: use-case devuelve dato de dominio → handler mapea a view-model → JSON. La entidad no se serializa directo.
-- Cross-slice: nunca import directo entre `src/modules/A` y `src/modules/B`; orquestar en `app.ts`.
+- **Borde (entrada):** schema zod en `<feature>.schemas.ts` → validación con `c.req.valid(...)` en el controller.
+- **Tipos de borde:** `export type XxxRequest = z.infer<typeof XxxBodySchema>` y `export type XxxView = z.infer<typeof XxxViewSchema>` en el MISMO archivo de schemas. Una sola fuente.
+- **Use-case:** `interface XxxInput` + `interface XxxDeps` exportados en `use-cases/<verb-noun>.ts`. **PROHIBIDO** importar `zod`, `@hono/*` o `*.schemas.ts` desde un use-case (refuerza ADR 02 regla #2).
+- **Firma del use-case:** `export async function xxxVerb(input: XxxInput, deps: XxxDeps): Promise<...>`. El input NO incluye dependencias; las deps NO incluyen datos del input.
+- **Salida:** el use-case devuelve entidad de dominio o `Page<Entidad>`. El controller mapea a un view-model que matchea el response schema DTO. La entidad NO se serializa directo a JSON.
+- **Cross-slice:** nunca import directo entre `src/modules/A` y `src/modules/B`; orquestar en `app.ts`.
 
 ## Historial
 
 | Fecha | Cambio | Por |
 |---|---|---|
 | 2026-05-17 | Decisión inicial. §3.2 eventos in-process marcado Pending con trigger | ifran |
+| 2026-05-19 | §3.1 formalizado con tres contratos nombrados: schema DTO zod en el borde (tipo vía `z.infer`), `XxxInput` y `XxxDeps` como interfaces TS puras co-locadas en el use-case, firma `xxx(input, deps)`, salida = entidad de dominio. Opción B (Output DTO) sumada a Alternativas con trigger explícito. Reglas concretas ampliadas con la prohibición de importar zod/schemas desde use-cases. Convención aplicada al slice `contacts` como referencia. | ifran |
+| 2026-05-19 | Cross-ref: el borde de MÓDULO (cross-slice) sigue la misma regla DTO-no-entidad del §3.1; el consumidor importa solo `<m>.public.ts` type-only. Mecánica completa y condiciones en ADR 02 "Colaboración cross-slice". | ifran |
+| 2026-05-20 | §3.3 FLIPEADA: port pasa de "nivel application del slice" a "dentro de `domain/` (hexagonal-pure)". El dominio sigue sin conocer persistencia (no hay impl en domain, solo el tipo). Adapter sigue en `infrastructure/`. Sub-regla `adr02-1b-port-contract` en ADR 02 acompaña (permite al port importar `shared/types`). Motivo: coherencia con la reorganización a carpetas por capa de ADR 02 (2026-05-20). | ifran |
+| 2026-05-20 | §3.1: agregada convención "Closed types del dominio en los DTOs zod": los DTOs zod del borde NO importan los closed types del dominio; cada DTO redeclara su `z.enum([...])`. Razón: el DTO es contrato del wire independiente del dominio interno (exposición opt-in, backwards-compat). Aunque la cruiser rule #3 permite técnicamente `http → domain`, esta convención lo prohíbe para preservar la independencia de la API pública. | ifran |

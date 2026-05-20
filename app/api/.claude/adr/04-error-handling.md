@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-17
+- **Última actualización:** 2026-05-20 (§4.4 reescrita: eliminado campo `type`; agregado `code` como discriminador flat snake_case)
 - **Decisores:** ifran
 - **Fase del bootstrap:** 4
 
@@ -22,7 +22,20 @@ Una API que falla distinto en cada endpoint es una API en la que nadie confía. 
 **Jerarquía completa con clase base** en `src/shared/errors/`: `DomainError` base + subtipos semánticos (`NotFoundError`, `ConflictError`, `BusinessRuleError`, `ValidationError`, ...). El `onError` mapea por tipo, no por parsing de strings.
 
 ### 4.4 — Formato de respuesta
-**RFC 7807 Problem Details** (`application/problem+json`): `type`, `title`, `status`, `detail`, `instance`. Extensible con un array de errores de campo (para que `app/ui` pinte validaciones de zod) — detalle de implementación, no bloqueante.
+**RFC 7807 Problem Details** (`application/problem+json`): `title`, `status`, `detail`, `instance` + **`code`** como extension field. Se OMITE `type` (RFC 7807 lo define opcional con default `about:blank`); el discriminador programático del cliente es `code`, NO `type`. Extensible con un array `errors` de campo (para que `app/ui` pinte validaciones de zod).
+
+**`code` por tipo de error** (flat snake_case, estilo Stripe/GitHub):
+
+| Error | `code` | Status |
+|---|---|---|
+| `NotFoundError` | `not_found` | 404 |
+| `ConflictError` | `conflict` | 409 |
+| `BusinessRuleError` | `business_rule` | 422 |
+| `ValidationError` (incluye fallos de zod en el borde) | `validation_failed` | 400 |
+| `UnauthorizedError` | `unauthorized` | 401 |
+| Fallback inesperado (no `DomainError`, no `ZodError`) | `internal_error` | 500 |
+
+> Convención: flat snake_case. Migración futura a hierarchical (ej. `'contacts.not_found'`) sería solo cambio de string en cada subclase y en los call-sites de los `throw`. Hoy se mantiene flat por simplicidad.
 
 ### 4.5 — Política de logging de errores
 | Qué | Regla |
@@ -49,7 +62,9 @@ Una API que falla distinto en cada endpoint es una API en la que nadie confía. 
 ## Reglas concretas
 
 - Todo error de negocio extiende `DomainError` (en `src/shared/errors/`).
+- Cada subclase de `DomainError` declara su `code` (flat snake_case) como `readonly`. NO usar `type`.
 - `app.onError` es el único lugar que traduce error → HTTP (`application/problem+json`).
+- El body del Problem incluye `code` como discriminador programático; el cliente NUNCA se basa en parseo de `title` o `detail`.
 - Nunca loguear credenciales, tokens, bodies completos ni PII de clientes.
 
 ## Historial
@@ -57,3 +72,4 @@ Una API que falla distinto en cada endpoint es una API en la que nadie confía. 
 | Fecha | Cambio | Por |
 |---|---|---|
 | 2026-05-17 | Decisión inicial. §4.5 vinculada a ADR 07 (Pending) | ifran |
+| 2026-05-20 | §4.4 reescrita: eliminado campo `type` del Problem (era placeholder `about:blank#X` no RFC-compliant y no honestamente un slug); agregado `code` como extension field flat snake_case (estilo Stripe/GitHub). Codes: `not_found`, `conflict`, `business_rule`, `validation_failed`, `unauthorized`, `internal_error`. Aplicado a `DomainError` + 5 subclases + `ProblemSchema` + `error-handler`. Regla concreta sumada: el discriminador programático del cliente es `code`. Migración futura a hierarchical queda como string change. | ifran |
