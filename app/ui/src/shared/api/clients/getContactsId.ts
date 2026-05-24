@@ -17,7 +17,7 @@ import type {
 } from "@shared/lib/http-client";
 
 function getGetContactsIdUrl(id: GetContactsIdPathParams["id"]) {
-  const res = { method: "GET", url: `/contacts/:id` as const };
+  const res = { method: "GET", url: `/contacts/${id}` as const };
   return res;
 }
 

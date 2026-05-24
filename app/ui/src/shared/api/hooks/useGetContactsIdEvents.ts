@@ -25,7 +25,7 @@ import { queryOptions, useQuery } from "@tanstack/react-query";
 
 export const getContactsIdEventsQueryKey = (
   id: GetContactsIdEventsPathParams["id"] | undefined,
-) => [{ url: "/contacts/:id/events" }] as const;
+) => [{ url: "/contacts/:id/events", params: { id: id } }] as const;
 
 export type GetContactsIdEventsQueryKey = ReturnType<
   typeof getContactsIdEventsQueryKey

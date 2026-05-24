@@ -4,6 +4,7 @@
  */
 
 import { contactListResponseSchema } from "./contactListResponseSchema.ts";
+import { filterGroupObjectSchema } from "./filterGroupObjectSchema.ts";
 import { paginationSchema } from "./paginationSchema.ts";
 import { problemSchema } from "./problemSchema.ts";
 import { z } from "zod/v4";
@@ -23,17 +24,6 @@ export const getContactsQueryParamsSchema = z
           }),
         ),
         name: z.optional(
-          z.object({
-            eq: z.optional(z.union([z.array(z.string()), z.string()])),
-            ne: z.optional(z.union([z.array(z.string()), z.string()])),
-            in: z.optional(z.union([z.array(z.string()), z.string()])),
-            nin: z.optional(z.union([z.array(z.string()), z.string()])),
-            ilike: z.optional(z.union([z.array(z.string()), z.string()])),
-            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
-            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
-          }),
-        ),
-        handle: z.optional(
           z.object({
             eq: z.optional(z.union([z.array(z.string()), z.string()])),
             ne: z.optional(z.union([z.array(z.string()), z.string()])),
@@ -280,12 +270,16 @@ export const getContactsQueryParamsSchema = z
             isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
           }),
         ),
+        get or() {
+          return z.array(filterGroupObjectSchema).max(10).optional();
+        },
       }),
     ),
     search: z.optional(z.string().min(1)),
     get pagination() {
       return paginationSchema.optional();
     },
+    sort: z.optional(z.string()),
   })
   .optional();
 

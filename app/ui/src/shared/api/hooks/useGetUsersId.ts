@@ -25,7 +25,7 @@ import { queryOptions, useQuery } from "@tanstack/react-query";
 
 export const getUsersIdQueryKey = (
   id: GetUsersIdPathParams["id"] | undefined,
-) => [{ url: "/users/:id" }] as const;
+) => [{ url: "/users/:id", params: { id: id } }] as const;
 
 export type GetUsersIdQueryKey = ReturnType<typeof getUsersIdQueryKey>;
 

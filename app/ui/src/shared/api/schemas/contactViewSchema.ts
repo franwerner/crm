@@ -8,7 +8,6 @@ import { z } from "zod/v4";
 export const contactViewSchema = z.object({
   id: z.string().describe("Contact UUID"),
   name: z.string(),
-  handle: z.nullable(z.string()),
   phone: z.nullable(z.string()),
   pipelineState: z.enum(["Contact", "Lead", "Customer", "Discarded"]),
   stateLocked: z.boolean(),

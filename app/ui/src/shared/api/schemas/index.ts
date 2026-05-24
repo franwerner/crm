@@ -21,6 +21,7 @@ export {
   deleteUsersIdMutationResponseSchema,
   deleteUsersIdPathParamsSchema,
 } from "./deleteUsersIdSchema.ts";
+export { filterGroupObjectSchema } from "./filterGroupObjectSchema.ts";
 export {
   getAuthMe200Schema,
   getAuthMe401Schema,

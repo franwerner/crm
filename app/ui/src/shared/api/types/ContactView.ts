@@ -46,10 +46,6 @@ export type ContactView = {
   /**
    * @type string
    */
-  handle: string | null;
-  /**
-   * @type string
-   */
   phone: string | null;
   /**
    * @type string

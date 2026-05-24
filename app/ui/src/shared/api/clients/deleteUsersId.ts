@@ -17,7 +17,7 @@ import type {
 } from "@shared/lib/http-client";
 
 function getDeleteUsersIdUrl(id: DeleteUsersIdPathParams["id"]) {
-  const res = { method: "DELETE", url: `/users/:id` as const };
+  const res = { method: "DELETE", url: `/users/${id}` as const };
   return res;
 }
 

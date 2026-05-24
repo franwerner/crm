@@ -18,7 +18,7 @@ import type {
 } from "@shared/lib/http-client";
 
 function getPostContactsIdEventsUrl(id: PostContactsIdEventsPathParams["id"]) {
-  const res = { method: "POST", url: `/contacts/:id/events` as const };
+  const res = { method: "POST", url: `/contacts/${id}/events` as const };
   return res;
 }
 

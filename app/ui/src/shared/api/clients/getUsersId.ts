@@ -17,7 +17,7 @@ import type {
 } from "@shared/lib/http-client";
 
 function getGetUsersIdUrl(id: GetUsersIdPathParams["id"]) {
-  const res = { method: "GET", url: `/users/:id` as const };
+  const res = { method: "GET", url: `/users/${id}` as const };
   return res;
 }
 

@@ -19,7 +19,7 @@ import type {
 function getGetContactsIdStateChangesUrl(
   id: GetContactsIdStateChangesPathParams["id"],
 ) {
-  const res = { method: "GET", url: `/contacts/:id/state-changes` as const };
+  const res = { method: "GET", url: `/contacts/${id}/state-changes` as const };
   return res;
 }
 

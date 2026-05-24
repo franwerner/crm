@@ -12,11 +12,6 @@
             "example": "01938b0c-..."
           },
           "name": { "type": "string", "example": "Jane Doe" },
-          "handle": {
-            "type": "string",
-            "nullable": true,
-            "example": "@janedoe"
-          },
           "phone": {
             "type": "string",
             "nullable": true,
@@ -65,7 +60,6 @@
         "required": [
           "id",
           "name",
-          "handle",
           "phone",
           "pipelineState",
           "stateLocked",

@@ -7,7 +7,6 @@ import { z } from "zod/v4";
 
 export const createContactBodySchema = z.object({
   name: z.string().min(1).describe("Contact full name"),
-  handle: z.string().describe("Social handle or username").nullish(),
   phone: z.string().describe("Phone number").nullish(),
   sourceChannel: z
     .enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"])

@@ -31,11 +31,6 @@ export type CreateContactBody = {
    */
   name: string;
   /**
-   * @description Social handle or username
-   * @type string
-   */
-  handle?: string | null;
-  /**
    * @description Phone number
    * @type string
    */

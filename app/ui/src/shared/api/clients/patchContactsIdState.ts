@@ -18,7 +18,7 @@ import type {
 } from "@shared/lib/http-client";
 
 function getPatchContactsIdStateUrl(id: PatchContactsIdStatePathParams["id"]) {
-  const res = { method: "PATCH", url: `/contacts/:id/state` as const };
+  const res = { method: "PATCH", url: `/contacts/${id}/state` as const };
   return res;
 }
 

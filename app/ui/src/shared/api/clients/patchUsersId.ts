@@ -18,7 +18,7 @@ import type {
 } from "@shared/lib/http-client";
 
 function getPatchUsersIdUrl(id: PatchUsersIdPathParams["id"]) {
-  const res = { method: "PATCH", url: `/users/:id` as const };
+  const res = { method: "PATCH", url: `/users/${id}` as const };
   return res;
 }
 

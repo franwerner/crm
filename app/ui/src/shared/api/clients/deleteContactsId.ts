@@ -17,7 +17,7 @@ import type {
 } from "@shared/lib/http-client";
 
 function getDeleteContactsIdUrl(id: DeleteContactsIdPathParams["id"]) {
-  const res = { method: "DELETE", url: `/contacts/:id` as const };
+  const res = { method: "DELETE", url: `/contacts/${id}` as const };
   return res;
 }
 

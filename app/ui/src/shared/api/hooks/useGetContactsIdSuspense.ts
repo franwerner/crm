@@ -25,7 +25,7 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 
 export const getContactsIdSuspenseQueryKey = (
   id: GetContactsIdPathParams["id"] | undefined,
-) => [{ url: "/contacts/:id" }] as const;
+) => [{ url: "/contacts/:id", params: { id: id } }] as const;
 
 export type GetContactsIdSuspenseQueryKey = ReturnType<
   typeof getContactsIdSuspenseQueryKey
