@@ -38,7 +38,7 @@ const createContactRoute = createRoute({
 
 const getContactRoute = createRoute({
   method: 'get',
-  path: '/contacts/:id',
+  path: '/contacts/{id}',
   summary: 'Get a contact by id',
   tags: ['contacts'],
   request: {
@@ -62,7 +62,7 @@ const getContactRoute = createRoute({
 
 const registerEventRoute = createRoute({
   method: 'post',
-  path: '/contacts/:id/events',
+  path: '/contacts/{id}/events',
   summary: 'Register an event on a contact',
   tags: ['contacts'],
   request: {
@@ -90,7 +90,7 @@ const registerEventRoute = createRoute({
 
 const listContactEventsRoute = createRoute({
   method: 'get',
-  path: '/contacts/:id/events',
+  path: '/contacts/{id}/events',
   summary: 'List events for a contact',
   tags: ['contacts'],
   request: {
@@ -115,7 +115,7 @@ const listContactEventsRoute = createRoute({
 
 const listContactStateChangesRoute = createRoute({
   method: 'get',
-  path: '/contacts/:id/state-changes',
+  path: '/contacts/{id}/state-changes',
   summary: 'List state changes for a contact',
   tags: ['contacts'],
   request: {
@@ -140,7 +140,7 @@ const listContactStateChangesRoute = createRoute({
 
 const changeContactStateRoute = createRoute({
   method: 'patch',
-  path: '/contacts/:id/state',
+  path: '/contacts/{id}/state',
   summary: 'Manually change contact pipeline state',
   tags: ['contacts'],
   request: {
@@ -168,7 +168,7 @@ const changeContactStateRoute = createRoute({
 
 const deleteContactRoute = createRoute({
   method: 'delete',
-  path: '/contacts/:id',
+  path: '/contacts/{id}',
   summary: 'Soft-delete a contact',
   tags: ['contacts'],
   request: {

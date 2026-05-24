@@ -57,7 +57,7 @@ const listUsersRoute = createRoute({
 
 const getUserRoute = createRoute({
   method: 'get',
-  path: '/users/:id',
+  path: '/users/{id}',
   summary: 'Get a user by id',
   tags: ['users'],
   request: {
@@ -81,7 +81,7 @@ const getUserRoute = createRoute({
 
 const updateUserRoute = createRoute({
   method: 'patch',
-  path: '/users/:id',
+  path: '/users/{id}',
   summary: 'Update a user (name and/or password)',
   tags: ['users'],
   request: {
@@ -109,7 +109,7 @@ const updateUserRoute = createRoute({
 
 const deleteUserRoute = createRoute({
   method: 'delete',
-  path: '/users/:id',
+  path: '/users/{id}',
   summary: 'Soft-delete a user',
   tags: ['users'],
   request: {
