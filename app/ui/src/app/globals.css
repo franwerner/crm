@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+:root {
+  --ds-color-primary-50: #F3FBE0;
+  --ds-color-primary-100: #E4F8B8;
+  --ds-color-primary-200: #DCF5A8;
+  --ds-color-primary-300: #C7F870;
+  --ds-color-primary-400: #B6F36A;
+  --ds-color-primary-500: #A3E054;
+  --ds-color-primary-600: #8FCD46;
+  --ds-color-primary-700: #5E8E2A;
+  --ds-color-primary-800: #426414;
+  --ds-color-primary-900: #2F4715;
+
+  --ds-color-secondary-50: #E6EFEA;
+  --ds-color-secondary-100: #CCDFD3;
+  --ds-color-secondary-200: #B7CFC1;
+  --ds-color-secondary-300: #88B5A0;
+  --ds-color-secondary-400: #6F9C84;
+  --ds-color-secondary-500: #4F8669;
+  --ds-color-secondary-600: #2C6A4D;
+  --ds-color-secondary-700: #143D2B;
+  --ds-color-secondary-800: #0A2419;
+  --ds-color-secondary-900: #04110B;
+
+  --ds-color-neutral-0: #FFFFFF;
+  --ds-color-neutral-50: #FAFAF7;
+  --ds-color-neutral-100: #F5F6F4;
+  --ds-color-neutral-200: #E8EAE7;
+  --ds-color-neutral-300: #D6D9D4;
+  --ds-color-neutral-400: #C9CCC6;
+  --ds-color-neutral-500: #8E938A;
+  --ds-color-neutral-600: #6B6F66;
+  --ds-color-neutral-700: #444842;
+  --ds-color-neutral-800: #2A2C28;
+  --ds-color-neutral-900: #0A0A0A;
+
+  --ds-color-danger-50: #FFE9E9;
+  --ds-color-danger-100: #FFD7D7;
+  --ds-color-danger-300: #FF8A8A;
+  --ds-color-danger-500: #E85A5A;
+  --ds-color-danger-700: #B23636;
+  --ds-color-danger-900: #6B1A1A;
+
+  --ds-color-warning-50: #FFF4D6;
+  --ds-color-warning-500: #E8B84A;
+  --ds-color-warning-700: #8A6A18;
+
+  --ds-color-info-50: #E6EFEA;
+  --ds-color-info-500: #2C6A4D;
+  --ds-color-info-700: #143D2B;
+
+  --ds-color-success-50: #F3FBE0;
+  --ds-color-success-500: #B6F36A;
+  --ds-color-success-700: #5E8E2A;
+
+  --ds-color-bg: var(--ds-color-neutral-50);
+  --ds-color-bg-subtle: var(--ds-color-neutral-100);
+  --ds-color-surface: var(--ds-color-neutral-0);
+  --ds-color-surface-raised: var(--ds-color-neutral-0);
+  --ds-color-surface-sunken: var(--ds-color-neutral-100);
+  --ds-color-surface-inverse: var(--ds-color-secondary-700);
+
+  --ds-color-border: var(--ds-color-neutral-200);
+  --ds-color-border-strong: var(--ds-color-neutral-300);
+  --ds-color-border-focus: var(--ds-color-neutral-900);
+  --ds-color-border-inverse: rgba(255, 255, 255, 0.12);
+
+  --ds-color-text: var(--ds-color-neutral-900);
+  --ds-color-text-muted: var(--ds-color-neutral-600);
+  --ds-color-text-subtle: var(--ds-color-neutral-500);
+  --ds-color-text-disabled: var(--ds-color-neutral-400);
+  --ds-color-text-inverse: var(--ds-color-neutral-100);
+  --ds-color-text-on-primary: var(--ds-color-neutral-900);
+  --ds-color-text-on-secondary: var(--ds-color-neutral-100);
+  --ds-color-text-link: var(--ds-color-secondary-600);
+
+  --ds-color-primary: var(--ds-color-primary-400);
+  --ds-color-primary-hover: var(--ds-color-primary-300);
+  --ds-color-primary-active: var(--ds-color-primary-600);
+  --ds-color-primary-disabled: var(--ds-color-primary-100);
+
+  --ds-color-secondary: var(--ds-color-secondary-700);
+  --ds-color-secondary-hover: var(--ds-color-secondary-600);
+  --ds-color-secondary-active: var(--ds-color-secondary-800);
+
+  --ds-font-family-sans: "General Sans", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ds-font-family-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --ds-font-size-xs: 12px;
+  --ds-font-size-sm: 13px;
+  --ds-font-size-base: 14px;
+  --ds-font-size-md: 16px;
+  --ds-font-size-lg: 18px;
+  --ds-font-size-xl: 20px;
+  --ds-font-size-2xl: 24px;
+  --ds-font-size-3xl: 32px;
+  --ds-font-size-4xl: 40px;
+  --ds-font-size-5xl: 56px;
+  --ds-font-size-display: 64px;
+
+  --ds-line-height-tight: 1.1;
+  --ds-line-height-snug: 1.25;
+  --ds-line-height-normal: 1.5;
+  --ds-line-height-relaxed: 1.65;
+
+  --ds-font-weight-regular: 400;
+  --ds-font-weight-medium: 500;
+  --ds-font-weight-semibold: 600;
+  --ds-font-weight-bold: 700;
+
+  --ds-tracking-tighter: -0.02em;
+  --ds-tracking-tight: -0.01em;
+  --ds-tracking-normal: 0;
+  --ds-tracking-wide: 0.04em;
+  --ds-tracking-wider: 0.08em;
+
+  --ds-space-0: 0;
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 24px;
+  --ds-space-6: 32px;
+  --ds-space-7: 48px;
+  --ds-space-8: 64px;
+  --ds-space-9: 96px;
+  --ds-space-10: 128px;
+
+  --ds-radius-none: 0;
+  --ds-radius-xs: 4px;
+  --ds-radius-sm: 8px;
+  --ds-radius-md: 12px;
+  --ds-radius-lg: 16px;
+  --ds-radius-xl: 24px;
+  --ds-radius-2xl: 32px;
+  --ds-radius-pill: 999px;
+  --ds-radius-full: 50%;
+
+  --ds-border-width-0: 0;
+  --ds-border-width-1: 1px;
+  --ds-border-width-2: 2px;
+
+  --ds-shadow-xs: 0 1px 2px rgba(10, 10, 10, 0.05);
+  --ds-shadow-sm: 0 1px 2px rgba(10, 10, 10, 0.06), 0 1px 3px rgba(10, 10, 10, 0.04);
+  --ds-shadow-md: 0 4px 8px rgba(10, 10, 10, 0.06), 0 2px 4px rgba(10, 10, 10, 0.04);
+  --ds-shadow-lg: 0 8px 24px rgba(10, 10, 10, 0.08), 0 4px 8px rgba(10, 10, 10, 0.04);
+  --ds-shadow-xl: 0 20px 40px rgba(10, 10, 10, 0.12), 0 8px 16px rgba(10, 10, 10, 0.06);
+  --ds-shadow-2xl: 0 32px 64px rgba(10, 10, 10, 0.18);
+  --ds-shadow-inner: inset 0 1px 2px rgba(10, 10, 10, 0.06);
+  --ds-shadow-focus: 0 0 0 3px rgba(182, 243, 106, 0.4);
+  --ds-shadow-focus-danger: 0 0 0 3px rgba(232, 90, 90, 0.3);
+
+  --ds-z-base: 0;
+  --ds-z-dropdown: 10;
+  --ds-z-sticky: 20;
+  --ds-z-fixed: 30;
+  --ds-z-overlay: 40;
+  --ds-z-drawer: 50;
+  --ds-z-modal: 60;
+  --ds-z-popover: 70;
+  --ds-z-tooltip: 80;
+  --ds-z-toast: 90;
+
+  --ds-duration-instant: 100ms;
+  --ds-duration-fast: 150ms;
+  --ds-duration-base: 200ms;
+  --ds-duration-slow: 300ms;
+  --ds-duration-slower: 500ms;
+
+  --ds-easing-linear: linear;
+  --ds-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ds-easing-emphasis: cubic-bezier(0.3, 0, 0, 1);
+  --ds-easing-decel: cubic-bezier(0, 0, 0.2, 1);
+  --ds-easing-accel: cubic-bezier(0.4, 0, 1, 1);
+
+  --ds-control-height-sm: 32px;
+  --ds-control-height-md: 40px;
+  --ds-control-height-lg: 48px;
+
+  --ds-hit-target-min: 44px;
+
+  --ds-container-sm: 640px;
+  --ds-container-md: 768px;
+  --ds-container-lg: 1024px;
+  --ds-container-xl: 1280px;
+  --ds-container-2xl: 1536px;
+
+  --ds-sidebar-width: 240px;
+  --ds-sidebar-width-collapsed: 64px;
+}
+
+:root {
+  --radius: var(--ds-radius-md);
+  --background: var(--ds-color-bg);
+  --foreground: var(--ds-color-text);
+  --card: var(--ds-color-surface);
+  --card-foreground: var(--ds-color-text);
+  --popover: var(--ds-color-surface);
+  --popover-foreground: var(--ds-color-text);
+  --primary: var(--ds-color-primary-400);
+  --primary-foreground: var(--ds-color-text-on-primary);
+  --secondary: var(--ds-color-secondary-700);
+  --secondary-foreground: var(--ds-color-text-on-secondary);
+  --muted: var(--ds-color-surface-sunken);
+  --muted-foreground: var(--ds-color-text-muted);
+  --accent: var(--ds-color-primary-100);
+  --accent-foreground: var(--ds-color-secondary-700);
+  --destructive: var(--ds-color-danger-500);
+  --destructive-foreground: var(--ds-color-neutral-0);
+  --border: var(--ds-color-border);
+  --input: var(--ds-color-border);
+  --ring: var(--ds-color-primary-400);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
+  --font-sans: var(--ds-font-family-sans);
+  --font-mono: var(--ds-font-family-mono);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
+}
