@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-20 (reorganización a carpetas por capa dentro del slice: `domain/` + `application/use-cases/` + `infrastructure/` + `http/` (con `dto/in/` y `dto/out/`) + `public/`. Port movido a `domain/` (hexagonal-pure). Reglas reescritas con los paths nuevos; suma `adr02-1b-port-contract`)
+- **Última actualización:** 2026-05-20 (use-cases y controllers pasan a class; bootstrap por módulo en `infrastructure/bootstrap.ts` actúa como mini composition-root del slice. Reglas #3 y #7 reescritas; `.dependency-cruiser.js` actualizado)
 - **Decisores:** ifran
 - **Fase del bootstrap:** 2
 
@@ -30,10 +30,11 @@ app/api/
 │   │       │   └── use-cases/
 │   │       │       └── <entity>-<acción>.use-case.ts  # con XxxInput / XxxDeps co-locados (ADR 03)
 │   │       ├── infrastructure/
-│   │       │   └── <entity>.repository.bun.ts   # adapter Drizzle (único que toca la DB)
+│   │       │   ├── <entity>.repository.bun.ts   # adapter Drizzle (único que toca la DB)
+│   │       │   └── bootstrap.ts                 # mini composition-root del slice: instancia repo, use-cases, controller, router; retorna { router, publicApi? }
 │   │       ├── http/                            # capa de transporte (presentation)
-│   │       │   ├── <entity>.routes.ts           # OpenAPIHono + createRoute + wiring
-│   │       │   ├── <entity>.controller.ts       # solo funciones handler
+│   │       │   ├── <entity>.routes.ts           # OpenAPIHono + createRoute + wiring; recibe el controller
+│   │       │   ├── <entity>.controller.ts       # class <Entity>Controller con un método handler por ruta
 │   │       │   └── dto/
 │   │       │       ├── in/<entity>-<acción>.in.ts    # zod schema + z.infer (request/query)
 │   │       │       └── out/<entity>-<concepto>.out.ts # zod schema + z.infer (view, reusable)
@@ -53,7 +54,7 @@ app/api/
 └── tests/                                    # ver ADR 06 (Pending)
 ```
 
-> **Carpetas vacías NO se crean.** Si un slice no expone HTTP (ej. `users` solo se consume vía API pública), no existe `http/`. Si no tiene entidad nominal propia (ej. `auth` consume `UsersPublicApi`), no existen `domain/`, `infrastructure/` ni `public/`. La carpeta `value-objects/` se crea recién con el primer VO.
+> **Carpetas vacías NO se crean.** Si un slice no expone HTTP (ej. `users` solo se consume vía API pública), no existe `http/`. Si no tiene entidad nominal propia (ej. `auth` consume `UsersPublicApi`), no existen `domain/` ni `public/` — pero **sí existe `infrastructure/`** porque ahí vive el `bootstrap.ts` del slice. La carpeta `value-objects/` se crea recién con el primer VO.
 
 ## Reglas concretas (verificables — enforzables con dependency-cruiser)
 
@@ -62,11 +63,11 @@ app/api/
 | 1 | El **conjunto de dominio puro del slice** — `src/modules/*/domain/` salvo el port — solo importa dentro de su propio `domain/` y de `src/shared/errors/**`. NUNCA Hono, NUNCA DB, NUNCA otro slice. |
 | 1b | El **port** (`<entity>.repository.ts` dentro de `domain/`) es el contrato del dominio con la persistencia y es más permisivo que el dominio puro: puede importar adicionalmente `src/shared/types/**` (para `Page<T>`, `PageParams`) además de su propio `domain/` y `src/shared/errors/**`. NUNCA `http/`, `infrastructure/`, ni otro slice. |
 | 2 | `src/modules/*/application/use-cases/**` importa archivos de SU propio `domain/` (incluyendo el port) + `src/shared/**`. NUNCA Hono, NUNCA `infrastructure/**`, NUNCA `http/**` de NINGÚN slice. |
-| 3 | La capa presentation del slice vive en `http/` (`<entity>.routes.ts`, `<entity>.controller.ts`, `dto/in/*.in.ts`, `dto/out/*.out.ts`). `<entity>.controller.ts` importa los `use-cases/**` de SU slice + `src/shared/http/**`. `<entity>.routes.ts` importa sus DTOs (`dto/in,out/`) + el controller de SU slice. NINGÚN archivo bajo `http/` toca DB ni `infrastructure/` directamente. |
-| 4 | `src/modules/*/infrastructure/<entity>.repository.bun.ts` (adapter) implementa el port y puede importar `src/shared/db/**`. Es el único que toca la DB. |
+| 3 | La capa presentation del slice vive en `http/` (`<entity>.routes.ts`, `<entity>.controller.ts`, `dto/in/*.in.ts`, `dto/out/*.out.ts`). `<entity>.controller.ts` es una **class** (`<Entity>Controller`) con un método handler por ruta; recibe las instancias de use-case por constructor (`constructor(ucs: <Entity>UseCases)`). Importa los `use-cases/**` de SU slice (sólo el tipo de la class) + `src/shared/http/**`. `<entity>.routes.ts` exporta `create<Entity>sRouter(controller: <Entity>Controller)`, importa sus DTOs (`dto/in,out/`) + el tipo del controller de SU slice. NINGÚN archivo bajo `http/` toca DB ni `infrastructure/` directamente. |
+| 4 | `src/modules/*/infrastructure/<entity>.repository.bun.ts` (adapter) implementa el port y puede importar `src/shared/db/**`. Junto con `infrastructure/bootstrap.ts` del MISMO slice (ver regla #7), son los únicos que tocan la DB dentro del slice. |
 | 5 | **Slices aislados:** `src/modules/A/**` NO importa de `src/modules/B/**`. ÚNICA excepción: importar el contrato público `src/modules/B/public/<B>.public.ts` (solo `import type`). El resto de B (domain, application, infrastructure, http, `public.impl.ts`) sigue prohibido cross-slice. Ver "Colaboración cross-slice" abajo. |
 | 6 | `src/shared/**` NO importa NADA de `src/modules/**`. El kernel no conoce features. |
-| 7 | `src/app.ts` (composition root) es el ÚNICO que puede importar adapters concretos (`*.repository.bun.ts`) y las impl de API pública (`*.public.impl.ts`), y cablearlos. |
+| 7 | **Composition root distribuido:** el wiring de adapters concretos y la instanciación de use-cases / controllers viven en (a) `src/modules/<m>/infrastructure/bootstrap.ts` para CADA slice — es el mini composition-root del módulo, autocontenido, y (b) `src/app.ts` que orquesta la composición global llamando a los `bootstrap*` de cada módulo y enrutándolos. Sólo estos archivos pueden importar `*.repository.bun.ts` y `*.public.impl.ts`. Cada `bootstrap.ts` puede cablear SOLO los archivos de SU PROPIO slice (la regla #5 sigue cubriendo el cross-slice). `app.ts` orquesta el pasaje de la `publicApi` que un bootstrap retorna hacia el bootstrap de otro slice que la consume. |
 
 > La regla #5 es el corazón del Vertical Slice. Es la que más se viola sin querer — vigilarla.
 
@@ -130,3 +131,4 @@ Pasos (al scaffoldear el paquete, ANTES del primer feature):
 | 2026-05-19 | Refina la entrada anterior del mismo día: presentation por slice queda en 3 archivos — `<feature>.routes.ts` (OpenAPIHono + createRoute + registro), `<feature>.controller.ts` (solo funciones handler), `<feature>.schemas.ts` (zod del borde). Sin cambios en reglas de dependencia. | ifran |
 | 2026-05-19 | Colaboración cross-slice formalizada: API pública por módulo (`<m>.public.ts` contrato + `<m>.public.impl.ts` impl). Regla #5 acota la excepción a `<m>.public.ts` type-only; regla #7 extendida a `*.public.impl.ts`. Nueva subsección con 3 condiciones de correctitud. Primera aplicación: auth consume `UsersPublicApi`, se eliminó `auth.port.ts`. | ifran |
 | 2026-05-20 | **Reversión consciente del split plano**. Reorganización a carpetas por capa dentro del slice: `domain/`, `application/use-cases/`, `infrastructure/`, `http/` (con `dto/in/` + `dto/out/`), `public/`. Port movido a `domain/` (hexagonal-pure, flipea ADR 03 §3.3). Nueva regla `adr02-1b-port-contract` permite al port importar `src/shared/types`. Todos los globs de `.dependency-cruiser.js` reescritos por capa. Carpetas vacías NO se crean. Aplicado a contacts (8 use-cases, http completo), auth (sin domain/infra/public), users (sin http). Archivos en singular, carpeta del slice en plural (ADR 11). Sufijos `.use-case.ts` / `.in.ts` / `.out.ts` agregados (ADR 11). | ifran |
+| 2026-05-20 | **Use-cases y controllers pasan a class; bootstrap por módulo.** Regla #3 reescrita: el controller es una `class <Entity>Controller` con un método handler por ruta y recibe los use-cases por constructor (`{ create, get, list, ... }`). Regla #7 reescrita: el composition root ahora es DISTRIBUIDO — cada slice expone `infrastructure/bootstrap.ts` que cablea repo + use-cases + controller + router y retorna `{ router, publicApi? }`; `src/app.ts` solo orquesta llamando a los `bootstrap*` y pasando el `publicApi` cross-slice cuando aplica. `.dependency-cruiser.js`: rule 4 y rule 7 actualizadas para reconocer `infrastructure/bootstrap.ts` como punto de wiring del slice (la regla #5 sigue impidiendo que un bootstrap cablee otro slice). Auth gana `infrastructure/` solo para su `bootstrap.ts` (excepción explícita a "carpetas vacías NO se crean"). Aplicado a contacts, users y auth en el mismo paso. | ifran |

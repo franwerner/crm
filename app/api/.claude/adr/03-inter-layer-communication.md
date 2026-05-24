@@ -2,7 +2,7 @@
 
 - **Status:** Accepted (con sub-decisión §3.2 en Pending)
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-20
+- **Última actualización:** 2026-05-20 (use-cases pasan a class con `execute(input)`; las deps van en el constructor — `XxxDeps` deja de existir)
 - **Decisores:** ifran
 - **Fase del bootstrap:** 3
 
@@ -23,17 +23,22 @@ Tres contratos nombrados, cada uno con su forma TS concreta y dónde vive.
   `export type CreateContactRequest = z.infer<typeof CreateContactBodySchema>` (ídem para responses/views).
 
 **Input del use-case: `interface XxxInput` TS puro, co-locado.**
-- Vive en el archivo del use-case (`use-cases/<verb-noun>.ts`).
-- Es un `interface` plano: SIN zod, SIN Hono, SIN imports de `*.schemas.ts`.
+- Vive en el archivo del use-case (`use-cases/<entity>-<acción>.use-case.ts`).
+- Es un `interface` plano: SIN zod, SIN Hono, SIN imports de DTOs HTTP.
 - Mantiene al use-case libre de presentación → preserva ADR 02 regla #2.
 
-**Dependencias del use-case: `interface XxxDeps` TS puro, co-locado.**
-- Vive en el mismo archivo del use-case.
-- Hoy típicamente `{ repo: XxxRepository }`. Abierto a crecer con `clock`, `idGenerator`, `logger`, etc., sin tocar la firma semántica del input.
+**Dependencias del use-case: en el constructor de la class.**
+- El use-case es una `class <Entity><Acción>UseCase` y recibe sus dependencias por constructor (típicamente `repo: <Entity>Repository`; abierto a `clock`, `idGenerator`, `logger`, etc.).
+- Se elimina la interface separada `XxxDeps`: las deps se declaran como parámetros del constructor con visibilidad `private readonly`. Esto centraliza el wiring en un único punto (la instanciación, hecha por `infrastructure/bootstrap.ts` del slice — ver ADR 02 regla #7).
 
 **Firma estándar del use-case:**
-`export async function xxxVerb(input: XxxInput, deps: XxxDeps): Promise<...>`
-Input es el contrato semántico; deps son los servicios. Separados a propósito.
+```
+export class <Entity><Acción>UseCase {
+  constructor(private readonly repo: <Entity>Repository /*, otras deps */) {}
+  async execute(input: <Acción><Entity>Input): Promise<...> { ... }
+}
+```
+Input es el contrato semántico (parámetro de `execute`); deps son los servicios (parámetros del constructor). Separados a propósito.
 
 **Salida del use-case: la entidad de dominio.**
 - El use-case devuelve la entidad (`Contact`) o una colección (`Page<Contact>`).
@@ -43,9 +48,8 @@ Input es el contrato semántico; deps son los servicios. Separados a propósito.
 **Flujo del controller (presentación):**
 1. Validar el request body/query con el schema zod (`c.req.valid(...)`).
 2. Construir el `XxxInput` mapeando del request DTO (incluye derivar `userId`/`createdBy` desde la sesión vía `c.get('userId')`).
-3. Armar `XxxDeps` con el repo (y eventuales servicios) recibidos del composition root.
-4. Invocar `xxxVerb(input, deps)`.
-5. Mapear la entidad devuelta al response schema DTO y devolverla con `c.json(view, status)`.
+3. Invocar `this.ucs.<acción>.execute(input)` — el controller recibe las instancias ya construidas vía constructor (`constructor(ucs: <Entity>UseCases)`); el wiring lo hace `infrastructure/bootstrap.ts` del slice.
+4. Mapear la entidad devuelta al response schema DTO y devolverla con `c.json(view, status)`.
 
 > La asimetría input-interface vs output-entidad es deliberada. El input DTO existe para neutralizar un acoplamiento real (sin él, el use-case dependería de zod/presentación). En la salida ese riesgo no existe — la entidad sale de la aplicación y la presentación la consume legítimamente (dirección presentación → aplicación → dominio, no al revés).
 
@@ -90,12 +94,13 @@ Input es el contrato semántico; deps son los servicios. Separados a propósito.
 
 ## Reglas concretas
 
-- **Borde (entrada):** schema zod en `<feature>.schemas.ts` → validación con `c.req.valid(...)` en el controller.
-- **Tipos de borde:** `export type XxxRequest = z.infer<typeof XxxBodySchema>` y `export type XxxView = z.infer<typeof XxxViewSchema>` en el MISMO archivo de schemas. Una sola fuente.
-- **Use-case:** `interface XxxInput` + `interface XxxDeps` exportados en `use-cases/<verb-noun>.ts`. **PROHIBIDO** importar `zod`, `@hono/*` o `*.schemas.ts` desde un use-case (refuerza ADR 02 regla #2).
-- **Firma del use-case:** `export async function xxxVerb(input: XxxInput, deps: XxxDeps): Promise<...>`. El input NO incluye dependencias; las deps NO incluyen datos del input.
-- **Salida:** el use-case devuelve entidad de dominio o `Page<Entidad>`. El controller mapea a un view-model que matchea el response schema DTO. La entidad NO se serializa directo a JSON.
-- **Cross-slice:** nunca import directo entre `src/modules/A` y `src/modules/B`; orquestar en `app.ts`.
+- **Borde (entrada):** schema zod en `http/dto/in/<entity>-<acción>.in.ts` → validación con `c.req.valid(...)` en el controller.
+- **Tipos de borde:** `export type XxxRequest = z.infer<typeof XxxBodySchema>` en `dto/in/`; `export type XxxView = z.infer<typeof XxxViewSchema>` en `dto/out/`. Una sola fuente por archivo.
+- **Use-case:** `interface XxxInput` + `class <Entity><Acción>UseCase` exportados en `application/use-cases/<entity>-<acción>.use-case.ts`. **PROHIBIDO** importar `zod`, `@hono/*` o DTOs HTTP desde un use-case (refuerza ADR 02 regla #2).
+- **Firma del use-case:** la class tiene `constructor(...deps)` para las dependencias y un método `async execute(input: XxxInput): Promise<...>` para la operación. El input NO incluye dependencias; las deps NO incluyen datos del input. Una sola operación por class (un solo `execute`).
+- **Salida:** `execute` devuelve entidad de dominio o `Page<Entidad>`. El controller mapea a un view-model que matchea el response schema DTO. La entidad NO se serializa directo a JSON.
+- **Controller:** `class <Entity>Controller` con un método handler por ruta; recibe las instancias de use-case por constructor (`constructor(ucs: <Entity>UseCases)`). El wiring de las instancias lo hace `infrastructure/bootstrap.ts` del slice.
+- **Cross-slice:** nunca import directo entre `src/modules/A` y `src/modules/B`; el bootstrap de A retorna su `publicApi` y `src/app.ts` la pasa al bootstrap de B que la consume.
 
 ## Historial
 
@@ -106,3 +111,4 @@ Input es el contrato semántico; deps son los servicios. Separados a propósito.
 | 2026-05-19 | Cross-ref: el borde de MÓDULO (cross-slice) sigue la misma regla DTO-no-entidad del §3.1; el consumidor importa solo `<m>.public.ts` type-only. Mecánica completa y condiciones en ADR 02 "Colaboración cross-slice". | ifran |
 | 2026-05-20 | §3.3 FLIPEADA: port pasa de "nivel application del slice" a "dentro de `domain/` (hexagonal-pure)". El dominio sigue sin conocer persistencia (no hay impl en domain, solo el tipo). Adapter sigue en `infrastructure/`. Sub-regla `adr02-1b-port-contract` en ADR 02 acompaña (permite al port importar `shared/types`). Motivo: coherencia con la reorganización a carpetas por capa de ADR 02 (2026-05-20). | ifran |
 | 2026-05-20 | §3.1: agregada convención "Closed types del dominio en los DTOs zod": los DTOs zod del borde NO importan los closed types del dominio; cada DTO redeclara su `z.enum([...])`. Razón: el DTO es contrato del wire independiente del dominio interno (exposición opt-in, backwards-compat). Aunque la cruiser rule #3 permite técnicamente `http → domain`, esta convención lo prohíbe para preservar la independencia de la API pública. | ifran |
+| 2026-05-20 | §3.1: **firma del use-case migrada de función a class**. Pasa de `export async function xxxVerb(input, deps)` a `export class <Entity><Acción>UseCase { constructor(...deps) execute(input) }`. La interface separada `XxxDeps` se elimina: las deps se declaran como parámetros del constructor (`private readonly`). `XxxInput` se mantiene como interface co-locada. Controller también pasa a class (`<Entity>Controller`) con `constructor(ucs: <Entity>UseCases)`. Motivo: centralizar el wiring en `infrastructure/bootstrap.ts` por slice (ADR 02 regla #7 reescrita) y dar autocontención al módulo. Cross-slice queda orquestado por `src/app.ts` que conecta `publicApi` de un bootstrap al consumidor. Reglas concretas y "Flujo del controller" reescritas. Aplicado a contacts, users y auth. | ifran |
