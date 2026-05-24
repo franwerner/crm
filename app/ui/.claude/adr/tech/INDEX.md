@@ -18,6 +18,17 @@ Registro vivo de las tecnologías concretas elegidas para este paquete. Cada ent
 | [react](react.md) | latest estable | Ecosistema CRM (tablas/forms) + mejor soporte de kubb |
 | [vite](vite.md) | latest estable | Build/dev server estándar para SPA, corre sobre Bun |
 
+### Estilos / Design System
+| Tech | Versión | Por qué |
+|---|---|---|
+| [tailwindcss](tailwindcss.md) | v4 / sin pinear | Utility-first CSS-first (`@theme`); tokens en CSS, encaja con el handoff |
+| [shadcn](shadcn.md) | latest (CLI) | Componentes copy-paste sobre Radix; código propio, custom total según handoff |
+
+### Routing
+| Tech | Versión | Por qué |
+|---|---|---|
+| [tanstack-router](tanstack-router.md) | latest / sin pinear | Routing type-safe; mismo ecosistema que TanStack Query; guards vía `beforeLoad` (ADR 10); search params con zod |
+
 ### Estado de servidor / data fetching
 | Tech | Versión | Por qué |
 |---|---|---|

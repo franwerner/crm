@@ -1,48 +1,53 @@
-# ADR 11 — Estructura de carpetas y naming + Atomic Design (app/ui)
+# ADR 11 — Estructura de carpetas y naming (app/ui)
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-17
+- **Última actualización:** 2026-05-23
 - **Decisores:** ifran
 - **Fase del bootstrap:** 5.7
 
 ## Contexto
 
-La estructura macro quedó en el ADR 02 (features/ + shared/ + app/). Falta el naming y cómo se organiza el design-system.
+La estructura macro quedó en el ADR 02 (features/ + shared/ + app/). Este ADR define el naming de archivos y cómo se organiza el design-system dentro de `shared/ui`.
+
+Originalmente se adoptó Atomic Design (atoms/molecules/organisms) en `shared/ui` y PascalCase para archivos de componente. Ambas decisiones se revierten (2026-05-23) al integrar Tailwind v4 + shadcn/ui (ADR 13): shadcn genera una carpeta `ui/` plana con archivos kebab-case, y el código ya existente (`src/app/error-boundary.tsx`) usaba kebab. Se prioriza consistencia con shadcn y con `app/api` (kebab en todo el monorepo).
 
 ## Decisión
 
 | Qué | Convención |
 |---|---|
-| Archivos de componente | `PascalCase.tsx` (`CustomerTable.tsx`) |
-| Hooks | `camelCase` con prefijo `use` (`useCustomers.ts`) |
-| Otros archivos (utils, config, types) | `kebab-case` (`query-client.ts`, `customer.types.ts`) |
-| Tipos / componentes | `PascalCase` · funciones/vars `camelCase` · constantes `UPPER_SNAKE_CASE` |
+| Nombres de archivo (todos) | `kebab-case` (`data-table.tsx`, `use-customers.ts`, `query-client.ts`) |
+| Identificadores en código | componentes y tipos `PascalCase` · funciones/vars `camelCase` · constantes `UPPER_SNAKE_CASE` |
+| Hooks | archivo `use-<nombre>.ts` (kebab con prefijo `use`); función `use<Nombre>` |
 | Carpetas de feature | `features/<feature>/` (nombre del feature en minúscula) |
-| `shared/ui` (design system) | **Atomic Design**: `atoms/` · `molecules/` · `organisms/` |
+| `shared/ui` (design system) | **carpeta plana**, sin taxonomía atómica |
 | Templates / pages | NO van en `shared/ui` — viven en `features/<f>/routes/` |
 | Componentes de negocio | en `features/<f>/components/`, NUNCA en `shared/ui` |
 
+> El nombre de archivo es kebab, pero el identificador del componente React sigue siendo PascalCase por restricción de JSX (`data-table.tsx` → `export function DataTable()`).
+
 ## Reglas concretas
 
-- `shared/ui` contiene SOLO componentes **agnósticos de dominio** (Button, Input, Modal). Si un componente "sabe" qué es un customer/deal, es de feature → `features/`.
-- Atomic Design aplica solo al design-system reutilizable, NO a componentes de negocio.
-- Un componente nuevo: ¿es agnóstico y reutilizable? → `shared/ui/{atoms|molecules|organisms}`. ¿Sabe de dominio? → `features/<f>/components/`.
-- Hooks de feature en `features/<f>/hooks/` con prefijo `use`.
+- `shared/ui` contiene SOLO componentes **agnósticos de dominio** (Button, Input, Modal, DataTable genérica). Si un componente "sabe" qué es un customer/deal, es de feature → `features/`.
+- `shared/ui` es plano: no se sub-clasifica en atoms/molecules/organisms. Los componentes base genéricos (shadcn + propios reutilizables) conviven en la misma carpeta.
+- Un componente nuevo: ¿es agnóstico y reutilizable? → `shared/ui`. ¿Sabe de dominio o solo lo usa un feature? → `features/<f>/components/`.
+- Hooks de feature en `features/<f>/hooks/` con archivo `use-*.ts`.
+- Componentes de shadcn: se generan con su CLI en `shared/ui` y conservan el kebab-case que es la convención del paquete (ver ADR 13).
 
 ## Alternativas consideradas
 
-- Todos los archivos kebab-case (consistencia con `app/api`) — no elegido; se prefirió la convención idiomática React (PascalCase para componentes).
-- `shared/ui` plano sin taxonomía atómica — no elegido; se pierde la gradación del design-system.
+- PascalCase para archivos de componente (convención idiomática React) — **descartado** (era la decisión original): generaba naming mixto con shadcn (kebab) y con el resto del paquete; se unifica a kebab.
+- `shared/ui` con Atomic Design (atoms/molecules/organisms) — **descartado** (era la decisión original): sobre-estructura para el tamaño del design-system y choca con la carpeta plana de shadcn; la frontera molecule/organism es difusa y no aporta valor enforced.
 
 ## Consecuencias
 
-**Positivas:** naming predecible; separación clara design-system vs negocio; idiomático React.
+**Positivas:** un solo estilo de naming en todo el monorepo (kebab); cero fricción con el CLI de shadcn; `shared/ui` simple.
 
-**Negativas / trade-offs:** convención de naming mixta (PascalCase componentes / kebab otros) — requiere disciplina (idealmente linter).
+**Negativas / trade-offs:** se pierde la gradación del design-system (mitigado: el corte real shared-vs-feature lo enforza dependency-cruiser, ADR 02); el naming de archivo kebab + identificador PascalCase requiere recordar la distinción.
 
 ## Historial
 
 | Fecha | Cambio | Por |
 |---|---|---|
-| 2026-05-17 | Decisión inicial | ifran |
+| 2026-05-17 | Decisión inicial (Atomic Design + PascalCase) | ifran |
+| 2026-05-23 | Revertido: `shared/ui` plano (sin Atomic Design) + naming kebab-case en todo el paquete (incl. hooks), por integración shadcn/ui (ADR 13) y consistencia con `app/api` | ifran |
