@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "code": { "type": "string" },
+    "title": { "type": "string" },
+    "status": { "type": "integer" },
+    "detail": { "type": "string" },
+    "instance": { "type": "string" }
+  },
+  "required": ["code", "title", "status", "detail", "instance"],
+  "x-readme-ref-name": "Problem"
+}

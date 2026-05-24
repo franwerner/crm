@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "description": "State change UUID" },
+    "contactId": { "type": "string", "description": "Contact UUID" },
+    "previousState": {
+      "type": "string",
+      "enum": ["Contact", "Lead", "Customer", "Discarded"],
+      "example": "Contact"
+    },
+    "nextState": {
+      "type": "string",
+      "enum": ["Contact", "Lead", "Customer", "Discarded"],
+      "example": "Lead"
+    },
+    "changedAt": { "type": "string", "description": "ISO 8601 timestamp" },
+    "createdAt": { "type": "string", "description": "ISO 8601 timestamp" }
+  },
+  "required": [
+    "id",
+    "contactId",
+    "previousState",
+    "nextState",
+    "changedAt",
+    "createdAt"
+  ],
+  "x-readme-ref-name": "ContactStateChangeView"
+}

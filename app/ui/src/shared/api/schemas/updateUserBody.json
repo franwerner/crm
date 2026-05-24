@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "New full name",
+      "example": "Jane D."
+    },
+    "password": {
+      "type": "string",
+      "minLength": 8,
+      "description": "New password (>= 8 chars)"
+    }
+  },
+  "x-readme-ref-name": "UpdateUserBody"
+}

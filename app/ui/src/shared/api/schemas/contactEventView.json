@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "description": "Event UUID" },
+    "contactId": { "type": "string", "description": "Contact UUID" },
+    "authorId": {
+      "type": "string",
+      "description": "User UUID who authored the event"
+    },
+    "eventType": {
+      "type": "string",
+      "enum": [
+        "FirstContact",
+        "MessageSent",
+        "ResponseReceived",
+        "MeetingCall",
+        "ProposalSent",
+        "ProposalWon",
+        "ProposalRejected",
+        "FollowUpPending",
+        "Note"
+      ],
+      "example": "Note"
+    },
+    "detail": { "type": "string", "example": "Followed up by email" },
+    "occurredAt": { "type": "string", "description": "ISO 8601 timestamp" },
+    "createdAt": { "type": "string", "description": "ISO 8601 timestamp" }
+  },
+  "required": [
+    "id",
+    "contactId",
+    "authorId",
+    "eventType",
+    "detail",
+    "occurredAt",
+    "createdAt"
+  ],
+  "x-readme-ref-name": "ContactEventView"
+}

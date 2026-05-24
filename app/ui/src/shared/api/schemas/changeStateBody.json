@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "newState": {
+      "type": "string",
+      "enum": ["Contact", "Lead", "Customer", "Discarded"],
+      "description": "Target pipeline state"
+    }
+  },
+  "required": ["newState"],
+  "x-readme-ref-name": "ChangeStateBody"
+}

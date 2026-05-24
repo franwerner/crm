@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "description": "User UUID" },
+    "email": { "type": "string", "example": "jane@example.com" },
+    "name": { "type": "string", "example": "Jane Doe" },
+    "createdAt": { "type": "string", "description": "ISO 8601 timestamp" },
+    "updatedAt": { "type": "string", "description": "ISO 8601 timestamp" }
+  },
+  "required": ["id", "email", "name", "createdAt", "updatedAt"],
+  "x-readme-ref-name": "MeResponse"
+}
