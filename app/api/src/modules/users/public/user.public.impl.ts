@@ -7,5 +7,9 @@ export function createUsersPublicApi(repo: UsersRepository): UsersPublicApi {
       repo.findByEmail(email).then((u) =>
         u ? { id: u.id, email: u.email, passwordHash: u.passwordHash } : null,
       ),
+    findById: (id) =>
+      repo.findById(id).then((u) =>
+        u ? { id: u.id, email: u.email, name: u.name, createdAt: u.createdAt, updatedAt: u.updatedAt } : null,
+      ),
   }
 }
