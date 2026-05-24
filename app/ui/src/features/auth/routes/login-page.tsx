@@ -10,7 +10,7 @@ export function LoginPage() {
 
   async function handleSubmit(values: LoginFormValues) {
     await login(values)
-    await navigate({ to: '/' })
+    await navigate({ to: '/contacts' })
   }
 
   return (

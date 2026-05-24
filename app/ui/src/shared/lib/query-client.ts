@@ -9,11 +9,8 @@ export function registerUnauthorizedHandler(handler: RedirectHandler) {
   onUnauthorized = handler
 }
 
-const authMeQueryKey = [{ url: '/auth/me' }] as const
-
 function handleError(error: unknown) {
   if (getStatus(error) === 401) {
-    queryClient.removeQueries({ queryKey: authMeQueryKey })
     onUnauthorized?.()
   }
 }

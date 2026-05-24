@@ -15,18 +15,34 @@ export class ApiError extends Error {
   }
 }
 
+function buildQueryString(params: Record<string, unknown>, prefix = ''): string {
+  const parts: string[] = []
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) continue
+    const paramKey = prefix ? `${prefix}[${key}]` : key
+    if (Array.isArray(value)) {
+      value.forEach((item, i) => {
+        const indexedKey = `${paramKey}[${i}]`
+        if (item !== undefined && item !== null) {
+          parts.push(`${encodeURIComponent(indexedKey)}=${encodeURIComponent(String(item))}`)
+        }
+      })
+    } else if (typeof value === 'object') {
+      const nested = buildQueryString(value as Record<string, unknown>, paramKey)
+      if (nested) parts.push(nested)
+    } else {
+      parts.push(`${encodeURIComponent(paramKey)}=${encodeURIComponent(String(value))}`)
+    }
+  }
+  return parts.join('&')
+}
+
 async function client<TResponseData, _TError = unknown, TRequestData = unknown>(
   requestConfig: RequestConfig<TRequestData>,
 ): Promise<ResponseConfig<TResponseData>> {
   const { baseURL = config.apiBasePath, url = '', method = 'GET', params, data, signal, headers } = requestConfig
 
-  const query = new URLSearchParams()
-  if (params && typeof params === 'object') {
-    for (const [key, value] of Object.entries(params as Record<string, unknown>)) {
-      if (value !== undefined && value !== null) query.append(key, String(value))
-    }
-  }
-  const queryString = query.toString()
+  const queryString = params ? buildQueryString(params as Record<string, unknown>) : ''
   const target = `${baseURL}${url}${queryString ? `?${queryString}` : ''}`
 
   const isFormData = data instanceof FormData

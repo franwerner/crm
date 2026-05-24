@@ -5,11 +5,26 @@ import {
   Outlet,
   redirect,
 } from '@tanstack/react-router'
+import { z } from 'zod'
 import type { QueryClient } from '@tanstack/react-query'
+import { filterGroupsSchema } from '@shared/lib/filter'
 import { queryClient, registerUnauthorizedHandler } from '@shared/lib/query-client'
 import { getAuthMeQueryOptions } from '@shared/api/hooks/useGetAuthMe'
 import { LoginPage } from '@features/auth/routes/login-page'
-import { HomePage } from '@app/home-page'
+import { AppShell } from '@app/shell/app-shell'
+import { ContactsPage } from '@features/contacts/routes/contacts-page'
+import { UsersPage } from '@features/users/routes/users-page'
+
+const contactsSortDirEnum = z.enum(['asc', 'desc'])
+const contactsSortFieldEnum = z.enum(['name', 'phone', 'pipelineState', 'sourceChannel', 'interestLevel', 'createdAt'])
+
+const contactsSearchSchema = z.object({
+  page: z.number().int().min(1).optional().default(1),
+  search: z.string().optional(),
+  filterGroups: filterGroupsSchema,
+  sortField: contactsSortFieldEnum.optional().default('createdAt'),
+  sortDir: contactsSortDirEnum.optional().default('desc'),
+})
 
 type RouterContext = {
   queryClient: QueryClient
@@ -19,9 +34,9 @@ const rootRoute = createRootRouteWithContext<RouterContext>()({
   component: () => <Outlet />,
 })
 
-const indexRoute = createRoute({
+const authenticatedRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/',
+  id: '_authenticated',
   beforeLoad: async ({ context }) => {
     try {
       await context.queryClient.ensureQueryData(getAuthMeQueryOptions())
@@ -29,7 +44,28 @@ const indexRoute = createRoute({
       throw redirect({ to: '/login' })
     }
   },
-  component: HomePage,
+  component: AppShell,
+})
+
+const indexRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
+  path: '/',
+  beforeLoad: () => {
+    throw redirect({ to: '/contacts' })
+  },
+})
+
+const contactsRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
+  path: '/contacts',
+  validateSearch: contactsSearchSchema,
+  component: ContactsPage,
+})
+
+const usersRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
+  path: '/users',
+  component: UsersPage,
 })
 
 const loginRoute = createRoute({
@@ -38,7 +74,7 @@ const loginRoute = createRoute({
   beforeLoad: async ({ context }) => {
     try {
       await context.queryClient.ensureQueryData(getAuthMeQueryOptions())
-      throw redirect({ to: '/' })
+      throw redirect({ to: '/contacts' })
     } catch (err) {
       if (err instanceof Response || (err as { _isRedirect?: boolean })?._isRedirect) throw err
     }
@@ -46,7 +82,10 @@ const loginRoute = createRoute({
   component: LoginPage,
 })
 
-const routeTree = rootRoute.addChildren([indexRoute, loginRoute])
+const routeTree = rootRoute.addChildren([
+  authenticatedRoute.addChildren([indexRoute, contactsRoute, usersRoute]),
+  loginRoute,
+])
 
 export const router = createRouter({
   routeTree,
@@ -54,7 +93,9 @@ export const router = createRouter({
 })
 
 registerUnauthorizedHandler(() => {
-  router.navigate({ to: '/login' })
+  if (router.state.location.pathname !== '/login') {
+    router.navigate({ to: '/login' })
+  }
 })
 
 declare module '@tanstack/react-router' {
