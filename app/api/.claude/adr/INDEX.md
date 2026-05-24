@@ -28,6 +28,8 @@ Este índice te dice qué ADR consultar según lo que estés por hacer. Leé sol
 | [12-api-documentation.md](12-api-documentation.md) | Accepted | Documentación de la API (OpenAPI / contrato) | Crees/modifiques un endpoint; toques los schemas zod del borde; cambies cómo se documenta o expone la API; trabajes el contrato que consume kubb en `app/ui`. |
 | [13-data-modeling-conventions.md](13-data-modeling-conventions.md) | Accepted | Convenciones de modelado de datos | Crees/edites tablas Drizzle, definas IDs, timestamps, borrado, enums o naming de DB. |
 | [14-pagination.md](14-pagination.md) | Accepted | Estándar de paginación compartido | Diseñes/toques un endpoint de listado; agregues un método paginado al repository; consumas/expongas el envelope `Page<T>` en OpenAPI. |
+| [15-filter-grammar.md](15-filter-grammar.md) | Accepted | Gramática de filtros en endpoints de listado | Agregues/modifiques filtros en un endpoint de listado; toques `buildListQuerySchema`, `applyFilterGroups`, o `ListQuery`; necesites entender la gramática DNF y el wire format. |
+| [16-sort.md](16-sort.md) | Accepted | Ordenamiento server-side en endpoints de listado | Agregues/modifiques ordenamiento en un endpoint de listado; toques `buildListQuerySchema`, `ListQuery`, o el repositorio de un recurso; necesites entender el wire format `campo:dir` y la whitelist por recurso. |
 | [tech/INDEX.md](tech/INDEX.md) | — | Catálogo de tecnologías concretas | Vayas a agregar/cambiar una dependencia, lib, framework, DB, ORM, herramienta. **Consultá siempre antes de instalar algo nuevo.** |
 
 **Leyenda de status:** `Accepted` = decisión vigente · `Pending` = decidir más adelante · `Not Applicable` = decidido conscientemente que no aplica · `Deferred` = postergado con condición de revisión · `Superseded` = reemplazado por otro ADR.
@@ -47,7 +49,7 @@ Este índice te dice qué ADR consultar según lo que estés por hacer. Leé sol
 
 ## Estado y mantenimiento
 
-- Última actualización: 2026-05-20 (path aliases `@shared/*` y `@modules/*` adoptados como convención de imports — ver ADR 11. Reorganización mayor previa: estructura por capas dentro del slice — `domain/` + `application/use-cases/` + `infrastructure/` + `http/` con `dto/in/` + `dto/out/` + `public/`. Reversión consciente del split plano original. Sufijos `.use-case.ts` / `.in.ts` / `.out.ts`. Orden `<sustantivo>-<acción>` para use-cases y DTOs in. Archivos en singular, carpeta de slice en plural. Port movido a `domain/` (hexagonal-pure, flipea ADR 03 §3.3). 9 reglas en `.dependency-cruiser.js` (suma `adr02-1b-port-contract`). ADR 02/03/11 reescritos. Refactor aplicado a contacts, auth, users. Convención agregada en ADR 03 §3.1: DTOs zod NO importan closed types del dominio (wire independiente del dominio interno).)
+- Última actualización: 2026-05-24 (ADR 16 agregado: ordenamiento server-side, wire format `campo:dir`, whitelist por recurso, single-column, fallback por recurso en repositorio)
 - Cada ADR tiene su propio `Status:`.
 - **Para actualizar una decisión:** editá el ADR, agregá entrada en `Historial`, actualizá `Status` y `Última actualización`.
 - **Para una decisión nueva:** creá un ADR nuevo y sumá fila en este INDEX.
