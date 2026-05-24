@@ -33,23 +33,26 @@ module.exports = {
     {
       name: 'adr02-3-presentation-no-data',
       severity: 'error',
-      comment: 'ADR 02 #3: la capa presentation (http/**) no toca DB ni infrastructure (adapter concreto).',
+      comment: 'ADR 02 #3: la capa presentation (http/**) no toca DB ni infrastructure (adapter concreto). Única excepción: los archivos *.resource.ts de su propio módulo (declaran la cara pública del recurso: columnMap, searchCols, listQuerySchema). Esos archivos sí pueden tocar shared/db.',
       from: { path: '^src/modules/[^/]+/http/' },
       to: {
         path: [
           '^src/shared/db/',
           '^src/modules/[^/]+/infrastructure/',
         ],
+        pathNot: '^src/modules/[^/]+/infrastructure/[^/]+\\.resource\\.ts$',
       },
     },
     {
       name: 'adr02-4-db-only-in-adapter',
       severity: 'error',
-      comment: 'ADR 02 #4: solo el adapter (infrastructure/<entity>.repository.bun.ts), src/shared/db o el composition root acceden a Drizzle/DB.',
+      comment: 'ADR 02 #4: solo el adapter (infrastructure/<entity>.repository.bun.ts), el bootstrap del módulo (infrastructure/bootstrap.ts), el resource del módulo (infrastructure/<entity>.resource.ts), src/shared/db o el composition root acceden a Drizzle/DB.',
       from: {
         path: '^src/',
         pathNot: [
           '^src/modules/[^/]+/infrastructure/[^/]+\\.repository\\.bun\\.ts$',
+          '^src/modules/[^/]+/infrastructure/bootstrap\\.ts$',
+          '^src/modules/[^/]+/infrastructure/[^/]+\\.resource\\.ts$',
           '^src/app\\.ts$',
           '^src/shared/db/',
         ],
@@ -76,8 +79,14 @@ module.exports = {
     {
       name: 'adr02-7-only-root-wires-adapters',
       severity: 'error',
-      comment: 'ADR 02 #7: solo el composition root (src/app.ts) importa adapters concretos (.repository.bun.ts) e impl de API pública (.public.impl.ts).',
-      from: { path: '^src/', pathNot: '^src/app\\.ts$' },
+      comment: 'ADR 02 #7: el composition root global (src/app.ts) y el bootstrap por módulo (src/modules/<m>/infrastructure/bootstrap.ts) son los únicos que importan adapters concretos (.repository.bun.ts) e impl de API pública (.public.impl.ts). El bootstrap solo puede cablear los archivos de SU PROPIO módulo.',
+      from: {
+        path: '^src/',
+        pathNot: [
+          '^src/app\\.ts$',
+          '^src/modules/[^/]+/infrastructure/bootstrap\\.ts$',
+        ],
+      },
       to: {
         path: [
           '^src/modules/[^/]+/infrastructure/[^/]+\\.repository\\.bun\\.ts$',
