@@ -8,7 +8,6 @@ export const ContactViewSchema = z
   .object({
     id: z.string().openapi({ description: 'Contact UUID', example: '01938b0c-...' }),
     name: z.string().openapi({ example: 'Jane Doe' }),
-    handle: z.string().nullable().openapi({ example: '@janedoe' }),
     phone: z.string().nullable().openapi({ example: '+1234567890' }),
     pipelineState: PipelineStateEnum.openapi({ example: 'Contact' }),
     stateLocked: z.boolean().openapi({ example: false }),

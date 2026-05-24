@@ -1,3 +1,7 @@
+import type { Sort } from '@shared/types/sort'
+
+export { type Sort }
+
 export const FILTER_OPS = [
   'eq',
   'ne',
@@ -25,7 +29,10 @@ export interface Filter {
   value: FilterValue
 }
 
-export type FilterSet = Filter[]
+export type FilterGroup = Filter[]
+
+export const MAX_OR_GROUPS = 10
+export const MAX_CONDITIONS_PER_GROUP = 25
 
 export interface SearchTerm {
   term: string
@@ -38,7 +45,8 @@ export interface PageParams {
 }
 
 export interface ListQuery {
-  filters: FilterSet
+  filterGroups: FilterGroup[]
   search?: string
   pagination: PageParams
+  sort?: Sort
 }

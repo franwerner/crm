@@ -5,7 +5,6 @@ CREATE TYPE "public"."source_channel" AS ENUM('Instagram', 'WhatsApp', 'Referral
 CREATE TABLE "contacts" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
-	"handle" text,
 	"phone" text,
 	"pipeline_state" "pipeline_state" DEFAULT 'Contact' NOT NULL,
 	"state_locked" boolean DEFAULT false NOT NULL,

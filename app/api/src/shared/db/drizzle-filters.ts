@@ -17,7 +17,7 @@ import {
   type SQL,
 } from 'drizzle-orm'
 import { ValidationError } from '@shared/errors'
-import type { Filter, FilterOp, FilterSet, FilterValue } from '@shared/types/filters'
+import type { Filter, FilterGroup, FilterOp, FilterValue } from '@shared/types/filters'
 
 export type ColumnMap = Record<string, AnyColumn>
 
@@ -164,9 +164,9 @@ function buildSQL(col: AnyColumn, op: FilterOp, value: ScalarValue | ScalarValue
   }
 }
 
-export function applyFilterSet(columnMap: ColumnMap, filters: FilterSet): SQL[] {
-  const out: SQL[] = []
-  for (const f of filters) {
+export function applyFilterGroup(columnMap: ColumnMap, group: FilterGroup): SQL | undefined {
+  const clauses: SQL[] = []
+  for (const f of group) {
     const col = columnMap[f.field]
     const path = `filter[${f.field}][${f.op}]`
     if (!col) {
@@ -181,9 +181,18 @@ export function applyFilterSet(columnMap: ColumnMap, filters: FilterSet): SQL[] 
       ])
     }
     const value = coerceValue(f.value, f.op, col, path)
-    out.push(buildSQL(col, f.op, value))
+    clauses.push(buildSQL(col, f.op, value))
   }
-  return out
+  if (clauses.length === 0) return undefined
+  if (clauses.length === 1) return clauses[0]
+  return and(...clauses)
+}
+
+export function applyFilterGroups(columnMap: ColumnMap, groups: FilterGroup[]): SQL | undefined {
+  const groupClauses = groups.map((g) => applyFilterGroup(columnMap, g)).filter((c): c is SQL => c !== undefined)
+  if (groupClauses.length === 0) return undefined
+  if (groupClauses.length === 1) return groupClauses[0]
+  return or(...groupClauses)
 }
 
 export function applySearch(columns: AnyColumn[], term: string | undefined): SQL | undefined {
@@ -200,4 +209,4 @@ export function combineWhere(clauses: Array<SQL | undefined>): SQL | undefined {
   return and(...filtered)
 }
 
-export type { Filter, FilterSet }
+export type { Filter, FilterGroup }

@@ -10,7 +10,6 @@ import { resolveTargetState, isForwardTransition } from '@modules/contacts/domai
 export interface ContactProps {
   readonly id: string
   readonly name: string
-  readonly handle: string | null
   readonly phone: string | null
   readonly pipelineState: PipelineState
   readonly stateLocked: boolean
@@ -42,7 +41,6 @@ export class Contact {
   static create(params: {
     id: string
     name: string
-    handle?: string | null
     phone?: string | null
     sourceChannel?: SourceChannel | null
     interestLevel?: InterestLevel | null
@@ -69,7 +67,6 @@ export class Contact {
     const props: ContactProps = {
       id: params.id,
       name: params.name.trim(),
-      handle: params.handle ?? null,
       phone: params.phone ?? null,
       pipelineState: 'Contact',
       stateLocked: false,
@@ -92,7 +89,6 @@ export class Contact {
 
   get id(): string { return this.props.id }
   get name(): string { return this.props.name }
-  get handle(): string | null { return this.props.handle }
   get phone(): string | null { return this.props.phone }
   get pipelineState(): PipelineState { return this.props.pipelineState }
   get stateLocked(): boolean { return this.props.stateLocked }

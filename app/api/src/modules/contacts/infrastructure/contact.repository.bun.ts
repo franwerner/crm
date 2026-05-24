@@ -1,4 +1,4 @@
-import { and, desc, eq, isNull, sql } from 'drizzle-orm'
+import { and, asc, desc, eq, isNull, sql, type AnyColumn } from 'drizzle-orm'
 import type { Db } from '@shared/db/client'
 import { contacts, events, stateChanges } from '@shared/db/schema'
 import { Contact } from '@modules/contacts/domain/contact'
@@ -11,7 +11,7 @@ import type { ContactEvent } from '@modules/contacts/domain/entities/contact-eve
 import type { ContactStateChange } from '@modules/contacts/domain/entities/contact-state-change'
 import type { ContactsRepository } from '@modules/contacts/domain/contact.repository'
 import type { ListQuery } from '@shared/types/filters'
-import { applyFilterSet, applySearch, combineWhere } from '@shared/db/drizzle-filters'
+import { applyFilterGroups, applySearch, combineWhere } from '@shared/db/drizzle-filters'
 import { contactColumnMap, contactSearchCols } from '@modules/contacts/infrastructure/contact.resource'
 import type { Page, PageParams } from '@shared/types/pagination'
 
@@ -61,7 +61,6 @@ function reconstitute(
   return Contact.reconstitute({
     id: contactRow.id,
     name: contactRow.name,
-    handle: contactRow.handle,
     phone: contactRow.phone,
     pipelineState: contactRow.pipelineState as PipelineState,
     stateLocked: contactRow.stateLocked,
@@ -80,7 +79,6 @@ function toContactRow(contact: Contact): typeof contacts.$inferInsert {
   return {
     id: contact.id,
     name: contact.name,
-    handle: contact.handle,
     phone: contact.phone,
     pipelineState: contact.pipelineState,
     stateLocked: contact.stateLocked,
@@ -168,9 +166,17 @@ export class DrizzleContactsRepository implements ContactsRepository {
   async findMany(query: ListQuery): Promise<Page<Contact>> {
     const where = combineWhere([
       isNull(contacts.deletedAt),
-      ...applyFilterSet(contactColumnMap, query.filters),
+      applyFilterGroups(contactColumnMap, query.filterGroups),
       applySearch(contactSearchCols, query.search),
     ])
+
+    const sortableMap = contactColumnMap as Record<string, AnyColumn>
+    const sortCol = query.sort ? sortableMap[query.sort.field] : undefined
+    const orderExpr = sortCol
+      ? query.sort!.dir === 'asc'
+        ? asc(sortCol)
+        : desc(sortCol)
+      : desc(contacts.createdAt)
 
     const [countResult, rows] = await Promise.all([
       this.db
@@ -181,7 +187,7 @@ export class DrizzleContactsRepository implements ContactsRepository {
         .select()
         .from(contacts)
         .where(where)
-        .orderBy(desc(contacts.createdAt))
+        .orderBy(orderExpr)
         .limit(query.pagination.limit)
         .offset(query.pagination.offset),
     ])

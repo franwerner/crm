@@ -6,11 +6,6 @@ const InterestLevelEnum = z.enum(['Cold', 'Warm', 'Hot'])
 export const CreateContactBodySchema = z
   .object({
     name: z.string().min(1).openapi({ description: 'Contact full name', example: 'Jane Doe' }),
-    handle: z
-      .string()
-      .nullable()
-      .optional()
-      .openapi({ description: 'Social handle or username', example: '@janedoe' }),
     phone: z
       .string()
       .nullable()

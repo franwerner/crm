@@ -6,7 +6,6 @@ import { newId } from '@shared/utils/id'
 
 export interface CreateContactInput {
   name: string
-  handle?: string | null
   phone?: string | null
   sourceChannel?: SourceChannel | null
   interestLevel?: InterestLevel | null
@@ -21,7 +20,6 @@ export class ContactCreateUseCase {
     const contact = Contact.create({
       id: newId(),
       name: input.name,
-      handle: input.handle,
       phone: input.phone,
       sourceChannel: input.sourceChannel,
       interestLevel: input.interestLevel,

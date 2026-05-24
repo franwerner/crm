@@ -1,6 +1,6 @@
 import { z } from '@hono/zod-openapi'
 import { qsQuery } from '@shared/http/qs-query'
-import { FILTER_OPS, type Filter, type FilterOp, type ListQuery } from '@shared/types/filters'
+import { FILTER_OPS, type Filter, type FilterGroup, type FilterOp, type ListQuery } from '@shared/types/filters'
 import { DEFAULT_LIMIT, DEFAULT_OFFSET, MAX_LIMIT } from '@shared/schemas/pagination.schema'
 
 const FilterOpEnum = z.enum(FILTER_OPS)
@@ -32,8 +32,9 @@ export const ListQuerySchema = qsQuery(
         }
       }
     }
+    const filterGroups: FilterGroup[] = filters.length > 0 ? [filters] : []
     return {
-      filters,
+      filterGroups,
       search: raw.search,
       pagination: raw.pagination ?? { limit: DEFAULT_LIMIT, offset: DEFAULT_OFFSET },
     }

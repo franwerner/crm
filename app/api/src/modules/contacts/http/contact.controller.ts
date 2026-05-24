@@ -31,7 +31,6 @@ function toContactView(contact: Contact) {
   return {
     id: contact.id,
     name: contact.name,
-    handle: contact.handle,
     phone: contact.phone,
     pipelineState: contact.pipelineState,
     stateLocked: contact.stateLocked,
@@ -75,7 +74,6 @@ export class ContactController {
 
     const contact = await this.ucs.create.execute({
       name: body.name,
-      handle: body.handle,
       phone: body.phone,
       sourceChannel: body.sourceChannel,
       interestLevel: body.interestLevel,

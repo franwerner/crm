@@ -46,7 +46,6 @@ export const users = pgTable('users', {
 export const contacts = pgTable('contacts', {
   id: uuid('id').primaryKey(),
   name: text('name').notNull(),
-  handle: text('handle'),
   phone: text('phone'),
   pipelineState: pipelineStateEnum('pipeline_state').notNull().default('Contact'),
   stateLocked: boolean('state_locked').notNull().default(false),

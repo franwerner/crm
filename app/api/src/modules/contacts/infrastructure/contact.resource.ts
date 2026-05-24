@@ -4,6 +4,8 @@ import { buildListQuerySchema } from '@shared/db/list-query-schema'
 
 export const contactColumnMap = getTableColumns(contacts)
 
-export const contactSearchCols = [contacts.name, contacts.handle, contacts.phone]
+export const contactSearchCols = [contacts.name, contacts.phone]
 
-export const contactListQuerySchema = buildListQuerySchema(contactColumnMap, contactSearchCols)
+export const contactSortableFields = Object.keys(contactColumnMap)
+
+export const contactListQuerySchema = buildListQuerySchema(contactColumnMap, contactSearchCols, contactSortableFields)
