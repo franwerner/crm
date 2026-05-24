@@ -12,10 +12,10 @@ function reconstitute(row: UserRow): User {
     id: row.id,
     email: row.email,
     name: row.name,
-    passwordHash: row.password_hash,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
-    deletedAt: row.deleted_at,
+    passwordHash: row.passwordHash,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+    deletedAt: row.deletedAt,
   })
 }
 
@@ -24,14 +24,14 @@ export class DrizzleUsersRepository implements UsersRepository {
 
   async findById(id: string): Promise<User | null> {
     const row = await this.db.query.users.findFirst({
-      where: and(eq(users.id, id), isNull(users.deleted_at)),
+      where: and(eq(users.id, id), isNull(users.deletedAt)),
     })
     return row ? reconstitute(row) : null
   }
 
   async findByEmail(email: string): Promise<User | null> {
     const row = await this.db.query.users.findFirst({
-      where: and(eq(users.email, email.toLowerCase().trim()), isNull(users.deleted_at)),
+      where: and(eq(users.email, email.toLowerCase().trim()), isNull(users.deletedAt)),
     })
     return row ? reconstitute(row) : null
   }
@@ -40,12 +40,12 @@ export class DrizzleUsersRepository implements UsersRepository {
     const totalRow = await this.db
       .select({ count: sql<number>`count(*)::int` })
       .from(users)
-      .where(isNull(users.deleted_at))
+      .where(isNull(users.deletedAt))
     const total = totalRow[0]?.count ?? 0
 
     const rows = await this.db.query.users.findMany({
-      where: isNull(users.deleted_at),
-      orderBy: [desc(users.created_at)],
+      where: isNull(users.deletedAt),
+      orderBy: [desc(users.createdAt)],
       limit: params.limit,
       offset: params.offset,
     })
@@ -65,19 +65,19 @@ export class DrizzleUsersRepository implements UsersRepository {
         id: user.id,
         email: user.email,
         name: user.name,
-        password_hash: user.passwordHash,
-        created_at: user.createdAt,
-        updated_at: user.updatedAt,
-        deleted_at: user.deletedAt,
+        passwordHash: user.passwordHash,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        deletedAt: user.deletedAt,
       })
       .onConflictDoUpdate({
         target: users.id,
         set: {
           email: user.email,
           name: user.name,
-          password_hash: user.passwordHash,
-          updated_at: user.updatedAt,
-          deleted_at: user.deletedAt,
+          passwordHash: user.passwordHash,
+          updatedAt: user.updatedAt,
+          deletedAt: user.deletedAt,
         },
       })
   }
