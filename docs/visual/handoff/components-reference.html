@@ -1,0 +1,1910 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>CRM Design System · Components Reference (handoff)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="tokens.css" />
+<style>
+/* ============================================================
+   Components Reference — Production styling
+   Uses tokens from tokens.css.
+   This stylesheet is illustrative; agent should port each
+   component to its own scoped styles in React.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: var(--line-height-normal);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--color-text-link); }
+code {
+  font-family: var(--font-family-mono);
+  font-size: 0.88em;
+  background: var(--color-neutral-100);
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+  color: var(--color-text);
+}
+
+/* ----- Document chrome ----- */
+.doc {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+.doc-nav {
+  position: sticky; top: 0;
+  height: 100vh; overflow-y: auto;
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border-right: var(--border-width-1) solid var(--color-border);
+  display: flex; flex-direction: column; gap: var(--space-2);
+}
+.doc-nav h1 {
+  font-size: var(--font-size-md);
+  margin: 0 0 var(--space-3);
+  font-weight: var(--font-weight-semibold);
+}
+.doc-nav small {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  margin-top: -10px;
+  margin-bottom: var(--space-4);
+}
+.doc-nav .group {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-text-muted);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-1);
+  font-weight: var(--font-weight-medium);
+}
+.doc-nav a {
+  text-decoration: none;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-xs);
+}
+.doc-nav a:hover { background: var(--color-bg-subtle); }
+
+.doc-main {
+  padding: var(--space-7) var(--space-7);
+  max-width: 1100px;
+}
+.doc-main > section { margin-bottom: var(--space-8); scroll-margin-top: var(--space-5); }
+.doc-main h2 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  margin: 0 0 var(--space-2);
+}
+.doc-main h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin: var(--space-6) 0 var(--space-3);
+}
+.doc-main p { color: var(--color-text-muted); max-width: 64ch; }
+.doc-main .lede { font-size: var(--font-size-md); margin-top: var(--space-1); }
+
+.demo {
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  margin: var(--space-3) 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+.demo.stack { flex-direction: column; align-items: stretch; }
+.demo.center { justify-content: center; }
+.demo.tinted { background: var(--color-bg-subtle); }
+
+.props {
+  background: var(--color-neutral-50);
+  border-left: 3px solid var(--color-primary);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: var(--space-2) 0 var(--space-3);
+}
+.props b { color: var(--color-text); font-weight: var(--font-weight-medium); }
+
+/* ============================================================
+   ICONS — base
+   ============================================================ */
+.icon {
+  width: 16px; height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+.icon-sm { width: 14px; height: 14px; }
+.icon-lg { width: 20px; height: 20px; }
+
+/* ============================================================
+   BUTTON
+   variants: primary | secondary | outline | ghost | danger
+   sizes:    sm | md | lg
+   states:   default | hover | active | focus | disabled | loading
+   ============================================================ */
+.btn {
+  --btn-bg: var(--color-surface);
+  --btn-fg: var(--color-text);
+  --btn-border: var(--color-border-strong);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: var(--control-height-md);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-sm);
+  border: var(--border-width-1) solid var(--btn-border);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--easing-standard),
+              border-color var(--duration-fast) var(--easing-standard),
+              box-shadow var(--duration-fast) var(--easing-standard);
+  white-space: nowrap;
+}
+.btn:hover { background: var(--color-neutral-100); }
+.btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.btn:active { background: var(--color-neutral-200); }
+.btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary {
+  --btn-bg: var(--color-primary);
+  --btn-fg: var(--color-text-on-primary);
+  --btn-border: var(--color-primary);
+}
+.btn-primary:hover { --btn-bg: var(--color-primary-hover); }
+.btn-primary:active { --btn-bg: var(--color-primary-active); }
+
+.btn-secondary {
+  --btn-bg: var(--color-secondary);
+  --btn-fg: var(--color-text-on-secondary);
+  --btn-border: var(--color-secondary);
+}
+.btn-secondary:hover { --btn-bg: var(--color-secondary-hover); }
+
+.btn-outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--color-text);
+  --btn-border: var(--color-border-strong);
+}
+
+.btn-ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--color-text);
+  --btn-border: transparent;
+}
+
+.btn-danger {
+  --btn-bg: var(--color-danger-500);
+  --btn-fg: #fff;
+  --btn-border: var(--color-danger-500);
+}
+.btn-danger:focus-visible { box-shadow: var(--shadow-focus-danger); }
+.btn-danger:hover { --btn-bg: var(--color-danger-700); }
+
+.btn-sm { height: var(--control-height-sm); padding: 0 var(--space-3); font-size: var(--font-size-xs); }
+.btn-lg { height: var(--control-height-lg); padding: 0 var(--space-5); font-size: var(--font-size-md); }
+.btn-icon { width: var(--control-height-md); padding: 0; }
+.btn-icon.btn-sm { width: var(--control-height-sm); }
+
+.btn-loading { pointer-events: none; }
+.btn-loading::before {
+  content: "";
+  width: 14px; height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--radius-full);
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   BADGE
+   variants: neutral | success | warning | danger | info | primary
+   ============================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  background: var(--color-neutral-100);
+  color: var(--color-text);
+  border: var(--border-width-1) solid var(--color-border);
+}
+.badge-primary { background: var(--color-primary-50); border-color: var(--color-primary-200); color: var(--color-primary-900); }
+.badge-success { background: var(--color-success-50); border-color: var(--color-primary-200); color: var(--color-primary-900); }
+.badge-warning { background: var(--color-warning-50); border-color: #F5D88A; color: var(--color-warning-700); }
+.badge-danger  { background: var(--color-danger-50); border-color: var(--color-danger-100); color: var(--color-danger-700); }
+.badge-info    { background: var(--color-info-50); border-color: var(--color-secondary-200); color: var(--color-secondary-700); }
+.badge-dot::before {
+  content: "";
+  width: 6px; height: 6px;
+  background: currentColor;
+  border-radius: var(--radius-full);
+}
+
+/* ============================================================
+   INPUT / FORM CONTROLS
+   ============================================================ */
+.field { display: flex; flex-direction: column; gap: var(--space-1); }
+.field-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+.field-help { font-size: var(--font-size-xs); color: var(--color-text-muted); }
+.field-help.error { color: var(--color-danger-700); }
+
+.input,
+.select-trigger,
+.textarea {
+  height: var(--control-height-md);
+  padding: 0 var(--space-3);
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  width: 100%;
+  outline: none;
+  transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+.input::placeholder { color: var(--color-text-subtle); }
+.input:focus,
+.select-trigger:focus,
+.textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-focus);
+}
+.input[aria-invalid="true"] { border-color: var(--color-danger-500); }
+.input[aria-invalid="true"]:focus { box-shadow: var(--shadow-focus-danger); }
+.input[disabled] { background: var(--color-bg-subtle); color: var(--color-text-disabled); cursor: not-allowed; }
+
+.textarea {
+  height: auto;
+  min-height: 80px;
+  padding: var(--space-3);
+  line-height: var(--line-height-normal);
+  resize: vertical;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  border: var(--border-width-1) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+.input-group:focus-within { border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
+.input-group .input {
+  border: none;
+  box-shadow: none;
+  flex: 1;
+}
+.input-group .input:focus { box-shadow: none; border: none; }
+.input-group .affix {
+  padding: 0 var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+/* Checkbox / Radio */
+.checkbox, .radio {
+  appearance: none;
+  width: 16px; height: 16px;
+  border: var(--border-width-1) solid var(--color-border-strong);
+  background: var(--color-surface);
+  cursor: pointer;
+  display: inline-grid;
+  place-content: center;
+  flex-shrink: 0;
+}
+.checkbox { border-radius: var(--radius-xs); }
+.radio { border-radius: var(--radius-full); }
+.checkbox:focus-visible, .radio:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.checkbox:checked, .radio:checked {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.checkbox:checked::after {
+  content: "";
+  width: 9px; height: 5px;
+  border-left: 2px solid var(--color-text-on-primary);
+  border-bottom: 2px solid var(--color-text-on-primary);
+  transform: rotate(-45deg) translateY(-1px);
+}
+.radio:checked::after {
+  content: "";
+  width: 6px; height: 6px;
+  background: var(--color-text-on-primary);
+  border-radius: var(--radius-full);
+}
+.control-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+/* Switch */
+.switch { position: relative; display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; }
+.switch input { position: absolute; opacity: 0; pointer-events: none; }
+.switch-track {
+  width: 36px; height: 20px;
+  background: var(--color-neutral-300);
+  border-radius: var(--radius-pill);
+  position: relative;
+  transition: background var(--duration-base);
+}
+.switch-track::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  background: var(--color-surface);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  transition: left var(--duration-base) var(--easing-standard);
+}
+.switch input:checked + .switch-track { background: var(--color-primary); }
+.switch input:checked + .switch-track::after { left: 18px; }
+
+/* Search */
+.search {
+  position: relative;
+  display: flex; align-items: center;
+}
+.search .icon { position: absolute; left: var(--space-3); color: var(--color-text-muted); }
+.search .input { padding-left: 36px; padding-right: 50px; }
+.search kbd {
+  position: absolute; right: var(--space-2);
+  background: var(--color-neutral-100);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-xs);
+  padding: 1px 6px;
+  font-size: 11px;
+  font-family: var(--font-family-mono);
+  color: var(--color-text-muted);
+}
+
+/* ============================================================
+   CARD
+   ============================================================ */
+.card {
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  display: flex; flex-direction: column;
+  gap: var(--space-3);
+  box-shadow: var(--shadow-sm);
+}
+.card-eyebrow {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+}
+.card-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+.card-metric {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-tighter);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.card.inverse {
+  background: var(--color-surface-inverse);
+  color: var(--color-text-inverse);
+  border-color: var(--color-secondary-800);
+}
+.card.inverse .card-eyebrow { color: var(--color-neutral-400); }
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.table-wrap {
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.table-toolbar {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--border-width-1) solid var(--color-border);
+  flex-wrap: wrap;
+}
+.table-toolbar .search { flex: 1; min-width: 200px; }
+.table-bulkbar {
+  background: var(--color-primary-50);
+  border-bottom: var(--border-width-1) solid var(--color-primary-200);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+  display: flex; align-items: center; gap: var(--space-3);
+}
+.data-table { width: 100%; border-collapse: collapse; font-size: var(--font-size-sm); }
+.data-table th {
+  text-align: left;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-muted);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-subtle);
+  border-bottom: var(--border-width-1) solid var(--color-border);
+  white-space: nowrap;
+  position: sticky; top: 0; z-index: var(--z-sticky);
+  cursor: pointer;
+  user-select: none;
+}
+.data-table th .sort { margin-left: 4px; opacity: 0.5; }
+.data-table th[aria-sort] .sort { opacity: 1; color: var(--color-text); }
+.data-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--border-width-1) solid var(--color-border);
+  vertical-align: middle;
+}
+.data-table tbody tr:hover { background: var(--color-bg-subtle); }
+.data-table tbody tr[aria-selected="true"] { background: var(--color-primary-50); }
+.table-foot {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal-frame {
+  background: rgba(10, 10, 10, 0.45);
+  border-radius: var(--radius-md);
+  padding: var(--space-7);
+  display: grid; place-items: center;
+  min-height: 320px;
+}
+.modal {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 480px;
+  overflow: hidden;
+}
+.modal-sm { max-width: 380px; }
+.modal-lg { max-width: 720px; }
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--border-width-1) solid var(--color-border);
+}
+.modal-header h3 { margin: 0; font-size: var(--font-size-md); font-weight: var(--font-weight-semibold); }
+.modal-close {
+  width: 28px; height: 28px;
+  border-radius: var(--radius-sm);
+  background: transparent; border: none; cursor: pointer;
+  color: var(--color-text-muted);
+}
+.modal-close:hover { background: var(--color-bg-subtle); color: var(--color-text); }
+.modal-body { padding: var(--space-5); color: var(--color-text-muted); }
+.modal-foot {
+  display: flex; justify-content: flex-end; gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border-top: var(--border-width-1) solid var(--color-border);
+  background: var(--color-bg);
+}
+
+/* ============================================================
+   DRAWER
+   ============================================================ */
+.drawer-frame {
+  position: relative;
+  background: rgba(10, 10, 10, 0.45);
+  border-radius: var(--radius-md);
+  height: 420px;
+  overflow: hidden;
+  display: flex;
+}
+.drawer {
+  margin-left: auto;
+  width: 380px;
+  height: 100%;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-xl);
+  display: flex; flex-direction: column;
+}
+.drawer-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--border-width-1) solid var(--color-border);
+}
+.drawer-body { padding: var(--space-5); flex: 1; overflow: auto; display: flex; flex-direction: column; gap: var(--space-3); }
+.drawer-foot {
+  padding: var(--space-3) var(--space-5);
+  border-top: var(--border-width-1) solid var(--color-border);
+  display: flex; justify-content: flex-end; gap: var(--space-2);
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.tabs {
+  display: inline-flex;
+  border-bottom: var(--border-width-1) solid var(--color-border);
+  gap: var(--space-1);
+}
+.tab {
+  appearance: none;
+  background: transparent;
+  border: none;
+  font: inherit;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.tab[aria-selected="true"] {
+  color: var(--color-text);
+}
+.tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: var(--space-3); right: var(--space-3);
+  bottom: -1px;
+  height: 2px;
+  background: var(--color-text);
+}
+.tab:hover { color: var(--color-text); }
+
+/* Pill tabs alt */
+.tabs-pill {
+  display: inline-flex;
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 2px;
+}
+.tabs-pill .tab {
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+}
+.tabs-pill .tab[aria-selected="true"] {
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+.tabs-pill .tab[aria-selected="true"]::after { display: none; }
+
+/* ============================================================
+   AVATAR
+   ============================================================ */
+.avatar {
+  display: inline-grid; place-items: center;
+  border-radius: var(--radius-full);
+  background: var(--color-secondary-700);
+  color: var(--color-text-on-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  position: relative;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+.avatar-xs { width: 24px; height: 24px; font-size: 10px; }
+.avatar-sm { width: 28px; height: 28px; font-size: 11px; }
+.avatar-md { width: 36px; height: 36px; font-size: 12px; }
+.avatar-lg { width: 48px; height: 48px; font-size: 16px; }
+.avatar-xl { width: 64px; height: 64px; font-size: 20px; }
+.avatar-c1 { background: var(--color-secondary-700); }
+.avatar-c2 { background: var(--color-primary-700); }
+.avatar-c3 { background: var(--color-neutral-700); }
+.avatar-c4 { background: var(--color-danger-500); }
+.avatar-c5 { background: var(--color-secondary-600); }
+.avatar-status {
+  position: absolute; bottom: -1px; right: -1px;
+  width: 10px; height: 10px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-surface);
+  background: var(--color-primary);
+}
+.avatar-status.busy { background: var(--color-danger-500); }
+.avatar-status.offline { background: var(--color-neutral-400); }
+.avatar-group { display: inline-flex; }
+.avatar-group .avatar {
+  border: 2px solid var(--color-surface);
+  margin-left: -8px;
+}
+.avatar-group .avatar:first-child { margin-left: 0; }
+.avatar-more { background: var(--color-neutral-200); color: var(--color-text); }
+
+/* ============================================================
+   MENU / POPOVER / TOOLTIP
+   ============================================================ */
+.menu {
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-1);
+  min-width: 200px;
+}
+.menu-item {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-xs);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  color: var(--color-text);
+}
+.menu-item:hover, .menu-item[data-highlighted] { background: var(--color-bg-subtle); }
+.menu-item kbd {
+  margin-left: auto;
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+.menu-divider { height: 1px; background: var(--color-border); margin: var(--space-1) 0; }
+.menu-item.danger { color: var(--color-danger-700); }
+.menu-item.danger:hover { background: var(--color-danger-50); }
+
+.popover {
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-3) var(--space-4);
+  max-width: 280px;
+}
+.popover-title { font-weight: var(--font-weight-semibold); margin: 0 0 var(--space-1); font-size: var(--font-size-sm); }
+.popover p { margin: 0; font-size: var(--font-size-sm); color: var(--color-text-muted); }
+
+.tooltip {
+  background: var(--color-neutral-900);
+  color: var(--color-text-inverse);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-xs);
+  font-size: var(--font-size-xs);
+  box-shadow: var(--shadow-md);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   TOAST / ALERT
+   ============================================================ */
+.toast {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  border-left: 3px solid var(--color-text);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  font-size: var(--font-size-sm);
+  max-width: 460px;
+}
+.toast-success { border-left-color: var(--color-primary); }
+.toast-warning { border-left-color: var(--color-warning-500); }
+.toast-danger  { border-left-color: var(--color-danger-500); }
+.toast-info    { border-left-color: var(--color-secondary-600); }
+.toast .toast-close { margin-left: auto; }
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty {
+  background: var(--color-surface);
+  border: var(--border-width-1) dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-7) var(--space-5);
+  text-align: center;
+  display: flex; flex-direction: column;
+  align-items: center; gap: var(--space-2);
+  max-width: 480px;
+}
+.empty h4 { margin: 0; font-size: var(--font-size-md); font-weight: var(--font-weight-semibold); }
+.empty p { margin: 0; font-size: var(--font-size-sm); }
+.empty .empty-illustration {
+  width: 80px; height: 80px;
+  display: grid; place-items: center;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+/* ============================================================
+   STEPPER
+   ============================================================ */
+.stepper {
+  display: flex; align-items: center;
+  gap: 0;
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  flex-wrap: wrap;
+}
+.step { display: flex; align-items: center; gap: var(--space-3); flex: 1; min-width: 140px; }
+.step-indicator {
+  width: 28px; height: 28px;
+  border-radius: var(--radius-full);
+  border: var(--border-width-1) solid var(--color-border-strong);
+  display: grid; place-items: center;
+  background: var(--color-surface);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+.step[data-state="done"] .step-indicator { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-text-on-primary); }
+.step[data-state="current"] .step-indicator { background: var(--color-text); border-color: var(--color-text); color: var(--color-text-inverse); }
+.step-label { display: flex; flex-direction: column; }
+.step-label b { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); }
+.step-label small { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+.step[data-state="pending"] .step-label b { color: var(--color-text-muted); font-weight: var(--font-weight-regular); }
+.step-line { flex: 1; height: 1px; background: var(--color-border); min-width: 24px; }
+.step[data-state="done"] + .step-line { background: var(--color-primary); }
+
+/* ============================================================
+   KANBAN
+   ============================================================ */
+.kanban { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+.kanban-column {
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  display: flex; flex-direction: column;
+  gap: var(--space-2);
+  min-height: 320px;
+}
+.kanban-column-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 var(--space-1) var(--space-2);
+}
+.kanban-column-header b { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); }
+.kanban-column-count { font-size: var(--font-size-xs); color: var(--color-text-muted); }
+.kanban-card {
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  box-shadow: var(--shadow-xs);
+  display: flex; flex-direction: column;
+  gap: var(--space-2);
+  cursor: grab;
+}
+.kanban-card:hover { box-shadow: var(--shadow-sm); }
+.kanban-card-title { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); line-height: var(--line-height-snug); }
+.kanban-card-meta { display: flex; justify-content: space-between; align-items: center; font-size: var(--font-size-xs); color: var(--color-text-muted); }
+.kanban-card-value { font-weight: var(--font-weight-semibold); color: var(--color-text); font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.timeline {
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  max-width: 560px;
+}
+.timeline-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  position: relative;
+}
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 36px;
+  bottom: -12px;
+  width: 1px;
+  background: var(--color-border);
+}
+.timeline-item:last-child::before { display: none; }
+.timeline-dot {
+  width: 32px; height: 32px;
+  border-radius: var(--radius-full);
+  border: var(--border-width-1) solid var(--color-border);
+  background: var(--color-surface);
+  display: grid; place-items: center;
+  z-index: 1;
+  color: var(--color-text-muted);
+}
+.timeline-dot.user { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-text-on-primary); }
+.timeline-dot.warn { background: var(--color-danger-50); border-color: var(--color-danger-300); color: var(--color-danger-700); }
+.timeline-content { padding-top: 6px; font-size: var(--font-size-sm); }
+.timeline-meta { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 2px; }
+.timeline-quote { background: var(--color-bg-subtle); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); margin-top: var(--space-2); font-size: var(--font-size-sm); }
+
+/* ============================================================
+   COMMAND PALETTE
+   ============================================================ */
+.cmdk-frame {
+  background: rgba(10, 10, 10, 0.45);
+  border-radius: var(--radius-md);
+  padding: var(--space-7) var(--space-5);
+  min-height: 380px;
+  display: grid; place-items: start center;
+}
+.cmdk {
+  width: 100%;
+  max-width: 520px;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-2xl);
+  overflow: hidden;
+}
+.cmdk-input {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--border-width-1) solid var(--color-border);
+}
+.cmdk-input input { border: none; outline: none; flex: 1; font-family: inherit; font-size: var(--font-size-md); background: transparent; color: var(--color-text); }
+.cmdk-section { padding: var(--space-1); }
+.cmdk-section b { display: block; font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: var(--tracking-wider); color: var(--color-text-muted); padding: var(--space-2) var(--space-3); }
+.cmdk-item {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-xs);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+.cmdk-item[data-highlighted] { background: var(--color-bg-subtle); }
+.cmdk-item.active { background: var(--color-bg-subtle); }
+.cmdk-item kbd { margin-left: auto; }
+.cmdk-foot {
+  padding: var(--space-2) var(--space-4);
+  border-top: var(--border-width-1) solid var(--color-border);
+  display: flex; gap: var(--space-4);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+kbd {
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  background: var(--color-neutral-100);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-xs);
+  padding: 1px 6px;
+  color: var(--color-text-muted);
+}
+
+/* ============================================================
+   FILTER BUILDER
+   ============================================================ */
+.filter-builder {
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+.filter-group {
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  display: flex; flex-direction: column; gap: var(--space-2);
+  position: relative;
+}
+.filter-group + .filter-group { margin-top: var(--space-3); }
+.filter-group-op {
+  position: absolute; top: -10px; left: var(--space-3);
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  padding: 1px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-wide);
+}
+.filter-condition { display: flex; align-items: center; gap: var(--space-1); flex-wrap: wrap; }
+.filter-pill {
+  border: var(--border-width-1) solid var(--color-border-strong);
+  background: var(--color-surface);
+  border-radius: var(--radius-xs);
+  padding: 4px 10px;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+.filter-pill.field { background: var(--color-neutral-900); color: var(--color-text-inverse); border-color: var(--color-neutral-900); }
+.filter-pill.value { background: var(--color-primary-50); border-color: var(--color-primary-200); }
+.filter-add {
+  background: transparent;
+  border: var(--border-width-1) dashed var(--color-border-strong);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-xs);
+  font-family: inherit;
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  align-self: flex-start;
+}
+
+/* ============================================================
+   DATE PICKER
+   ============================================================ */
+.datepicker {
+  display: inline-flex;
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+.dp-presets {
+  background: var(--color-bg-subtle);
+  border-right: var(--border-width-1) solid var(--color-border);
+  padding: var(--space-2);
+  display: flex; flex-direction: column;
+  gap: 2px;
+  min-width: 130px;
+}
+.dp-preset {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-xs);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  color: var(--color-text);
+}
+.dp-preset:hover { background: var(--color-surface); }
+.dp-preset[aria-selected="true"] { background: var(--color-primary); color: var(--color-text-on-primary); }
+.dp-cal { padding: var(--space-3) var(--space-4); }
+.dp-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2); }
+.dp-grid { display: grid; grid-template-columns: repeat(7, 32px); gap: 2px; }
+.dp-wd { text-align: center; font-size: var(--font-size-xs); color: var(--color-text-muted); padding: var(--space-1) 0; }
+.dp-day { aspect-ratio: 1; display: grid; place-items: center; border-radius: var(--radius-xs); font-size: var(--font-size-sm); cursor: pointer; }
+.dp-day:hover { background: var(--color-bg-subtle); }
+.dp-day.muted { color: var(--color-text-subtle); }
+.dp-day.today { box-shadow: inset 0 0 0 1px var(--color-border-strong); }
+.dp-day.in-range { background: var(--color-primary-50); }
+.dp-day.range-start, .dp-day.range-end { background: var(--color-neutral-900); color: var(--color-text-inverse); }
+
+/* ============================================================
+   FORM LAYOUTS
+   ============================================================ */
+.form-card {
+  background: var(--color-surface);
+  border: var(--border-width-1) solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  display: flex; flex-direction: column;
+  gap: var(--space-4);
+}
+.form-single { max-width: 480px; }
+.form-2col { display: grid; grid-template-columns: 200px 1fr; gap: var(--space-3) var(--space-5); align-items: start; }
+.form-2col label { padding-top: 10px; }
+.form-section { padding-bottom: var(--space-4); border-bottom: var(--border-width-1) solid var(--color-border); }
+.form-section:last-child { border-bottom: none; padding-bottom: 0; }
+.form-section h4 { margin: 0 0 var(--space-1); font-size: var(--font-size-md); font-weight: var(--font-weight-semibold); }
+.form-section-help { font-size: var(--font-size-sm); color: var(--color-text-muted); margin-bottom: var(--space-3); }
+
+.form-row { display: grid; gap: var(--space-3); }
+.form-row.cols-2 { grid-template-columns: 1fr 1fr; }
+.form-actions { display: flex; justify-content: flex-end; gap: var(--space-2); }
+</style>
+</head>
+<body>
+
+<div class="doc">
+  <!-- =================== SIDE NAV =================== -->
+  <aside class="doc-nav">
+    <h1>CRM DS</h1>
+    <small>v0.2 · components reference</small>
+
+    <div class="group">Foundations</div>
+    <a href="#colors">Colors</a>
+    <a href="#typography">Typography</a>
+    <a href="#spacing">Spacing</a>
+    <a href="#radii">Radii &amp; shadows</a>
+
+    <div class="group">Primitives</div>
+    <a href="#button">Button</a>
+    <a href="#badge">Badge</a>
+    <a href="#input">Input</a>
+    <a href="#select">Select</a>
+    <a href="#checkbox">Checkbox / Radio</a>
+    <a href="#switch">Switch</a>
+    <a href="#avatar">Avatar</a>
+
+    <div class="group">Composites</div>
+    <a href="#card">Card</a>
+    <a href="#table">Data Table</a>
+    <a href="#modal">Modal</a>
+    <a href="#drawer">Drawer</a>
+    <a href="#tabs">Tabs</a>
+    <a href="#menu">Menu</a>
+    <a href="#popover">Popover</a>
+    <a href="#tooltip">Tooltip</a>
+    <a href="#toast">Toast</a>
+    <a href="#empty">Empty State</a>
+
+    <div class="group">Patterns</div>
+    <a href="#stepper">Stepper</a>
+    <a href="#form-layouts">Form layouts</a>
+    <a href="#datepicker">Date picker</a>
+    <a href="#kanban">Kanban</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#cmdk">Command palette</a>
+    <a href="#filter-builder">Filter builder</a>
+  </aside>
+
+  <main class="doc-main">
+
+    <!-- ============= FOUNDATIONS ============= -->
+    <section id="colors">
+      <h2>Colors</h2>
+      <p class="lede">All color tokens are CSS variables in <code>tokens.css</code>. Each ramp has 50–900 steps. Semantic roles map to specific ramps.</p>
+      <div class="props">
+        <b>Roles:</b> <code>--color-primary</code> (lime, action) ·
+        <code>--color-secondary</code> (forest, contrast surfaces) ·
+        <code>--color-danger</code> (coral, errors/destructive) ·
+        <code>--color-neutral-*</code> (text, borders, surfaces)
+      </div>
+      <div class="demo" style="gap: 4px; flex-wrap: wrap;">
+        <div style="display:flex; flex-direction:column; gap:4px; min-width:60px;">
+          <div style="background: var(--color-primary-50);  height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-primary-200); height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-primary-400); height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-primary-600); height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-primary-900); height:32px; border-radius:4px;"></div>
+          <small style="color: var(--color-text-muted); font-size: 11px;">primary</small>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:4px; min-width:60px;">
+          <div style="background: var(--color-secondary-50);  height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-secondary-200); height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-secondary-400); height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-secondary-700); height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-secondary-900); height:32px; border-radius:4px;"></div>
+          <small style="color: var(--color-text-muted); font-size: 11px;">secondary</small>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:4px; min-width:60px;">
+          <div style="background: var(--color-neutral-50);  height:32px; border-radius:4px; border:1px solid var(--color-border);"></div>
+          <div style="background: var(--color-neutral-200); height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-neutral-500); height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-neutral-700); height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-neutral-900); height:32px; border-radius:4px;"></div>
+          <small style="color: var(--color-text-muted); font-size: 11px;">neutral</small>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:4px; min-width:60px;">
+          <div style="background: var(--color-danger-50);  height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-danger-300); height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-danger-500); height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-danger-700); height:32px; border-radius:4px;"></div>
+          <div style="background: var(--color-danger-900); height:32px; border-radius:4px;"></div>
+          <small style="color: var(--color-text-muted); font-size: 11px;">danger</small>
+        </div>
+      </div>
+    </section>
+
+    <section id="typography">
+      <h2>Typography</h2>
+      <p class="lede">Single family: <b>General Sans</b>. Sizes follow modular scale.</p>
+      <div class="demo stack">
+        <div style="font-size: var(--font-size-display); font-weight: 600; letter-spacing: var(--tracking-tighter); line-height: var(--line-height-tight);">$20,670</div>
+        <small style="color: var(--color-text-muted);"><code>--font-size-display</code> · 64 / 600 / -0.02em — hero metric</small>
+        <div style="font-size: var(--font-size-4xl); font-weight: 600; letter-spacing: var(--tracking-tight);">Page title</div>
+        <small style="color: var(--color-text-muted);"><code>--font-size-4xl</code> · 40 / 600 / -0.01em — page H1</small>
+        <div style="font-size: var(--font-size-2xl); font-weight: 600;">Module title</div>
+        <small style="color: var(--color-text-muted);"><code>--font-size-2xl</code> · 24 / 600 — card / section H2</small>
+        <div style="font-size: var(--font-size-lg); font-weight: 500;">Sub-title</div>
+        <small style="color: var(--color-text-muted);"><code>--font-size-lg</code> · 18 / 500 — H3</small>
+        <div style="font-size: var(--font-size-base);">Body — used for general text and table cells.</div>
+        <small style="color: var(--color-text-muted);"><code>--font-size-base</code> · 14 / 400 — body</small>
+        <div style="font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: var(--tracking-wider); color: var(--color-text-muted); font-weight: 500;">Eyebrow / label</div>
+        <small style="color: var(--color-text-muted);"><code>--font-size-xs</code> · 12 / 500 / +0.08em / uppercase</small>
+      </div>
+    </section>
+
+    <section id="spacing">
+      <h2>Spacing</h2>
+      <p class="lede">4-base scale. <code>--space-1</code>=4px through <code>--space-10</code>=128px.</p>
+      <div class="demo stack">
+        <div style="display:flex; align-items:center; gap:12px;"><div style="background: var(--color-primary); height: 12px; width: 4px;"></div><code>--space-1</code> · 4px</div>
+        <div style="display:flex; align-items:center; gap:12px;"><div style="background: var(--color-primary); height: 12px; width: 8px;"></div><code>--space-2</code> · 8px</div>
+        <div style="display:flex; align-items:center; gap:12px;"><div style="background: var(--color-primary); height: 12px; width: 12px;"></div><code>--space-3</code> · 12px</div>
+        <div style="display:flex; align-items:center; gap:12px;"><div style="background: var(--color-primary); height: 12px; width: 16px;"></div><code>--space-4</code> · 16px</div>
+        <div style="display:flex; align-items:center; gap:12px;"><div style="background: var(--color-primary); height: 12px; width: 24px;"></div><code>--space-5</code> · 24px</div>
+        <div style="display:flex; align-items:center; gap:12px;"><div style="background: var(--color-primary); height: 12px; width: 32px;"></div><code>--space-6</code> · 32px</div>
+        <div style="display:flex; align-items:center; gap:12px;"><div style="background: var(--color-primary); height: 12px; width: 48px;"></div><code>--space-7</code> · 48px</div>
+        <div style="display:flex; align-items:center; gap:12px;"><div style="background: var(--color-primary); height: 12px; width: 64px;"></div><code>--space-8</code> · 64px</div>
+      </div>
+    </section>
+
+    <section id="radii">
+      <h2>Radii &amp; shadows</h2>
+      <div class="demo">
+        <div style="text-align:center;"><div style="width:64px;height:48px;background:var(--color-primary);border-radius:var(--radius-xs);"></div><small style="color:var(--color-text-muted);"><code>--radius-xs</code></small></div>
+        <div style="text-align:center;"><div style="width:64px;height:48px;background:var(--color-primary);border-radius:var(--radius-sm);"></div><small style="color:var(--color-text-muted);"><code>--radius-sm</code></small></div>
+        <div style="text-align:center;"><div style="width:64px;height:48px;background:var(--color-primary);border-radius:var(--radius-md);"></div><small style="color:var(--color-text-muted);"><code>--radius-md</code></small></div>
+        <div style="text-align:center;"><div style="width:64px;height:48px;background:var(--color-primary);border-radius:var(--radius-lg);"></div><small style="color:var(--color-text-muted);"><code>--radius-lg</code></small></div>
+        <div style="text-align:center;"><div style="width:64px;height:48px;background:var(--color-primary);border-radius:var(--radius-pill);"></div><small style="color:var(--color-text-muted);"><code>--radius-pill</code></small></div>
+      </div>
+      <div class="demo">
+        <div style="text-align:center;"><div style="width:80px;height:60px;background:#fff;border-radius:var(--radius-md);box-shadow:var(--shadow-xs);"></div><small style="color:var(--color-text-muted);"><code>--shadow-xs</code></small></div>
+        <div style="text-align:center;"><div style="width:80px;height:60px;background:#fff;border-radius:var(--radius-md);box-shadow:var(--shadow-sm);"></div><small style="color:var(--color-text-muted);"><code>--shadow-sm</code></small></div>
+        <div style="text-align:center;"><div style="width:80px;height:60px;background:#fff;border-radius:var(--radius-md);box-shadow:var(--shadow-md);"></div><small style="color:var(--color-text-muted);"><code>--shadow-md</code></small></div>
+        <div style="text-align:center;"><div style="width:80px;height:60px;background:#fff;border-radius:var(--radius-md);box-shadow:var(--shadow-lg);"></div><small style="color:var(--color-text-muted);"><code>--shadow-lg</code></small></div>
+        <div style="text-align:center;"><div style="width:80px;height:60px;background:#fff;border-radius:var(--radius-md);box-shadow:var(--shadow-xl);"></div><small style="color:var(--color-text-muted);"><code>--shadow-xl</code></small></div>
+      </div>
+    </section>
+
+    <!-- ============= PRIMITIVES ============= -->
+
+    <!-- COMPONENT: Button -->
+    <section id="button">
+      <h2>Button</h2>
+      <p class="lede">Variants, sizes, states, icon support.</p>
+      <div class="props">
+        Props: <b>variant</b> (<code>primary</code> | <code>secondary</code> | <code>outline</code> | <code>ghost</code> | <code>danger</code>),
+        <b>size</b> (<code>sm</code> | <code>md</code> | <code>lg</code>),
+        <b>disabled</b>, <b>loading</b>, <b>iconLeft</b>, <b>iconRight</b>, <b>onClick</b>, <b>type</b>.
+      </div>
+      <h3>Variants</h3>
+      <div class="demo">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-outline">Outline</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn btn-danger">Delete</button>
+      </div>
+      <h3>Sizes</h3>
+      <div class="demo">
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary">Default</button>
+        <button class="btn btn-primary btn-lg">Large</button>
+      </div>
+      <h3>With icons</h3>
+      <div class="demo">
+        <button class="btn btn-primary">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          New deal
+        </button>
+        <button class="btn btn-outline">
+          Export
+          <svg class="icon" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </button>
+        <button class="btn btn-outline btn-icon" aria-label="Settings">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12h2M3 12h2M12 3v2M12 19v2"/></svg>
+        </button>
+      </div>
+      <h3>States</h3>
+      <div class="demo">
+        <button class="btn btn-primary">Default</button>
+        <button class="btn btn-primary" disabled>Disabled</button>
+        <button class="btn btn-primary btn-loading">Loading</button>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Badge -->
+    <section id="badge">
+      <h2>Badge</h2>
+      <div class="props">
+        Props: <b>variant</b> (<code>neutral</code> | <code>primary</code> | <code>success</code> | <code>warning</code> | <code>danger</code> | <code>info</code>), <b>withDot</b>, <b>icon</b>.
+      </div>
+      <div class="demo">
+        <span class="badge">Neutral</span>
+        <span class="badge badge-primary">Primary</span>
+        <span class="badge badge-success">Completed</span>
+        <span class="badge badge-warning">Pending</span>
+        <span class="badge badge-danger">Failed</span>
+        <span class="badge badge-info">Scheduled</span>
+        <span class="badge badge-success badge-dot">+12.4%</span>
+        <span class="badge badge-danger badge-dot">-3.1%</span>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Input -->
+    <section id="input">
+      <h2>Input</h2>
+      <div class="props">
+        Props: <b>type</b>, <b>label</b>, <b>placeholder</b>, <b>value</b>, <b>onChange</b>, <b>helper</b>, <b>error</b>, <b>disabled</b>, <b>prefix</b>, <b>suffix</b>, <b>iconLeft</b>.
+      </div>
+      <div class="demo stack" style="max-width: 480px;">
+        <div class="field">
+          <label class="field-label" for="i-email">Email</label>
+          <input id="i-email" class="input" type="email" value="alex@acme.com" />
+          <span class="field-help">We'll send your weekly digest here.</span>
+        </div>
+        <div class="field">
+          <label class="field-label" for="i-amount">Amount</label>
+          <div class="input-group">
+            <span class="affix">$</span>
+            <input id="i-amount" class="input" value="12,400" />
+            <span class="affix">USD</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="i-err">Invalid</label>
+          <input id="i-err" class="input" value="abc@" aria-invalid="true" />
+          <span class="field-help error">Invalid email format.</span>
+        </div>
+        <div class="field">
+          <label class="field-label" for="i-dis">Disabled</label>
+          <input id="i-dis" class="input" value="Locked field" disabled />
+        </div>
+        <div class="field">
+          <label class="field-label">Notes</label>
+          <textarea class="textarea" rows="3">Customer interested in annual plan.</textarea>
+        </div>
+        <div class="field">
+          <label class="field-label">Search</label>
+          <div class="search">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg>
+            <input class="input" placeholder="Search contacts, deals…" />
+            <kbd>⌘K</kbd>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Select -->
+    <section id="select">
+      <h2>Select</h2>
+      <div class="props">Use a headless library (Radix, Headless UI, or shadcn Select). Trigger styled as below; menu uses <code>.menu</code> styles.</div>
+      <div class="demo stack" style="max-width: 320px;">
+        <div class="field">
+          <label class="field-label">Stage</label>
+          <button class="select-trigger" aria-haspopup="listbox">
+            <span>Qualified</span>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="menu" style="max-width:240px;">
+          <div class="menu-item" data-highlighted>New</div>
+          <div class="menu-item">Qualified ✓</div>
+          <div class="menu-item">Proposal</div>
+          <div class="menu-item">Negotiation</div>
+          <div class="menu-item">Won</div>
+          <div class="menu-item">Lost</div>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Checkbox / Radio -->
+    <section id="checkbox">
+      <h2>Checkbox / Radio</h2>
+      <div class="props">Props: <b>checked</b>, <b>onChange</b>, <b>disabled</b>, <b>indeterminate</b> (checkbox only), <b>name</b>, <b>value</b> (radio).</div>
+      <div class="demo">
+        <label class="control-row"><input type="checkbox" class="checkbox" checked /> Receive AI summary</label>
+        <label class="control-row"><input type="checkbox" class="checkbox" /> Alert on overspending</label>
+        <label class="control-row"><input type="radio" class="radio" name="freq" checked /> Weekly</label>
+        <label class="control-row"><input type="radio" class="radio" name="freq" /> Monthly</label>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Switch -->
+    <section id="switch">
+      <h2>Switch</h2>
+      <div class="props">Props: <b>checked</b>, <b>onChange</b>, <b>disabled</b>, <b>label</b>. Prefer over Checkbox when toggling a state takes effect immediately.</div>
+      <div class="demo">
+        <label class="switch"><input type="checkbox" checked /><span class="switch-track"></span> Auto-assign leads</label>
+        <label class="switch"><input type="checkbox" /><span class="switch-track"></span> Dark mode</label>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Avatar -->
+    <section id="avatar">
+      <h2>Avatar</h2>
+      <div class="props">Props: <b>name</b> (initials), <b>src</b> (image), <b>size</b> (<code>xs</code>|<code>sm</code>|<code>md</code>|<code>lg</code>|<code>xl</code>), <b>status</b> (<code>online</code>|<code>busy</code>|<code>offline</code>), <b>colorSeed</b> (hash of name).</div>
+      <h3>Sizes</h3>
+      <div class="demo">
+        <span class="avatar avatar-xs avatar-c1">JL</span>
+        <span class="avatar avatar-sm avatar-c2">MR</span>
+        <span class="avatar avatar-md avatar-c3">DK</span>
+        <span class="avatar avatar-lg avatar-c4">SN</span>
+        <span class="avatar avatar-xl avatar-c5">EV</span>
+      </div>
+      <h3>Status</h3>
+      <div class="demo">
+        <span class="avatar avatar-md avatar-c1">JL<span class="avatar-status"></span></span>
+        <span class="avatar avatar-md avatar-c2">MR<span class="avatar-status busy"></span></span>
+        <span class="avatar avatar-md avatar-c3">DK<span class="avatar-status offline"></span></span>
+      </div>
+      <h3>Group</h3>
+      <div class="demo">
+        <div class="avatar-group">
+          <span class="avatar avatar-md avatar-c1">JL</span>
+          <span class="avatar avatar-md avatar-c2">MR</span>
+          <span class="avatar avatar-md avatar-c3">DK</span>
+          <span class="avatar avatar-md avatar-more">+5</span>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- ============= COMPOSITES ============= -->
+
+    <!-- COMPONENT: Card -->
+    <section id="card">
+      <h2>Card</h2>
+      <div class="props">Props: <b>title</b>, <b>eyebrow</b>, <b>action</b>, <b>variant</b> (<code>default</code>|<code>inverse</code>). Compose freely.</div>
+      <div class="demo" style="gap: var(--space-4);">
+        <div class="card" style="min-width: 240px;">
+          <span class="card-eyebrow">Total balance</span>
+          <span class="card-metric">$20,670</span>
+          <div style="display:flex;gap:var(--space-2);align-items:center;">
+            <span class="badge badge-success badge-dot">+12.4%</span>
+            <small style="color: var(--color-text-muted);">vs last month</small>
+          </div>
+        </div>
+        <div class="card inverse" style="min-width: 240px;">
+          <span class="card-eyebrow">Cashflow</span>
+          <span class="card-metric">+$4,820</span>
+          <small style="color: var(--color-neutral-400);">May 2026</small>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: DataTable -->
+    <section id="table">
+      <h2>Data Table</h2>
+      <div class="props">
+        Props: <b>columns</b>, <b>data</b>, <b>sort</b>, <b>onSort</b>, <b>selection</b>, <b>onSelectionChange</b>, <b>density</b> (<code>compact</code>|<code>comfortable</code>|<code>cozy</code>), <b>pagination</b>, <b>loading</b>, <b>emptyState</b>.
+        Consider <a href="https://tanstack.com/table">@tanstack/table</a> as headless engine.
+      </div>
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <div class="search">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg>
+            <input class="input" placeholder="Search contacts…" />
+          </div>
+          <button class="btn btn-outline btn-sm">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+            Filter
+          </button>
+          <span class="badge">3 filters</span>
+          <div style="flex:1"></div>
+          <button class="btn btn-primary btn-sm">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            New
+          </button>
+        </div>
+        <div class="table-bulkbar">
+          <input type="checkbox" class="checkbox" checked />
+          <b>2 selected</b>
+          <button class="btn btn-ghost btn-sm">Assign…</button>
+          <button class="btn btn-ghost btn-sm">Change stage</button>
+          <button class="btn btn-ghost btn-sm" style="color: var(--color-danger-700);">Delete</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:32px"><input type="checkbox" class="checkbox" /></th>
+              <th aria-sort="ascending">Name <span class="sort">↓</span></th>
+              <th>Company</th>
+              <th>Stage</th>
+              <th>Owner</th>
+              <th style="text-align:right">Value <span class="sort">↕</span></th>
+              <th>Last activity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr aria-selected="true">
+              <td><input type="checkbox" class="checkbox" checked /></td>
+              <td><div style="display:flex;align-items:center;gap:var(--space-2);"><span class="avatar avatar-sm avatar-c1">MR</span><b>María Reyes</b></div></td>
+              <td>Acme Corp</td>
+              <td><span class="badge badge-success">Qualified</span></td>
+              <td><span class="avatar avatar-xs avatar-c2">JL</span></td>
+              <td style="text-align:right;font-variant-numeric:tabular-nums;">$12,400</td>
+              <td style="color:var(--color-text-muted);">2h ago</td>
+            </tr>
+            <tr aria-selected="true">
+              <td><input type="checkbox" class="checkbox" checked /></td>
+              <td><div style="display:flex;align-items:center;gap:var(--space-2);"><span class="avatar avatar-sm avatar-c3">DK</span><b>Daniel Kim</b></div></td>
+              <td>Globex</td>
+              <td><span class="badge badge-warning">Negotiation</span></td>
+              <td><span class="avatar avatar-xs avatar-c4">AR</span></td>
+              <td style="text-align:right;font-variant-numeric:tabular-nums;">$8,900</td>
+              <td style="color:var(--color-text-muted);">yesterday</td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="checkbox" /></td>
+              <td><div style="display:flex;align-items:center;gap:var(--space-2);"><span class="avatar avatar-sm avatar-c5">SN</span><b>Sofia Navarro</b></div></td>
+              <td>Initech</td>
+              <td><span class="badge badge-info">Proposal</span></td>
+              <td><span class="avatar avatar-xs avatar-c2">JL</span></td>
+              <td style="text-align:right;font-variant-numeric:tabular-nums;">$24,100</td>
+              <td style="color:var(--color-text-muted);">3 days ago</td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="checkbox" /></td>
+              <td><div style="display:flex;align-items:center;gap:var(--space-2);"><span class="avatar avatar-sm avatar-c4">TC</span><b>Tomas Cruz</b></div></td>
+              <td>Hooli</td>
+              <td><span class="badge">New</span></td>
+              <td><span class="avatar avatar-xs avatar-c5">PG</span></td>
+              <td style="text-align:right;font-variant-numeric:tabular-nums;">$3,200</td>
+              <td style="color:var(--color-text-muted);">5 days ago</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="table-foot">
+          <span>4 of 247 · page 1 of 50</span>
+          <div style="display:inline-flex; gap:4px;">
+            <button class="btn btn-outline btn-sm btn-icon">‹</button>
+            <button class="btn btn-primary btn-sm btn-icon">1</button>
+            <button class="btn btn-outline btn-sm btn-icon">2</button>
+            <button class="btn btn-outline btn-sm btn-icon">3</button>
+            <button class="btn btn-outline btn-sm btn-icon">›</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Modal -->
+    <section id="modal">
+      <h2>Modal</h2>
+      <div class="props">
+        Props: <b>open</b>, <b>onOpenChange</b>, <b>title</b>, <b>size</b> (<code>sm</code>|<code>md</code>|<code>lg</code>), <b>children</b>, <b>footer</b>. Use Radix Dialog or shadcn Dialog underneath; lock body scroll, trap focus.
+      </div>
+      <div class="modal-frame">
+        <div class="modal modal-sm">
+          <div class="modal-header"><h3>Delete 3 contacts?</h3><button class="modal-close" aria-label="Close">✕</button></div>
+          <div class="modal-body">This action can't be undone. Associated deals will be orphaned.</div>
+          <div class="modal-foot"><button class="btn btn-ghost btn-sm">Cancel</button><button class="btn btn-danger btn-sm">Delete</button></div>
+        </div>
+      </div>
+      <div class="modal-frame" style="margin-top: var(--space-3);">
+        <div class="modal">
+          <div class="modal-header"><h3>New contact</h3><button class="modal-close" aria-label="Close">✕</button></div>
+          <div class="modal-body">
+            <div class="form-row cols-2">
+              <div class="field"><label class="field-label">Name</label><input class="input" value="María Reyes" /></div>
+              <div class="field"><label class="field-label">Email</label><input class="input" value="maria@acme.com" /></div>
+            </div>
+          </div>
+          <div class="modal-foot"><button class="btn btn-ghost btn-sm">Cancel</button><button class="btn btn-primary btn-sm">Create contact</button></div>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Drawer -->
+    <section id="drawer">
+      <h2>Drawer</h2>
+      <div class="props">Props: <b>open</b>, <b>onOpenChange</b>, <b>side</b> (<code>right</code> default | <code>left</code>), <b>title</b>, <b>width</b> (default 380px). Slides in from edge, backdrop dimmable.</div>
+      <div class="drawer-frame">
+        <div class="drawer">
+          <div class="drawer-header">
+            <div style="display:flex;gap:var(--space-2);align-items:center;">
+              <span class="avatar avatar-md avatar-c1">MR</span>
+              <div><b>María Reyes</b><div style="font-size:var(--font-size-xs);color:var(--color-text-muted);">Acme Corp · CEO</div></div>
+            </div>
+            <button class="modal-close" aria-label="Close">✕</button>
+          </div>
+          <div class="drawer-body">
+            <div style="display:flex;gap:var(--space-1);"><span class="badge badge-success">Qualified</span><span class="badge badge-info">Hot</span></div>
+            <div style="display:grid;grid-template-columns:90px 1fr;gap:var(--space-2) var(--space-3);font-size:var(--font-size-sm);">
+              <span style="color:var(--color-text-muted);">Email</span><span>maria@acme.com</span>
+              <span style="color:var(--color-text-muted);">Phone</span><span>+34 612 345 678</span>
+              <span style="color:var(--color-text-muted);">Owner</span><span>Juan López</span>
+              <span style="color:var(--color-text-muted);">Deal</span><span>$12,400 · negotiation</span>
+            </div>
+          </div>
+          <div class="drawer-foot"><button class="btn btn-ghost btn-sm">Close</button><button class="btn btn-primary btn-sm">Open full</button></div>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Tabs -->
+    <section id="tabs">
+      <h2>Tabs</h2>
+      <div class="props">Props: <b>value</b>, <b>onValueChange</b>, <b>variant</b> (<code>underline</code> default | <code>pill</code>). Use Radix Tabs.</div>
+      <h3>Underline</h3>
+      <div class="demo">
+        <div class="tabs">
+          <button class="tab" aria-selected="true">All <span class="badge" style="padding:0 6px;">247</span></button>
+          <button class="tab">Income</button>
+          <button class="tab">Expenses</button>
+          <button class="tab">Transfers</button>
+        </div>
+      </div>
+      <h3>Pill</h3>
+      <div class="demo">
+        <div class="tabs-pill">
+          <button class="tab" aria-selected="true">Table</button>
+          <button class="tab">Board</button>
+          <button class="tab">Calendar</button>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Menu -->
+    <section id="menu">
+      <h2>Menu (DropdownMenu)</h2>
+      <div class="props">Props: <b>trigger</b>, <b>items</b> (array of <code>{ label, icon?, shortcut?, danger?, onSelect, divider? }</code>). Radix DropdownMenu.</div>
+      <div class="demo">
+        <div class="menu">
+          <div class="menu-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg> View details <kbd>⌘↵</kbd></div>
+          <div class="menu-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Assign to… <kbd>A</kbd></div>
+          <div class="menu-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg> Change stage</div>
+          <div class="menu-divider"></div>
+          <div class="menu-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V4h6v4"/></svg> Archive</div>
+          <div class="menu-item danger"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/></svg> Delete <kbd>⌫</kbd></div>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Popover -->
+    <section id="popover">
+      <h2>Popover</h2>
+      <div class="props">Props: <b>trigger</b>, <b>content</b>, <b>side</b>, <b>align</b>. Use Radix Popover. Differs from Menu by carrying arbitrary content rather than a list.</div>
+      <div class="demo">
+        <div class="popover">
+          <h4 class="popover-title">AI score: 87/100</h4>
+          <p>Based on email reply rate, contact frequency and average pipeline value.</p>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Tooltip -->
+    <section id="tooltip">
+      <h2>Tooltip</h2>
+      <div class="props">Props: <b>content</b> (string), <b>side</b>, <b>delayDuration</b>. Use Radix Tooltip. Single short line; no actions.</div>
+      <div class="demo">
+        <div class="tooltip">Assign to another teammate</div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Toast -->
+    <section id="toast">
+      <h2>Toast</h2>
+      <div class="props">Props: <b>variant</b>, <b>title</b>, <b>description</b>, <b>action</b>, <b>duration</b>. Use <a href="https://sonner.emilkowal.ski/">sonner</a> or Radix Toast.</div>
+      <div class="demo stack" style="max-width: 460px;">
+        <div class="toast toast-success">
+          <svg class="icon" viewBox="0 0 24 24" style="color: var(--color-primary-700);"><path d="M5 12l5 5L20 7"/></svg>
+          Payment sent · <b>$420 to Mara</b>
+          <button class="modal-close toast-close" aria-label="Close">✕</button>
+        </div>
+        <div class="toast toast-info">
+          <svg class="icon" viewBox="0 0 24 24" style="color: var(--color-secondary-700);"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/></svg>
+          New AI insight available
+          <button class="modal-close toast-close" aria-label="Close">✕</button>
+        </div>
+        <div class="toast toast-danger">
+          <svg class="icon" viewBox="0 0 24 24" style="color: var(--color-danger-700);"><circle cx="12" cy="12" r="9"/><path d="M12 7v6"/></svg>
+          Insufficient balance
+          <button class="modal-close toast-close" aria-label="Close">✕</button>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: EmptyState -->
+    <section id="empty">
+      <h2>Empty State</h2>
+      <div class="props">Props: <b>illustration</b>, <b>title</b>, <b>description</b>, <b>actions</b> (1–2 buttons).</div>
+      <div class="demo center">
+        <div class="empty">
+          <div class="empty-illustration">
+            <svg viewBox="0 0 80 80" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.75">
+              <rect x="10" y="20" width="60" height="44" rx="6"/>
+              <path d="M20 36h40M20 46h26"/>
+              <circle cx="60" cy="22" r="6" fill="var(--color-primary)" stroke="var(--color-primary-700)"/>
+            </svg>
+          </div>
+          <h4>No deals yet</h4>
+          <p>Create your first deal or import from a CSV. They'll appear here organized by stage.</p>
+          <div style="display:flex;gap:var(--space-2);margin-top:var(--space-2);">
+            <button class="btn btn-primary btn-sm">Create deal</button>
+            <button class="btn btn-outline btn-sm">Import CSV</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Stepper -->
+    <section id="stepper">
+      <h2>Stepper</h2>
+      <div class="props">Props: <b>steps</b> (array of <code>{ id, label, description?, state }</code>), <b>currentStep</b>, <b>orientation</b> (<code>horizontal</code>|<code>vertical</code>).</div>
+      <div class="stepper">
+        <div class="step" data-state="done"><span class="step-indicator">✓</span><div class="step-label"><b>Workspace</b><small>name &amp; logo</small></div></div>
+        <div class="step-line"></div>
+        <div class="step" data-state="done"><span class="step-indicator">✓</span><div class="step-label"><b>Team</b><small>invite members</small></div></div>
+        <div class="step-line"></div>
+        <div class="step" data-state="current"><span class="step-indicator">3</span><div class="step-label"><b>Pipeline</b><small>sales stages</small></div></div>
+        <div class="step-line"></div>
+        <div class="step" data-state="pending"><span class="step-indicator">4</span><div class="step-label"><b>Import</b></div></div>
+        <div class="step-line"></div>
+        <div class="step" data-state="pending"><span class="step-indicator">5</span><div class="step-label"><b>Done</b></div></div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: FormLayouts -->
+    <section id="form-layouts">
+      <h2>Form layouts</h2>
+      <div class="props">Four conventions. Choose by complexity. Default to single-column.</div>
+      <h3>Single column</h3>
+      <div class="form-card form-single">
+        <div class="field"><label class="field-label">Deal name</label><input class="input" value="Acme renewal 2026"/></div>
+        <div class="field"><label class="field-label">Value</label><div class="input-group"><span class="affix">$</span><input class="input" value="12,400"/><span class="affix">USD</span></div></div>
+        <div class="form-actions"><button class="btn btn-ghost btn-sm">Cancel</button><button class="btn btn-primary btn-sm">Save deal</button></div>
+      </div>
+      <h3>Two column (settings)</h3>
+      <div class="form-card">
+        <div class="form-2col">
+          <label class="field-label">Full name<br/><small style="color:var(--color-text-muted);font-weight:400;">appears in public profile</small></label>
+          <input class="input" value="Juan López"/>
+          <label class="field-label">Timezone</label>
+          <button class="select-trigger"><span>Europe/Madrid (GMT+1)</span><svg class="icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+          <label class="field-label">Auto-assign leads<br/><small style="color:var(--color-text-muted);font-weight:400;">when you're available</small></label>
+          <label class="switch"><input type="checkbox" checked/><span class="switch-track"></span> Enabled</label>
+        </div>
+      </div>
+      <h3>Sectioned (long form)</h3>
+      <div class="form-card">
+        <div class="form-section">
+          <h4>Basic info</h4>
+          <div class="form-section-help">Identifying contact data.</div>
+          <div class="form-row cols-2"><div class="field"><label class="field-label">First name</label><input class="input" value="María"/></div><div class="field"><label class="field-label">Last name</label><input class="input" value="Reyes"/></div></div>
+        </div>
+        <div class="form-section">
+          <h4>Company &amp; role</h4>
+          <div class="form-section-help">Which organization they belong to.</div>
+          <div class="form-row cols-2"><div class="field"><label class="field-label">Company</label><input class="input" value="Acme Corp"/></div><div class="field"><label class="field-label">Title</label><input class="input" value="CEO"/></div></div>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: DatePicker -->
+    <section id="datepicker">
+      <h2>Date picker</h2>
+      <div class="props">Props: <b>mode</b> (<code>single</code>|<code>range</code>), <b>value</b>, <b>onValueChange</b>, <b>presets</b>, <b>min</b>, <b>max</b>, <b>locale</b>. Recommended: <a href="https://daypicker.dev">react-day-picker</a>.</div>
+      <div class="demo">
+        <div class="datepicker">
+          <div class="dp-presets">
+            <div class="dp-preset">Today</div>
+            <div class="dp-preset">Yesterday</div>
+            <div class="dp-preset" aria-selected="true">Last 7 days</div>
+            <div class="dp-preset">Last 30 days</div>
+            <div class="dp-preset">This month</div>
+            <div class="dp-preset">Last month</div>
+            <div class="dp-preset">This quarter</div>
+            <div class="dp-preset">Custom</div>
+          </div>
+          <div class="dp-cal">
+            <div class="dp-head"><b>May 2026</b><div style="display:flex;gap:4px;"><button class="btn btn-outline btn-sm btn-icon">‹</button><button class="btn btn-outline btn-sm btn-icon">›</button></div></div>
+            <div class="dp-grid">
+              <div class="dp-wd">M</div><div class="dp-wd">T</div><div class="dp-wd">W</div><div class="dp-wd">T</div><div class="dp-wd">F</div><div class="dp-wd">S</div><div class="dp-wd">S</div>
+              <div class="dp-day muted">28</div><div class="dp-day muted">29</div><div class="dp-day muted">30</div><div class="dp-day">1</div><div class="dp-day">2</div><div class="dp-day">3</div><div class="dp-day">4</div>
+              <div class="dp-day">5</div><div class="dp-day">6</div><div class="dp-day">7</div><div class="dp-day">8</div><div class="dp-day">9</div><div class="dp-day">10</div><div class="dp-day">11</div>
+              <div class="dp-day">12</div><div class="dp-day">13</div><div class="dp-day">14</div><div class="dp-day">15</div><div class="dp-day range-start">16</div><div class="dp-day in-range">17</div><div class="dp-day in-range">18</div>
+              <div class="dp-day in-range">19</div><div class="dp-day in-range">20</div><div class="dp-day in-range">21</div><div class="dp-day in-range">22</div><div class="dp-day range-end">23</div><div class="dp-day today">24</div><div class="dp-day">25</div>
+              <div class="dp-day">26</div><div class="dp-day">27</div><div class="dp-day">28</div><div class="dp-day">29</div><div class="dp-day">30</div><div class="dp-day">31</div><div class="dp-day muted">1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Kanban -->
+    <section id="kanban">
+      <h2>Kanban board</h2>
+      <div class="props">Recommended: <code>@dnd-kit/core</code>. Compose <b>KanbanBoard</b>, <b>KanbanColumn</b>, <b>KanbanCard</b>. Persist column order &amp; card stage on drop.</div>
+      <div class="demo" style="padding: var(--space-3);">
+        <div class="kanban" style="width:100%;">
+          <div class="kanban-column">
+            <div class="kanban-column-header"><b>New</b><span class="kanban-column-count">8</span></div>
+            <div class="kanban-card">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:var(--space-1);">
+                <span class="kanban-card-title">Globex renewal</span>
+                <span class="avatar avatar-xs avatar-c2">MR</span>
+              </div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap;"><span class="badge">B2B</span></div>
+              <div class="kanban-card-meta"><span>📅 Fri 24</span><span class="kanban-card-value">$4.2k</span></div>
+            </div>
+            <div class="kanban-card">
+              <div style="display:flex;justify-content:space-between;gap:var(--space-1);"><span class="kanban-card-title">Initech demo</span><span class="avatar avatar-xs avatar-c4">AR</span></div>
+              <div class="kanban-card-meta"><span>today</span><span class="kanban-card-value">$8.9k</span></div>
+            </div>
+          </div>
+          <div class="kanban-column">
+            <div class="kanban-column-header"><b>Qualified</b><span class="kanban-column-count">5</span></div>
+            <div class="kanban-card">
+              <div style="display:flex;justify-content:space-between;gap:var(--space-1);"><span class="kanban-card-title">Acme · annual plan</span><span class="avatar avatar-xs avatar-c2">MR</span></div>
+              <div style="display:flex;gap:4px;"><span class="badge badge-success">Hot</span></div>
+              <div class="kanban-card-meta"><span>Wed 25</span><span class="kanban-card-value">$12.4k</span></div>
+            </div>
+          </div>
+          <div class="kanban-column">
+            <div class="kanban-column-header"><b>Proposal</b><span class="kanban-column-count">3</span></div>
+            <div class="kanban-card">
+              <div style="display:flex;justify-content:space-between;gap:var(--space-1);"><span class="kanban-card-title">Initech · proposal v2</span><span class="avatar avatar-xs avatar-c2">MR</span></div>
+              <div style="display:flex;gap:4px;"><span class="badge badge-warning">Waiting</span></div>
+              <div class="kanban-card-meta"><span>Fri 27</span><span class="kanban-card-value">$24.1k</span></div>
+            </div>
+          </div>
+          <div class="kanban-column">
+            <div class="kanban-column-header"><b>Won</b><span class="kanban-column-count">12 · $148k</span></div>
+            <div class="kanban-card">
+              <div style="display:flex;justify-content:space-between;gap:var(--space-1);"><span class="kanban-card-title">Stark Industries</span><span class="avatar avatar-xs avatar-c1">JL</span></div>
+              <div style="display:flex;gap:4px;"><span class="badge badge-success">Closed</span></div>
+              <div class="kanban-card-meta"><span>closed yesterday</span><span class="kanban-card-value">$45k</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: Timeline -->
+    <section id="timeline">
+      <h2>Activity timeline</h2>
+      <div class="props">Props: <b>items</b> (array of <code>{ id, type, actor?, title, body?, timestamp, quote? }</code>). Types: <code>user</code> | <code>system</code> | <code>warn</code>.</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot user"><span class="avatar avatar-sm avatar-c2" style="border:none;">MR</span></div>
+          <div class="timeline-content">
+            <b>María Reyes</b> added a comment
+            <div class="timeline-meta">12 min ago</div>
+            <div class="timeline-quote">Customer confirmed signing Monday. We need to prepare the contract today.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h16"/></svg></div>
+          <div class="timeline-content">
+            Stage changed from <b>Proposal</b> → <b>Negotiation</b>
+            <div class="timeline-meta">today 09:42 · by Juan López</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M22 6 12 13 2 6"/><path d="M2 6h20v12H2z"/></svg></div>
+          <div class="timeline-content">
+            Email sent: <b>"Proposal v2 — Acme Corp"</b>
+            <div class="timeline-meta">yesterday 17:20 · opened 4 times</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot warn"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6"/></svg></div>
+          <div class="timeline-content">
+            Missed call · +34 612 345 678
+            <div class="timeline-meta">yesterday 14:18</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: CommandPalette -->
+    <section id="cmdk">
+      <h2>Command palette</h2>
+      <div class="props">Open with <kbd>⌘K</kbd>. Recommended: <a href="https://cmdk.paco.me/">cmdk</a> library. Sections: Results · Actions · Recents.</div>
+      <div class="cmdk-frame">
+        <div class="cmdk">
+          <div class="cmdk-input">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg>
+            <input placeholder="Search actions, contacts, deals…" value="acme" />
+            <kbd>ESC</kbd>
+          </div>
+          <div class="cmdk-section">
+            <b>Results</b>
+            <div class="cmdk-item active"><span class="avatar avatar-xs avatar-c2">AC</span><b>Acme Corp</b><span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">— company</span><kbd>↵</kbd></div>
+            <div class="cmdk-item"><span class="avatar avatar-xs avatar-c1">MR</span>María Reyes<span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">— contact at Acme</span></div>
+            <div class="cmdk-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg>Acme renewal 2026<span style="font-size:var(--font-size-xs);color:var(--color-text-muted);">— deal</span></div>
+          </div>
+          <div class="cmdk-section">
+            <b>Actions</b>
+            <div class="cmdk-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Create contact in Acme<kbd>C</kbd></div>
+            <div class="cmdk-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12a7 7 0 1 1 14 0"/></svg>Go to pipeline<kbd>G P</kbd></div>
+          </div>
+          <div class="cmdk-foot">
+            <span><kbd>↑↓</kbd> navigate</span>
+            <span><kbd>↵</kbd> open</span>
+            <span><kbd>⌘↵</kbd> open in drawer</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+    <!-- COMPONENT: FilterBuilder -->
+    <section id="filter-builder">
+      <h2>Filter builder</h2>
+      <div class="props">Props: <b>schema</b> (available fields + operators per type), <b>value</b> (nested AND/OR tree), <b>onChange</b>. Pills: field (dark) · operator (neutral) · value (lime tinted).</div>
+      <div class="filter-builder">
+        <div class="filter-group">
+          <span class="filter-group-op">WHERE</span>
+          <div class="filter-condition">
+            <span class="filter-pill field">Stage</span>
+            <span class="filter-pill">is one of</span>
+            <span class="filter-pill value">Qualified, Proposal</span>
+            <button class="modal-close" aria-label="Remove" style="margin-left:auto;">✕</button>
+          </div>
+          <div class="filter-condition">
+            <span class="filter-pill field">Value</span>
+            <span class="filter-pill">&gt;</span>
+            <span class="filter-pill value">$5,000</span>
+            <button class="modal-close" aria-label="Remove" style="margin-left:auto;">✕</button>
+          </div>
+          <button class="filter-add">+ add condition</button>
+        </div>
+        <div class="filter-group">
+          <span class="filter-group-op" style="background:var(--color-primary);border-color:var(--color-primary);">OR</span>
+          <div class="filter-condition">
+            <span class="filter-pill field">Tag</span>
+            <span class="filter-pill">contains</span>
+            <span class="filter-pill value">Hot</span>
+            <button class="modal-close" aria-label="Remove" style="margin-left:auto;">✕</button>
+          </div>
+          <button class="filter-add">+ add condition</button>
+        </div>
+        <button class="filter-add" style="margin-top:var(--space-3);">+ add group (OR)</button>
+      </div>
+    </section>
+    <!-- /COMPONENT -->
+
+  </main>
+</div>
+
+</body>
+</html>

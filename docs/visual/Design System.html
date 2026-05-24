@@ -1,0 +1,3137 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>CRM · Design System (Wireframe)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet" />
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   Fynix Design System — Wireframe / Sketchbook stylesheet
+   Low-fi: dashed borders, handwritten annotations, lime accents
+   ============================================================ */
+
+:root {
+  --ink: #1a1a1a;
+  --ink-soft: #4a4a4a;
+  --muted: #8a8a8a;
+  --paper: #FAFAF7;
+  --paper-2: #F5F6F4;
+  --mist: #E8EAE7;
+  --line: #1a1a1a;
+  --lime: #B6F36A;
+  --lime-2: #C7F870;
+  --forest: #143D2B;
+  --forest-2: #2C6A4D;
+  --coral: #E85A5A;
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  --hand: "Caveat", "Kalam", cursive;
+  --ui: "General Sans", "Inter", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: var(--ui);
+  color: var(--ink);
+  background: var(--paper);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85em;
+  background: #fff;
+  border: 1px dashed var(--ink);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--ink);
+}
+
+/* ============== SIDEBAR ============== */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: #fff;
+  border-right: 1.5px dashed var(--line);
+  padding: 24px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand-mark { flex-shrink: 0; }
+.brand-name {
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+.brand-sub {
+  font-family: var(--hand);
+  font-size: 16px;
+  color: var(--muted);
+  margin-top: -2px;
+}
+
+.scribble {
+  font-family: var(--hand);
+  font-size: 18px;
+  color: var(--ink-soft);
+  padding: 6px 10px;
+  border: 1.5px dashed var(--line);
+  border-radius: 10px;
+  transform: rotate(-1deg);
+  background: var(--paper);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+.nav-group-title {
+  font-family: var(--hand);
+  font-size: 17px;
+  color: var(--muted);
+  margin: 14px 8px 2px;
+  letter-spacing: 0.02em;
+}
+.nav-link {
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14.5px;
+  color: var(--ink);
+  border: 1.5px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.nav-link:hover {
+  background: var(--paper-2);
+}
+.nav-link.active {
+  background: var(--lime);
+  border: 1.5px solid var(--ink);
+  font-weight: 600;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.sidebar-foot {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1.5px dashed var(--mist);
+}
+.hand {
+  font-family: var(--hand);
+  font-size: 18px;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+/* ============== MAIN ============== */
+.main {
+  padding: 56px 64px 96px;
+  max-width: 1200px;
+}
+
+.page-head { margin-bottom: 40px; }
+.kicker {
+  font-family: var(--hand);
+  font-size: 20px;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+  transform: rotate(-0.5deg);
+  display: inline-block;
+}
+h1 {
+  font-size: 56px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+  line-height: 1.05;
+}
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 40px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+h2::before {
+  content: "✎";
+  font-family: var(--hand);
+  font-size: 22px;
+  color: var(--muted);
+}
+h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+.lead {
+  font-size: 17px;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  margin: 0;
+}
+
+.divider {
+  height: 0;
+  border-top: 1.5px dashed var(--mist);
+  margin: 40px 0;
+}
+
+/* ============== GENERIC GRIDS ============== */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+/* ============== SKETCH CARDS / CALLOUTS ============== */
+.sketch-card {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 20px;
+  box-shadow: 3px 3px 0 var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sketch-card-title {
+  font-family: var(--hand);
+  font-size: 22px;
+  color: var(--ink);
+}
+.sketch-card p { margin: 0; color: var(--ink-soft); }
+.ticks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.ticks li {
+  padding-left: 22px;
+  position: relative;
+  color: var(--ink-soft);
+}
+.ticks li::before {
+  content: "✓";
+  position: absolute; left: 0; top: 0;
+  font-family: var(--hand);
+  color: var(--forest-2);
+  font-weight: 700;
+}
+
+.annot {
+  font-family: var(--hand);
+  font-size: 18px;
+  color: var(--ink-soft);
+  line-height: 1.2;
+  margin-top: 4px;
+  align-self: flex-start;
+  padding: 4px 8px;
+  background: var(--paper-2);
+  border-radius: 6px;
+  transform: rotate(-1deg);
+}
+.annot.inline {
+  display: inline-block;
+  font-size: 16px;
+  transform: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.callout {
+  margin-top: 32px;
+  background: #fff;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--r-lg);
+  padding: 16px 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  position: relative;
+}
+.callout.warn { border-color: var(--coral); background: #FFF6F6; }
+.callout-tag {
+  font-family: var(--hand);
+  font-size: 18px;
+  color: var(--ink);
+  background: var(--lime);
+  border: 1.5px solid var(--ink);
+  border-radius: 8px;
+  padding: 2px 10px;
+  transform: rotate(-2deg);
+  white-space: nowrap;
+}
+.callout.warn .callout-tag { background: #FFD7D7; }
+.callout p { margin: 0; color: var(--ink-soft); }
+
+.principle {
+  display: flex; gap: 14px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 16px;
+}
+.principle-num {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--hand);
+  font-size: 22px;
+  background: var(--lime);
+  flex-shrink: 0;
+}
+.principle p { color: var(--ink-soft); margin: 0; }
+
+/* ============== COLORS ============== */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.color-tile {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 12px;
+}
+.color-chip {
+  width: 64px; height: 64px;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--line);
+  flex-shrink: 0;
+}
+.color-meta { display: flex; flex-direction: column; gap: 2px; }
+.color-meta b { font-size: 14px; }
+.color-meta code { width: max-content; }
+
+.ramp-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.ramp-label {
+  font-family: var(--hand);
+  font-size: 18px;
+  color: var(--ink-soft);
+}
+.ramp {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  height: 44px;
+}
+.ramp span { display: block; }
+
+.combo-card {
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.combo-card small { font-family: var(--hand); font-size: 16px; opacity: 0.7; }
+.combo-card b { font-weight: 500; font-size: 14px; opacity: 0.8; }
+.combo-card span { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; }
+.combo-card em { font-family: var(--hand); font-size: 16px; opacity: 0.8; font-style: normal; }
+
+/* ============== TYPOGRAPHY ============== */
+.type-spec {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.type-row {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  align-items: center;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1.5px dashed var(--mist);
+}
+.type-sample {
+  color: var(--ink);
+  line-height: 1.1;
+}
+.type-meta { display: flex; flex-direction: column; gap: 4px; }
+.type-meta b { font-size: 14px; }
+.type-meta code { width: max-content; }
+
+/* ============== SPACING ============== */
+.spacing-grid { display: flex; flex-direction: column; gap: 6px; }
+.space-row {
+  display: grid;
+  grid-template-columns: 80px 50px 130px 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1.5px dashed var(--mist);
+}
+.space-bar {
+  height: 18px;
+  background: var(--lime);
+  border: 1.5px solid var(--line);
+  border-radius: 4px;
+}
+.space-row b { font-size: 14px; }
+.space-row span { color: var(--muted); font-size: 13px; }
+
+.grid-diagram {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 16px;
+  margin-top: 12px;
+}
+.grid-cols {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 8px;
+  height: 90px;
+}
+.grid-cols span {
+  background: var(--paper-2);
+  border: 1.5px dashed var(--line);
+  border-radius: 4px;
+}
+.grid-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-family: var(--hand);
+  font-size: 17px;
+  color: var(--ink-soft);
+}
+
+/* ============== RADII & SHADOWS ============== */
+.radii-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+.radius-tile, .shadow-tile {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+.rbox {
+  width: 80px;
+  height: 60px;
+  background: var(--lime);
+  border: 1.5px solid var(--line);
+}
+.radius-tile b, .shadow-tile b { font-family: var(--hand); font-size: 22px; }
+.radius-tile span, .shadow-tile span { color: var(--muted); font-size: 12px; }
+
+.shadow-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.sbox {
+  width: 80px; height: 60px;
+  background: #fff;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--line);
+  margin-bottom: 6px;
+}
+
+/* ============== ICONS ============== */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 12px;
+}
+.icon-tile {
+  margin: 0;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+  aspect-ratio: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px;
+  padding: 10px;
+}
+.icon-tile figcaption {
+  font-family: var(--hand);
+  font-size: 14px;
+  color: var(--muted);
+}
+.ic {
+  width: 24px; height: 24px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ic-sm { width: 18px; height: 18px; }
+.ic-xs { width: 14px; height: 14px; stroke-width: 2; }
+
+/* ============== BUTTONS ============== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--r-pill);
+  border: 1.5px solid var(--line);
+  font-family: var(--ui);
+  font-weight: 500;
+  font-size: 14.5px;
+  padding: 10px 22px;
+  cursor: pointer;
+  background: #fff;
+  color: var(--ink);
+  transition: transform 0.05s, box-shadow 0.15s;
+}
+.btn-primary { background: var(--lime); color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.btn-primary:hover, .btn-primary.is-hover { background: var(--lime-2); }
+.btn-primary.is-pressed { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ink); }
+.btn-primary.is-focus { outline: 2px dashed var(--ink); outline-offset: 3px; }
+.btn-primary[disabled] { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+.btn-secondary { background: var(--forest); color: var(--paper-2); border-color: var(--line); box-shadow: 2px 2px 0 var(--ink); }
+.btn-outline { background: #fff; }
+.btn-ghost { background: transparent; border-color: transparent; }
+.btn-ghost:hover { background: var(--paper-2); }
+
+.btn-sm { padding: 6px 14px; font-size: 13px; }
+.btn-lg { padding: 14px 28px; font-size: 16px; }
+
+.btn-icon {
+  padding: 8px;
+  width: 38px; height: 38px;
+  justify-content: center;
+}
+.btn-icon.btn-sm { width: 30px; height: 30px; padding: 4px; }
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.dot-spinner {
+  width: 14px; height: 14px;
+  border: 2px solid var(--ink);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+.dot-spinner.big { width: 28px; height: 28px; border-width: 2.5px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============== BADGES ============== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  border: 1.5px solid var(--line);
+  font-size: 12px;
+  font-weight: 500;
+  background: #fff;
+}
+.badge-success { background: var(--lime); }
+.badge-pending { background: #FFE0E0; }
+.badge-danger { background: var(--coral); color: #fff; border-color: var(--ink); }
+.badge-neutral { background: var(--mist); }
+.badge-info { background: var(--forest); color: var(--paper-2); }
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+/* ============== INPUTS ============== */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+.form-row.tight {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.field input, .input-affix, .select {
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+  background: #fff;
+  padding: 10px 14px;
+  font-family: var(--ui);
+  font-size: 14.5px;
+  color: var(--ink);
+  width: 100%;
+  outline: none;
+}
+.field input::placeholder { color: var(--muted); }
+.field input:focus, .field input.is-focus {
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+  border-color: var(--ink);
+}
+.field input.is-error { border-color: var(--coral); box-shadow: inset 0 0 0 1.5px var(--coral); }
+.field input[disabled] { background: var(--paper-2); color: var(--muted); }
+.helper { font-size: 12px; color: var(--muted); }
+.helper.err { color: var(--coral); }
+
+.input-affix {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+}
+.input-affix input { border: none; box-shadow: none; padding: 10px 4px; }
+.input-affix input:focus { box-shadow: none; }
+.affix-left { padding: 0 0 0 14px; color: var(--muted); }
+.affix-right { padding: 0 14px 0 0; color: var(--muted); font-size: 13px; }
+
+.select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.select.open {
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.select-menu {
+  margin-top: 4px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+.select-item {
+  padding: 10px 14px;
+  font-size: 14px;
+  border-bottom: 1px dashed var(--mist);
+  cursor: pointer;
+}
+.select-item:last-child { border-bottom: none; }
+.select-item:hover { background: var(--paper-2); }
+.select-item.is-active { background: var(--lime); }
+
+.ctrl {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 0;
+}
+.ctrl input { position: absolute; opacity: 0; pointer-events: none; }
+.cbox, .rbox-r, .tbox {
+  display: inline-block;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  flex-shrink: 0;
+}
+.cbox { width: 18px; height: 18px; border-radius: 4px; position: relative; }
+.ctrl input[type=checkbox]:checked ~ .cbox { background: var(--lime); }
+.ctrl input[type=checkbox]:checked ~ .cbox::after {
+  content: "✓";
+  font-family: var(--hand);
+  font-size: 18px;
+  font-weight: 700;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+}
+.rbox-r { width: 18px; height: 18px; border-radius: 50%; position: relative; }
+.ctrl input[type=radio]:checked ~ .rbox-r::after {
+  content: "";
+  position: absolute; inset: 3px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+.toggle .tbox {
+  width: 36px; height: 20px;
+  border-radius: var(--r-pill);
+  position: relative;
+}
+.toggle .tbox::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 3px;
+  width: 12px; height: 12px;
+  background: var(--ink);
+  border-radius: 50%;
+  transition: left 0.15s;
+}
+.toggle input:checked ~ .tbox { background: var(--lime); }
+.toggle input:checked ~ .tbox::after { left: 19px; }
+
+.slider-demo { margin-top: 8px; max-width: 480px; }
+.slider-track {
+  position: relative;
+  height: 6px;
+  background: var(--mist);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-pill);
+}
+.slider-fill {
+  position: absolute;
+  height: 100%;
+  background: var(--lime);
+  border-radius: var(--r-pill);
+}
+.slider-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px; height: 22px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-pill);
+  background: #fff;
+  max-width: 520px;
+}
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14.5px;
+  font-family: var(--ui);
+}
+kbd {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  padding: 2px 6px;
+  border: 1.5px solid var(--line);
+  border-radius: 4px;
+  background: var(--paper-2);
+}
+
+/* ============== CARDS ============== */
+.card-anatomy {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
+  align-items: center;
+}
+.card-demo {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 3px 3px 0 var(--ink);
+  min-height: 160px;
+}
+.card-demo.dark { background: var(--forest); color: var(--paper-2); }
+.card-demo.accent { background: var(--lime); }
+.card-demo.wide { grid-column: span 2; }
+.card-header { display: flex; justify-content: space-between; align-items: center; }
+.eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+.eyebrow.light { color: rgba(245,246,244,0.7); }
+.card-hero {
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.card-hero.light { color: var(--paper-2); }
+.card-hero small { font-size: 18px; font-weight: 500; color: var(--muted); }
+.card-foot { display: flex; align-items: center; gap: 10px; }
+.muted { color: var(--muted); font-size: 13px; }
+.annot-list {
+  list-style: none; margin: 0; padding: 0;
+  font-family: var(--hand);
+  font-size: 19px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+.annot-list li { padding: 4px 0; }
+.annot-list b { color: var(--ink); margin-right: 6px; }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.bars {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  align-items: end;
+  height: 80px;
+  margin-top: auto;
+}
+.bars > div { display: flex; gap: 2px; align-items: end; height: 100%; }
+.bar {
+  flex: 1;
+  border-radius: 3px;
+  display: block;
+}
+.bar.a { background: var(--forest-2); }
+.bar.b { background: var(--lime); }
+
+.donut {
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  background: conic-gradient(var(--lime) 0 92%, var(--mist) 92% 100%);
+  display: grid;
+  place-items: center;
+  position: relative;
+  margin: 0 auto;
+}
+.donut::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  background: #fff;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+}
+.donut span {
+  position: relative;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.tx-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.tx-list li {
+  display: grid;
+  grid-template-columns: 36px 1fr 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1.5px dashed var(--mist);
+  border-radius: var(--r-md);
+}
+.tx-ic {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--paper-2);
+  border: 1.5px solid var(--line);
+}
+.tx-list .amt { font-weight: 600; font-variant-numeric: tabular-nums; }
+.tx-list .amt.pos { color: var(--forest-2); }
+
+/* ============== NAVIGATION ============== */
+.sidebar-demo {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 18px;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.sd-brand { display: flex; gap: 12px; align-items: center; padding: 4px; margin-bottom: 8px; }
+.sd-logo {
+  width: 36px; height: 36px;
+  background: var(--lime);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+}
+.sd-brand b { display: block; font-size: 15px; }
+.sd-brand small { color: var(--muted); font-size: 12px; }
+.sd-group {
+  font-family: var(--hand);
+  font-size: 16px;
+  color: var(--muted);
+  margin: 10px 8px 2px;
+}
+.sd-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  position: relative;
+}
+.sd-link.active {
+  background: var(--lime);
+  border: 1.5px solid var(--line);
+  font-weight: 500;
+}
+.sd-link:hover:not(.active) { background: var(--paper-2); }
+.sd-ic {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--line);
+  border-radius: 4px;
+  background: var(--paper-2);
+  display: inline-block;
+}
+.dot-new {
+  margin-left: auto;
+  width: 8px; height: 8px;
+  background: var(--coral);
+  border-radius: 50%;
+}
+.sd-foot {
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1.5px dashed var(--mist);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.sd-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--forest);
+  border: 1.5px solid var(--line);
+}
+.sd-foot b { font-size: 13px; }
+.sd-foot small { color: var(--muted); font-size: 11px; }
+
+.tabs {
+  display: inline-flex;
+  background: var(--paper-2);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-pill);
+  padding: 4px;
+  gap: 4px;
+}
+.tab {
+  padding: 6px 16px;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tab.active { background: #fff; border: 1.5px solid var(--line); color: var(--ink); font-weight: 500; }
+.tab-count {
+  font-size: 11px;
+  padding: 1px 6px;
+  background: var(--lime);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-pill);
+}
+
+.breadcrumbs { color: var(--ink-soft); font-size: 14px; }
+.breadcrumbs a { text-decoration: underline; text-decoration-style: dashed; text-underline-offset: 3px; cursor: pointer; }
+.breadcrumbs .sep { margin: 0 6px; color: var(--muted); }
+.breadcrumbs .current { color: var(--ink); font-weight: 500; }
+
+.pager { display: inline-flex; gap: 6px; align-items: center; }
+.pg {
+  border: 1.5px solid var(--line);
+  background: #fff;
+  border-radius: var(--r-md);
+  min-width: 34px; height: 34px;
+  cursor: pointer;
+  font-family: var(--ui);
+  font-size: 13.5px;
+}
+.pg.active { background: var(--lime); font-weight: 600; }
+.pg-dots { color: var(--muted); padding: 0 4px; }
+
+/* ============== LAYOUTS ============== */
+.layout-frame {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 14px;
+  background: var(--paper-2);
+  border: 1.5px dashed var(--line);
+  border-radius: var(--r-lg);
+  padding: 14px;
+}
+.lf-side {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+  display: grid;
+  place-items: center;
+  font-family: var(--hand);
+  color: var(--muted);
+  font-size: 16px;
+  writing-mode: vertical-rl;
+  padding: 14px 0;
+}
+.lf-main { display: flex; flex-direction: column; gap: 14px; }
+.lf-top, .lf-mid, .lf-bot { display: grid; gap: 14px; }
+.lf-top { grid-template-columns: 1fr 1fr 1fr; }
+.lf-mid { grid-template-columns: 2fr 1fr; }
+.lf-bot { grid-template-columns: 2fr 1fr; }
+.lf-cell {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 16px;
+  min-height: 90px;
+  font-weight: 500;
+  font-size: 14px;
+}
+.lf-cell.big { min-height: 140px; }
+.lf-cell small { display: block; font-family: var(--hand); font-size: 15px; color: var(--muted); margin-top: 4px; }
+
+.mini-wire {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  background: var(--paper-2);
+  border: 1.5px dashed var(--line);
+  border-radius: var(--r-md);
+  padding: 10px;
+  margin: 8px 0;
+  min-height: 100px;
+}
+.mini-wire span {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 4px;
+  min-height: 22px;
+}
+.mini-wire span.big { grid-column: span 2; min-height: 50px; }
+.mini-wire span.tall { min-height: 70px; }
+.mini-wire.stack { grid-template-columns: 1fr; }
+.mini-wire span.bar { min-height: 14px; }
+
+/* ============== STATES ============== */
+.state-card {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  max-width: 480px;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.state-card.error { border-color: var(--coral); }
+.state-card.narrow { max-width: 240px; padding: 22px; }
+.state-card.center { align-items: center; justify-content: center; min-height: 140px; }
+.state-card b { font-size: 17px; }
+.state-card p { color: var(--ink-soft); margin: 0; }
+.state-illu { display: grid; place-items: center; }
+.state-row { display: flex; gap: 20px; flex-wrap: wrap; align-items: stretch; }
+
+.skeleton {
+  background: linear-gradient(90deg, var(--mist) 0%, var(--paper-2) 50%, var(--mist) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: 6px;
+  height: 12px;
+}
+.sk-line { margin: 8px 0; }
+.w90 { width: 90%; }
+.w70 { width: 70%; }
+.w60 { width: 60%; }
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.progress {
+  width: 180px;
+  height: 8px;
+  background: var(--mist);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--lime);
+}
+
+.toast-row { display: flex; flex-direction: column; gap: 10px; max-width: 460px; }
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px 12px 16px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: 3px 3px 0 var(--ink);
+  font-size: 14px;
+}
+.toast-success { background: #ECFBD3; }
+.toast-info { background: var(--paper-2); }
+.toast-err { background: #FFE0E0; border-color: var(--coral); }
+.toast-close {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--ink-soft);
+  width: 24px; height: 24px;
+}
+
+/* ============== AI ============== */
+.ai-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.ai-card {
+  background: var(--forest);
+  color: var(--paper-2);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.ai-sphere-wrap {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  margin: 8px auto;
+}
+.ai-sphere {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.35));
+  animation: breath 6s ease-in-out infinite;
+}
+@keyframes breath {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+.ai-orbit {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(182,243,106,0.4);
+  animation: spin 18s linear infinite;
+}
+.ai-msg {
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.5;
+  margin: 4px 0 0;
+}
+.ai-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ============== TABLES ============== */
+.dt-wrap { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-lg); overflow:hidden; box-shadow:3px 3px 0 var(--ink); }
+.dt-toolbar { display:flex; align-items:center; gap:10px; padding:12px 14px; border-bottom:1.5px dashed var(--mist); flex-wrap:wrap; }
+.dt-toolbar .search-box { flex:1; min-width:220px; padding:6px 12px; }
+.dt-toolbar .search-box input { font-size:13px; }
+.dt-table { width:100%; border-collapse:collapse; font-size:13.5px; }
+.dt-table th { text-align:left; font-weight:500; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); padding:10px 14px; background:var(--paper-2); border-bottom:1.5px solid var(--line); white-space:nowrap; cursor:pointer; }
+.dt-table th .sort { display:inline-block; margin-left:4px; color:var(--muted); }
+.dt-table th.sorted .sort { color:var(--ink); }
+.dt-table td { padding:12px 14px; border-bottom:1.5px dashed var(--mist); vertical-align:middle; }
+.dt-table tr:last-child td { border-bottom:none; }
+.dt-table tr.is-selected { background:#F3FBE0; }
+.dt-table tr:hover { background:var(--paper-2); }
+.dt-check { width:16px; height:16px; border:1.5px solid var(--line); border-radius:3px; display:inline-block; background:#fff; vertical-align:middle; position:relative; }
+.dt-check.checked { background:var(--lime); }
+.dt-check.checked::after { content:"✓"; font-family:var(--hand); position:absolute; inset:-3px 0 0 0; text-align:center; font-weight:700; }
+.dt-foot { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; border-top:1.5px dashed var(--mist); font-size:13px; color:var(--ink-soft); flex-wrap:wrap; gap:10px; }
+.dt-density { display:inline-flex; border:1.5px solid var(--line); border-radius:var(--r-pill); overflow:hidden; }
+.dt-density button { background:#fff; border:none; padding:4px 10px; cursor:pointer; font-size:12px; font-family:var(--ui); }
+.dt-density button.active { background:var(--lime); font-weight:500; }
+.dt-bulk { background:#FFFAD6; padding:8px 14px; display:flex; align-items:center; gap:12px; font-size:13px; border-bottom:1.5px dashed var(--line); }
+.dt-bulk b { color:var(--ink); }
+.row-name { display:flex; align-items:center; gap:10px; }
+
+/* ============== MODALS ============== */
+.modal-frame { background:var(--paper-2); border:1.5px dashed var(--line); border-radius:var(--r-lg); padding:20px; position:relative; min-height:280px; display:grid; place-items:center; }
+.modal-frame::before { content:"backdrop · rgba(0,0,0,.4)"; position:absolute; top:8px; left:14px; font-family:var(--hand); color:var(--muted); font-size:14px; }
+.modal { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-lg); box-shadow:4px 4px 0 var(--ink); overflow:hidden; width:100%; }
+.modal-sm { max-width:380px; }
+.modal-md { max-width:520px; }
+.modal-lg { max-width:720px; }
+.modal-header { display:flex; justify-content:space-between; align-items:center; padding:18px 22px; border-bottom:1.5px dashed var(--mist); }
+.modal-header b { font-size:17px; font-weight:600; }
+.modal-close { width:28px; height:28px; border:1.5px solid var(--line); background:#fff; border-radius:8px; cursor:pointer; font-size:14px; }
+.modal-body { padding:20px 22px; color:var(--ink-soft); }
+.modal-foot { display:flex; justify-content:flex-end; gap:10px; padding:14px 22px; border-top:1.5px dashed var(--mist); background:var(--paper); }
+
+/* ============== DRAWER ============== */
+.drawer-frame { background:var(--paper-2); border:1.5px dashed var(--line); border-radius:var(--r-lg); padding:0; position:relative; height:420px; overflow:hidden; display:flex; }
+.drawer-frame::before { content:"app · detrás del drawer"; position:absolute; inset:0; display:grid; place-items:center; font-family:var(--hand); color:var(--muted); font-size:18px; }
+.drawer { margin-left:auto; height:100%; width:380px; background:#fff; border-left:1.5px solid var(--line); box-shadow:-6px 0 16px rgba(0,0,0,0.08); display:flex; flex-direction:column; position:relative; z-index:2; }
+.drawer-header { display:flex; justify-content:space-between; align-items:center; padding:18px 20px; border-bottom:1.5px dashed var(--mist); }
+.drawer-body { padding:16px 20px; overflow:auto; flex:1; display:flex; flex-direction:column; gap:12px; }
+.drawer-foot { padding:14px 20px; border-top:1.5px dashed var(--mist); display:flex; justify-content:flex-end; gap:10px; background:var(--paper); }
+
+/* ============== FORM LAYOUTS ============== */
+.form-block { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-lg); padding:24px; box-shadow:3px 3px 0 var(--ink); margin-bottom:16px; }
+.form-block.single { max-width:480px; }
+.form-2col { display:grid; grid-template-columns:200px 1fr; gap:16px 24px; align-items:start; }
+.form-2col label { padding-top:10px; }
+.form-2col label small { display:block; color:var(--muted); font-weight:400; font-size:12px; }
+.form-section { padding:18px 0; border-bottom:1.5px dashed var(--mist); }
+.form-section:last-child { border-bottom:none; }
+.form-section h3 { margin-bottom:14px; }
+.form-section-meta { font-family:var(--hand); font-size:17px; color:var(--muted); margin-bottom:14px; }
+.form-inline { display:flex; gap:8px; align-items:end; }
+.form-inline .field { flex:1; }
+
+/* ============== TOOLTIP / POPOVER / MENU ============== */
+.tip-wrap { display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end; }
+.tip-demo { position:relative; padding-top:40px; }
+.tooltip { position:absolute; top:0; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; padding:6px 10px; border-radius:6px; font-size:12px; white-space:nowrap; }
+.tooltip::after { content:""; position:absolute; bottom:-5px; left:50%; transform:translateX(-50%); width:8px; height:8px; background:var(--ink); rotate:45deg; }
+.popover { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-md); padding:14px 16px; max-width:260px; box-shadow:3px 3px 0 var(--ink); position:relative; }
+.popover::before { content:""; position:absolute; top:-7px; left:24px; width:12px; height:12px; background:#fff; border-top:1.5px solid var(--line); border-left:1.5px solid var(--line); rotate:45deg; }
+.popover h4 { margin:0 0 6px; font-size:14px; font-weight:600; }
+.popover p { margin:0; font-size:13px; color:var(--ink-soft); }
+.menu { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-md); padding:6px; min-width:200px; box-shadow:3px 3px 0 var(--ink); }
+.menu-item { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:6px; font-size:13.5px; cursor:pointer; }
+.menu-item:hover { background:var(--paper-2); }
+.menu-item kbd { margin-left:auto; }
+.menu-divider { height:1px; border-top:1.5px dashed var(--mist); margin:6px 4px; }
+.menu-item.danger { color:var(--coral); }
+.menu-item.danger:hover { background:#FFE0E0; }
+
+/* ============== DATE PICKER ============== */
+.datepicker { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-lg); box-shadow:3px 3px 0 var(--ink); display:flex; overflow:hidden; max-width:560px; }
+.dp-presets { background:var(--paper-2); border-right:1.5px dashed var(--mist); padding:10px; display:flex; flex-direction:column; gap:2px; min-width:120px; }
+.dp-presets b { font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); padding:6px 8px; }
+.dp-preset { padding:6px 10px; border-radius:6px; font-size:13px; cursor:pointer; }
+.dp-preset:hover { background:#fff; }
+.dp-preset.active { background:var(--lime); font-weight:500; }
+.dp-cal { padding:14px 16px; flex:1; }
+.dp-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.dp-head b { font-size:14px; }
+.dp-nav { display:flex; gap:4px; }
+.dp-nav button { width:26px; height:26px; border:1.5px solid var(--line); background:#fff; border-radius:6px; cursor:pointer; font-size:12px; }
+.dp-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+.dp-wd { font-size:11px; color:var(--muted); text-align:center; padding:4px 0; font-weight:500; }
+.dp-day { aspect-ratio:1; display:grid; place-items:center; border-radius:6px; font-size:12.5px; cursor:pointer; border:1.5px solid transparent; }
+.dp-day:hover { background:var(--paper-2); }
+.dp-day.muted { color:var(--muted); }
+.dp-day.today { border-color:var(--line); }
+.dp-day.in-range { background:var(--lime); }
+.dp-day.range-start, .dp-day.range-end { background:var(--ink); color:#fff; }
+
+/* ============== AVATAR ============== */
+.avatar { display:inline-grid; place-items:center; border-radius:50%; border:1.5px solid var(--line); background:var(--forest); color:var(--paper-2); font-weight:500; font-size:13px; position:relative; flex-shrink:0; }
+.av-xs { width:22px; height:22px; font-size:10px; }
+.av-sm { width:28px; height:28px; font-size:11px; }
+.av-md { width:36px; height:36px; font-size:13px; }
+.av-lg { width:48px; height:48px; font-size:16px; }
+.av-xl { width:64px; height:64px; font-size:20px; }
+.avatar.c1 { background:var(--forest); }
+.avatar.c2 { background:#5E8E2A; }
+.avatar.c3 { background:#444842; }
+.avatar.c4 { background:var(--coral); }
+.avatar.c5 { background:#2C6A4D; }
+.av-status { position:absolute; bottom:-1px; right:-1px; width:10px; height:10px; border-radius:50%; border:1.5px solid #fff; background:var(--lime); }
+.av-status.off { background:var(--muted); }
+.av-status.busy { background:var(--coral); }
+.avatar-group { display:inline-flex; }
+.avatar-group .avatar { margin-left:-8px; box-shadow:0 0 0 2px #fff; }
+.avatar-group .avatar:first-child { margin-left:0; }
+.avatar-group .more { background:var(--paper-2); color:var(--ink); font-size:11px; }
+.assignee-picker { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-md); box-shadow:3px 3px 0 var(--ink); max-width:280px; }
+.assignee-picker .search-box { border:none; border-bottom:1.5px dashed var(--mist); border-radius:0; padding:8px 14px; box-shadow:none; }
+.assignee-list { max-height:200px; overflow:auto; padding:6px; }
+.assignee-item { display:flex; align-items:center; gap:10px; padding:6px 8px; border-radius:6px; cursor:pointer; font-size:13px; }
+.assignee-item:hover { background:var(--paper-2); }
+.assignee-item.active { background:var(--lime); }
+.assignee-item .meta { margin-left:auto; color:var(--muted); font-size:11px; }
+
+/* ============== STEPPER ============== */
+.stepper { display:flex; align-items:center; gap:0; background:#fff; border:1.5px solid var(--line); border-radius:var(--r-lg); padding:16px 20px; box-shadow:3px 3px 0 var(--ink); margin-bottom:16px; flex-wrap:wrap; }
+.step { display:flex; align-items:center; gap:10px; flex:1; min-width:140px; }
+.step-dot { width:28px; height:28px; border-radius:50%; border:1.5px solid var(--line); display:grid; place-items:center; background:#fff; font-size:13px; font-weight:500; flex-shrink:0; }
+.step.done .step-dot { background:var(--lime); }
+.step.done .step-dot::before { content:"✓"; font-family:var(--hand); font-weight:700; }
+.step.done .step-dot span { display:none; }
+.step.current .step-dot { background:var(--ink); color:#fff; }
+.step.pending .step-dot { color:var(--muted); }
+.step-label { display:flex; flex-direction:column; }
+.step-label b { font-size:13px; }
+.step-label small { color:var(--muted); font-size:11px; }
+.step.pending .step-label b { color:var(--muted); font-weight:400; }
+.step-bar { flex:1; height:1.5px; background:repeating-linear-gradient(to right, var(--mist) 0 6px, transparent 6px 10px); min-width:30px; }
+.step.done + .step-bar, .step.done ~ .step-bar:not(:last-child) { background:var(--ink); }
+
+.stepper-vert { display:flex; flex-direction:column; gap:0; background:#fff; border:1.5px solid var(--line); border-radius:var(--r-lg); padding:18px; box-shadow:3px 3px 0 var(--ink); max-width:320px; }
+.stepper-vert .step-v { display:grid; grid-template-columns:28px 1fr; gap:12px; align-items:start; padding:8px 0; position:relative; }
+.stepper-vert .step-v::before { content:""; position:absolute; left:13px; top:36px; bottom:-8px; width:1.5px; background:repeating-linear-gradient(to bottom, var(--mist) 0 4px, transparent 4px 8px); }
+.stepper-vert .step-v:last-child::before { display:none; }
+.stepper-vert .step-v.done::before { background:var(--ink); }
+
+/* ============== KANBAN ============== */
+.kanban { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; }
+.kanban-col { background:var(--paper-2); border:1.5px dashed var(--line); border-radius:var(--r-lg); padding:12px; min-height:340px; display:flex; flex-direction:column; gap:10px; }
+.kanban-col-head { display:flex; justify-content:space-between; align-items:center; padding:0 4px 8px; border-bottom:1.5px dashed var(--mist); }
+.kanban-col-head b { font-size:13px; }
+.kanban-col-head .count { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-pill); padding:1px 8px; font-size:11px; font-weight:500; }
+.kanban-col-head .add { width:22px; height:22px; border:1.5px solid var(--line); border-radius:6px; background:#fff; cursor:pointer; font-size:13px; line-height:1; }
+.kanban-card { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-md); padding:10px 12px; box-shadow:2px 2px 0 var(--ink); display:flex; flex-direction:column; gap:6px; cursor:grab; }
+.kanban-card .kc-head { display:flex; justify-content:space-between; align-items:center; gap:6px; }
+.kanban-card .kc-title { font-size:13.5px; font-weight:500; line-height:1.3; }
+.kanban-card .kc-meta { display:flex; justify-content:space-between; align-items:center; gap:6px; font-size:11px; color:var(--muted); }
+.kanban-card .kc-tags { display:flex; gap:4px; flex-wrap:wrap; }
+.kanban-card .kc-value { font-weight:600; font-variant-numeric:tabular-nums; }
+.kanban-card.dragging { opacity:0.6; transform:rotate(-1deg); }
+
+/* ============== TIMELINE ============== */
+.timeline { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-lg); padding:20px 22px; box-shadow:3px 3px 0 var(--ink); max-width:560px; }
+.tl-item { display:grid; grid-template-columns:36px 1fr; gap:12px; padding:12px 0; position:relative; }
+.tl-item::before { content:""; position:absolute; left:17px; top:36px; bottom:-12px; width:1.5px; background:repeating-linear-gradient(to bottom, var(--mist) 0 4px, transparent 4px 8px); }
+.tl-item:last-child::before { display:none; }
+.tl-dot { width:36px; height:36px; border:1.5px solid var(--line); border-radius:50%; display:grid; place-items:center; background:#fff; font-size:14px; z-index:1; }
+.tl-dot.system { background:var(--paper-2); }
+.tl-dot.user { background:var(--lime); }
+.tl-dot.warn { background:#FFE0E0; }
+.tl-body { padding-top:6px; }
+.tl-body .tl-meta { font-size:11px; color:var(--muted); margin-top:2px; }
+.tl-body p { margin:6px 0 0; font-size:13.5px; color:var(--ink-soft); }
+.tl-body .tl-quote { background:var(--paper-2); border-left:3px solid var(--lime); padding:8px 12px; border-radius:6px; font-size:13px; margin-top:6px; font-style:italic; }
+
+/* ============== COMMAND PALETTE ============== */
+.cmdk-frame { background:var(--paper-2); border:1.5px dashed var(--line); border-radius:var(--r-lg); padding:40px 20px; position:relative; min-height:380px; display:grid; place-items:start center; }
+.cmdk-frame::before { content:"backdrop · blur 12px"; position:absolute; top:8px; left:14px; font-family:var(--hand); color:var(--muted); font-size:14px; }
+.cmdk { width:100%; max-width:520px; background:#fff; border:1.5px solid var(--line); border-radius:var(--r-lg); box-shadow:4px 4px 0 var(--ink); overflow:hidden; }
+.cmdk-input { display:flex; align-items:center; gap:10px; padding:14px 16px; border-bottom:1.5px dashed var(--mist); }
+.cmdk-input input { border:none; outline:none; flex:1; font-size:15px; font-family:var(--ui); }
+.cmdk-input kbd { font-size:10px; }
+.cmdk-section { padding:6px; }
+.cmdk-section b { display:block; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); padding:8px 10px 4px; }
+.cmdk-item { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:6px; cursor:pointer; font-size:13.5px; }
+.cmdk-item.active { background:var(--lime); }
+.cmdk-item kbd { margin-left:auto; }
+.cmdk-foot { padding:8px 14px; border-top:1.5px dashed var(--mist); display:flex; gap:14px; font-size:11px; color:var(--muted); }
+.cmdk-foot kbd { font-size:10px; }
+
+/* ============== FILTER BUILDER ============== */
+.fb { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-lg); padding:18px; box-shadow:3px 3px 0 var(--ink); }
+.fb-group { background:var(--paper-2); border:1.5px dashed var(--line); border-radius:var(--r-md); padding:12px; display:flex; flex-direction:column; gap:8px; position:relative; }
+.fb-group + .fb-group { margin-top:10px; }
+.fb-group .fb-op-tag { position:absolute; top:-10px; left:14px; background:#fff; border:1.5px solid var(--line); padding:1px 10px; border-radius:var(--r-pill); font-size:11px; font-weight:600; letter-spacing:0.06em; }
+.fb-condition { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.fb-pill { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-md); padding:5px 12px; font-size:13px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; }
+.fb-pill.field { background:var(--ink); color:#fff; }
+.fb-pill.op { background:var(--mist); }
+.fb-pill.value { background:var(--lime); }
+.fb-x { background:transparent; border:none; cursor:pointer; color:var(--muted); font-size:14px; margin-left:auto; }
+.fb-add { background:transparent; border:1.5px dashed var(--line); padding:6px 12px; border-radius:var(--r-md); font-family:var(--ui); font-size:12px; cursor:pointer; align-self:flex-start; color:var(--ink-soft); }
+.fb-foot { display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:14px; border-top:1.5px dashed var(--mist); }
+.fb-foot .muted { font-family:var(--hand); font-size:16px; }
+
+/* ============== EMPTY ILUSTRADOS ============== */
+.empty-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:18px; }
+.empty-il { background:#fff; border:1.5px solid var(--line); border-radius:var(--r-lg); padding:28px; box-shadow:3px 3px 0 var(--ink); display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; min-height:280px; justify-content:center; }
+.empty-il svg { margin-bottom:6px; }
+.empty-il b { font-size:16px; }
+.empty-il p { margin:0; color:var(--ink-soft); font-size:13.5px; max-width:280px; }
+
+/* ============== RESPONSIVE-ISH ============== */
+@media (max-width: 1100px) {
+  body { grid-template-columns: 240px 1fr; }
+  .main { padding: 40px 32px 80px; }
+  .icon-grid { grid-template-columns: repeat(6, 1fr); }
+  .card-grid, .color-grid, .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .radii-row { grid-template-columns: repeat(3, 1fr); }
+  .shadow-row { grid-template-columns: repeat(2, 1fr); }
+  .ai-grid { grid-template-columns: 1fr; }
+  .card-anatomy { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  body { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; }
+  .main { padding: 32px 20px 60px; }
+  .grid-2, .grid-3, .card-grid, .color-grid, .form-row { grid-template-columns: 1fr; }
+  h1 { font-size: 40px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- =================== SIDEBAR =================== -->
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 40 40" width="36" height="36">
+        <rect x="2" y="2" width="36" height="36" rx="10" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="3 2"/>
+        <path d="M12 28 V14 H28" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M12 21 H22" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="28" cy="14" r="3" fill="#B6F36A" stroke="#1a1a1a" stroke-width="2"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand-name">CRM</div>
+      <div class="brand-sub">design system · v0.2</div>
+    </div>
+  </div>
+
+  <div class="scribble">"wireframe · working sketchbook"</div>
+
+  <nav class="nav">
+    <div class="nav-group-title">Fundamentos</div>
+    <a href="#overview" class="nav-link active" data-section="overview">Overview</a>
+    <a href="#colors" class="nav-link" data-section="colors">Colores</a>
+    <a href="#typography" class="nav-link" data-section="typography">Tipografía</a>
+    <a href="#spacing" class="nav-link" data-section="spacing">Espaciado</a>
+    <a href="#radii" class="nav-link" data-section="radii">Radios &amp; sombras</a>
+    <a href="#icons" class="nav-link" data-section="icons">Iconografía</a>
+
+    <div class="nav-group-title">Componentes</div>
+    <a href="#buttons" class="nav-link" data-section="buttons">Botones</a>
+    <a href="#badges" class="nav-link" data-section="badges">Badges</a>
+    <a href="#inputs" class="nav-link" data-section="inputs">Inputs &amp; forms</a>
+    <a href="#form-layouts" class="nav-link" data-section="form-layouts">Form layouts</a>
+    <a href="#cards" class="nav-link" data-section="cards">Cards</a>
+    <a href="#tables" class="nav-link" data-section="tables">Tablas</a>
+    <a href="#modals" class="nav-link" data-section="modals">Modales &amp; dialogs</a>
+    <a href="#drawer" class="nav-link" data-section="drawer">Drawer / side panel</a>
+    <a href="#tooltip" class="nav-link" data-section="tooltip">Tooltips, popovers, menús</a>
+    <a href="#datepicker" class="nav-link" data-section="datepicker">Date picker</a>
+    <a href="#avatar" class="nav-link" data-section="avatar">Avatar &amp; assignee</a>
+    <a href="#navigation" class="nav-link" data-section="navigation">Navegación</a>
+
+    <div class="nav-group-title">Patrones</div>
+    <a href="#layouts" class="nav-link" data-section="layouts">Dashboard grids</a>
+    <a href="#wizard" class="nav-link" data-section="wizard">Wizard / stepper</a>
+    <a href="#kanban" class="nav-link" data-section="kanban">Kanban board</a>
+    <a href="#timeline" class="nav-link" data-section="timeline">Activity timeline</a>
+    <a href="#cmdk" class="nav-link" data-section="cmdk">Command palette ⌘K</a>
+    <a href="#filter-builder" class="nav-link" data-section="filter-builder">Filter builder</a>
+    <a href="#empties" class="nav-link" data-section="empties">Empty states ilustrados</a>
+    <a href="#states" class="nav-link" data-section="states">Estados &amp; feedback</a>
+    <a href="#ai" class="nav-link" data-section="ai">AI Assistant</a>
+  </nav>
+
+  <div class="sidebar-foot">
+    <div class="hand">drag &amp; drop&nbsp;→ <br/>nada todavía. <br/>boceto vivo ✎</div>
+  </div>
+</aside>
+
+<!-- =================== MAIN =================== -->
+<main class="main">
+
+  <!-- ============ OVERVIEW ============ -->
+  <section class="page" id="overview" data-screen-label="Overview">
+    <div class="page-head">
+      <div class="kicker">Fundamentos · 01</div>
+      <h1>Overview</h1>
+      <p class="lead">Sistema de diseño para un <b>CRM interno</b> — herramienta de uso diario para un equipo. Esto es un boceto vivo: tokens, componentes y patrones todavía en grafito.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="sketch-card">
+        <div class="sketch-card-title">Identidad</div>
+        <p>FinTech moderna, dirigida a usuarios digitalmente nativos. Control financiero + IA conversacional como diferenciador.</p>
+        <div class="annot">"track finances easily<br/>with AI insights"</div>
+      </div>
+      <div class="sketch-card">
+        <div class="sketch-card-title">Paleta</div>
+        <div class="swatch-row">
+          <span class="swatch" style="background:#B6F36A"></span>
+          <span class="swatch" style="background:#143D2B"></span>
+          <span class="swatch" style="background:#F5F6F4"></span>
+          <span class="swatch" style="background:#0A0A0A"></span>
+          <span class="swatch" style="background:#E85A5A"></span>
+        </div>
+        <p>Mono verde con neutros profundos. Lime para acción, bosque para profundidad.</p>
+      </div>
+      <div class="sketch-card">
+        <div class="sketch-card-title">Tono</div>
+        <ul class="ticks">
+          <li>Moderno</li>
+          <li>Confiable</li>
+          <li>Inteligente</li>
+          <li>Accesible</li>
+          <li>Premium (sin ser frío)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Principios</h2>
+    <div class="grid-2">
+      <div class="principle">
+        <div class="principle-num">1</div>
+        <div>
+          <h3>Claridad jerárquica</h3>
+          <p>Las cifras financieras priman visualmente. Todo lo demás se sienta a su lado.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">2</div>
+        <div>
+          <h3>Consistencia cromática</h3>
+          <p>El verde lima se reserva sólo para acción y métricas positivas clave. No es decoración.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">3</div>
+        <div>
+          <h3>Modularidad</h3>
+          <p>Cada componente vive dentro de su tarjeta. El grid los une, no los fuerza.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">4</div>
+        <div>
+          <h3>Calidez tecnológica</h3>
+          <p>Orgánico (esfera IA) + rigor geométrico (grid, tipografía). Frío y cálido a la vez.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-tag">nota del diseñador</div>
+      <p>Este documento es de fidelidad <b>baja</b>. Sirve para alinear estructura y tokens antes de comprometer pixeles. Las cajas con líneas diagonales son <i>placeholders</i> para arte real.</p>
+    </div>
+  </section>
+
+  <!-- ============ COLORS ============ -->
+  <section class="page" id="colors" data-screen-label="Colors" hidden>
+    <div class="page-head">
+      <div class="kicker">Fundamentos · 02</div>
+      <h1>Colores</h1>
+      <p class="lead">Sistema monocromático verde con neutros profundos. Cinco roles cromáticos, sin más.</p>
+    </div>
+
+    <h2>Roles principales</h2>
+    <div class="color-grid">
+      <div class="color-tile">
+        <div class="color-chip" style="background:#B6F36A"></div>
+        <div class="color-meta">
+          <b>Primary / Lime</b>
+          <code>#B6F36A</code>
+          <span class="annot inline">↳ acciones, KPIs positivos, badges «completed»</span>
+        </div>
+      </div>
+      <div class="color-tile">
+        <div class="color-chip" style="background:#143D2B"></div>
+        <div class="color-meta">
+          <b>Secondary / Forest</b>
+          <code>#143D2B</code>
+          <span class="annot inline">↳ cards principales, fondos de contraste, gráficos</span>
+        </div>
+      </div>
+      <div class="color-tile">
+        <div class="color-chip" style="background:#F5F6F4;border:1.5px dashed #1a1a1a"></div>
+        <div class="color-meta">
+          <b>Base / Bone</b>
+          <code>#F5F6F4</code>
+          <span class="annot inline">↳ fondo general, cards secundarias</span>
+        </div>
+      </div>
+      <div class="color-tile">
+        <div class="color-chip" style="background:#0A0A0A"></div>
+        <div class="color-meta">
+          <b>Ink / Carbon</b>
+          <code>#0A0A0A</code>
+          <span class="annot inline">↳ texto principal, encabezados</span>
+        </div>
+      </div>
+      <div class="color-tile">
+        <div class="color-chip" style="background:#E85A5A"></div>
+        <div class="color-meta">
+          <b>Alert / Coral</b>
+          <code>#E85A5A</code>
+          <span class="annot inline">↳ pending, errores suaves, negativos</span>
+        </div>
+      </div>
+      <div class="color-tile">
+        <div class="color-chip" style="background:#E8EAE7;border:1.5px dashed #1a1a1a"></div>
+        <div class="color-meta">
+          <b>Support / Mist</b>
+          <code>#E8EAE7</code>
+          <span class="annot inline">↳ bordes, divisores, fondos sutiles</span>
+        </div>
+      </div>
+    </div>
+
+    <h2>Rampas (boceto)</h2>
+    <div class="ramp-row">
+      <div class="ramp-label">Lime →</div>
+      <div class="ramp">
+        <span style="background:#F3FBE0"></span>
+        <span style="background:#DCF5A8"></span>
+        <span style="background:#C7F870"></span>
+        <span style="background:#B6F36A"></span>
+        <span style="background:#8FCD46"></span>
+        <span style="background:#5E8E2A"></span>
+        <span style="background:#2F4715"></span>
+      </div>
+    </div>
+    <div class="ramp-row">
+      <div class="ramp-label">Forest →</div>
+      <div class="ramp">
+        <span style="background:#E6EFEA"></span>
+        <span style="background:#B7CFC1"></span>
+        <span style="background:#6F9C84"></span>
+        <span style="background:#2C6A4D"></span>
+        <span style="background:#143D2B"></span>
+        <span style="background:#0A2419"></span>
+        <span style="background:#04110B"></span>
+      </div>
+    </div>
+    <div class="ramp-row">
+      <div class="ramp-label">Neutros →</div>
+      <div class="ramp">
+        <span style="background:#FFFFFF"></span>
+        <span style="background:#F5F6F4"></span>
+        <span style="background:#E8EAE7"></span>
+        <span style="background:#C9CCC6"></span>
+        <span style="background:#8E938A"></span>
+        <span style="background:#444842"></span>
+        <span style="background:#0A0A0A"></span>
+      </div>
+    </div>
+
+    <h2>Combinaciones permitidas</h2>
+    <div class="grid-3">
+      <div class="combo-card" style="background:#B6F36A;color:#0A0A0A">
+        <small>Lime + Ink</small>
+        <b>Total Balance</b>
+        <span>$20,670</span>
+        <em>↳ CTA, KPI hero</em>
+      </div>
+      <div class="combo-card" style="background:#143D2B;color:#F5F6F4">
+        <small>Forest + Bone</small>
+        <b>Cashflow</b>
+        <span>+18.4%</span>
+        <em>↳ card principal</em>
+      </div>
+      <div class="combo-card" style="background:#F5F6F4;color:#0A0A0A;border:1.5px solid #1a1a1a">
+        <small>Bone + Ink</small>
+        <b>Statistic</b>
+        <span>92%</span>
+        <em>↳ card secundaria</em>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-tag">cuidado</div>
+      <p>El lime <b>no decora</b>. Si aparece en un sitio, ese sitio importa. Si lo ves en todas partes, algo se rompió.</p>
+    </div>
+  </section>
+
+  <!-- ============ TYPOGRAPHY ============ -->
+  <section class="page" id="typography" data-screen-label="Typography" hidden>
+    <div class="page-head">
+      <div class="kicker">Fundamentos · 03</div>
+      <h1>Tipografía</h1>
+      <p class="lead">Una familia: <b>General Sans</b>. Geométrica, neutra, alta legibilidad en cifras.</p>
+    </div>
+
+    <div class="type-spec">
+      <div class="type-row">
+        <div class="type-sample" style="font-size:64px;font-weight:600;letter-spacing:-0.02em">$20,670</div>
+        <div class="type-meta">
+          <b>Display / Hero number</b>
+          <code>64 / 72 · 600 · -2%</code>
+          <span class="annot inline">↳ KPI principal, balance total</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample" style="font-size:40px;font-weight:600;letter-spacing:-0.01em">Good evening, Alex</div>
+        <div class="type-meta">
+          <b>H1 / Page title</b>
+          <code>40 / 48 · 600 · -1%</code>
+          <span class="annot inline">↳ encabezado de pantalla</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample" style="font-size:24px;font-weight:600">Cashflow</div>
+        <div class="type-meta">
+          <b>H2 / Module title</b>
+          <code>24 / 32 · 600</code>
+          <span class="annot inline">↳ encabezado de card/módulo</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample" style="font-size:18px;font-weight:500">AI Assistant</div>
+        <div class="type-meta">
+          <b>H3 / Sub-title</b>
+          <code>18 / 26 · 500</code>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample" style="font-size:16px;font-weight:400;max-width:520px">Tus gastos han disminuido un 12% respecto al mes pasado. ¿Quieres revisar las categorías?</div>
+        <div class="type-meta">
+          <b>Body</b>
+          <code>16 / 24 · 400</code>
+          <span class="annot inline">↳ texto general, mensajes IA</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample" style="font-size:13px;font-weight:500;color:#6b6b6b;text-transform:uppercase;letter-spacing:0.08em">Last transactions</div>
+        <div class="type-meta">
+          <b>Label / Eyebrow</b>
+          <code>13 · 500 · UPPER · +8%</code>
+          <span class="annot inline">↳ labels de módulo, eyebrows</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-sample" style="font-size:12px;font-weight:400;color:#6b6b6b">Yesterday · 14:32</div>
+        <div class="type-meta">
+          <b>Caption / Meta</b>
+          <code>12 / 16 · 400 · muted</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Reglas</h2>
+    <div class="grid-2">
+      <div class="sketch-card">
+        <div class="sketch-card-title">Tracking</div>
+        <p>Estrecho en displays (-1 a -2%), neutro en cuerpo. Levemente abierto en eyebrows (+8%).</p>
+      </div>
+      <div class="sketch-card">
+        <div class="sketch-card-title">Cifras</div>
+        <p>Siempre <code>tabular-nums</code> en KPIs y tablas. Símbolo de moneda más pequeño que el número (~0.6×).</p>
+      </div>
+      <div class="sketch-card">
+        <div class="sketch-card-title">Pesos</div>
+        <p>400 cuerpo · 500 labels/sub · 600 displays/headings. Evitar 700 salvo énfasis muy puntual.</p>
+      </div>
+      <div class="sketch-card">
+        <div class="sketch-card-title">Línea</div>
+        <p>Line-height generoso en cuerpo (1.5). Apretado en displays (1.1). Nunca más de 70 caracteres por línea.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SPACING ============ -->
+  <section class="page" id="spacing" data-screen-label="Spacing" hidden>
+    <div class="page-head">
+      <div class="kicker">Fundamentos · 04</div>
+      <h1>Espaciado</h1>
+      <p class="lead">Escala 4-base. Generoso, con respiración entre módulos.</p>
+    </div>
+
+    <h2>Escala</h2>
+    <div class="spacing-grid">
+      <div class="space-row"><div class="space-bar" style="width:4px"></div><b>4</b><code>--space-1</code><span>hairline, gaps de chips</span></div>
+      <div class="space-row"><div class="space-bar" style="width:8px"></div><b>8</b><code>--space-2</code><span>gap de icon+label</span></div>
+      <div class="space-row"><div class="space-bar" style="width:12px"></div><b>12</b><code>--space-3</code><span>padding interno de botones</span></div>
+      <div class="space-row"><div class="space-bar" style="width:16px"></div><b>16</b><code>--space-4</code><span>gap default entre items</span></div>
+      <div class="space-row"><div class="space-bar" style="width:24px"></div><b>24</b><code>--space-5</code><span>padding interno de cards</span></div>
+      <div class="space-row"><div class="space-bar" style="width:32px"></div><b>32</b><code>--space-6</code><span>gap entre cards</span></div>
+      <div class="space-row"><div class="space-bar" style="width:48px"></div><b>48</b><code>--space-7</code><span>secciones de página</span></div>
+      <div class="space-row"><div class="space-bar" style="width:64px"></div><b>64</b><code>--space-8</code><span>respiración entre regiones</span></div>
+    </div>
+
+    <h2>Grid base</h2>
+    <div class="grid-diagram">
+      <div class="grid-cols">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div class="grid-labels">
+        <div>12 columnas</div>
+        <div>gutter 24px</div>
+        <div>margen 32–48px</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-tag">regla pulgar</div>
+      <p>Si dudas entre dos valores, sube uno. El sistema premia respiración sobre densidad.</p>
+    </div>
+  </section>
+
+  <!-- ============ RADII & SHADOWS ============ -->
+  <section class="page" id="radii" data-screen-label="Radii" hidden>
+    <div class="page-head">
+      <div class="kicker">Fundamentos · 05</div>
+      <h1>Radios &amp; sombras</h1>
+      <p class="lead">Esquinas pronunciadas, sombras sutiles. La cara es amable, no abrupta.</p>
+    </div>
+
+    <h2>Radios</h2>
+    <div class="radii-row">
+      <div class="radius-tile"><div class="rbox" style="border-radius:8px"></div><b>8</b><code>--radius-sm</code><span>chips, badges</span></div>
+      <div class="radius-tile"><div class="rbox" style="border-radius:12px"></div><b>12</b><code>--radius-md</code><span>inputs, botones</span></div>
+      <div class="radius-tile"><div class="rbox" style="border-radius:16px"></div><b>16</b><code>--radius-lg</code><span>cards pequeñas</span></div>
+      <div class="radius-tile"><div class="rbox" style="border-radius:24px"></div><b>24</b><code>--radius-xl</code><span>cards principales</span></div>
+      <div class="radius-tile"><div class="rbox" style="border-radius:999px"></div><b>∞</b><code>--radius-pill</code><span>píldoras / CTAs</span></div>
+    </div>
+
+    <h2>Sombras</h2>
+    <div class="shadow-row">
+      <div class="shadow-tile">
+        <div class="sbox" style="box-shadow:0 1px 2px rgba(0,0,0,.06)"></div>
+        <b>elev-1</b>
+        <code>0 1 2 / 6%</code>
+        <span>cards en reposo</span>
+      </div>
+      <div class="shadow-tile">
+        <div class="sbox" style="box-shadow:0 6px 16px rgba(0,0,0,.08)"></div>
+        <b>elev-2</b>
+        <code>0 6 16 / 8%</code>
+        <span>hover, dropdowns</span>
+      </div>
+      <div class="shadow-tile">
+        <div class="sbox" style="box-shadow:0 20px 40px rgba(0,0,0,.12)"></div>
+        <b>elev-3</b>
+        <code>0 20 40 / 12%</code>
+        <span>modales, overlays</span>
+      </div>
+      <div class="shadow-tile">
+        <div class="sbox" style="box-shadow:inset 0 0 0 1.5px #1a1a1a"></div>
+        <b>focus</b>
+        <code>inset ring 1.5</code>
+        <span>foco accesible</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-tag">nota</div>
+      <p>Las sombras nunca son grises. Siempre negro con alpha. Nunca elevación visible más arriba de elev-3 sin razón.</p>
+    </div>
+  </section>
+
+  <!-- ============ ICONS ============ -->
+  <section class="page" id="icons" data-screen-label="Icons" hidden>
+    <div class="page-head">
+      <div class="kicker">Fundamentos · 06</div>
+      <h1>Iconografía</h1>
+      <p class="lead">Estilo lineal (outline), trazo 1.75px, esquinas redondeadas. 24×24 grid base.</p>
+    </div>
+
+    <h2>Set base (boceto)</h2>
+    <div class="icon-grid">
+      <!-- icons inline SVG, all stroke 1.75 -->
+      <!-- home -->
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg><figcaption>home</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg><figcaption>wallet</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><path d="M4 19V9"/><path d="M10 19V5"/><path d="M16 19v-9"/><path d="M22 19H2"/></svg><figcaption>chart</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><figcaption>history</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><path d="M4 8h13l-3-3"/><path d="M20 16H7l3 3"/></svg><figcaption>swap</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg><figcaption>search</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><path d="M6 8a6 6 0 1 1 12 0v5l2 3H4l2-3z"/><path d="M10 19a2 2 0 0 0 4 0"/></svg><figcaption>bell</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 5-6 8-6s7 2 8 6"/></svg><figcaption>user</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1A2 2 0 1 1 4.4 17l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><figcaption>settings</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><path d="M12 5v14"/><path d="M5 12h14"/></svg><figcaption>plus</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg><figcaption>arrow-up-right</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><path d="M17 7 7 17"/><path d="M15 17H7V9"/></svg><figcaption>arrow-down-left</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/><path d="M7 14h3"/></svg><figcaption>card</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h10"/></svg><figcaption>list</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><path d="M5 12a7 7 0 1 1 14 0"/><circle cx="12" cy="13" r="2"/><path d="M12 13v5"/></svg><figcaption>insights</figcaption></figure>
+      <figure class="icon-tile"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3v18"/><path d="M16 7h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8"/></svg><figcaption>currency</figcaption></figure>
+    </div>
+
+    <h2>Reglas</h2>
+    <div class="grid-3">
+      <div class="sketch-card">
+        <div class="sketch-card-title">Trazo</div>
+        <p>1.75px fijo. Round caps + round joins. Nunca rellenos.</p>
+      </div>
+      <div class="sketch-card">
+        <div class="sketch-card-title">Grid</div>
+        <p>24×24 viewBox · padding 2px en cada lado. Centrado óptico, no matemático.</p>
+      </div>
+      <div class="sketch-card">
+        <div class="sketch-card-title">Color</div>
+        <p>Heredan <code>currentColor</code>. Lime sólo en estados activos o KPIs.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BUTTONS ============ -->
+  <section class="page" id="buttons" data-screen-label="Buttons" hidden>
+    <div class="page-head">
+      <div class="kicker">Componentes · 01</div>
+      <h1>Botones</h1>
+      <p class="lead">Píldoras. Tres jerarquías + ghost. Siempre con label, opcionalmente con icono.</p>
+    </div>
+
+    <h2>Jerarquía</h2>
+    <div class="btn-row">
+      <button class="btn btn-primary">Add money</button>
+      <button class="btn btn-secondary">View report</button>
+      <button class="btn btn-outline">Cancel</button>
+      <button class="btn btn-ghost">Skip</button>
+      <span class="annot inline">↳ left to right: primary · secondary · outline · ghost</span>
+    </div>
+
+    <h2>Tamaños</h2>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-sm">Send</button>
+      <button class="btn btn-primary">Send money</button>
+      <button class="btn btn-primary btn-lg">Send money now</button>
+    </div>
+
+    <h2>Con icono</h2>
+    <div class="btn-row">
+      <button class="btn btn-primary">
+        <svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        Add transaction
+      </button>
+      <button class="btn btn-secondary">
+        Export
+        <svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+      </button>
+      <button class="btn btn-icon" aria-label="settings">
+        <svg viewBox="0 0 24 24" class="ic ic-sm"><circle cx="12" cy="12" r="3"/><path d="M19 12h2M3 12h2M12 3v2M12 19v2"/></svg>
+      </button>
+    </div>
+
+    <h2>Estados</h2>
+    <div class="btn-row">
+      <button class="btn btn-primary">default</button>
+      <button class="btn btn-primary is-hover">hover</button>
+      <button class="btn btn-primary is-focus">focus</button>
+      <button class="btn btn-primary is-pressed">pressed</button>
+      <button class="btn btn-primary" disabled>disabled</button>
+      <button class="btn btn-primary is-loading"><span class="dot-spinner"></span> loading</button>
+    </div>
+
+    <h2>Specs</h2>
+    <div class="grid-2">
+      <div class="sketch-card">
+        <div class="sketch-card-title">Anatomía</div>
+        <ul class="ticks">
+          <li>radio: <code>pill</code> (∞)</li>
+          <li>padding: 12 / 20 (sm) · 14 / 24 (md) · 18 / 32 (lg)</li>
+          <li>altura: 36 / 44 / 56</li>
+          <li>label: 500, tracking neutro</li>
+        </ul>
+      </div>
+      <div class="sketch-card">
+        <div class="sketch-card-title">Reglas</div>
+        <ul class="ticks">
+          <li>1 sólo primary por vista</li>
+          <li>icono a la izquierda para «agregar», derecha para «navegar»</li>
+          <li>nunca dos primarios juntos</li>
+          <li>min hit-target 44px</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BADGES ============ -->
+  <section class="page" id="badges" data-screen-label="Badges" hidden>
+    <div class="page-head">
+      <div class="kicker">Componentes · 02</div>
+      <h1>Badges</h1>
+      <p class="lead">Cápsulas suaves con color semántico. Una palabra, una idea.</p>
+    </div>
+
+    <h2>Semánticos</h2>
+    <div class="badge-row">
+      <span class="badge badge-success">Completed</span>
+      <span class="badge badge-pending">Pending</span>
+      <span class="badge badge-neutral">Scheduled</span>
+      <span class="badge badge-info">Auto</span>
+      <span class="badge badge-danger">Failed</span>
+    </div>
+
+    <h2>Numéricos</h2>
+    <div class="badge-row">
+      <span class="badge badge-success">+12.4%</span>
+      <span class="badge badge-pending">-3.1%</span>
+      <span class="badge badge-neutral">·</span>
+      <span class="badge badge-success">↑ 2.8%</span>
+      <span class="badge badge-pending">↓ 1.5%</span>
+    </div>
+
+    <h2>Con icono</h2>
+    <div class="badge-row">
+      <span class="badge badge-success">
+        <svg viewBox="0 0 24 24" class="ic ic-xs"><path d="M5 12l5 5L20 7"/></svg>
+        Verified
+      </span>
+      <span class="badge badge-pending">
+        <svg viewBox="0 0 24 24" class="ic ic-xs"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        In review
+      </span>
+      <span class="badge badge-info">
+        <svg viewBox="0 0 24 24" class="ic ic-xs"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><circle cx="12" cy="16" r=".5"/></svg>
+        AI
+      </span>
+    </div>
+
+    <div class="callout">
+      <div class="callout-tag">regla</div>
+      <p>Verde lime sólo en <i>completed</i> / positivo. Coral sólo en <i>pending</i> / negativo. Nunca mezclar.</p>
+    </div>
+  </section>
+
+  <!-- ============ INPUTS ============ -->
+  <section class="page" id="inputs" data-screen-label="Inputs" hidden>
+    <div class="page-head">
+      <div class="kicker">Componentes · 03</div>
+      <h1>Inputs &amp; forms</h1>
+      <p class="lead">Bordes finos, foco con anillo negro inset. Label encima, helper abajo.</p>
+    </div>
+
+    <h2>Text field</h2>
+    <div class="form-row">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" value="alex@fynix.app" />
+        <small class="helper">Lo usamos para enviar tu resumen semanal.</small>
+      </div>
+      <div class="field">
+        <label>Monto</label>
+        <div class="input-affix">
+          <span class="affix-left">$</span>
+          <input type="text" value="1,240.00" />
+          <span class="affix-right">USD</span>
+        </div>
+        <small class="helper">Hasta $50,000 por transferencia.</small>
+      </div>
+    </div>
+
+    <h2>Estados</h2>
+    <div class="form-row">
+      <div class="field"><label>Default</label><input type="text" placeholder="Placeholder…" /></div>
+      <div class="field"><label>Focus</label><input type="text" value="escribiendo…" class="is-focus" /></div>
+      <div class="field"><label>Error</label><input type="text" value="abc@" class="is-error" /><small class="helper err">Email no válido.</small></div>
+      <div class="field"><label>Disabled</label><input type="text" value="bloqueado" disabled /></div>
+    </div>
+
+    <h2>Select / Dropdown</h2>
+    <div class="form-row">
+      <div class="field">
+        <label>Categoría</label>
+        <div class="select">
+          <span>Alimentación</span>
+          <svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="field">
+        <label>Cuenta</label>
+        <div class="select open">
+          <span>•••• 4421 · Checking</span>
+          <svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="select-menu">
+          <div class="select-item is-active">•••• 4421 · Checking</div>
+          <div class="select-item">•••• 9078 · Savings</div>
+          <div class="select-item">•••• 1130 · Credit</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Toggle, checkbox, radio</h2>
+    <div class="form-row tight">
+      <label class="ctrl"><input type="checkbox" checked /><span class="cbox"></span> Recibir resumen IA</label>
+      <label class="ctrl"><input type="checkbox" /><span class="cbox"></span> Alertas de gasto</label>
+      <label class="ctrl"><input type="radio" name="r" checked /><span class="rbox-r"></span> Semanal</label>
+      <label class="ctrl"><input type="radio" name="r" /><span class="rbox-r"></span> Mensual</label>
+      <label class="ctrl toggle"><input type="checkbox" checked /><span class="tbox"></span> Modo auto-ahorro</label>
+    </div>
+
+    <h2>Slider / Range</h2>
+    <div class="slider-demo">
+      <div class="slider-track">
+        <div class="slider-fill" style="width:62%"></div>
+        <div class="slider-thumb" style="left:62%"></div>
+      </div>
+      <div class="slider-labels"><span>$0</span><span>$2,500</span><span>$5,000</span></div>
+    </div>
+
+    <h2>Search</h2>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" class="ic ic-sm"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg>
+      <input placeholder="Buscar transacciones, comercios, etiquetas…" />
+      <kbd>⌘ K</kbd>
+    </div>
+  </section>
+
+  <!-- ============ CARDS ============ -->
+  <section class="page" id="cards" data-screen-label="Cards" hidden>
+    <div class="page-head">
+      <div class="kicker">Componentes · 04</div>
+      <h1>Cards</h1>
+      <p class="lead">Bloque principal del sistema. Bordes redondeados (16–24), padding generoso, jerarquía interna clara.</p>
+    </div>
+
+    <h2>Anatomía</h2>
+    <div class="card-anatomy">
+      <div class="card-demo">
+        <div class="card-header">
+          <span class="eyebrow">Total Balance</span>
+          <svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="card-hero">$20,670<small>.40 USD</small></div>
+        <div class="card-foot"><span class="badge badge-success">+12.4%</span><span class="muted">vs último mes</span></div>
+      </div>
+      <ul class="annot-list">
+        <li><b>1.</b> Eyebrow (label) + acción opcional</li>
+        <li><b>2.</b> Cifra / hero (display)</li>
+        <li><b>3.</b> Tendencia + comparación</li>
+        <li><b>—</b> Padding 24, gap 16, radio 24</li>
+      </ul>
+    </div>
+
+    <h2>Variantes</h2>
+    <div class="card-grid">
+      <div class="card-demo dark">
+        <div class="card-header"><span class="eyebrow light">Cashflow</span></div>
+        <div class="card-hero light">+$4,820</div>
+        <div class="bars">
+          <div><span class="bar a" style="height:30%"></span><span class="bar b" style="height:60%"></span></div>
+          <div><span class="bar a" style="height:50%"></span><span class="bar b" style="height:40%"></span></div>
+          <div><span class="bar a" style="height:80%"></span><span class="bar b" style="height:30%"></span></div>
+          <div><span class="bar a" style="height:40%"></span><span class="bar b" style="height:70%"></span></div>
+          <div><span class="bar a" style="height:60%"></span><span class="bar b" style="height:55%"></span></div>
+          <div><span class="bar a" style="height:90%"></span><span class="bar b" style="height:35%"></span></div>
+        </div>
+      </div>
+
+      <div class="card-demo">
+        <div class="card-header"><span class="eyebrow">Finance Score</span></div>
+        <div class="donut"><span>92%</span></div>
+        <small class="muted">Excellent · keep it up</small>
+      </div>
+
+      <div class="card-demo accent">
+        <div class="card-header"><span class="eyebrow">AI Enhancements</span></div>
+        <div class="card-hero">37</div>
+        <small>recomendaciones nuevas esta semana</small>
+        <button class="btn btn-secondary btn-sm">Ver todas</button>
+      </div>
+
+      <div class="card-demo wide">
+        <div class="card-header">
+          <span class="eyebrow">Last transactions</span>
+          <button class="btn btn-ghost btn-sm">See all</button>
+        </div>
+        <ul class="tx-list">
+          <li><span class="tx-ic"></span><b>Whole Foods</b><span class="muted">Groceries · Today</span><span class="amt">-$48.20</span><span class="badge badge-success">Completed</span></li>
+          <li><span class="tx-ic"></span><b>Spotify</b><span class="muted">Subscription · Yesterday</span><span class="amt">-$9.99</span><span class="badge badge-pending">Pending</span></li>
+          <li><span class="tx-ic"></span><b>Salary</b><span class="muted">Income · 2 days ago</span><span class="amt pos">+$4,200.00</span><span class="badge badge-success">Completed</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-tag">recordatorio</div>
+      <p>Las cards <b>respiran</b>. Si tienes que comprimir contenido para que entre, eliges otra card o jerarquía. Nunca apretar.</p>
+    </div>
+  </section>
+
+  <!-- ============ NAVIGATION ============ -->
+  <section class="page" id="navigation" data-screen-label="Navigation" hidden>
+    <div class="page-head">
+      <div class="kicker">Componentes · 05</div>
+      <h1>Navegación</h1>
+      <p class="lead">Sidebar persistente a la izquierda + tabs contextuales en cards. Sin navbar superior.</p>
+    </div>
+
+    <h2>Sidebar (estructura)</h2>
+    <div class="sidebar-demo">
+      <div class="sd-brand">
+        <div class="sd-logo"></div>
+        <div><b>Fynix</b><small>Personal</small></div>
+      </div>
+      <div class="sd-group">menu</div>
+      <a class="sd-link active"><span class="sd-ic"></span> Dashboard</a>
+      <a class="sd-link"><span class="sd-ic"></span> Transactions</a>
+      <a class="sd-link"><span class="sd-ic"></span> Insights</a>
+      <a class="sd-link"><span class="sd-ic"></span> Cards</a>
+      <a class="sd-link"><span class="sd-ic"></span> AI Assistant <span class="dot-new"></span></a>
+      <div class="sd-group">general</div>
+      <a class="sd-link"><span class="sd-ic"></span> Settings</a>
+      <a class="sd-link"><span class="sd-ic"></span> Help</a>
+      <div class="sd-foot">
+        <div class="sd-avatar"></div>
+        <div><b>Alex Rivera</b><small>alex@fynix.app</small></div>
+      </div>
+    </div>
+
+    <h2>Tabs</h2>
+    <div class="tabs">
+      <div class="tab active">All</div>
+      <div class="tab">Income</div>
+      <div class="tab">Expenses</div>
+      <div class="tab">Transfers <span class="tab-count">12</span></div>
+    </div>
+
+    <h2>Breadcrumbs</h2>
+    <div class="breadcrumbs">
+      <a>Dashboard</a> <span class="sep">/</span>
+      <a>Transactions</a> <span class="sep">/</span>
+      <span class="current">Whole Foods · #4421</span>
+    </div>
+
+    <h2>Pagination</h2>
+    <div class="pager">
+      <button class="btn btn-icon btn-sm">‹</button>
+      <button class="pg active">1</button>
+      <button class="pg">2</button>
+      <button class="pg">3</button>
+      <span class="pg-dots">…</span>
+      <button class="pg">24</button>
+      <button class="btn btn-icon btn-sm">›</button>
+    </div>
+  </section>
+
+  <!-- ============ LAYOUTS ============ -->
+  <section class="page" id="layouts" data-screen-label="Layouts" hidden>
+    <div class="page-head">
+      <div class="kicker">Patrones · 01</div>
+      <h1>Dashboard grids</h1>
+      <p class="lead">Tres filas modulares. Cada celda es una card autónoma.</p>
+    </div>
+
+    <h2>Esqueleto general</h2>
+    <div class="layout-frame">
+      <div class="lf-side">sidebar</div>
+      <div class="lf-main">
+        <div class="lf-top">
+          <div class="lf-cell">Total Balance<br/><small>kpi · 1/3</small></div>
+          <div class="lf-cell">AI Enhancements<br/><small>kpi · 1/3</small></div>
+          <div class="lf-cell">Finance Score<br/><small>kpi · 1/3</small></div>
+        </div>
+        <div class="lf-mid">
+          <div class="lf-cell big">Cashflow<br/><small>chart · 2/3</small></div>
+          <div class="lf-cell">AI Assistant<br/><small>panel · 1/3</small></div>
+        </div>
+        <div class="lf-bot">
+          <div class="lf-cell big">Last transactions<br/><small>list · 2/3</small></div>
+          <div class="lf-cell">Statistic<br/><small>donut · 1/3</small></div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Variantes</h2>
+    <div class="grid-3">
+      <div class="sketch-card">
+        <div class="sketch-card-title">Dashboard home</div>
+        <div class="mini-wire"><span></span><span></span><span></span><span class="big"></span><span></span><span class="big"></span><span></span></div>
+        <small>KPIs · chart + IA · transactions + donut</small>
+      </div>
+      <div class="sketch-card">
+        <div class="sketch-card-title">Transactions</div>
+        <div class="mini-wire stack"><span class="bar"></span><span class="bar"></span><span class="big tall"></span></div>
+        <small>filtros · tabla full-width</small>
+      </div>
+      <div class="sketch-card">
+        <div class="sketch-card-title">Insights / IA</div>
+        <div class="mini-wire"><span class="big tall"></span><span></span><span></span><span></span></div>
+        <small>chat principal · cards laterales</small>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-tag">grid</div>
+      <p>12 columnas · gutter 24 · margen 32–48. En mobile colapsa a 1 columna; los KPIs se hacen scroll horizontal.</p>
+    </div>
+  </section>
+
+  <!-- ============ STATES ============ -->
+  <section class="page" id="states" data-screen-label="States" hidden>
+    <div class="page-head">
+      <div class="kicker">Patrones · 02</div>
+      <h1>Estados &amp; feedback</h1>
+      <p class="lead">Empty, loading, error, success. Misma estructura: ilustración / icono · título · ayuda · acción.</p>
+    </div>
+
+    <h2>Empty state</h2>
+    <div class="state-card">
+      <div class="state-illu">
+        <svg viewBox="0 0 80 80" width="80" height="80">
+          <rect x="6" y="14" width="68" height="50" rx="8" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="4 3"/>
+          <path d="M20 36h40M20 46h26" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="60" cy="22" r="5" fill="#B6F36A" stroke="#1a1a1a" stroke-width="2"/>
+        </svg>
+      </div>
+      <b>No transactions yet</b>
+      <p>Cuando muevas dinero aquí, lo verás listado. ¿Conectamos una cuenta?</p>
+      <button class="btn btn-primary btn-sm">Connect account</button>
+    </div>
+
+    <h2>Loading</h2>
+    <div class="state-row">
+      <div class="state-card narrow">
+        <div class="skeleton sk-line w70"></div>
+        <div class="skeleton sk-line w90"></div>
+        <div class="skeleton sk-line w60"></div>
+        <small class="muted">skeleton · placeholders animados</small>
+      </div>
+      <div class="state-card narrow center">
+        <div class="dot-spinner big"></div>
+        <small class="muted">spinner · operación corta</small>
+      </div>
+      <div class="state-card narrow center">
+        <div class="progress"><div class="progress-fill" style="width:64%"></div></div>
+        <small class="muted">progress · operación larga (importar)</small>
+      </div>
+    </div>
+
+    <h2>Error</h2>
+    <div class="state-card error">
+      <div class="state-illu err">
+        <svg viewBox="0 0 60 60" width="60" height="60"><circle cx="30" cy="30" r="22" fill="none" stroke="#E85A5A" stroke-width="2.5"/><path d="M20 20l20 20M40 20L20 40" stroke="#E85A5A" stroke-width="2.5"/></svg>
+      </div>
+      <b>No pudimos conectar con tu banco</b>
+      <p>Esto suele ser temporal. Intenta de nuevo en un momento o usa otro método.</p>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-sm">Reintentar</button>
+        <button class="btn btn-ghost btn-sm">Reportar</button>
+      </div>
+    </div>
+
+    <h2>Success / toasts</h2>
+    <div class="toast-row">
+      <div class="toast toast-success">
+        <svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M5 12l5 5L20 7"/></svg>
+        Pago enviado · <b>$420 a Mara</b>
+        <button class="toast-close" aria-label="cerrar">×</button>
+      </div>
+      <div class="toast toast-info">
+        <svg viewBox="0 0 24 24" class="ic ic-sm"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><circle cx="12" cy="16" r=".5"/></svg>
+        Nuevo insight de IA disponible
+        <button class="toast-close" aria-label="cerrar">×</button>
+      </div>
+      <div class="toast toast-err">
+        <svg viewBox="0 0 24 24" class="ic ic-sm"><circle cx="12" cy="12" r="9"/><path d="M12 7v6"/><circle cx="12" cy="16.5" r=".6"/></svg>
+        Saldo insuficiente
+        <button class="toast-close" aria-label="cerrar">×</button>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-tag">tono</div>
+      <p>Mensajes en primera persona plural («no pudimos…», «conectamos…»). Nunca culpar al usuario.</p>
+    </div>
+  </section>
+
+  <!-- ============ AI ============ -->
+  <section class="page" id="ai" data-screen-label="AI" hidden>
+    <div class="page-head">
+      <div class="kicker">Patrones · 03</div>
+      <h1>AI Assistant</h1>
+      <p class="lead">El diferenciador. Una esfera gaseosa verde + un input conversacional. Calidez tecnológica.</p>
+    </div>
+
+    <div class="ai-grid">
+      <div class="ai-card">
+        <span class="eyebrow light">AI Assistant</span>
+        <div class="ai-sphere-wrap">
+          <!-- SVG sphere with radial gradients -->
+          <svg viewBox="0 0 240 240" class="ai-sphere">
+            <defs>
+              <radialGradient id="g1" cx="35%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#E8FFB0"/>
+                <stop offset="35%" stop-color="#B6F36A"/>
+                <stop offset="70%" stop-color="#2C6A4D"/>
+                <stop offset="100%" stop-color="#0A2419"/>
+              </radialGradient>
+              <radialGradient id="g2" cx="65%" cy="65%" r="50%">
+                <stop offset="0%" stop-color="#C7F870" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#143D2B" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="g3" cx="50%" cy="85%" r="40%">
+                <stop offset="0%" stop-color="#0A2419" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#0A2419" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="hi" cx="30%" cy="22%" r="22%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="120" cy="120" r="100" fill="url(#g1)"/>
+            <circle cx="120" cy="120" r="100" fill="url(#g2)"/>
+            <circle cx="120" cy="120" r="100" fill="url(#g3)"/>
+            <ellipse cx="92" cy="86" rx="38" ry="22" fill="url(#hi)"/>
+          </svg>
+          <div class="ai-orbit" aria-hidden="true"></div>
+        </div>
+        <p class="ai-msg">"Tus gastos en restaurantes bajaron 18% este mes. ¿Trasladamos lo ahorrado a tu meta <i>Vacaciones</i>?"</p>
+        <div class="ai-actions">
+          <button class="btn btn-primary btn-sm">Sí, transferir</button>
+          <button class="btn btn-ghost btn-sm">Más tarde</button>
+        </div>
+      </div>
+
+      <div>
+        <h2>Anatomía</h2>
+        <ul class="annot-list">
+          <li><b>1.</b> Esfera gaseosa — radial gradients en verde lima → bosque.</li>
+          <li><b>2.</b> Highlight superior izquierdo (luz especular).</li>
+          <li><b>3.</b> Halo interno inferior (sombra orgánica).</li>
+          <li><b>4.</b> Mensaje en cuerpo + dos acciones (primary + ghost).</li>
+          <li><b>5.</b> Animación sutil: leve respiración (~6s loop) + rotación de halo.</li>
+        </ul>
+        <h2 style="margin-top:32px">Reglas</h2>
+        <div class="sketch-card">
+          <ul class="ticks">
+            <li>La esfera <b>vive sólo aquí</b> y en el ícono del asistente.</li>
+            <li>Nunca aplicar el gradiente a otros elementos.</li>
+            <li>El mensaje IA siempre en cursiva o entre comillas tipográficas.</li>
+            <li>Acciones IA: máximo 2 botones. Si hay más, abrir hoja.</li>
+          </ul>
+        </div>
+        <div class="callout" style="margin-top:24px">
+          <div class="callout-tag">producción</div>
+          <p>En hi-fi, considerar reemplazar el SVG por un canvas 3D (Three.js) con shader gaseoso. Este boceto es la referencia formal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TABLES ============ -->
+  <section class="page" id="tables" data-screen-label="Tables" hidden>
+    <div class="page-head">
+      <div class="kicker">Componentes · 06</div>
+      <h1>Tablas</h1>
+      <p class="lead">El caballo de batalla del CRM. Sort, filter, bulk select, densidad ajustable. Sticky header al hacer scroll.</p>
+    </div>
+
+    <h2>Anatomía completa</h2>
+    <div class="dt-wrap">
+      <div class="dt-toolbar">
+        <div class="search-box" style="max-width:320px">
+          <svg viewBox="0 0 24 24" class="ic ic-sm"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg>
+          <input placeholder="Buscar contactos…" />
+        </div>
+        <button class="btn btn-outline btn-sm">
+          <svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+          Filtrar
+        </button>
+        <span class="badge badge-neutral">3 filtros activos</span>
+        <div style="flex:1"></div>
+        <div class="dt-density">
+          <button>cozy</button>
+          <button class="active">comfy</button>
+          <button>compact</button>
+        </div>
+        <button class="btn btn-secondary btn-sm">
+          <svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M12 5v14M5 12h14"/></svg>
+          Nuevo
+        </button>
+      </div>
+      <div class="dt-bulk"><span class="dt-check checked"></span><b>3 seleccionados</b><button class="btn btn-ghost btn-sm">Asignar a…</button><button class="btn btn-ghost btn-sm">Cambiar etapa</button><button class="btn btn-ghost btn-sm" style="color:var(--coral)">Eliminar</button></div>
+      <table class="dt-table">
+        <thead><tr>
+          <th style="width:32px"><span class="dt-check checked"></span></th>
+          <th class="sorted">Nombre <span class="sort">↓</span></th>
+          <th>Empresa</th>
+          <th>Etapa</th>
+          <th>Owner</th>
+          <th style="text-align:right">Valor <span class="sort">↕</span></th>
+          <th>Última actividad <span class="sort">↕</span></th>
+          <th style="width:32px"></th>
+        </tr></thead>
+        <tbody>
+          <tr class="is-selected"><td><span class="dt-check checked"></span></td><td><div class="row-name"><span class="avatar av-sm c1">MR</span><b>María Reyes</b></div></td><td>Acme Corp</td><td><span class="badge badge-success">Qualified</span></td><td><span class="avatar av-xs c2">JL</span></td><td style="text-align:right;font-variant-numeric:tabular-nums">$12,400</td><td>hace 2h</td><td>⋮</td></tr>
+          <tr class="is-selected"><td><span class="dt-check checked"></span></td><td><div class="row-name"><span class="avatar av-sm c3">DK</span><b>Daniel Kim</b></div></td><td>Globex</td><td><span class="badge badge-pending">Negotiation</span></td><td><span class="avatar av-xs c4">AR</span></td><td style="text-align:right;font-variant-numeric:tabular-nums">$8,900</td><td>ayer</td><td>⋮</td></tr>
+          <tr class="is-selected"><td><span class="dt-check checked"></span></td><td><div class="row-name"><span class="avatar av-sm c5">SN</span><b>Sofia Navarro</b></div></td><td>Initech</td><td><span class="badge badge-info">Proposal</span></td><td><span class="avatar av-xs c2">JL</span></td><td style="text-align:right;font-variant-numeric:tabular-nums">$24,100</td><td>hace 3 días</td><td>⋮</td></tr>
+          <tr><td><span class="dt-check"></span></td><td><div class="row-name"><span class="avatar av-sm c4">TC</span><b>Tomas Cruz</b></div></td><td>Hooli</td><td><span class="badge badge-neutral">New</span></td><td><span class="avatar av-xs c5">PG</span></td><td style="text-align:right;font-variant-numeric:tabular-nums">$3,200</td><td>hace 5 días</td><td>⋮</td></tr>
+          <tr><td><span class="dt-check"></span></td><td><div class="row-name"><span class="avatar av-sm c1">EV</span><b>Elena Vega</b></div></td><td>Pied Piper</td><td><span class="badge badge-danger">Lost</span></td><td><span class="avatar av-xs c4">AR</span></td><td style="text-align:right;font-variant-numeric:tabular-nums">$–</td><td>hace 1 sem</td><td>⋮</td></tr>
+        </tbody>
+      </table>
+      <div class="dt-foot"><span>5 de 247 · página 1 / 50</span><div class="pager"><button class="btn btn-icon btn-sm">‹</button><button class="pg active">1</button><button class="pg">2</button><button class="pg">3</button><span class="pg-dots">…</span><button class="btn btn-icon btn-sm">›</button></div></div>
+    </div>
+
+    <h2>Reglas</h2>
+    <div class="grid-3">
+      <div class="sketch-card"><div class="sketch-card-title">Sort</div><p>Una columna activa a la vez. Indicador con flecha. Shift+click para multi-sort en hi-fi.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Bulk actions</div><p>Aparecen en una barra amarilla apenas hay 1+ seleccionado. Nunca como dropdown oculto.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Densidad</div><p>3 niveles. La preferencia se persiste por usuario.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ MODALS ============ -->
+  <section class="page" id="modals" data-screen-label="Modals" hidden>
+    <div class="page-head">
+      <div class="kicker">Componentes · 07</div>
+      <h1>Modales &amp; dialogs</h1>
+      <p class="lead">Tres tamaños: confirmación (sm), formulario (md), flujo (lg). Backdrop oscuro, centrado, foco atrapado dentro.</p>
+    </div>
+
+    <h2>Confirm · small</h2>
+    <div class="modal-frame">
+      <div class="modal modal-sm">
+        <div class="modal-header"><b>¿Eliminar 3 contactos?</b><button class="modal-close">×</button></div>
+        <div class="modal-body">Esta acción no se puede deshacer. Los deals asociados quedarán huérfanos.</div>
+        <div class="modal-foot"><button class="btn btn-ghost btn-sm">Cancelar</button><button class="btn btn-sm" style="background:var(--coral);color:#fff;box-shadow:2px 2px 0 var(--ink)">Eliminar</button></div>
+      </div>
+    </div>
+
+    <h2>Form · medium</h2>
+    <div class="modal-frame">
+      <div class="modal modal-md">
+        <div class="modal-header"><b>Nuevo contacto</b><button class="modal-close">×</button></div>
+        <div class="modal-body" style="padding:0">
+          <div style="padding:18px 22px">
+            <div class="form-row"><div class="field"><label>Nombre</label><input value="María Reyes"/></div><div class="field"><label>Email</label><input value="maria@acme.com"/></div></div>
+            <div class="form-row"><div class="field"><label>Empresa</label><div class="select"><span>Acme Corp</span><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M6 9l6 6 6-6"/></svg></div></div><div class="field"><label>Etapa</label><div class="select"><span>Qualified</span><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M6 9l6 6 6-6"/></svg></div></div></div>
+          </div>
+        </div>
+        <div class="modal-foot"><button class="btn btn-ghost btn-sm">Cancelar</button><button class="btn btn-primary btn-sm">Crear contacto</button></div>
+      </div>
+    </div>
+
+    <h2>Flow · large</h2>
+    <div class="modal-frame" style="min-height:360px">
+      <div class="modal modal-lg">
+        <div class="modal-header"><b>Importar contactos desde CSV</b><button class="modal-close">×</button></div>
+        <div class="modal-body" style="padding:0">
+          <div style="padding:14px 22px;border-bottom:1.5px dashed var(--mist)">
+            <div class="stepper" style="box-shadow:none;border:none;padding:0;margin:0"><div class="step done"><div class="step-dot"></div><div class="step-label"><b>Subir</b></div></div><div class="step-bar"></div><div class="step current"><div class="step-dot"><span>2</span></div><div class="step-label"><b>Mapear columnas</b></div></div><div class="step-bar"></div><div class="step pending"><div class="step-dot"><span>3</span></div><div class="step-label"><b>Confirmar</b></div></div></div>
+          </div>
+          <div style="padding:22px;text-align:center">
+            <div class="sketch-card" style="max-width:none;display:block;text-align:left"><div class="sketch-card-title">Mapeo de columnas</div><p>Empareja las columnas del CSV con los campos del CRM. 247 filas detectadas.</p></div>
+          </div>
+        </div>
+        <div class="modal-foot"><button class="btn btn-ghost btn-sm">Atrás</button><button class="btn btn-primary btn-sm">Continuar →</button></div>
+      </div>
+    </div>
+
+    <div class="callout"><div class="callout-tag">regla</div><p>Un modal a la vez. Si necesitas otro, cerrá el primero o convertí la acción en un drawer.</p></div>
+  </section>
+
+  <!-- ============ DRAWER ============ -->
+  <section class="page" id="drawer" data-screen-label="Drawer" hidden>
+    <div class="page-head">
+      <div class="kicker">Componentes · 08</div>
+      <h1>Drawer / side panel</h1>
+      <p class="lead">Para ver detalle sin perder el contexto del list view. Siempre desde la derecha, ancho 380–520.</p>
+    </div>
+
+    <h2>Detalle de contacto</h2>
+    <div class="drawer-frame">
+      <div class="drawer">
+        <div class="drawer-header">
+          <div style="display:flex;gap:10px;align-items:center"><span class="avatar av-md c1">MR</span><div><b>María Reyes</b><div class="muted" style="font-size:12px">Acme Corp · CEO</div></div></div>
+          <button class="modal-close">×</button>
+        </div>
+        <div class="drawer-body">
+          <div class="badge-row" style="margin:0"><span class="badge badge-success">Qualified</span><span class="badge badge-info">Hot</span></div>
+          <div style="display:grid;grid-template-columns:90px 1fr;gap:8px 12px;font-size:13px">
+            <span class="muted">Email</span><span>maria@acme.com</span>
+            <span class="muted">Teléfono</span><span>+34 612 345 678</span>
+            <span class="muted">Owner</span><span>Juan López</span>
+            <span class="muted">Deal</span><span>$12,400 · en negociación</span>
+          </div>
+          <div class="sketch-card" style="box-shadow:none;padding:14px"><div class="sketch-card-title" style="font-size:18px">Última actividad</div><p style="font-size:13px">Hace 2h · Llamada de 18min. Discutimos términos del contrato.</p></div>
+        </div>
+        <div class="drawer-foot"><button class="btn btn-ghost btn-sm">Cerrar</button><button class="btn btn-primary btn-sm">Ver perfil completo</button></div>
+      </div>
+    </div>
+
+    <h2>Variantes</h2>
+    <div class="grid-3">
+      <div class="sketch-card"><div class="sketch-card-title">Detalle</div><p>Vista compacta de un registro — abrir desde una fila de tabla o card.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Filtros avanzados</div><p>Construir queries complejas sin abandonar la tabla. Aplica en vivo.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Notificaciones</div><p>Centro de mensajes/menciones. Persistente con tabs.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ FORM LAYOUTS ============ -->
+  <section class="page" id="form-layouts" data-screen-label="FormLayouts" hidden>
+    <div class="page-head">
+      <div class="kicker">Componentes · 09</div>
+      <h1>Form layouts</h1>
+      <p class="lead">Cuatro patrones. Cuál usar depende de la complejidad y el contexto.</p>
+    </div>
+
+    <h2>Single column (recomendado por defecto)</h2>
+    <div class="form-block single">
+      <div class="form-row" style="grid-template-columns:1fr"><div class="field"><label>Nombre del deal</label><input value="Renovación Acme 2026"/></div></div>
+      <div class="form-row" style="grid-template-columns:1fr"><div class="field"><label>Valor</label><div class="input-affix"><span class="affix-left">$</span><input value="12,400"/><span class="affix-right">USD</span></div></div></div>
+      <div class="form-row" style="grid-template-columns:1fr"><div class="field"><label>Notas</label><textarea rows="3" style="border:1.5px solid var(--line);border-radius:var(--r-md);padding:10px 14px;font-family:var(--ui);font-size:14px">Cliente interesado en plan anual.</textarea></div></div>
+      <div class="btn-row" style="justify-content:flex-end;margin:8px 0 0"><button class="btn btn-ghost btn-sm">Cancelar</button><button class="btn btn-primary btn-sm">Guardar deal</button></div>
+    </div>
+
+    <h2>Two-column (label izquierda · settings)</h2>
+    <div class="form-block">
+      <div class="form-2col">
+        <label>Nombre completo<small>aparece en perfil público</small></label>
+        <input value="Juan López" />
+        <label>Email de notificaciones<small>resumen diario</small></label>
+        <input value="juan@empresa.com" />
+        <label>Zona horaria</label>
+        <div class="select"><span>Europe/Madrid (GMT+1)</span><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M6 9l6 6 6-6"/></svg></div>
+        <label>Auto-asignar leads<small>cuando estés disponible</small></label>
+        <label class="ctrl toggle" style="padding:10px 0"><input type="checkbox" checked /><span class="tbox"></span> Activado</label>
+      </div>
+    </div>
+
+    <h2>Sectioned (form largo)</h2>
+    <div class="form-block">
+      <div class="form-section">
+        <h3>Información básica</h3>
+        <div class="form-section-meta">datos identificatorios del contacto</div>
+        <div class="form-row"><div class="field"><label>Nombre</label><input value="María"/></div><div class="field"><label>Apellido</label><input value="Reyes"/></div></div>
+      </div>
+      <div class="form-section">
+        <h3>Empresa &amp; rol</h3>
+        <div class="form-section-meta">a qué organización pertenece</div>
+        <div class="form-row"><div class="field"><label>Empresa</label><input value="Acme Corp"/></div><div class="field"><label>Cargo</label><input value="CEO"/></div></div>
+      </div>
+      <div class="form-section">
+        <h3>Contacto</h3>
+        <div class="form-section-meta">dónde encontrarla</div>
+        <div class="form-row"><div class="field"><label>Email</label><input value="maria@acme.com"/></div><div class="field"><label>Teléfono</label><input value="+34 612 345 678"/></div></div>
+      </div>
+    </div>
+
+    <h2>Inline (acción rápida)</h2>
+    <div class="form-block">
+      <div class="form-inline">
+        <div class="field"><label>Agregar tag</label><input placeholder="#priority"/></div>
+        <div class="field" style="max-width:160px"><label>Color</label><div class="select"><span>Lime</span><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M6 9l6 6 6-6"/></svg></div></div>
+        <button class="btn btn-primary btn-sm">Agregar</button>
+      </div>
+    </div>
+
+    <div class="callout"><div class="callout-tag">elección</div><p>Si dudas: <b>single column</b>. Es la forma más legible y la única que escala a mobile sin retocar.</p></div>
+  </section>
+
+  <!-- ============ TOOLTIP / POPOVER / MENU ============ -->
+  <section class="page" id="tooltip" data-screen-label="Tooltip" hidden>
+    <div class="page-head">
+      <div class="kicker">Componentes · 10</div>
+      <h1>Tooltips, popovers, menús</h1>
+      <p class="lead">Tres niveles de explicación flotante. De pequeño a grande: dato, contexto, acciones.</p>
+    </div>
+
+    <div class="tip-wrap">
+      <div class="tip-demo">
+        <div class="tooltip">Asignar a otra persona</div>
+        <button class="btn btn-icon"><svg viewBox="0 0 24 24" class="ic ic-sm"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 5-6 8-6s7 2 8 6"/></svg></button>
+      </div>
+      <div>
+        <div class="popover">
+          <h4>Score IA: 87/100</h4>
+          <p>Basado en respuesta a emails, frecuencia de contacto y monto promedio del pipeline.</p>
+        </div>
+      </div>
+      <div>
+        <div class="menu">
+          <div class="menu-item"><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M4 4h16v16H4z"/></svg> Ver detalle <kbd>⌘↵</kbd></div>
+          <div class="menu-item"><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M12 5v14M5 12h14"/></svg> Asignar a… <kbd>A</kbd></div>
+          <div class="menu-item"><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M4 7h16M4 12h16M4 17h10"/></svg> Cambiar etapa</div>
+          <div class="menu-divider"></div>
+          <div class="menu-item"><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V4h6v4"/></svg> Archivar</div>
+          <div class="menu-item danger"><svg viewBox="0 0 24 24" class="ic ic-sm" style="stroke:var(--coral)"><path d="M5 8h14l-1 12H6z"/></svg> Eliminar <kbd>⌫</kbd></div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Cuándo usar cada uno</h2>
+    <div class="grid-3">
+      <div class="sketch-card"><div class="sketch-card-title">Tooltip</div><p>1 línea de texto, sobre hover. Sirve para etiquetar íconos. Nunca con acciones dentro.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Popover</div><p>Card flotante con un poco más de info: título + texto + a veces 1 acción. Se abre con click.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Menu</div><p>Lista de acciones. Iconos opcionales, atajos a la derecha. Acción destructiva al final, en coral.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ DATE PICKER ============ -->
+  <section class="page" id="datepicker" data-screen-label="DatePicker" hidden>
+    <div class="page-head">
+      <div class="kicker">Componentes · 11</div>
+      <h1>Date picker</h1>
+      <p class="lead">Clásico calendario + presets a la izquierda para rangos comunes. Soporta single y range.</p>
+    </div>
+
+    <h2>Range picker con presets</h2>
+    <div class="datepicker">
+      <div class="dp-presets">
+        <b>Presets</b>
+        <div class="dp-preset">Hoy</div>
+        <div class="dp-preset">Ayer</div>
+        <div class="dp-preset active">Últimos 7 días</div>
+        <div class="dp-preset">Últimos 30 días</div>
+        <div class="dp-preset">Este mes</div>
+        <div class="dp-preset">Mes pasado</div>
+        <div class="dp-preset">Este trimestre</div>
+        <div class="dp-preset">Personalizado</div>
+      </div>
+      <div class="dp-cal">
+        <div class="dp-head"><b>Mayo 2026</b><div class="dp-nav"><button>‹</button><button>›</button></div></div>
+        <div class="dp-grid">
+          <span class="dp-wd">L</span><span class="dp-wd">M</span><span class="dp-wd">X</span><span class="dp-wd">J</span><span class="dp-wd">V</span><span class="dp-wd">S</span><span class="dp-wd">D</span>
+          <span class="dp-day muted">28</span><span class="dp-day muted">29</span><span class="dp-day muted">30</span><span class="dp-day">1</span><span class="dp-day">2</span><span class="dp-day">3</span><span class="dp-day">4</span>
+          <span class="dp-day">5</span><span class="dp-day">6</span><span class="dp-day">7</span><span class="dp-day">8</span><span class="dp-day">9</span><span class="dp-day">10</span><span class="dp-day">11</span>
+          <span class="dp-day">12</span><span class="dp-day">13</span><span class="dp-day">14</span><span class="dp-day">15</span><span class="dp-day range-start">16</span><span class="dp-day in-range">17</span><span class="dp-day in-range">18</span>
+          <span class="dp-day in-range">19</span><span class="dp-day in-range">20</span><span class="dp-day in-range">21</span><span class="dp-day in-range">22</span><span class="dp-day range-end">23</span><span class="dp-day today">24</span><span class="dp-day">25</span>
+          <span class="dp-day">26</span><span class="dp-day">27</span><span class="dp-day">28</span><span class="dp-day">29</span><span class="dp-day">30</span><span class="dp-day">31</span><span class="dp-day muted">1</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1.5px dashed var(--mist);font-size:12px;color:var(--ink-soft)"><span>16 may — 23 may</span><button class="btn btn-primary btn-sm">Aplicar</button></div>
+      </div>
+    </div>
+
+    <h2>Single date (compacto)</h2>
+    <div class="datepicker" style="max-width:280px">
+      <div class="dp-cal">
+        <div class="dp-head"><b>Mayo 2026</b><div class="dp-nav"><button>‹</button><button>›</button></div></div>
+        <div class="dp-grid">
+          <span class="dp-wd">L</span><span class="dp-wd">M</span><span class="dp-wd">X</span><span class="dp-wd">J</span><span class="dp-wd">V</span><span class="dp-wd">S</span><span class="dp-wd">D</span>
+          <span class="dp-day muted">28</span><span class="dp-day muted">29</span><span class="dp-day muted">30</span><span class="dp-day">1</span><span class="dp-day">2</span><span class="dp-day">3</span><span class="dp-day">4</span>
+          <span class="dp-day">5</span><span class="dp-day">6</span><span class="dp-day">7</span><span class="dp-day">8</span><span class="dp-day">9</span><span class="dp-day">10</span><span class="dp-day">11</span>
+          <span class="dp-day">12</span><span class="dp-day">13</span><span class="dp-day">14</span><span class="dp-day">15</span><span class="dp-day">16</span><span class="dp-day">17</span><span class="dp-day">18</span>
+          <span class="dp-day">19</span><span class="dp-day">20</span><span class="dp-day">21</span><span class="dp-day">22</span><span class="dp-day">23</span><span class="dp-day today">24</span><span class="dp-day range-start">25</span>
+          <span class="dp-day">26</span><span class="dp-day">27</span><span class="dp-day">28</span><span class="dp-day">29</span><span class="dp-day">30</span><span class="dp-day">31</span><span class="dp-day muted">1</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AVATAR ============ -->
+  <section class="page" id="avatar" data-screen-label="Avatar" hidden>
+    <div class="page-head">
+      <div class="kicker">Componentes · 12</div>
+      <h1>Avatar &amp; assignee</h1>
+      <p class="lead">Iniciales sobre fondo de color. Imagen real cuando exista. 5 colores rotativos basados en hash del nombre.</p>
+    </div>
+
+    <h2>Tamaños</h2>
+    <div style="display:flex;gap:18px;align-items:end;flex-wrap:wrap;margin-bottom:8px">
+      <div style="text-align:center"><span class="avatar av-xs c1">JL</span><div class="muted" style="font-size:11px;margin-top:4px">xs · 22</div></div>
+      <div style="text-align:center"><span class="avatar av-sm c2">MR</span><div class="muted" style="font-size:11px;margin-top:4px">sm · 28</div></div>
+      <div style="text-align:center"><span class="avatar av-md c3">DK</span><div class="muted" style="font-size:11px;margin-top:4px">md · 36</div></div>
+      <div style="text-align:center"><span class="avatar av-lg c4">SN</span><div class="muted" style="font-size:11px;margin-top:4px">lg · 48</div></div>
+      <div style="text-align:center"><span class="avatar av-xl c5">EV</span><div class="muted" style="font-size:11px;margin-top:4px">xl · 64</div></div>
+    </div>
+
+    <h2>Paleta de fondos (rotativa)</h2>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <span class="avatar av-md c1">A</span>
+      <span class="avatar av-md c2">B</span>
+      <span class="avatar av-md c3">C</span>
+      <span class="avatar av-md c4">D</span>
+      <span class="avatar av-md c5">E</span>
+    </div>
+
+    <h2>Con status</h2>
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+      <div style="text-align:center"><span class="avatar av-md c1">JL<span class="av-status"></span></span><div class="muted" style="font-size:11px;margin-top:4px">online</div></div>
+      <div style="text-align:center"><span class="avatar av-md c2">MR<span class="av-status busy"></span></span><div class="muted" style="font-size:11px;margin-top:4px">busy</div></div>
+      <div style="text-align:center"><span class="avatar av-md c3">DK<span class="av-status off"></span></span><div class="muted" style="font-size:11px;margin-top:4px">offline</div></div>
+    </div>
+
+    <h2>Avatar group</h2>
+    <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+      <div class="avatar-group"><span class="avatar av-md c1">JL</span><span class="avatar av-md c2">MR</span><span class="avatar av-md c3">DK</span></div>
+      <div class="avatar-group"><span class="avatar av-md c1">JL</span><span class="avatar av-md c2">MR</span><span class="avatar av-md c3">DK</span><span class="avatar av-md more">+5</span></div>
+      <div class="avatar-group"><span class="avatar av-sm c4">SN</span><span class="avatar av-sm c5">EV</span><span class="avatar av-sm c1">JL</span><span class="avatar av-sm c2">MR</span><span class="avatar av-sm more">+12</span></div>
+    </div>
+
+    <h2>Assignee picker</h2>
+    <div class="assignee-picker">
+      <div class="search-box"><svg viewBox="0 0 24 24" class="ic ic-sm"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg><input placeholder="Buscar persona…"/></div>
+      <div class="assignee-list">
+        <div class="assignee-item active"><span class="avatar av-sm c1">JL</span><div><div>Juan López</div><div class="muted" style="font-size:11px">juan@empresa.com</div></div><span class="meta">✓</span></div>
+        <div class="assignee-item"><span class="avatar av-sm c2">MR</span><div><div>María Reyes</div><div class="muted" style="font-size:11px">maria@empresa.com</div></div></div>
+        <div class="assignee-item"><span class="avatar av-sm c4">AR</span><div><div>Ana Romero</div><div class="muted" style="font-size:11px">ana@empresa.com</div></div></div>
+        <div class="assignee-item"><span class="avatar av-sm c5">PG</span><div><div>Pablo García</div><div class="muted" style="font-size:11px">pablo@empresa.com</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WIZARD / STEPPER ============ -->
+  <section class="page" id="wizard" data-screen-label="Wizard" hidden>
+    <div class="page-head">
+      <div class="kicker">Patrones · 04</div>
+      <h1>Wizard / stepper</h1>
+      <p class="lead">Para flujos lineales: importar CSV, configuración inicial, KYC. 3–5 pasos máximo.</p>
+    </div>
+
+    <h2>Horizontal</h2>
+    <div class="stepper">
+      <div class="step done"><div class="step-dot"></div><div class="step-label"><b>Workspace</b><small>nombre &amp; logo</small></div></div>
+      <div class="step-bar"></div>
+      <div class="step done"><div class="step-dot"></div><div class="step-label"><b>Equipo</b><small>invitar miembros</small></div></div>
+      <div class="step-bar"></div>
+      <div class="step current"><div class="step-dot"><span>3</span></div><div class="step-label"><b>Pipeline</b><small>etapas de venta</small></div></div>
+      <div class="step-bar"></div>
+      <div class="step pending"><div class="step-dot"><span>4</span></div><div class="step-label"><b>Importar</b><small>contactos iniciales</small></div></div>
+      <div class="step-bar"></div>
+      <div class="step pending"><div class="step-dot"><span>5</span></div><div class="step-label"><b>Listo</b></div></div>
+    </div>
+    <div class="form-block">
+      <h3>Define tu pipeline de ventas</h3>
+      <p class="muted" style="margin:0 0 16px">Las etapas que tus deals atravesarán. Podés cambiarlas después.</p>
+      <div class="form-row" style="grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:8px">
+        <input value="New"/>
+        <input value="Qualified"/>
+        <input value="Proposal"/>
+        <input value="Negotiation"/>
+        <input value="Won"/>
+      </div>
+      <div class="btn-row" style="justify-content:space-between;margin-top:18px"><button class="btn btn-ghost btn-sm">← Atrás</button><button class="btn btn-primary btn-sm">Continuar →</button></div>
+    </div>
+
+    <h2>Vertical (sidebar de un setup largo)</h2>
+    <div class="stepper-vert">
+      <div class="step-v done"><div class="step-dot"></div><div class="step-label"><b>Cuenta creada</b><small>juan@empresa.com</small></div></div>
+      <div class="step-v done"><div class="step-dot"></div><div class="step-label"><b>Email verificado</b><small>hace 2 min</small></div></div>
+      <div class="step-v current" style="background:transparent"><div class="step-dot" style="background:var(--ink);color:#fff"><span>3</span></div><div class="step-label"><b>Conecta tu calendario</b><small>opcional pero recomendado</small></div></div>
+      <div class="step-v pending"><div class="step-dot" style="color:var(--muted)"><span>4</span></div><div class="step-label"><b style="color:var(--muted);font-weight:400">Invita a tu equipo</b></div></div>
+      <div class="step-v pending"><div class="step-dot" style="color:var(--muted)"><span>5</span></div><div class="step-label"><b style="color:var(--muted);font-weight:400">Tutorial</b></div></div>
+    </div>
+
+    <div class="callout"><div class="callout-tag">regla</div><p>Si tu wizard tiene más de 5 pasos, probá partirlo: setup obligatorio + onboarding opcional después.</p></div>
+  </section>
+
+  <!-- ============ KANBAN ============ -->
+  <section class="page" id="kanban" data-screen-label="Kanban" hidden>
+    <div class="page-head">
+      <div class="kicker">Patrones · 05</div>
+      <h1>Kanban board</h1>
+      <p class="lead">La otra vista clave del CRM. Pipeline de deals, columnas = etapas, cards = deals. Drag &amp; drop.</p>
+    </div>
+
+    <div class="kanban">
+      <div class="kanban-col">
+        <div class="kanban-col-head"><b>New</b><span class="count">8</span></div>
+        <div class="kanban-card"><div class="kc-head"><span class="kc-title">Renovación Globex</span><span class="avatar av-xs c2">MR</span></div><div class="kc-tags"><span class="badge badge-neutral">B2B</span></div><div class="kc-meta"><span>📅 ven 24</span><span class="kc-value">$4.2k</span></div></div>
+        <div class="kanban-card"><div class="kc-head"><span class="kc-title">Demo Initech</span><span class="avatar av-xs c4">AR</span></div><div class="kc-meta"><span>hoy</span><span class="kc-value">$8.9k</span></div></div>
+        <div class="kanban-card"><div class="kc-head"><span class="kc-title">Lead Pied Piper</span><span class="avatar av-xs c1">JL</span></div><div class="kc-tags"><span class="badge badge-info">Hot</span></div><div class="kc-meta"><span>mar 26</span><span class="kc-value">$2.1k</span></div></div>
+        <div class="kanban-col-head" style="border-bottom:none;padding-bottom:0"><button class="add">+</button></div>
+      </div>
+      <div class="kanban-col">
+        <div class="kanban-col-head"><b>Qualified</b><span class="count">5</span></div>
+        <div class="kanban-card"><div class="kc-head"><span class="kc-title">Acme Corp · plan anual</span><span class="avatar av-xs c2">MR</span></div><div class="kc-tags"><span class="badge badge-success">Hot</span><span class="badge badge-neutral">B2B</span></div><div class="kc-meta"><span>mié 25</span><span class="kc-value">$12.4k</span></div></div>
+        <div class="kanban-card"><div class="kc-head"><span class="kc-title">Hooli onboarding</span><span class="avatar av-xs c5">PG</span></div><div class="kc-meta"><span>jue 26</span><span class="kc-value">$3.2k</span></div></div>
+      </div>
+      <div class="kanban-col">
+        <div class="kanban-col-head"><b>Proposal</b><span class="count">3</span></div>
+        <div class="kanban-card"><div class="kc-head"><span class="kc-title">Initech · propuesta v2</span><span class="avatar av-xs c2">MR</span></div><div class="kc-tags"><span class="badge badge-pending">Esperando</span></div><div class="kc-meta"><span>vie 27</span><span class="kc-value">$24.1k</span></div></div>
+        <div class="kanban-card dragging"><div class="kc-head"><span class="kc-title">Vandelay Industries</span><span class="avatar av-xs c4">AR</span></div><div class="kc-meta"><span>lun 30</span><span class="kc-value">$6.8k</span></div></div>
+      </div>
+      <div class="kanban-col">
+        <div class="kanban-col-head"><b>Won</b><span class="count">12 · $148k</span></div>
+        <div class="kanban-card"><div class="kc-head"><span class="kc-title">Stark Industries</span><span class="avatar av-xs c1">JL</span></div><div class="kc-tags"><span class="badge badge-success">Cerrado</span></div><div class="kc-meta"><span>cerrado ayer</span><span class="kc-value">$45k</span></div></div>
+        <div class="kanban-card"><div class="kc-head"><span class="kc-title">Wonka Industries</span><span class="avatar av-xs c5">PG</span></div><div class="kc-meta"><span>hace 3d</span><span class="kc-value">$18k</span></div></div>
+      </div>
+    </div>
+
+    <h2>Anatomía de la card</h2>
+    <div class="grid-3">
+      <div class="sketch-card"><div class="sketch-card-title">Título</div><p>Lo más pesado visualmente — el nombre del deal o la empresa.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Tags &amp; owner</div><p>Badges para tipo/temperatura. Avatar del owner en la esquina sup.derecha.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Meta &amp; valor</div><p>Fecha de cierre / próxima acción a la izquierda. Monto en bold a la derecha.</p></div>
+    </div>
+    <div class="callout"><div class="callout-tag">drag</div><p>Card en drag: opacidad 0.6 + ligera rotación. La columna destino muestra un «drop hint» con borde lime al pasar por encima.</p></div>
+  </section>
+
+  <!-- ============ TIMELINE ============ -->
+  <section class="page" id="timeline" data-screen-label="Timeline" hidden>
+    <div class="page-head">
+      <div class="kicker">Patrones · 06</div>
+      <h1>Activity timeline</h1>
+      <p class="lead">Histórico vertical de qué pasó con un registro. Eventos del sistema + actividad del equipo + comentarios.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot user"><span class="avatar av-sm c2" style="border:none">MR</span></div>
+        <div class="tl-body">
+          <b>María Reyes</b> agregaste un comentario
+          <div class="tl-meta">hace 12 min</div>
+          <div class="tl-quote">El cliente confirmó que firma el lunes. Necesitamos preparar el contrato hoy.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot system"><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M4 7h16M4 12h10M4 17h16"/></svg></div>
+        <div class="tl-body">
+          Etapa cambiada de <b>Proposal</b> → <b>Negotiation</b>
+          <div class="tl-meta">hoy 09:42 · por Juan López</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot system"><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M22 6 12 13 2 6"/><path d="M2 6h20v12H2z"/></svg></div>
+        <div class="tl-body">
+          Email enviado: <b>«Propuesta v2 — Acme Corp»</b>
+          <div class="tl-meta">ayer 17:20 · abierto 4 veces</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot warn"><svg viewBox="0 0 24 24" class="ic ic-sm"><circle cx="12" cy="12" r="9"/><path d="M12 7v6"/></svg></div>
+        <div class="tl-body">
+          Llamada perdida · +34 612 345 678
+          <div class="tl-meta">ayer 14:18</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot system"><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M12 5v14M5 12h14"/></svg></div>
+        <div class="tl-body">
+          Deal creado por <b>Juan López</b>
+          <div class="tl-meta">lun 18 · 09:00</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Tipos de evento</h2>
+    <div class="grid-3">
+      <div class="sketch-card"><div class="sketch-card-title">User</div><p>Avatar como dot. Acción humana: comentario, edición manual, asignación.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">System</div><p>Icon como dot, fondo claro. Cambios automáticos, emails registrados, integraciones.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Warning</div><p>Fondo coral. Llamada perdida, deal vencido, IA detectó riesgo de churn.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ COMMAND PALETTE ============ -->
+  <section class="page" id="cmdk" data-screen-label="Cmdk" hidden>
+    <div class="page-head">
+      <div class="kicker">Patrones · 07</div>
+      <h1>Command palette</h1>
+      <p class="lead">El power-feature. <kbd>⌘K</kbd> abre todo: navegar, ejecutar, buscar, crear. Para usuarios de teclado.</p>
+    </div>
+
+    <div class="cmdk-frame">
+      <div class="cmdk">
+        <div class="cmdk-input">
+          <svg viewBox="0 0 24 24" class="ic ic-sm"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg>
+          <input placeholder="Buscar acciones, contactos, deals…" value="acme"/>
+          <kbd>ESC</kbd>
+        </div>
+        <div class="cmdk-section">
+          <b>Resultados</b>
+          <div class="cmdk-item active"><span class="avatar av-xs c2">AC</span> <b>Acme Corp</b> <span class="muted" style="font-size:11px">— empresa</span><kbd>↵</kbd></div>
+          <div class="cmdk-item"><span class="avatar av-xs c1">MR</span> María Reyes <span class="muted" style="font-size:11px">— contacto en Acme</span></div>
+          <div class="cmdk-item"><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M4 4h16v16H4z"/></svg> Renovación Acme 2026 <span class="muted" style="font-size:11px">— deal</span></div>
+        </div>
+        <div class="cmdk-section">
+          <b>Acciones</b>
+          <div class="cmdk-item"><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M12 5v14M5 12h14"/></svg> Crear contacto en Acme<kbd>C</kbd></div>
+          <div class="cmdk-item"><svg viewBox="0 0 24 24" class="ic ic-sm"><path d="M5 12a7 7 0 1 1 14 0"/></svg> Ir a pipeline<kbd>G P</kbd></div>
+        </div>
+        <div class="cmdk-foot">
+          <span><kbd>↑↓</kbd> navegar</span>
+          <span><kbd>↵</kbd> abrir</span>
+          <span><kbd>⌘↵</kbd> abrir en drawer</span>
+        </div>
+      </div>
+    </div>
+
+    <h2>Secciones</h2>
+    <div class="grid-3">
+      <div class="sketch-card"><div class="sketch-card-title">Resultados</div><p>Match de texto contra entidades. Contactos, empresas, deals, tareas. Iconos consistentes por tipo.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Acciones</div><p>Verbos: crear, asignar, exportar, ir a… Atajos a la derecha cuando aplique.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Recientes</div><p>Si el input está vacío: últimos 5 elementos abiertos por el usuario.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ FILTER BUILDER ============ -->
+  <section class="page" id="filter-builder" data-screen-label="FilterBuilder" hidden>
+    <div class="page-head">
+      <div class="kicker">Patrones · 08</div>
+      <h1>Filter builder</h1>
+      <p class="lead">Construir queries complejas con grupos AND/OR. Píldoras editables: <b>field · op · value</b>.</p>
+    </div>
+
+    <div class="fb">
+      <div class="fb-group">
+        <span class="fb-op-tag">WHERE</span>
+        <div class="fb-condition">
+          <span class="fb-pill field">Etapa</span>
+          <span class="fb-pill op">es uno de</span>
+          <span class="fb-pill value">Qualified, Proposal</span>
+          <button class="fb-x">×</button>
+        </div>
+        <div class="fb-condition">
+          <span class="fb-pill field">Valor</span>
+          <span class="fb-pill op">&gt;</span>
+          <span class="fb-pill value">$5,000</span>
+          <button class="fb-x">×</button>
+        </div>
+        <button class="fb-add">+ añadir condición</button>
+      </div>
+      <div class="fb-group">
+        <span class="fb-op-tag" style="background:var(--lime)">OR</span>
+        <div class="fb-condition">
+          <span class="fb-pill field">Tag</span>
+          <span class="fb-pill op">contiene</span>
+          <span class="fb-pill value">Hot</span>
+          <button class="fb-x">×</button>
+        </div>
+        <div class="fb-condition">
+          <span class="fb-pill field">Última actividad</span>
+          <span class="fb-pill op">en los últimos</span>
+          <span class="fb-pill value">7 días</span>
+          <button class="fb-x">×</button>
+        </div>
+        <button class="fb-add">+ añadir condición</button>
+      </div>
+      <button class="fb-add" style="margin-top:10px">+ añadir grupo (OR)</button>
+      <div class="fb-foot">
+        <span class="muted">42 resultados · ver vista previa abajo</span>
+        <div class="btn-row" style="margin:0"><button class="btn btn-ghost btn-sm">Limpiar</button><button class="btn btn-primary btn-sm">Aplicar filtros</button></div>
+      </div>
+    </div>
+
+    <h2>Anatomía de la condición</h2>
+    <div class="grid-3">
+      <div class="sketch-card"><div class="sketch-card-title">Field</div><p>Píldora oscura. Click abre lista de campos disponibles (texto, fecha, número, ref).</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Operator</div><p>Cambia según el tipo de field. =, !=, &gt;, contiene, está vacío, etc.</p></div>
+      <div class="sketch-card"><div class="sketch-card-title">Value</div><p>Píldora lime. Input contextual: texto, multi-select, date picker, slider.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ EMPTIES ILUSTRADOS ============ -->
+  <section class="page" id="empties" data-screen-label="Empties" hidden>
+    <div class="page-head">
+      <div class="kicker">Patrones · 09</div>
+      <h1>Empty states ilustrados</h1>
+      <p class="lead">No-data states con personalidad: ilustración + título + ayuda concreta + 1 acción primaria.</p>
+    </div>
+
+    <div class="empty-grid">
+      <div class="empty-il">
+        <svg viewBox="0 0 120 100" width="140" height="110">
+          <rect x="14" y="20" width="92" height="66" rx="8" fill="#fff" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="4 3"/>
+          <path d="M28 38h44M28 50h64M28 62h36" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="86" cy="30" r="10" fill="#B6F36A" stroke="#1a1a1a" stroke-width="2"/>
+          <path d="M82 30h8M86 26v8" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <b>Aún no hay deals</b>
+        <p>Crea el primero o imprótalo desde un CSV. Aparecerán aquí organizados por etapa.</p>
+        <div class="btn-row" style="margin:0;justify-content:center"><button class="btn btn-primary btn-sm">Crear deal</button><button class="btn btn-ghost btn-sm">Importar</button></div>
+      </div>
+
+      <div class="empty-il">
+        <svg viewBox="0 0 120 100" width="140" height="110">
+          <circle cx="50" cy="50" r="22" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-dasharray="3 2"/>
+          <path d="M68 68 88 88" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M42 46 q4 -8 16 0" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="44" cy="42" r="1.5" fill="#1a1a1a"/><circle cx="56" cy="42" r="1.5" fill="#1a1a1a"/>
+        </svg>
+        <b>Ningún resultado para «acme retro»</b>
+        <p>Probamos búsqueda flexible. ¿Quieres limpiar filtros o crear este deal nuevo?</p>
+        <div class="btn-row" style="margin:0;justify-content:center"><button class="btn btn-outline btn-sm">Limpiar filtros</button><button class="btn btn-primary btn-sm">Crear «acme retro»</button></div>
+      </div>
+
+      <div class="empty-il">
+        <svg viewBox="0 0 120 100" width="140" height="110">
+          <rect x="24" y="20" width="72" height="60" rx="6" fill="none" stroke="#E85A5A" stroke-width="2.5"/>
+          <path d="M40 36 80 64M80 36 40 64" stroke="#E85A5A" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <b>No pudimos cargar la lista</b>
+        <p>Esto suele ser temporal. Reintenta en un momento o contacta al admin si persiste.</p>
+        <div class="btn-row" style="margin:0;justify-content:center"><button class="btn btn-primary btn-sm">Reintentar</button></div>
+      </div>
+
+      <div class="empty-il">
+        <svg viewBox="0 0 120 100" width="140" height="110">
+          <rect x="30" y="34" width="60" height="44" rx="6" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+          <path d="M40 34v-6a20 20 0 0 1 40 0v6" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+          <circle cx="60" cy="56" r="4" fill="#B6F36A" stroke="#1a1a1a" stroke-width="2"/>
+          <path d="M60 60v6" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <b>No tienes permiso para ver esta sección</b>
+        <p>Tu rol actual es <b>Sales</b>. Pide al admin que te dé acceso o cambia de workspace.</p>
+        <div class="btn-row" style="margin:0;justify-content:center"><button class="btn btn-outline btn-sm">Pedir acceso</button></div>
+      </div>
+    </div>
+
+    <div class="callout"><div class="callout-tag">estructura</div><p>Misma fórmula para los 4: <b>ilustración + título + ayuda + 1–2 botones</b>. Ilustraciones siempre con la misma vocabulario sketchy.</p></div>
+  </section>
+
+</main>
+
+<script>
+  // Sidebar nav
+  const links = document.querySelectorAll('.nav-link');
+  const pages = document.querySelectorAll('.page');
+  function show(id){
+    pages.forEach(p => p.hidden = (p.id !== id));
+    links.forEach(l => l.classList.toggle('active', l.dataset.section === id));
+    document.querySelector('.main').scrollTo({top:0, behavior:'instant'});
+    history.replaceState(null, '', '#' + id);
+  }
+  links.forEach(l => l.addEventListener('click', e => {
+    e.preventDefault();
+    show(l.dataset.section);
+  }));
+  // initial from hash
+  const initial = (location.hash || '#overview').slice(1);
+  if (document.getElementById(initial)) show(initial);
+</script>
+</body>
+</html>
