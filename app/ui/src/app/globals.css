@@ -150,6 +150,11 @@
   --ds-shadow-inner: inset 0 1px 2px rgba(10, 10, 10, 0.06);
   --ds-shadow-focus: 0 0 0 3px rgba(182, 243, 106, 0.4);
   --ds-shadow-focus-danger: 0 0 0 3px rgba(232, 90, 90, 0.3);
+  --ds-shadow-brutal-sm: 2px 2px 0 var(--ds-color-neutral-900);
+  --ds-shadow-brutal-md: 3px 3px 0 var(--ds-color-neutral-900);
+  --ds-shadow-brutal-lg: 4px 4px 0 var(--ds-color-neutral-900);
+  --ds-border-width-brand: 1.5px;
+  --ds-color-border-brand: var(--ds-color-neutral-900);
 
   --ds-z-base: 0;
   --ds-z-dropdown: 10;
@@ -232,6 +237,12 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --shadow-brutal-sm: var(--ds-shadow-brutal-sm);
+  --shadow-brutal-md: var(--ds-shadow-brutal-md);
+  --shadow-brutal-lg: var(--ds-shadow-brutal-lg);
+  --color-brand: var(--ds-color-border-brand);
+  --color-primary-hover: var(--ds-color-primary-hover);
+  --color-secondary-hover: var(--ds-color-secondary-hover);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) + 4px);
@@ -248,5 +259,9 @@
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }
