@@ -4,6 +4,8 @@ Las decisiones arquitectónicas y de convenciones de este paquete (`app/ui`) est
 
 **Antes de escribir código que toque arquitectura, capas, estado, errores, auth, datos o convenciones, leé `.claude/adr/INDEX.md`** para saber qué ADR consultar.
 
+**Antes de construir o estilar UI (componentes, vistas, layouts), leé `.claude/adr/13-styling-and-design-system.md`** y usá `docs/visual/handoff/` (en la raíz del repo) como fuente visual: `tokens.css` (tokens del design system) y `components-reference.html` (referencia estructural/visual de cada componente). **No inventes colores ni espaciados: usá siempre los tokens** (roles shadcn / `--ds-*`). El stack es Tailwind v4 + shadcn/ui (componentes en `src/shared/ui`, los de dominio en `features/`). `docs/visual/brand-manual.md` describe otro producto (FinTech): NO lo uses como guía de composición.
+
 **Antes de instalar/sugerir cualquier dependencia nueva, leé `.claude/adr/tech/INDEX.md`** para ver qué tecnologías ya están elegidas. Si tu sugerencia pisa con algo ya registrado, no la introduzcas sin preguntar al usuario.
 
 Si una decisión no está documentada o algo no queda claro, **preguntá al usuario antes de inventar una convención**. Las decisiones se registran como ADR, no se improvisan.

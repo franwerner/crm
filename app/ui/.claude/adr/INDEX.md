@@ -27,6 +27,7 @@ Este índice te dice qué ADR consultar según lo que estés por hacer. Leé sol
 | [11-folder-structure.md](11-folder-structure.md) | Accepted | Estructura y naming + Atomic | Crees un archivo/carpeta/componente; dudes si va en features/ o shared/ui. |
 | [12-routing.md](12-routing.md) | Accepted | Routing y guards | Definas rutas, el árbol del router, protección de rutas privadas o search params. |
 | [13-styling-and-design-system.md](13-styling-and-design-system.md) | Accepted | Styling y Design System | Toques estilos, tokens, Tailwind, shadcn/ui; ubiques un componente en `shared/ui` vs feature. |
+| [14-schema-driven-list-views.md](14-schema-driven-list-views.md) | Accepted | Schema-driven list views | Construyas o toques una vista de listado (tabla/filtros/sort/search); definas columnas o filtros de una entidad; agregues un campo a un listado. |
 | [tech/INDEX.md](tech/INDEX.md) | — | Catálogo de tecnologías | Vayas a agregar/cambiar una dependencia. **Consultá siempre antes de instalar algo.** |
 
 **Leyenda:** `Accepted` = vigente · `Pending` = decidir más adelante · `Not Applicable` (N/A) = decidido que no aplica · `Deferred` = postergado con condición · `Superseded` = reemplazado.
@@ -49,7 +50,7 @@ Paquete autónomo. Lo único compartido es el **contrato OpenAPI** que este paqu
 
 ## Estado y mantenimiento
 
-- Última actualización: 2026-05-23
+- Última actualización: 2026-05-24
 - **Actualizar decisión:** editar ADR + `Historial` + `Status` + `Última actualización`.
 - **Decisión nueva:** ADR nuevo + fila en este INDEX.
 - **Resolver Pending:** modo `update`, recorrer la fase, cambiar Status a `Accepted`, llenar contenido, anotar en Historial.

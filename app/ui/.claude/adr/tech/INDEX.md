@@ -23,6 +23,9 @@ Registro vivo de las tecnologías concretas elegidas para este paquete. Cada ent
 |---|---|---|
 | [tailwindcss](tailwindcss.md) | v4 / sin pinear | Utility-first CSS-first (`@theme`); tokens en CSS, encaja con el handoff |
 | [shadcn](shadcn.md) | latest (CLI) | Componentes copy-paste sobre Radix; código propio, custom total según handoff |
+| [radix-ui](radix-ui.md) | ^1.4.3 | Primitivos accesibles base de shadcn; se adopta el paquete paraguas (import desde `"radix-ui"`) en vez de los individuales |
+| [sonner](sonner.md) | ^2.0.7 | Toasts (shadcn deprecó su Toast propio); feedback de mutaciones y errores globales (ADR 04 §4.4) |
+| [react-day-picker](react-day-picker.md) | ^10.0.1 | Date picker headless; recomendado por handoff y shadcn; modos single/range; satélite: date-fns ^4.3.0 |
 
 ### Routing
 | Tech | Versión | Por qué |
@@ -33,6 +36,7 @@ Registro vivo de las tecnologías concretas elegidas para este paquete. Cada ent
 | Tech | Versión | Por qué |
 |---|---|---|
 | [tanstack-query](tanstack-query.md) | latest / sin pinear | Estado de servidor (cache, revalidación, mutaciones); kubb genera hooks para esto |
+| [tanstack-table](tanstack-table.md) | ^8.21.3 | Headless table engine (columnas, paginación manual, estado de tabla sin UI propia); ecosistema TanStack |
 
 ### Generación de cliente API (contrato)
 | Tech | Versión | Por qué |

@@ -2,7 +2,7 @@
 
 - **Status:** Accepted (con §4.3 observabilidad en Pending)
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-17
+- **Última actualización:** 2026-05-24
 - **Decisores:** ifran
 - **Fase del bootstrap:** 4
 
@@ -22,6 +22,16 @@ Una SPA tiene tres clases de error distintas que se manejan diferente: render/ru
 
 ### 4.3 — Observabilidad *(Pending)*
 Ver "Razón de aplazamiento".
+
+### 4.4 — Presentación de errores (inline vs toast)
+Regla rectora: **el error vive donde el usuario lo puede resolver.**
+- **Validación de campo** (zod / react-hook-form) → **inline en el campo** (`aria-invalid` en el `Input` + mensaje).
+- **Error al enviar un form** (credenciales inválidas, conflictos 409, etc.) → **inline a nivel de form**. NO toast.
+- **Mutaciones sin form visible** (acciones desde botón/tabla: borrar, cambiar estado, registrar evento) → **toast** (`sonner`).
+- **Errores globales / inesperados** (5xx, red) y **éxitos de acciones puntuales** → **toast**.
+- **401** → redirect a login (§4.1), nunca toast.
+
+Todos los mensajes salen del adaptador RFC 7807 (`toUserMessage`, §4.2). El `<Toaster>` (sonner, estilado con la identidad en `shared/ui/sonner.tsx`) se monta una vez en `app/` (`providers.tsx`). Ver `tech/sonner.md`.
 
 ## Razón de omisión / aplazamiento (§4.3)
 
@@ -52,3 +62,4 @@ Ver "Razón de aplazamiento".
 | Fecha | Cambio | Por |
 |---|---|---|
 | 2026-05-17 | Decisión inicial. §4.3 observabilidad Pending con trigger | ifran |
+| 2026-05-24 | Agregada §4.4 (presentación inline vs toast); sonner para toasts | ifran |

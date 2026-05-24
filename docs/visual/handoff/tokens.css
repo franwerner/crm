@@ -163,7 +163,16 @@
   --border-width-1: 1px;
   --border-width-2: 2px;
 
-  /* ---------- SHADOWS ---------- */
+  /* ---------- SHADOWS ----------
+     Signature: hard-offset shadows on key surfaces.
+     "Brutal" set defines the brand DNA; the "soft" set is for ambient depth.
+  */
+  /* Brutal (brand) — used on buttons, cards, modals, key surfaces */
+  --shadow-brutal-sm:  2px 2px 0 var(--color-neutral-900);
+  --shadow-brutal-md:  3px 3px 0 var(--color-neutral-900);
+  --shadow-brutal-lg:  4px 4px 0 var(--color-neutral-900);
+
+  /* Soft (ambient) — for tooltips, popovers, overlays, drawer chrome */
   --shadow-xs:    0 1px 2px rgba(10, 10, 10, 0.05);
   --shadow-sm:    0 1px 2px rgba(10, 10, 10, 0.06), 0 1px 3px rgba(10, 10, 10, 0.04);
   --shadow-md:    0 4px 8px rgba(10, 10, 10, 0.06), 0 2px 4px rgba(10, 10, 10, 0.04);
@@ -173,6 +182,10 @@
   --shadow-inner: inset 0 1px 2px rgba(10, 10, 10, 0.06);
   --shadow-focus: 0 0 0 3px rgba(182, 243, 106, 0.4);
   --shadow-focus-danger: 0 0 0 3px rgba(232, 90, 90, 0.3);
+
+  /* ---------- BORDERS (brand) ---------- */
+  --border-width-brand: 1.5px;
+  --color-border-brand: var(--color-neutral-900);   /* signature outline */
 
   /* ---------- Z-INDEX SCALE ---------- */
   --z-base:        0;
