@@ -1,13 +1,14 @@
 import type { Contact } from '@modules/contacts/domain/contact'
 import type { ContactsRepository } from '@modules/contacts/domain/contact.repository'
-import type { Page, PageParams } from '@shared/types/pagination'
+import type { ListQuery } from '@shared/types/filters'
+import type { Page } from '@shared/types/pagination'
 
-export interface ListContactsInput extends PageParams {}
+export interface ListContactsInput extends ListQuery {}
 
-export interface ListContactsDeps {
-  repo: ContactsRepository
-}
+export class ContactListUseCase {
+  constructor(private readonly repo: ContactsRepository) {}
 
-export async function listContacts(input: ListContactsInput, deps: ListContactsDeps): Promise<Page<Contact>> {
-  return deps.repo.findMany(input)
+  async execute(input: ListContactsInput): Promise<Page<Contact>> {
+    return this.repo.findMany(input)
+  }
 }

@@ -6,14 +6,14 @@ export interface GetContactInput {
   id: string
 }
 
-export interface GetContactDeps {
-  repo: ContactsRepository
-}
+export class ContactGetUseCase {
+  constructor(private readonly repo: ContactsRepository) {}
 
-export async function getContact(input: GetContactInput, deps: GetContactDeps): Promise<Contact> {
-  const contact = await deps.repo.findById(input.id)
-  if (!contact) {
-    throw new NotFoundError(`Contact ${input.id} not found`)
+  async execute(input: GetContactInput): Promise<Contact> {
+    const contact = await this.repo.findById(input.id)
+    if (!contact) {
+      throw new NotFoundError(`Contact ${input.id} not found`)
+    }
+    return contact
   }
-  return contact
 }

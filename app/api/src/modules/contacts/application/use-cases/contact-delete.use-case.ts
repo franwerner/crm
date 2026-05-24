@@ -5,16 +5,16 @@ export interface DeleteContactInput {
   id: string
 }
 
-export interface DeleteContactDeps {
-  repo: ContactsRepository
-}
+export class ContactDeleteUseCase {
+  constructor(private readonly repo: ContactsRepository) {}
 
-export async function deleteContact(input: DeleteContactInput, deps: DeleteContactDeps): Promise<void> {
-  const contact = await deps.repo.findById(input.id)
-  if (!contact) {
-    throw new NotFoundError(`Contact ${input.id} not found`)
+  async execute(input: DeleteContactInput): Promise<void> {
+    const contact = await this.repo.findById(input.id)
+    if (!contact) {
+      throw new NotFoundError(`Contact ${input.id} not found`)
+    }
+
+    const deleted = contact.softDelete(new Date())
+    await this.repo.save(deleted)
   }
-
-  const deleted = contact.softDelete(new Date())
-  await deps.repo.save(deleted)
 }

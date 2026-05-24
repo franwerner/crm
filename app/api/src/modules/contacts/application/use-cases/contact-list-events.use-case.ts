@@ -7,14 +7,14 @@ export interface ListContactEventsInput extends PageParams {
   contactId: string
 }
 
-export interface ListContactEventsDeps {
-  repo: ContactsRepository
-}
+export class ContactListEventsUseCase {
+  constructor(private readonly repo: ContactsRepository) {}
 
-export async function listContactEvents(input: ListContactEventsInput, deps: ListContactEventsDeps): Promise<Page<ContactEvent>> {
-  const contact = await deps.repo.findById(input.contactId)
-  if (!contact) {
-    throw new NotFoundError(`Contact ${input.contactId} not found`)
+  async execute(input: ListContactEventsInput): Promise<Page<ContactEvent>> {
+    const contact = await this.repo.findById(input.contactId)
+    if (!contact) {
+      throw new NotFoundError(`Contact ${input.contactId} not found`)
+    }
+    return this.repo.findEvents(input.contactId, { limit: input.limit, offset: input.offset })
   }
-  return deps.repo.findEvents(input.contactId, { limit: input.limit, offset: input.offset })
 }

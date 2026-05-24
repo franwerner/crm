@@ -7,14 +7,14 @@ export interface ListContactStateChangesInput extends PageParams {
   contactId: string
 }
 
-export interface ListContactStateChangesDeps {
-  repo: ContactsRepository
-}
+export class ContactListStateChangesUseCase {
+  constructor(private readonly repo: ContactsRepository) {}
 
-export async function listContactStateChanges(input: ListContactStateChangesInput, deps: ListContactStateChangesDeps): Promise<Page<ContactStateChange>> {
-  const contact = await deps.repo.findById(input.contactId)
-  if (!contact) {
-    throw new NotFoundError(`Contact ${input.contactId} not found`)
+  async execute(input: ListContactStateChangesInput): Promise<Page<ContactStateChange>> {
+    const contact = await this.repo.findById(input.contactId)
+    if (!contact) {
+      throw new NotFoundError(`Contact ${input.contactId} not found`)
+    }
+    return this.repo.findStateChanges(input.contactId, { limit: input.limit, offset: input.offset })
   }
-  return deps.repo.findStateChanges(input.contactId, { limit: input.limit, offset: input.offset })
 }

@@ -13,23 +13,23 @@ export interface CreateContactInput {
   createdBy: string
 }
 
-export interface CreateContactDeps {
-  repo: ContactsRepository
-}
+export class ContactCreateUseCase {
+  constructor(private readonly repo: ContactsRepository) {}
 
-export async function createContact(input: CreateContactInput, deps: CreateContactDeps): Promise<Contact> {
-  const now = new Date()
-  const contact = Contact.create({
-    id: newId(),
-    name: input.name,
-    handle: input.handle,
-    phone: input.phone,
-    sourceChannel: input.sourceChannel,
-    interestLevel: input.interestLevel,
-    createdBy: input.createdBy,
-    createdAt: now,
-    updatedAt: now,
-  })
-  await deps.repo.save(contact)
-  return contact
+  async execute(input: CreateContactInput): Promise<Contact> {
+    const now = new Date()
+    const contact = Contact.create({
+      id: newId(),
+      name: input.name,
+      handle: input.handle,
+      phone: input.phone,
+      sourceChannel: input.sourceChannel,
+      interestLevel: input.interestLevel,
+      createdBy: input.createdBy,
+      createdAt: now,
+      updatedAt: now,
+    })
+    await this.repo.save(contact)
+    return contact
+  }
 }

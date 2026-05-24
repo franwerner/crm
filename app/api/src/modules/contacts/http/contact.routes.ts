@@ -1,25 +1,17 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { authMiddleware } from '@shared/http/auth-middleware'
+import { bracketedQueryMiddleware } from '@shared/http/bracketed-query'
 import { ProblemSchema } from '@shared/schemas/problem.schema'
-import { PaginationQuerySchema } from '@shared/schemas/pagination.schema'
-import type { ContactsRepository } from '@modules/contacts/domain/contact.repository'
 import { CreateContactBodySchema } from '@modules/contacts/http/dto/in/contact-create.in'
+import { PaginationOnlyQuerySchema } from '@shared/http/list-query'
 import { RegisterEventBodySchema } from '@modules/contacts/http/dto/in/contact-register-event.in'
 import { ChangeStateBodySchema } from '@modules/contacts/http/dto/in/contact-change-state.in'
 import { ContactViewSchema } from '@modules/contacts/http/dto/out/contact.out'
 import { ContactListResponseSchema } from '@modules/contacts/http/dto/out/contact-list.out'
 import { ContactEventListResponseSchema } from '@modules/contacts/http/dto/out/contact-event-list.out'
 import { ContactStateChangeListResponseSchema } from '@modules/contacts/http/dto/out/contact-state-change-list.out'
-import {
-  createContactHandler,
-  getContactHandler,
-  listContactsHandler,
-  registerEventHandler,
-  listContactEventsHandler,
-  listContactStateChangesHandler,
-  changeContactStateHandler,
-  deleteContactHandler,
-} from '@modules/contacts/http/contact.controller'
+import { contactListQuerySchema } from '@modules/contacts/infrastructure/contact.resource'
+import type { ContactController } from '@modules/contacts/http/contact.controller'
 
 const createContactRoute = createRoute({
   method: 'post',
@@ -36,26 +28,6 @@ const createContactRoute = createRoute({
     201: {
       description: 'Contact created.',
       content: { 'application/json': { schema: ContactViewSchema } },
-    },
-    401: {
-      description: 'Unauthorized.',
-      content: { 'application/problem+json': { schema: ProblemSchema } },
-    },
-  },
-})
-
-const listContactsRoute = createRoute({
-  method: 'get',
-  path: '/contacts',
-  summary: 'List contacts',
-  tags: ['contacts'],
-  request: {
-    query: PaginationQuerySchema,
-  },
-  responses: {
-    200: {
-      description: 'Paginated list of contacts.',
-      content: { 'application/json': { schema: ContactListResponseSchema } },
     },
     401: {
       description: 'Unauthorized.',
@@ -123,7 +95,7 @@ const listContactEventsRoute = createRoute({
   tags: ['contacts'],
   request: {
     params: z.object({ id: z.string() }),
-    query: PaginationQuerySchema,
+    query: PaginationOnlyQuerySchema,
   },
   responses: {
     200: {
@@ -148,7 +120,7 @@ const listContactStateChangesRoute = createRoute({
   tags: ['contacts'],
   request: {
     params: z.object({ id: z.string() }),
-    query: PaginationQuerySchema,
+    query: PaginationOnlyQuerySchema,
   },
   responses: {
     200: {
@@ -215,19 +187,40 @@ const deleteContactRoute = createRoute({
   },
 })
 
-export function createContactsRouter(repo: ContactsRepository): OpenAPIHono {
+export function createContactsRouter(controller: ContactController): OpenAPIHono {
   const router = new OpenAPIHono()
 
+  router.use('*', bracketedQueryMiddleware)
   router.use('*', authMiddleware)
 
-  router.openapi(createContactRoute, (c) => createContactHandler(c, repo) as never)
-  router.openapi(listContactsRoute, (c) => listContactsHandler(c, repo) as never)
-  router.openapi(getContactRoute, (c) => getContactHandler(c, repo) as never)
-  router.openapi(registerEventRoute, (c) => registerEventHandler(c, repo) as never)
-  router.openapi(listContactEventsRoute, (c) => listContactEventsHandler(c, repo) as never)
-  router.openapi(listContactStateChangesRoute, (c) => listContactStateChangesHandler(c, repo) as never)
-  router.openapi(changeContactStateRoute, (c) => changeContactStateHandler(c, repo) as never)
-  router.openapi(deleteContactRoute, (c) => deleteContactHandler(c, repo) as never)
+  const listContactsRoute = createRoute({
+    method: 'get',
+    path: '/contacts',
+    summary: 'List contacts',
+    tags: ['contacts'],
+    request: {
+      query: contactListQuerySchema,
+    },
+    responses: {
+      200: {
+        description: 'Paginated list of contacts.',
+        content: { 'application/json': { schema: ContactListResponseSchema } },
+      },
+      401: {
+        description: 'Unauthorized.',
+        content: { 'application/problem+json': { schema: ProblemSchema } },
+      },
+    },
+  })
+
+  router.openapi(createContactRoute, (c) => controller.createContact(c) as never)
+  router.openapi(listContactsRoute, (c) => controller.listContacts(c) as never)
+  router.openapi(getContactRoute, (c) => controller.getContact(c) as never)
+  router.openapi(registerEventRoute, (c) => controller.registerEvent(c) as never)
+  router.openapi(listContactEventsRoute, (c) => controller.listContactEvents(c) as never)
+  router.openapi(listContactStateChangesRoute, (c) => controller.listContactStateChanges(c) as never)
+  router.openapi(changeContactStateRoute, (c) => controller.changeContactState(c) as never)
+  router.openapi(deleteContactRoute, (c) => controller.deleteContact(c) as never)
 
   return router
 }

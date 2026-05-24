@@ -12,30 +12,30 @@ export interface RegisterEventInput {
   occurredAt: Date
 }
 
-export interface RegisterEventDeps {
-  repo: ContactsRepository
-}
+export class ContactRegisterEventUseCase {
+  constructor(private readonly repo: ContactsRepository) {}
 
-export async function registerEvent(input: RegisterEventInput, deps: RegisterEventDeps): Promise<Contact> {
-  const contact = await deps.repo.findById(input.contactId)
-  if (!contact) {
-    throw new NotFoundError(`Contact ${input.contactId} not found`)
+  async execute(input: RegisterEventInput): Promise<Contact> {
+    const contact = await this.repo.findById(input.contactId)
+    if (!contact) {
+      throw new NotFoundError(`Contact ${input.contactId} not found`)
+    }
+
+    const eventId = newId()
+    const stateChangeId = newId()
+    const now = new Date()
+
+    const updated = contact.registerEvent({
+      eventId,
+      stateChangeId,
+      authorId: input.authorId,
+      eventType: input.eventType,
+      detail: input.detail,
+      occurredAt: input.occurredAt,
+      now,
+    })
+
+    await this.repo.save(updated)
+    return updated
   }
-
-  const eventId = newId()
-  const stateChangeId = newId()
-  const now = new Date()
-
-  const updated = contact.registerEvent({
-    eventId,
-    stateChangeId,
-    authorId: input.authorId,
-    eventType: input.eventType,
-    detail: input.detail,
-    occurredAt: input.occurredAt,
-    now,
-  })
-
-  await deps.repo.save(updated)
-  return updated
 }

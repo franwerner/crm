@@ -10,26 +10,26 @@ export interface ChangeContactStateInput {
   userId: string
 }
 
-export interface ChangeContactStateDeps {
-  repo: ContactsRepository
-}
+export class ContactChangeStateUseCase {
+  constructor(private readonly repo: ContactsRepository) {}
 
-export async function changeContactState(input: ChangeContactStateInput, deps: ChangeContactStateDeps): Promise<Contact> {
-  const contact = await deps.repo.findById(input.contactId)
-  if (!contact) {
-    throw new NotFoundError(`Contact ${input.contactId} not found`)
+  async execute(input: ChangeContactStateInput): Promise<Contact> {
+    const contact = await this.repo.findById(input.contactId)
+    if (!contact) {
+      throw new NotFoundError(`Contact ${input.contactId} not found`)
+    }
+
+    const stateChangeId = newId()
+    const now = new Date()
+
+    const updated = contact.changeStateManually({
+      stateChangeId,
+      newState: input.newState,
+      userId: input.userId,
+      now,
+    })
+
+    await this.repo.save(updated)
+    return updated
   }
-
-  const stateChangeId = newId()
-  const now = new Date()
-
-  const updated = contact.changeStateManually({
-    stateChangeId,
-    newState: input.newState,
-    userId: input.userId,
-    now,
-  })
-
-  await deps.repo.save(updated)
-  return updated
 }
