@@ -1,0 +1,12 @@
+{
+  "packagesDir": "./src",
+  "port": 4101,
+  "editorPathMap": {
+    "from": "/app",
+    "to": "/home/ifran/proyectos/crm/app/ui"
+  },
+  "auth": {
+    "secret": "dev-secret-key",
+    "salt": "dev-salt-key"
+  }
+}
