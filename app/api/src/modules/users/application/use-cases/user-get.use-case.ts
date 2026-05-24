@@ -6,14 +6,14 @@ export interface GetUserInput {
   id: string
 }
 
-export interface GetUserDeps {
-  repo: UsersRepository
-}
+export class UserGetUseCase {
+  constructor(private readonly repo: UsersRepository) {}
 
-export async function getUser(input: GetUserInput, deps: GetUserDeps): Promise<User> {
-  const user = await deps.repo.findById(input.id)
-  if (!user) {
-    throw new NotFoundError(`User ${input.id} not found`)
+  async execute(input: GetUserInput): Promise<User> {
+    const user = await this.repo.findById(input.id)
+    if (!user) {
+      throw new NotFoundError(`User ${input.id} not found`)
+    }
+    return user
   }
-  return user
 }

@@ -9,30 +9,30 @@ export interface CreateUserInput {
   password: string
 }
 
-export interface CreateUserDeps {
-  repo: UsersRepository
-}
+export class UserCreateUseCase {
+  constructor(private readonly repo: UsersRepository) {}
 
-export async function createUser(input: CreateUserInput, deps: CreateUserDeps): Promise<User> {
-  const normalizedEmail = input.email.toLowerCase().trim()
+  async execute(input: CreateUserInput): Promise<User> {
+    const normalizedEmail = input.email.toLowerCase().trim()
 
-  const existing = await deps.repo.findByEmail(normalizedEmail)
-  if (existing) {
-    throw new ConflictError(`Email ${normalizedEmail} is already registered`)
+    const existing = await this.repo.findByEmail(normalizedEmail)
+    if (existing) {
+      throw new ConflictError(`Email ${normalizedEmail} is already registered`)
+    }
+
+    const now = new Date()
+    const passwordHash = await Bun.password.hash(input.password)
+
+    const user = User.create({
+      id: newId(),
+      email: normalizedEmail,
+      name: input.name,
+      passwordHash,
+      createdAt: now,
+      updatedAt: now,
+    })
+
+    await this.repo.save(user)
+    return user
   }
-
-  const now = new Date()
-  const passwordHash = await Bun.password.hash(input.password)
-
-  const user = User.create({
-    id: newId(),
-    email: normalizedEmail,
-    name: input.name,
-    passwordHash,
-    createdAt: now,
-    updatedAt: now,
-  })
-
-  await deps.repo.save(user)
-  return user
 }

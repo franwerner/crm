@@ -8,32 +8,32 @@ export interface UpdateUserInput {
   password?: string
 }
 
-export interface UpdateUserDeps {
-  repo: UsersRepository
-}
+export class UserUpdateUseCase {
+  constructor(private readonly repo: UsersRepository) {}
 
-export async function updateUser(input: UpdateUserInput, deps: UpdateUserDeps): Promise<User> {
-  const user = await deps.repo.findById(input.id)
-  if (!user) {
-    throw new NotFoundError(`User ${input.id} not found`)
+  async execute(input: UpdateUserInput): Promise<User> {
+    const user = await this.repo.findById(input.id)
+    if (!user) {
+      throw new NotFoundError(`User ${input.id} not found`)
+    }
+
+    const now = new Date()
+    let next = user
+
+    if (input.name !== undefined) {
+      next = next.rename(input.name, now)
+    }
+
+    if (input.password !== undefined) {
+      const passwordHash = await Bun.password.hash(input.password)
+      next = next.changePassword(passwordHash, now)
+    }
+
+    if (next === user) {
+      return user
+    }
+
+    await this.repo.save(next)
+    return next
   }
-
-  const now = new Date()
-  let next = user
-
-  if (input.name !== undefined) {
-    next = next.rename(input.name, now)
-  }
-
-  if (input.password !== undefined) {
-    const passwordHash = await Bun.password.hash(input.password)
-    next = next.changePassword(passwordHash, now)
-  }
-
-  if (next === user) {
-    return user
-  }
-
-  await deps.repo.save(next)
-  return next
 }

@@ -1,19 +1,12 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { authMiddleware } from '@shared/http/auth-middleware'
 import { ProblemSchema } from '@shared/schemas/problem.schema'
-import { PaginationQuerySchema } from '@shared/schemas/pagination.schema'
-import type { UsersRepository } from '@modules/users/domain/user.repository'
+import { PaginationOnlyQuerySchema } from '@shared/http/list-query'
 import { CreateUserBodySchema } from '@modules/users/http/dto/in/user-create.in'
 import { UpdateUserBodySchema } from '@modules/users/http/dto/in/user-update.in'
 import { UserViewSchema } from '@modules/users/http/dto/out/user.out'
 import { UserListResponseSchema } from '@modules/users/http/dto/out/user-list.out'
-import {
-  createUserHandler,
-  getUserHandler,
-  listUsersHandler,
-  updateUserHandler,
-  deleteUserHandler,
-} from '@modules/users/http/user.controller'
+import type { UserController } from '@modules/users/http/user.controller'
 
 const createUserRoute = createRoute({
   method: 'post',
@@ -48,7 +41,7 @@ const listUsersRoute = createRoute({
   summary: 'List users',
   tags: ['users'],
   request: {
-    query: PaginationQuerySchema,
+    query: PaginationOnlyQuerySchema,
   },
   responses: {
     200: {
@@ -135,16 +128,16 @@ const deleteUserRoute = createRoute({
   },
 })
 
-export function createUsersRouter(repo: UsersRepository): OpenAPIHono {
+export function createUsersRouter(controller: UserController): OpenAPIHono {
   const router = new OpenAPIHono()
 
   router.use('*', authMiddleware)
 
-  router.openapi(createUserRoute, (c) => createUserHandler(c, repo) as never)
-  router.openapi(listUsersRoute, (c) => listUsersHandler(c, repo) as never)
-  router.openapi(getUserRoute, (c) => getUserHandler(c, repo) as never)
-  router.openapi(updateUserRoute, (c) => updateUserHandler(c, repo) as never)
-  router.openapi(deleteUserRoute, (c) => deleteUserHandler(c, repo) as never)
+  router.openapi(createUserRoute, (c) => controller.createUser(c) as never)
+  router.openapi(listUsersRoute, (c) => controller.listUsers(c) as never)
+  router.openapi(getUserRoute, (c) => controller.getUser(c) as never)
+  router.openapi(updateUserRoute, (c) => controller.updateUser(c) as never)
+  router.openapi(deleteUserRoute, (c) => controller.deleteUser(c) as never)
 
   return router
 }

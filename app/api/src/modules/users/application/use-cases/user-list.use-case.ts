@@ -4,10 +4,10 @@ import type { Page, PageParams } from '@shared/types/pagination'
 
 export interface ListUsersInput extends PageParams {}
 
-export interface ListUsersDeps {
-  repo: UsersRepository
-}
+export class UserListUseCase {
+  constructor(private readonly repo: UsersRepository) {}
 
-export async function listUsers(input: ListUsersInput, deps: ListUsersDeps): Promise<Page<User>> {
-  return deps.repo.findMany(input)
+  async execute(input: ListUsersInput): Promise<Page<User>> {
+    return this.repo.findMany(input)
+  }
 }
