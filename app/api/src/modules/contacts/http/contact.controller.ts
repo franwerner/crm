@@ -11,7 +11,7 @@ import type { ContactRegisterEventUseCase } from '@modules/contacts/application/
 import type { ContactChangeStateUseCase } from '@modules/contacts/application/use-cases/contact-change-state.use-case'
 import type { ContactDeleteUseCase } from '@modules/contacts/application/use-cases/contact-delete.use-case'
 import type { CreateContactRequest } from '@modules/contacts/http/dto/in/contact-create.in'
-import type { ListQuery } from '@shared/types/filters'
+import type { ContactListInput, ContactListItem } from '@modules/contacts/application/contact.query'
 import type { PaginationOnlyQuery } from '@shared/http/list-query'
 import type { RegisterEventRequest } from '@modules/contacts/http/dto/in/contact-register-event.in'
 import type { ChangeStateRequest } from '@modules/contacts/http/dto/in/contact-change-state.in'
@@ -39,6 +39,22 @@ function toContactView(contact: Contact) {
     createdBy: contact.createdBy,
     createdAt: contact.createdAt.toISOString(),
     updatedAt: contact.updatedAt.toISOString(),
+  }
+}
+
+function toContactListView(item: ContactListItem) {
+  return {
+    id: item.id,
+    name: item.name,
+    phone: item.phone,
+    pipelineState: item.pipelineState,
+    stateLocked: item.stateLocked,
+    sourceChannel: item.sourceChannel,
+    interestLevel: item.interestLevel,
+    createdBy: item.createdBy,
+    ...(item.creator !== null ? { creator: item.creator } : {}),
+    createdAt: item.createdAt.toISOString(),
+    updatedAt: item.updatedAt.toISOString(),
   }
 }
 
@@ -92,13 +108,13 @@ export class ContactController {
   }
 
   async listContacts(c: Context): Promise<Response> {
-    const query = c.req.valid('query' as never) as ListQuery
+    const query = c.req.valid('query' as never) as ContactListInput
 
     const page = await this.ucs.list.execute(query)
 
     return c.json(
       {
-        items: page.items.map(toContactView),
+        items: page.items.map(toContactListView),
         total: page.total,
         limit: page.limit,
         offset: page.offset,

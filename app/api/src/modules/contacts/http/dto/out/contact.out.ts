@@ -14,6 +14,13 @@ export const ContactViewSchema = z
     sourceChannel: SourceChannelEnum.nullable().openapi({ example: 'Instagram' }),
     interestLevel: InterestLevelEnum.nullable().openapi({ example: 'Warm' }),
     createdBy: z.string().openapi({ description: 'User UUID who created this contact' }),
+    creator: z
+      .object({
+        id: z.string(),
+        name: z.string(),
+      })
+      .optional()
+      .openapi({ description: 'Creator user data, present only when populated=true' }),
     createdAt: z.string().openapi({ description: 'ISO 8601 timestamp', example: '2024-01-01T00:00:00.000Z' }),
     updatedAt: z.string().openapi({ description: 'ISO 8601 timestamp', example: '2024-01-01T00:00:00.000Z' }),
   })

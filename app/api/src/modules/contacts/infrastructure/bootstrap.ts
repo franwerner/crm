@@ -1,6 +1,7 @@
 import type { OpenAPIHono } from '@hono/zod-openapi'
 import type { Db } from '@shared/db/client'
 import { DrizzleContactsRepository } from '@modules/contacts/infrastructure/contact.repository.bun'
+import { DrizzleContactQueries } from '@modules/contacts/infrastructure/contact.query.drizzle'
 import { ContactCreateUseCase } from '@modules/contacts/application/use-cases/contact-create.use-case'
 import { ContactGetUseCase } from '@modules/contacts/application/use-cases/contact-get.use-case'
 import { ContactListUseCase } from '@modules/contacts/application/use-cases/contact-list.use-case'
@@ -18,11 +19,12 @@ export interface ContactsModule {
 
 export function bootstrapContacts(db: Db): ContactsModule {
   const repo = new DrizzleContactsRepository(db)
+  const queries = new DrizzleContactQueries(db)
 
   const controller = new ContactController({
     create: new ContactCreateUseCase(repo),
     get: new ContactGetUseCase(repo),
-    list: new ContactListUseCase(repo),
+    list: new ContactListUseCase(queries),
     listEvents: new ContactListEventsUseCase(repo),
     listStateChanges: new ContactListStateChangesUseCase(repo),
     registerEvent: new ContactRegisterEventUseCase(repo),

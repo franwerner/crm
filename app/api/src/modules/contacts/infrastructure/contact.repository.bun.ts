@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, isNull, sql, type AnyColumn } from 'drizzle-orm'
+import { and, desc, eq, isNull, sql } from 'drizzle-orm'
 import type { Db } from '@shared/db/client'
 import { contacts, events, stateChanges } from '@shared/db/schema'
 import { Contact } from '@modules/contacts/domain/contact'
@@ -10,10 +10,8 @@ import type { StateChangeCause } from '@modules/contacts/domain/types/state-chan
 import type { ContactEvent } from '@modules/contacts/domain/entities/contact-event'
 import type { ContactStateChange } from '@modules/contacts/domain/entities/contact-state-change'
 import type { ContactsRepository } from '@modules/contacts/domain/contact.repository'
-import type { ListQuery } from '@shared/types/filters'
-import { applyFilterGroups, applySearch, combineWhere } from '@shared/db/drizzle-filters'
-import { contactColumnMap, contactSearchCols } from '@modules/contacts/infrastructure/contact.resource'
-import type { Page, PageParams } from '@shared/types/pagination'
+import type { PageParams } from '@shared/types/pagination'
+import type { Page } from '@shared/types/pagination'
 
 type ContactRow = typeof contacts.$inferSelect
 type EventRow = typeof events.$inferSelect
@@ -161,41 +159,6 @@ export class DrizzleContactsRepository implements ContactsRepository {
         await tx.insert(stateChanges).values(newStateChanges.map(toStateChangeRow))
       }
     })
-  }
-
-  async findMany(query: ListQuery): Promise<Page<Contact>> {
-    const where = combineWhere([
-      isNull(contacts.deletedAt),
-      applyFilterGroups(contactColumnMap, query.filterGroups),
-      applySearch(contactSearchCols, query.search),
-    ])
-
-    const sortableMap = contactColumnMap as Record<string, AnyColumn>
-    const sortCol = query.sort ? sortableMap[query.sort.field] : undefined
-    const orderExpr = sortCol
-      ? query.sort!.dir === 'asc'
-        ? asc(sortCol)
-        : desc(sortCol)
-      : desc(contacts.createdAt)
-
-    const [countResult, rows] = await Promise.all([
-      this.db
-        .select({ count: sql<string>`count(*)` })
-        .from(contacts)
-        .where(where),
-      this.db
-        .select()
-        .from(contacts)
-        .where(where)
-        .orderBy(orderExpr)
-        .limit(query.pagination.limit)
-        .offset(query.pagination.offset),
-    ])
-
-    const total = Number(countResult[0]?.count ?? 0)
-    const items = rows.map((row) => reconstitute(row, [], []))
-
-    return { items, total, limit: query.pagination.limit, offset: query.pagination.offset }
   }
 
   async findEvents(contactId: string, params: PageParams): Promise<Page<ContactEvent>> {
