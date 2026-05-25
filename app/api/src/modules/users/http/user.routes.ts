@@ -1,11 +1,12 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { authMiddleware } from '@shared/http/auth-middleware'
+import { bracketedQueryMiddleware } from '@shared/http/bracketed-query'
 import { ProblemSchema } from '@shared/schemas/problem.schema'
-import { PaginationOnlyQuerySchema } from '@shared/http/list-query'
 import { CreateUserBodySchema } from '@modules/users/http/dto/in/user-create.in'
 import { UpdateUserBodySchema } from '@modules/users/http/dto/in/user-update.in'
 import { UserViewSchema } from '@modules/users/http/dto/out/user.out'
 import { UserListResponseSchema } from '@modules/users/http/dto/out/user-list.out'
+import { userListQuerySchema } from '@modules/users/infrastructure/user.resource'
 import type { UserController } from '@modules/users/http/user.controller'
 
 const createUserRoute = createRoute({
@@ -41,7 +42,7 @@ const listUsersRoute = createRoute({
   summary: 'List users',
   tags: ['users'],
   request: {
-    query: PaginationOnlyQuerySchema,
+    query: userListQuerySchema,
   },
   responses: {
     200: {
@@ -131,6 +132,7 @@ const deleteUserRoute = createRoute({
 export function createUsersRouter(controller: UserController): OpenAPIHono {
   const router = new OpenAPIHono()
 
+  router.use('*', bracketedQueryMiddleware)
   router.use('*', authMiddleware)
 
   router.openapi(createUserRoute, (c) => controller.createUser(c) as never)

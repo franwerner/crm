@@ -7,7 +7,7 @@ import type { UserUpdateUseCase } from '@modules/users/application/use-cases/use
 import type { UserDeleteUseCase } from '@modules/users/application/use-cases/user-delete.use-case'
 import type { CreateUserRequest } from '@modules/users/http/dto/in/user-create.in'
 import type { UpdateUserRequest } from '@modules/users/http/dto/in/user-update.in'
-import type { PaginationOnlyQuery } from '@shared/http/list-query'
+import type { ListQuery } from '@shared/types/filters'
 
 export interface UserUseCases {
   create: UserCreateUseCase
@@ -51,12 +51,9 @@ export class UserController {
   }
 
   async listUsers(c: Context): Promise<Response> {
-    const query = c.req.valid('query' as never) as PaginationOnlyQuery
+    const query = c.req.valid('query' as never) as ListQuery
 
-    const page = await this.ucs.list.execute({
-      limit: query.pagination.limit,
-      offset: query.pagination.offset,
-    })
+    const page = await this.ucs.list.execute(query)
 
     return c.json(
       {

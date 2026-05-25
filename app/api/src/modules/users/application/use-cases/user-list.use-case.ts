@@ -1,8 +1,9 @@
 import type { User } from '@modules/users/domain/user'
 import type { UsersRepository } from '@modules/users/domain/user.repository'
-import type { Page, PageParams } from '@shared/types/pagination'
+import type { ListQuery } from '@shared/types/filters'
+import type { Page } from '@shared/types/pagination'
 
-export interface ListUsersInput extends PageParams {}
+export interface ListUsersInput extends ListQuery {}
 
 export class UserListUseCase {
   constructor(private readonly repo: UsersRepository) {}
