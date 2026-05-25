@@ -62,7 +62,7 @@ function buildGroup(raw: Record<string, Record<string, unknown> | undefined>): F
   return filters
 }
 
-export function buildListQuerySchema(columnMap: ColumnMap, _searchCols?: AnyColumn[], sortableFields: readonly string[] = []) {
+export function buildListRawSchema(columnMap: ColumnMap) {
   const fieldShapes: Record<string, z.ZodTypeAny> = {}
   for (const [field, col] of Object.entries(columnMap)) {
     const ops = opsForColumn(col)
@@ -78,41 +78,52 @@ export function buildListQuerySchema(columnMap: ColumnMap, _searchCols?: AnyColu
     or: z.array(FilterGroupObjectSchema).max(MAX_OR_GROUPS).optional(),
   })
 
-  const RawSchema = z.object({
+  return z.object({
     filter: FilterShape.optional(),
     search: z.string().min(1).optional(),
     pagination: PaginationZ.optional(),
     sort: z.string().optional(),
   })
+}
 
-  return RawSchema.transform((raw): ListQuery => {
-    const filterGroups: FilterGroup[] = []
+type ListRawValue = {
+  filter?: Record<string, unknown>
+  search?: string
+  pagination?: { limit: number; offset: number }
+  sort?: string
+}
 
-    if (raw.filter) {
-      const rawFilter = raw.filter as Record<string, Record<string, unknown> | undefined>
-      const bareGroup = buildGroup(rawFilter)
-      if (bareGroup.length > 0) filterGroups.push(bareGroup)
+export function toListQuery(raw: ListRawValue, sortableFields: readonly string[]): ListQuery {
+  const filterGroups: FilterGroup[] = []
 
-      const orRaw = (raw.filter as Record<string, unknown>)['or']
-      if (Array.isArray(orRaw)) {
-        for (const groupRaw of orRaw) {
-          const group = buildGroup(groupRaw as Record<string, Record<string, unknown> | undefined>)
-          if (group.length > 0) filterGroups.push(group)
-        }
+  if (raw.filter) {
+    const rawFilter = raw.filter as Record<string, Record<string, unknown> | undefined>
+    const bareGroup = buildGroup(rawFilter)
+    if (bareGroup.length > 0) filterGroups.push(bareGroup)
+
+    const orRaw = (raw.filter as Record<string, unknown>)['or']
+    if (Array.isArray(orRaw)) {
+      for (const groupRaw of orRaw) {
+        const group = buildGroup(groupRaw as Record<string, Record<string, unknown> | undefined>)
+        if (group.length > 0) filterGroups.push(group)
       }
     }
+  }
 
-    if (filterGroups.length > MAX_OR_GROUPS) {
-      throw new ValidationError(`Filter exceeds maximum of ${MAX_OR_GROUPS} OR groups`, [
-        { field: 'filter[or]', message: `max ${MAX_OR_GROUPS} groups` },
-      ])
-    }
+  if (filterGroups.length > MAX_OR_GROUPS) {
+    throw new ValidationError(`Filter exceeds maximum of ${MAX_OR_GROUPS} OR groups`, [
+      { field: 'filter[or]', message: `max ${MAX_OR_GROUPS} groups` },
+    ])
+  }
 
-    return {
-      filterGroups,
-      search: raw.search,
-      pagination: raw.pagination ?? { limit: DEFAULT_LIMIT, offset: DEFAULT_OFFSET },
-      sort: parseSortParam(raw.sort, sortableFields),
-    }
-  })
+  return {
+    filterGroups,
+    search: raw.search,
+    pagination: raw.pagination ?? { limit: DEFAULT_LIMIT, offset: DEFAULT_OFFSET },
+    sort: parseSortParam(raw.sort, sortableFields),
+  }
+}
+
+export function buildListQuerySchema(columnMap: ColumnMap, _searchCols?: AnyColumn[], sortableFields: readonly string[] = []) {
+  return buildListRawSchema(columnMap).transform((raw): ListQuery => toListQuery(raw, sortableFields))
 }

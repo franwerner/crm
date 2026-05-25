@@ -2,6 +2,7 @@ import {
   and,
   between,
   eq,
+  getTableColumns,
   gt,
   gte,
   ilike,
@@ -15,11 +16,24 @@ import {
   or,
   type AnyColumn,
   type SQL,
+  type Table,
 } from 'drizzle-orm'
 import { ValidationError } from '@shared/errors'
 import type { Filter, FilterGroup, FilterOp, FilterValue } from '@shared/types/filters'
 
 export type ColumnMap = Record<string, AnyColumn>
+
+type TableColumns<T extends Table> = ReturnType<typeof getTableColumns<T>>
+
+export function tableColumnsExcept<T extends Table, K extends keyof TableColumns<T>>(
+  table: T,
+  exclude: readonly K[],
+): Omit<TableColumns<T>, K> {
+  const excluded = new Set<PropertyKey>(exclude)
+  return Object.fromEntries(
+    Object.entries(getTableColumns(table)).filter(([key]) => !excluded.has(key)),
+  ) as Omit<TableColumns<T>, K>
+}
 
 type ScalarValue = string | number | boolean | Date | null
 
