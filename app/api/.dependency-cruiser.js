@@ -31,6 +31,13 @@ module.exports = {
       },
     },
     {
+      name: 'adr02-2b-read-port',
+      severity: 'error',
+      comment: 'ADR 02 #2b: los read ports (application/*.query.ts) solo importan su propio domain + shared. Nunca Hono, infrastructure ni http.',
+      from: { path: '^src/modules/([^/]+)/application/[^/]+\\.query\\.ts$' },
+      to: { pathNot: ['^src/modules/$1/domain/', '^src/shared/'] },
+    },
+    {
       name: 'adr02-3-presentation-no-data',
       severity: 'error',
       comment: 'ADR 02 #3: la capa presentation (http/**) no toca DB ni infrastructure (adapter concreto). Única excepción: los archivos *.resource.ts de su propio módulo (declaran la cara pública del recurso: columnMap, searchCols, listQuerySchema). Esos archivos sí pueden tocar shared/db.',
@@ -51,6 +58,7 @@ module.exports = {
         path: '^src/',
         pathNot: [
           '^src/modules/[^/]+/infrastructure/[^/]+\\.repository\\.bun\\.ts$',
+          '^src/modules/[^/]+/infrastructure/[^/]+\\.query\\.drizzle\\.ts$',
           '^src/modules/[^/]+/infrastructure/bootstrap\\.ts$',
           '^src/modules/[^/]+/infrastructure/[^/]+\\.resource\\.ts$',
           '^src/app\\.ts$',
@@ -90,6 +98,7 @@ module.exports = {
       to: {
         path: [
           '^src/modules/[^/]+/infrastructure/[^/]+\\.repository\\.bun\\.ts$',
+          '^src/modules/[^/]+/infrastructure/[^/]+\\.query\\.drizzle\\.ts$',
           '^src/modules/[^/]+/public/[^/]+\\.public\\.impl\\.ts$',
         ],
       },
