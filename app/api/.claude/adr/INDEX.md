@@ -30,6 +30,7 @@ Este índice te dice qué ADR consultar según lo que estés por hacer. Leé sol
 | [14-pagination.md](14-pagination.md) | Accepted | Estándar de paginación compartido | Diseñes/toques un endpoint de listado; agregues un método paginado al repository; consumas/expongas el envelope `Page<T>` en OpenAPI. |
 | [15-filter-grammar.md](15-filter-grammar.md) | Accepted | Gramática de filtros en endpoints de listado | Agregues/modifiques filtros en un endpoint de listado; toques `buildListQuerySchema`, `applyFilterGroups`, o `ListQuery`; necesites entender la gramática DNF y el wire format. |
 | [16-sort.md](16-sort.md) | Accepted | Ordenamiento server-side en endpoints de listado | Agregues/modifiques ordenamiento en un endpoint de listado; toques `buildListQuerySchema`, `ListQuery`, o el repositorio de un recurso; necesites entender el wire format `campo:dir` y la whitelist por recurso. |
+| [17-read-models-for-lists.md](17-read-models-for-lists.md) | Accepted | Read models para listas (CQRS-lite) | Crees/modifiques un endpoint de listado que necesite proyección enriquecida (JOINs, datos relacionados); crees un `*.query.ts` o `*.query.drizzle.ts`; entiendas la separación entre reads de lista y reads/writes de dominio. |
 | [tech/INDEX.md](tech/INDEX.md) | — | Catálogo de tecnologías concretas | Vayas a agregar/cambiar una dependencia, lib, framework, DB, ORM, herramienta. **Consultá siempre antes de instalar algo nuevo.** |
 
 **Leyenda de status:** `Accepted` = decisión vigente · `Pending` = decidir más adelante · `Not Applicable` = decidido conscientemente que no aplica · `Deferred` = postergado con condición de revisión · `Superseded` = reemplazado por otro ADR.
@@ -49,7 +50,7 @@ Este índice te dice qué ADR consultar según lo que estés por hacer. Leé sol
 
 ## Estado y mantenimiento
 
-- Última actualización: 2026-05-24 (ADR 16 agregado: ordenamiento server-side, wire format `campo:dir`, whitelist por recurso, single-column, fallback por recurso en repositorio)
+- Última actualización: 2026-05-24 (ADR 17 agregado: read models para listas CQRS-lite, read port en application, adapter Drizzle en infrastructure)
 - Cada ADR tiene su propio `Status:`.
 - **Para actualizar una decisión:** editá el ADR, agregá entrada en `Historial`, actualizá `Status` y `Última actualización`.
 - **Para una decisión nueva:** creá un ADR nuevo y sumá fila en este INDEX.
