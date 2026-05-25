@@ -26,6 +26,7 @@ Registro vivo de las tecnologías concretas elegidas para este paquete. Cada ent
 | [radix-ui](radix-ui.md) | ^1.4.3 | Primitivos accesibles base de shadcn; se adopta el paquete paraguas (import desde `"radix-ui"`) en vez de los individuales |
 | [sonner](sonner.md) | ^2.0.7 | Toasts (shadcn deprecó su Toast propio); feedback de mutaciones y errores globales (ADR 04 §4.4) |
 | [react-day-picker](react-day-picker.md) | ^10.0.1 | Date picker headless; recomendado por handoff y shadcn; modos single/range; satélite: date-fns ^4.3.0 |
+| [cmdk](cmdk.md) | ^1.1.1 | Base shadcn de `Command` (combobox con búsqueda y a11y); usado por el filtro `relation` con `shouldFilter={false}` (búsqueda async) |
 
 ### Routing
 | Tech | Versión | Por qué |

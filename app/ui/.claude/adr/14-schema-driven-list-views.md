@@ -51,9 +51,11 @@ Cada campo nuevo (ej. `updatedAt`) obliga a editar varios de esos lugares y es f
 - **Descriptor por entidad** (sabe de dominio: labels en español, options con label, badge variants, formato) en `features/<f>/<f>.descriptor.ts`. Por ADR 11, lo que "sabe" de dominio va en `features/`, no en `shared/`.
 - El descriptor se **tipa contra el tipo generado por kubb** (`EntityDescriptor<ContactView>`); no se redeclara el shape.
 - El backend **no** recibe metadata de presentación. Las capabilities server-side se derivan de `getTableColumns` (ver `contact.resource.ts`).
+- Para derivar del contrato sin duplicar (tipos de dominio, schema del form, options), las features importan `shared/api` desde cualquier capa. Esto requirió **relajar las reglas #3/#4/#5 del ADR 02** (2026-05-24): se resigna el anti-corruption layer estricto a cambio de eliminar duplicación. `shared/ui` sigue puro. Sincronizado en `eslint.config.js` y `.dependency-cruiser.cjs`.
 
 ## Historial
 
 | Fecha | Cambio | Por |
 |---|---|---|
 | 2026-05-24 | Decisión inicial | ifran |
+| 2026-05-24 | Se relajan reglas #3/#4/#5 del ADR 02 para permitir que las features deriven del contrato (`shared/api`) sin duplicar tipos/schemas | ifran |

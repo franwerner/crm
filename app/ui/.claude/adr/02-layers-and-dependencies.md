@@ -35,13 +35,13 @@ app/ui/
 |---|---|
 | 1 | `src/features/A/**` NO importa de `src/features/B/**`. Features aisladas; lo común va a `shared/`, la composición a `app/`. |
 | 2 | `src/shared/**` NO importa de `src/features/**`. El kernel no conoce features. |
-| 3 | `src/shared/api/**` (salida kubb) es read-only generado: no se edita a mano y solo lo consumen los hooks de feature. |
-| 4 | Componentes presentacionales (`src/features/*/components/**`, `src/shared/ui/**`) NO importan kubb, TanStack Query ni `shared/api`. Reciben datos por props. |
-| 5 | Solo `src/features/*/hooks/**` consume `src/shared/api/**` y orquesta TanStack Query del feature. |
+| 3 | `src/shared/api/**` (salida kubb) es read-only generado: no se edita a mano. Lo pueden consumir las **features desde cualquier capa** (hooks, types, descriptors, components, routes) para derivar tipos/schemas del contrato. El kernel `shared/lib` y `shared/ui` NO lo importan. |
+| 4 | Componentes presentacionales (`src/features/*/components/**`, `src/shared/ui/**`) NO importan kubb, TanStack Query ni Router directo; reciben datos por props/hooks. Los de **feature** SÍ pueden importar `shared/api` (tipos/schemas del contrato); `shared/ui` NO. |
+| 5 | Las features pueden consumir `src/shared/api/**` desde cualquier capa (no solo hooks) para derivar del contrato y **evitar duplicación**. Trade-off consciente: se acopla la feature al artefacto generado, resignando el anti-corruption layer estricto (ver Historial 2026-05-24 y ADR 14). |
 | 6 | `src/shared/ui/**` (design system) es presentacional puro: NO conoce features, API ni Query. |
 | 7 | `src/app/**` (composición) es el ÚNICO que importa varias features para armar router/providers/guards. |
 
-> La regla #4 mantiene viva la decisión container/presentational del ADR 01. Es la que más se viola sin querer — vigilarla.
+> La regla #4 mantiene la decisión container/presentational del ADR 01 para las **libs externas de datos** (TanStack Query/Router, kubb). El acceso a `shared/api` (artefacto interno generado) se relajó el 2026-05-24 para permitir derivar del contrato y eliminar duplicación — ver ADR 14.
 
 ## Enforcement (cómo se verifican estas reglas)
 
@@ -68,7 +68,7 @@ Pasos (al scaffoldear el paquete, ANTES del primer feature):
 
 **Positivas:** reglas verificables; features independientes; UI desacoplada de datos.
 
-**Negativas / trade-offs:** enforcement requiere configurar eslint-plugin-boundaries.
+**Negativas / trade-offs:** enforcement requiere configurar eslint-plugin-boundaries. Desde 2026-05-24, las features se acoplan al contrato generado (`shared/api`) sin un anti-corruption layer estricto: un cambio del contrato puede tocar varios archivos de la feature. Trade-off aceptado a cambio de eliminar duplicación (ADR 14).
 
 ## Historial
 
@@ -76,3 +76,4 @@ Pasos (al scaffoldear el paquete, ANTES del primer feature):
 |---|---|---|
 | 2026-05-17 | Decisión inicial | ifran |
 | 2026-05-17 | Enforcement definido: dependency-cruiser (CI gate) + eslint-plugin-boundaries (editor) | ifran |
+| 2026-05-24 | Reglas #3/#4/#5 relajadas: las features pueden importar `shared/api` desde cualquier capa para derivar del contrato (no solo hooks), eliminando duplicación de tipos/schemas. `shared/ui` sigue puro. Trade-off: se resigna el anti-corruption layer estricto. Habilita el patrón del ADR 14. Sincronizado en `eslint.config.js` y `.dependency-cruiser.cjs` | ifran |
