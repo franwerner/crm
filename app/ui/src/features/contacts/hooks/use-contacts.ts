@@ -19,6 +19,7 @@ export function useContacts({ page, search, filterGroups, sortField, sortDir }: 
 
   const params: GetContactsQueryParams = {
     pagination: { limit: PAGE_SIZE, offset },
+    populated: 'true',
     ...(search ? { search } : {}),
     ...(filter ? { filter } : {}),
     ...(sort ? { sort } : {}),

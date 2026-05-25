@@ -8,15 +8,25 @@ import {
 import { z } from 'zod'
 import type { QueryClient } from '@tanstack/react-query'
 import { filterGroupsSchema } from '@shared/lib/filter'
+import { toSortFields } from '@shared/lib/data-view'
 import { queryClient, registerUnauthorizedHandler } from '@shared/lib/query-client'
 import { getAuthMeQueryOptions } from '@shared/api/hooks/useGetAuthMe'
 import { LoginPage } from '@features/auth/routes/login-page'
 import { AppShell } from '@app/shell/app-shell'
 import { ContactsPage } from '@features/contacts/routes/contacts-page'
 import { UsersPage } from '@features/users/routes/users-page'
+import { contactsDescriptor } from '@features/contacts/contacts.descriptor'
+import { usersDescriptor } from '@features/users/users.descriptor'
 
 const contactsSortDirEnum = z.enum(['asc', 'desc'])
-const contactsSortFieldEnum = z.enum(['name', 'phone', 'pipelineState', 'sourceChannel', 'interestLevel', 'createdAt'])
+const contactsSortFieldEnum = z.enum(
+  toSortFields(contactsDescriptor) as [string, ...string[]],
+)
+
+const usersSortDirEnum = z.enum(['asc', 'desc'])
+const usersSortFieldEnum = z.enum(
+  toSortFields(usersDescriptor) as [string, ...string[]],
+)
 
 const contactsSearchSchema = z.object({
   page: z.number().int().min(1).optional().default(1),
@@ -24,6 +34,14 @@ const contactsSearchSchema = z.object({
   filterGroups: filterGroupsSchema,
   sortField: contactsSortFieldEnum.optional().default('createdAt'),
   sortDir: contactsSortDirEnum.optional().default('desc'),
+})
+
+const usersSearchSchema = z.object({
+  page: z.number().int().min(1).optional().default(1),
+  search: z.string().optional(),
+  filterGroups: filterGroupsSchema,
+  sortField: usersSortFieldEnum.optional().default('createdAt'),
+  sortDir: usersSortDirEnum.optional().default('desc'),
 })
 
 type RouterContext = {
@@ -65,6 +83,7 @@ const contactsRoute = createRoute({
 const usersRoute = createRoute({
   getParentRoute: () => authenticatedRoute,
   path: '/users',
+  validateSearch: usersSearchSchema,
   component: UsersPage,
 })
 

@@ -1,6 +1,13 @@
 import { z } from 'zod'
 
-export type FieldType = 'text' | 'enum' | 'boolean' | 'date'
+export type FieldType = 'text' | 'enum' | 'boolean' | 'date' | 'relation'
+
+export type RelationOption = { value: string; label: string }
+
+export type RelationResolver = {
+  search: (query: string) => Promise<RelationOption[]>
+  resolve: (ids: string[]) => Promise<RelationOption[]>
+}
 
 export type Operator =
   | 'eq'
@@ -30,6 +37,7 @@ export type FieldDescriptor = {
   type: FieldType
   ops?: Operator[]
   options?: { value: string; label: string }[]
+  relation?: RelationResolver
 }
 
 export type FilterSchema = FieldDescriptor[]
@@ -54,6 +62,7 @@ const TYPE_OPS: Record<FieldType, Operator[]> = {
   enum: ['eq', 'ne', 'in', 'nin', 'isNull', 'isNotNull'],
   boolean: ['eq', 'ne', 'isNull', 'isNotNull'],
   date: ['eq', 'ne', 'gt', 'gte', 'lt', 'lte', 'between', 'isNull', 'isNotNull'],
+  relation: ['eq', 'ne', 'in', 'nin', 'isNull', 'isNotNull'],
 }
 
 export function opsForField(descriptor: FieldDescriptor): Operator[] {

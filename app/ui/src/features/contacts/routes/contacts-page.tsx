@@ -7,9 +7,13 @@ import { contactColumns } from '@features/contacts/components/contacts-columns'
 import { ContactsToolbar } from '@features/contacts/components/contacts-toolbar'
 import { ContactsBulkbar } from '@features/contacts/components/contacts-bulkbar'
 import { DataTable } from '@shared/ui/data-table'
+import { toSearchPresentation } from '@shared/lib/data-view'
+import { contactsDescriptor } from '@features/contacts/contacts.descriptor'
 import type { FilterGroups } from '@shared/lib/filter'
 import type { RowSelectionState, SortingState, OnChangeFn } from '@tanstack/react-table'
 import type { ContactPipelineState, CreateContactFormValues } from '@features/contacts/contacts.types'
+
+const { placeholder: searchPlaceholder } = toSearchPresentation(contactsDescriptor)
 
 export function ContactsPage() {
   const { page, search, filterGroups, sortField, sortDir } = useSearch({ from: '/_authenticated/contacts' })
@@ -92,6 +96,7 @@ export function ContactsPage() {
     <ContactsToolbar
       search={search ?? ''}
       onSearchChange={handleSearchChange}
+      searchPlaceholder={searchPlaceholder}
       committedGroups={filterGroups ?? []}
       onApplyFilters={handleApplyFilters}
       onCreateContact={handleCreateContact}

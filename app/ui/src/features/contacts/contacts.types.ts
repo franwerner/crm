@@ -1,12 +1,14 @@
-export type ContactPipelineState = 'Contact' | 'Lead' | 'Customer' | 'Discarded'
+import type {
+  ContactViewPipelineStateEnumKey,
+  ContactViewInterestLevelEnumKey,
+  ContactViewSourceChannelEnumKey,
+} from '@shared/api/types/ContactView'
+import type { CreateContactBody } from '@shared/api/types/CreateContactBody'
 
-export type ContactInterestLevel = 'Cold' | 'Warm' | 'Hot'
+export type ContactPipelineState = ContactViewPipelineStateEnumKey
 
-export type ContactSourceChannel = 'Instagram' | 'WhatsApp' | 'Referral' | 'Email' | 'Other'
+export type ContactInterestLevel = ContactViewInterestLevelEnumKey
 
-export type CreateContactFormValues = {
-  name: string
-  phone?: string | null
-  sourceChannel?: ContactSourceChannel | null
-  interestLevel?: ContactInterestLevel | null
-}
+export type ContactSourceChannel = ContactViewSourceChannelEnumKey
+
+export type CreateContactFormValues = CreateContactBody

@@ -4,10 +4,11 @@ import { Input } from '@shared/ui/input'
 type Props = {
   value: string
   onChange: (value: string) => void
+  placeholder?: string
   debounceMs?: number
 }
 
-export function ContactsSearch({ value, onChange, debounceMs = 350 }: Props) {
+export function ContactsSearch({ value, onChange, placeholder = 'Buscar…', debounceMs = 350 }: Props) {
   const [draft, setDraft] = useState(value)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -27,7 +28,7 @@ export function ContactsSearch({ value, onChange, debounceMs = 350 }: Props) {
   return (
     <Input
       type="search"
-      placeholder="Buscar contactos…"
+      placeholder={placeholder}
       value={draft}
       onChange={handleChange}
       className="max-w-sm"

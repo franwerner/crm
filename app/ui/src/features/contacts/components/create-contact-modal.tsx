@@ -2,6 +2,8 @@ import { z } from 'zod/v4'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { CreateContactFormValues } from '@features/contacts/contacts.types'
+import { createContactBodySchema } from '@shared/api/schemas/createContactBodySchema'
+import { sourceChannelOptions, interestLevelOptions } from '@features/contacts/contacts.options'
 import {
   Dialog,
   DialogContent,
@@ -23,12 +25,7 @@ import {
   SelectValue,
 } from '@shared/ui/select'
 
-const schema = z.object({
-  name: z.string().min(1, 'El nombre es obligatorio'),
-  phone: z.string().nullish(),
-  sourceChannel: z.enum(['Instagram', 'WhatsApp', 'Referral', 'Email', 'Other']).nullish(),
-  interestLevel: z.enum(['Cold', 'Warm', 'Hot']).nullish(),
-})
+const schema = createContactBodySchema.extend({ name: z.string().min(1, 'El nombre es obligatorio') })
 
 type Props = {
   open: boolean
@@ -118,8 +115,8 @@ export function CreateContactModal({ open, onOpenChange, onSubmit, isPending, er
                   <SelectValue placeholder="Seleccionar canal…" />
                 </SelectTrigger>
                 <SelectContent>
-                  {(['Instagram', 'WhatsApp', 'Referral', 'Email', 'Other'] as const).map((ch) => (
-                    <SelectItem key={ch} value={ch}>{ch}</SelectItem>
+                  {sourceChannelOptions.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -135,8 +132,8 @@ export function CreateContactModal({ open, onOpenChange, onSubmit, isPending, er
                   <SelectValue placeholder="Seleccionar nivel…" />
                 </SelectTrigger>
                 <SelectContent>
-                  {(['Cold', 'Warm', 'Hot'] as const).map((lvl) => (
-                    <SelectItem key={lvl} value={lvl}>{lvl}</SelectItem>
+                  {interestLevelOptions.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>

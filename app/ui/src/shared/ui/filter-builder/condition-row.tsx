@@ -9,6 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@shared/ui/popover'
 import { Switch } from '@shared/ui/switch'
 import { Input } from '@shared/ui/input'
 import { DatePicker } from '@shared/ui/date-picker'
+import { RelationCombobox } from '@shared/ui/relation-combobox'
 import { cn } from '@shared/lib/cn'
 import {
   OPERATOR_LABELS,
@@ -219,6 +220,28 @@ export function ConditionRow({ schema, condition, onChange, onRemove }: Props) {
             </div>
           </PopoverContent>
         </Popover>
+      )}
+
+      {showValue && descriptor.type === 'relation' && descriptor.relation && !isArray && (
+        <RelationCombobox
+          multiple={false}
+          value={typeof condition.value === 'string' && condition.value ? [condition.value] : []}
+          onChange={(ids) => onChange({ ...condition, value: ids[0] })}
+          search={descriptor.relation.search}
+          resolve={descriptor.relation.resolve}
+          className={valuePill}
+        />
+      )}
+
+      {showValue && descriptor.type === 'relation' && descriptor.relation && isArray && (
+        <RelationCombobox
+          multiple
+          value={currentArrayValues}
+          onChange={(ids) => onChange({ ...condition, value: ids })}
+          search={descriptor.relation.search}
+          resolve={descriptor.relation.resolve}
+          className={valuePill}
+        />
       )}
 
       {showValue && descriptor.type === 'boolean' && (

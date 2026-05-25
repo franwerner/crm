@@ -11,6 +11,7 @@ import type { CreateContactFormValues } from '@features/contacts/contacts.types'
 type Props = {
   search: string
   onSearchChange: (value: string) => void
+  searchPlaceholder?: string
   committedGroups: FilterGroups
   onApplyFilters: (groups: FilterGroups) => void
   onCreateContact: (data: CreateContactFormValues) => Promise<void>
@@ -25,6 +26,7 @@ function countActiveConditions(groups: FilterGroups): number {
 export function ContactsToolbar({
   search,
   onSearchChange,
+  searchPlaceholder,
   committedGroups,
   onApplyFilters,
   onCreateContact,
@@ -39,7 +41,7 @@ export function ContactsToolbar({
   return (
     <>
       <div className="flex flex-1 items-center gap-2">
-        <ContactsSearch value={search} onChange={onSearchChange} />
+        <ContactsSearch value={search} onChange={onSearchChange} placeholder={searchPlaceholder} />
         <Button
           variant="outline"
           size="sm"

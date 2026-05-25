@@ -34,6 +34,18 @@ type Props<TData> = {
 
 const SKELETON_ROWS = 8
 
+function getPageItems(current: number, total: number): (number | 'ellipsis')[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
+  const items: (number | 'ellipsis')[] = [1]
+  const start = Math.max(2, current - 1)
+  const end = Math.min(total - 1, current + 1)
+  if (start > 2) items.push('ellipsis')
+  for (let p = start; p <= end; p++) items.push(p)
+  if (end < total - 1) items.push('ellipsis')
+  items.push(total)
+  return items
+}
+
 export function DataTable<TData>({
   columns,
   data,
@@ -194,15 +206,42 @@ export function DataTable<TData>({
           <Button
             variant="outline"
             size="sm"
+            className="h-8 w-8 px-0"
             onClick={() => onPageChange(page - 1)}
             disabled={!table.getCanPreviousPage() || loading}
             aria-label="Página anterior"
           >
             ‹
           </Button>
+          {pageCount > 1 &&
+            getPageItems(page, pageCount).map((item, idx) =>
+              item === 'ellipsis' ? (
+                <span
+                  key={`ellipsis-${idx}`}
+                  className="px-1 text-muted-foreground select-none"
+                  aria-hidden="true"
+                >
+                  …
+                </span>
+              ) : (
+                <Button
+                  key={item}
+                  variant={item === page ? 'default' : 'outline'}
+                  size="sm"
+                  className="h-8 w-8 px-0"
+                  onClick={() => onPageChange(item)}
+                  disabled={loading}
+                  aria-label={`Página ${item}`}
+                  aria-current={item === page ? 'page' : undefined}
+                >
+                  {item}
+                </Button>
+              ),
+            )}
           <Button
             variant="outline"
             size="sm"
+            className="h-8 w-8 px-0"
             onClick={() => onPageChange(page + 1)}
             disabled={!table.getCanNextPage() || loading}
             aria-label="Página siguiente"
