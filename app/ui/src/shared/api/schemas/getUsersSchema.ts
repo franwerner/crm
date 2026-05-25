@@ -3,9 +3,86 @@
  * Do not edit manually.
  */
 
+import { filterGroupObjectSchema } from "./filterGroupObjectSchema.ts";
+import { paginationSchema } from "./paginationSchema.ts";
 import { problemSchema } from "./problemSchema.ts";
 import { userListResponseSchema } from "./userListResponseSchema.ts";
 import { z } from "zod/v4";
+
+export const getUsersQueryParamsSchema = z
+  .object({
+    filter: z.optional(
+      z.object({
+        id: z.optional(
+          z.object({
+            eq: z.optional(z.union([z.array(z.string()), z.string()])),
+            ne: z.optional(z.union([z.array(z.string()), z.string()])),
+            in: z.optional(z.union([z.array(z.string()), z.string()])),
+            nin: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
+          }),
+        ),
+        email: z.optional(
+          z.object({
+            eq: z.optional(z.union([z.array(z.string()), z.string()])),
+            ne: z.optional(z.union([z.array(z.string()), z.string()])),
+            in: z.optional(z.union([z.array(z.string()), z.string()])),
+            nin: z.optional(z.union([z.array(z.string()), z.string()])),
+            ilike: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
+          }),
+        ),
+        name: z.optional(
+          z.object({
+            eq: z.optional(z.union([z.array(z.string()), z.string()])),
+            ne: z.optional(z.union([z.array(z.string()), z.string()])),
+            in: z.optional(z.union([z.array(z.string()), z.string()])),
+            nin: z.optional(z.union([z.array(z.string()), z.string()])),
+            ilike: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
+          }),
+        ),
+        createdAt: z.optional(
+          z.object({
+            eq: z.optional(z.union([z.array(z.string()), z.string()])),
+            ne: z.optional(z.union([z.array(z.string()), z.string()])),
+            gt: z.optional(z.union([z.array(z.string()), z.string()])),
+            gte: z.optional(z.union([z.array(z.string()), z.string()])),
+            lt: z.optional(z.union([z.array(z.string()), z.string()])),
+            lte: z.optional(z.union([z.array(z.string()), z.string()])),
+            between: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
+          }),
+        ),
+        updatedAt: z.optional(
+          z.object({
+            eq: z.optional(z.union([z.array(z.string()), z.string()])),
+            ne: z.optional(z.union([z.array(z.string()), z.string()])),
+            gt: z.optional(z.union([z.array(z.string()), z.string()])),
+            gte: z.optional(z.union([z.array(z.string()), z.string()])),
+            lt: z.optional(z.union([z.array(z.string()), z.string()])),
+            lte: z.optional(z.union([z.array(z.string()), z.string()])),
+            between: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
+          }),
+        ),
+        get or() {
+          return z.array(filterGroupObjectSchema).max(10).optional();
+        },
+      }),
+    ),
+    search: z.optional(z.string().min(1)),
+    get pagination() {
+      return paginationSchema.optional();
+    },
+    sort: z.optional(z.string()),
+  })
+  .optional();
 
 /**
  * @description Paginated list of users.

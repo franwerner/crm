@@ -42,6 +42,53 @@
         }
       }
     },
+    "email": {
+      "type": "object",
+      "properties": {
+        "eq": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        },
+        "ne": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        },
+        "in": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        },
+        "nin": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        },
+        "ilike": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        },
+        "isNull": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        },
+        "isNotNull": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        }
+      }
+    },
     "name": {
       "type": "object",
       "properties": {
@@ -70,372 +117,6 @@
           ]
         },
         "ilike": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "isNull": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "isNotNull": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        }
-      }
-    },
-    "phone": {
-      "type": "object",
-      "properties": {
-        "eq": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "ne": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "in": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "nin": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "ilike": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "isNull": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "isNotNull": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        }
-      }
-    },
-    "pipelineState": {
-      "type": "object",
-      "properties": {
-        "eq": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": ["Contact", "Lead", "Customer", "Discarded"]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["Contact", "Lead", "Customer", "Discarded"]
-              }
-            }
-          ]
-        },
-        "ne": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": ["Contact", "Lead", "Customer", "Discarded"]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["Contact", "Lead", "Customer", "Discarded"]
-              }
-            }
-          ]
-        },
-        "in": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": ["Contact", "Lead", "Customer", "Discarded"]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["Contact", "Lead", "Customer", "Discarded"]
-              }
-            }
-          ]
-        },
-        "nin": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": ["Contact", "Lead", "Customer", "Discarded"]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["Contact", "Lead", "Customer", "Discarded"]
-              }
-            }
-          ]
-        },
-        "isNull": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": ["Contact", "Lead", "Customer", "Discarded"]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["Contact", "Lead", "Customer", "Discarded"]
-              }
-            }
-          ]
-        },
-        "isNotNull": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": ["Contact", "Lead", "Customer", "Discarded"]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["Contact", "Lead", "Customer", "Discarded"]
-              }
-            }
-          ]
-        }
-      }
-    },
-    "stateLocked": {
-      "type": "object",
-      "properties": {
-        "eq": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "ne": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "isNull": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "isNotNull": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        }
-      }
-    },
-    "sourceChannel": {
-      "type": "object",
-      "properties": {
-        "eq": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other"]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other"]
-              }
-            }
-          ]
-        },
-        "ne": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other"]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other"]
-              }
-            }
-          ]
-        },
-        "in": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other"]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other"]
-              }
-            }
-          ]
-        },
-        "nin": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other"]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other"]
-              }
-            }
-          ]
-        },
-        "isNull": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other"]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other"]
-              }
-            }
-          ]
-        },
-        "isNotNull": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other"]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other"]
-              }
-            }
-          ]
-        }
-      }
-    },
-    "interestLevel": {
-      "type": "object",
-      "properties": {
-        "eq": {
-          "anyOf": [
-            { "type": "string", "enum": ["Cold", "Warm", "Hot"] },
-            {
-              "type": "array",
-              "items": { "type": "string", "enum": ["Cold", "Warm", "Hot"] }
-            }
-          ]
-        },
-        "ne": {
-          "anyOf": [
-            { "type": "string", "enum": ["Cold", "Warm", "Hot"] },
-            {
-              "type": "array",
-              "items": { "type": "string", "enum": ["Cold", "Warm", "Hot"] }
-            }
-          ]
-        },
-        "in": {
-          "anyOf": [
-            { "type": "string", "enum": ["Cold", "Warm", "Hot"] },
-            {
-              "type": "array",
-              "items": { "type": "string", "enum": ["Cold", "Warm", "Hot"] }
-            }
-          ]
-        },
-        "nin": {
-          "anyOf": [
-            { "type": "string", "enum": ["Cold", "Warm", "Hot"] },
-            {
-              "type": "array",
-              "items": { "type": "string", "enum": ["Cold", "Warm", "Hot"] }
-            }
-          ]
-        },
-        "isNull": {
-          "anyOf": [
-            { "type": "string", "enum": ["Cold", "Warm", "Hot"] },
-            {
-              "type": "array",
-              "items": { "type": "string", "enum": ["Cold", "Warm", "Hot"] }
-            }
-          ]
-        },
-        "isNotNull": {
-          "anyOf": [
-            { "type": "string", "enum": ["Cold", "Warm", "Hot"] },
-            {
-              "type": "array",
-              "items": { "type": "string", "enum": ["Cold", "Warm", "Hot"] }
-            }
-          ]
-        }
-      }
-    },
-    "createdBy": {
-      "type": "object",
-      "properties": {
-        "eq": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "ne": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "in": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "nin": {
           "anyOf": [
             { "type": "string" },
             { "type": "array", "items": { "type": "string" } }
@@ -515,65 +196,6 @@
       }
     },
     "updatedAt": {
-      "type": "object",
-      "properties": {
-        "eq": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "ne": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "gt": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "gte": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "lt": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "lte": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "between": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "isNull": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        },
-        "isNotNull": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "array", "items": { "type": "string" } }
-          ]
-        }
-      }
-    },
-    "deletedAt": {
       "type": "object",
       "properties": {
         "eq": {

@@ -3,8 +3,98 @@
  * Do not edit manually.
  */
 
+import type { FilterGroupObject } from "./FilterGroupObject.ts";
+import type { Pagination } from "./Pagination.ts";
 import type { Problem } from "./Problem.ts";
 import type { UserListResponse } from "./UserListResponse.ts";
+
+export type GetUsersQueryParams = {
+  /**
+   * @type object | undefined
+   */
+  filter?: {
+    /**
+     * @type object | undefined
+     */
+    id?: {
+      eq?: string | string[];
+      ne?: string | string[];
+      in?: string | string[];
+      nin?: string | string[];
+      isNull?: string | string[];
+      isNotNull?: string | string[];
+    };
+    /**
+     * @type object | undefined
+     */
+    email?: {
+      eq?: string | string[];
+      ne?: string | string[];
+      in?: string | string[];
+      nin?: string | string[];
+      ilike?: string | string[];
+      isNull?: string | string[];
+      isNotNull?: string | string[];
+    };
+    /**
+     * @type object | undefined
+     */
+    name?: {
+      eq?: string | string[];
+      ne?: string | string[];
+      in?: string | string[];
+      nin?: string | string[];
+      ilike?: string | string[];
+      isNull?: string | string[];
+      isNotNull?: string | string[];
+    };
+    /**
+     * @type object | undefined
+     */
+    createdAt?: {
+      eq?: string | string[];
+      ne?: string | string[];
+      gt?: string | string[];
+      gte?: string | string[];
+      lt?: string | string[];
+      lte?: string | string[];
+      between?: string | string[];
+      isNull?: string | string[];
+      isNotNull?: string | string[];
+    };
+    /**
+     * @type object | undefined
+     */
+    updatedAt?: {
+      eq?: string | string[];
+      ne?: string | string[];
+      gt?: string | string[];
+      gte?: string | string[];
+      lt?: string | string[];
+      lte?: string | string[];
+      between?: string | string[];
+      isNull?: string | string[];
+      isNotNull?: string | string[];
+    };
+    /**
+     * @type array | undefined
+     */
+    or?: FilterGroupObject[];
+  };
+  /**
+   * @minLength 1
+   * @type string | undefined
+   */
+  search?: string;
+  /**
+   * @type object | undefined
+   */
+  pagination?: Pagination;
+  /**
+   * @type string | undefined
+   */
+  sort?: string;
+};
 
 /**
  * @description Paginated list of users.
@@ -20,5 +110,6 @@ export type GetUsersQueryResponse = GetUsers200;
 
 export type GetUsersQuery = {
   Response: GetUsers200;
+  QueryParams: GetUsersQueryParams;
   Errors: GetUsers401;
 };

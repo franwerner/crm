@@ -280,6 +280,9 @@ export const getContactsQueryParamsSchema = z
       return paginationSchema.optional();
     },
     sort: z.optional(z.string()),
+    populated: z.optional(
+      z.string().describe("When true, resolves creator user data"),
+    ),
   })
   .optional();
 

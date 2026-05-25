@@ -3,186 +3,6 @@
  * Do not edit manually.
  */
 
-export const pipelineStateEqEnum = {
-  Contact: "Contact",
-  Lead: "Lead",
-  Customer: "Customer",
-  Discarded: "Discarded",
-} as const;
-
-export type PipelineStateEqEnumKey =
-  (typeof pipelineStateEqEnum)[keyof typeof pipelineStateEqEnum];
-
-export const pipelineStateNeEnum = {
-  Contact: "Contact",
-  Lead: "Lead",
-  Customer: "Customer",
-  Discarded: "Discarded",
-} as const;
-
-export type PipelineStateNeEnumKey =
-  (typeof pipelineStateNeEnum)[keyof typeof pipelineStateNeEnum];
-
-export const pipelineStateInEnum = {
-  Contact: "Contact",
-  Lead: "Lead",
-  Customer: "Customer",
-  Discarded: "Discarded",
-} as const;
-
-export type PipelineStateInEnumKey =
-  (typeof pipelineStateInEnum)[keyof typeof pipelineStateInEnum];
-
-export const pipelineStateNinEnum = {
-  Contact: "Contact",
-  Lead: "Lead",
-  Customer: "Customer",
-  Discarded: "Discarded",
-} as const;
-
-export type PipelineStateNinEnumKey =
-  (typeof pipelineStateNinEnum)[keyof typeof pipelineStateNinEnum];
-
-export const pipelineStateIsNullEnum = {
-  Contact: "Contact",
-  Lead: "Lead",
-  Customer: "Customer",
-  Discarded: "Discarded",
-} as const;
-
-export type PipelineStateIsNullEnumKey =
-  (typeof pipelineStateIsNullEnum)[keyof typeof pipelineStateIsNullEnum];
-
-export const pipelineStateIsNotNullEnum = {
-  Contact: "Contact",
-  Lead: "Lead",
-  Customer: "Customer",
-  Discarded: "Discarded",
-} as const;
-
-export type PipelineStateIsNotNullEnumKey =
-  (typeof pipelineStateIsNotNullEnum)[keyof typeof pipelineStateIsNotNullEnum];
-
-export const sourceChannelEqEnum = {
-  Instagram: "Instagram",
-  WhatsApp: "WhatsApp",
-  Referral: "Referral",
-  Email: "Email",
-  Other: "Other",
-} as const;
-
-export type SourceChannelEqEnumKey =
-  (typeof sourceChannelEqEnum)[keyof typeof sourceChannelEqEnum];
-
-export const sourceChannelNeEnum = {
-  Instagram: "Instagram",
-  WhatsApp: "WhatsApp",
-  Referral: "Referral",
-  Email: "Email",
-  Other: "Other",
-} as const;
-
-export type SourceChannelNeEnumKey =
-  (typeof sourceChannelNeEnum)[keyof typeof sourceChannelNeEnum];
-
-export const sourceChannelInEnum = {
-  Instagram: "Instagram",
-  WhatsApp: "WhatsApp",
-  Referral: "Referral",
-  Email: "Email",
-  Other: "Other",
-} as const;
-
-export type SourceChannelInEnumKey =
-  (typeof sourceChannelInEnum)[keyof typeof sourceChannelInEnum];
-
-export const sourceChannelNinEnum = {
-  Instagram: "Instagram",
-  WhatsApp: "WhatsApp",
-  Referral: "Referral",
-  Email: "Email",
-  Other: "Other",
-} as const;
-
-export type SourceChannelNinEnumKey =
-  (typeof sourceChannelNinEnum)[keyof typeof sourceChannelNinEnum];
-
-export const sourceChannelIsNullEnum = {
-  Instagram: "Instagram",
-  WhatsApp: "WhatsApp",
-  Referral: "Referral",
-  Email: "Email",
-  Other: "Other",
-} as const;
-
-export type SourceChannelIsNullEnumKey =
-  (typeof sourceChannelIsNullEnum)[keyof typeof sourceChannelIsNullEnum];
-
-export const sourceChannelIsNotNullEnum = {
-  Instagram: "Instagram",
-  WhatsApp: "WhatsApp",
-  Referral: "Referral",
-  Email: "Email",
-  Other: "Other",
-} as const;
-
-export type SourceChannelIsNotNullEnumKey =
-  (typeof sourceChannelIsNotNullEnum)[keyof typeof sourceChannelIsNotNullEnum];
-
-export const interestLevelEqEnum = {
-  Cold: "Cold",
-  Warm: "Warm",
-  Hot: "Hot",
-} as const;
-
-export type InterestLevelEqEnumKey =
-  (typeof interestLevelEqEnum)[keyof typeof interestLevelEqEnum];
-
-export const interestLevelNeEnum = {
-  Cold: "Cold",
-  Warm: "Warm",
-  Hot: "Hot",
-} as const;
-
-export type InterestLevelNeEnumKey =
-  (typeof interestLevelNeEnum)[keyof typeof interestLevelNeEnum];
-
-export const interestLevelInEnum = {
-  Cold: "Cold",
-  Warm: "Warm",
-  Hot: "Hot",
-} as const;
-
-export type InterestLevelInEnumKey =
-  (typeof interestLevelInEnum)[keyof typeof interestLevelInEnum];
-
-export const interestLevelNinEnum = {
-  Cold: "Cold",
-  Warm: "Warm",
-  Hot: "Hot",
-} as const;
-
-export type InterestLevelNinEnumKey =
-  (typeof interestLevelNinEnum)[keyof typeof interestLevelNinEnum];
-
-export const interestLevelIsNullEnum = {
-  Cold: "Cold",
-  Warm: "Warm",
-  Hot: "Hot",
-} as const;
-
-export type InterestLevelIsNullEnumKey =
-  (typeof interestLevelIsNullEnum)[keyof typeof interestLevelIsNullEnum];
-
-export const interestLevelIsNotNullEnum = {
-  Cold: "Cold",
-  Warm: "Warm",
-  Hot: "Hot",
-} as const;
-
-export type InterestLevelIsNotNullEnumKey =
-  (typeof interestLevelIsNotNullEnum)[keyof typeof interestLevelIsNotNullEnum];
-
 export type FilterGroupObject = {
   /**
    * @type object | undefined
@@ -198,77 +18,24 @@ export type FilterGroupObject = {
   /**
    * @type object | undefined
    */
+  email?: {
+    eq?: string | string[];
+    ne?: string | string[];
+    in?: string | string[];
+    nin?: string | string[];
+    ilike?: string | string[];
+    isNull?: string | string[];
+    isNotNull?: string | string[];
+  };
+  /**
+   * @type object | undefined
+   */
   name?: {
     eq?: string | string[];
     ne?: string | string[];
     in?: string | string[];
     nin?: string | string[];
     ilike?: string | string[];
-    isNull?: string | string[];
-    isNotNull?: string | string[];
-  };
-  /**
-   * @type object | undefined
-   */
-  phone?: {
-    eq?: string | string[];
-    ne?: string | string[];
-    in?: string | string[];
-    nin?: string | string[];
-    ilike?: string | string[];
-    isNull?: string | string[];
-    isNotNull?: string | string[];
-  };
-  /**
-   * @type object | undefined
-   */
-  pipelineState?: {
-    eq?: PipelineStateEqEnumKey | PipelineStateEqEnumKey[];
-    ne?: PipelineStateNeEnumKey | PipelineStateNeEnumKey[];
-    in?: PipelineStateInEnumKey | PipelineStateInEnumKey[];
-    nin?: PipelineStateNinEnumKey | PipelineStateNinEnumKey[];
-    isNull?: PipelineStateIsNullEnumKey | PipelineStateIsNullEnumKey[];
-    isNotNull?: PipelineStateIsNotNullEnumKey | PipelineStateIsNotNullEnumKey[];
-  };
-  /**
-   * @type object | undefined
-   */
-  stateLocked?: {
-    eq?: string | string[];
-    ne?: string | string[];
-    isNull?: string | string[];
-    isNotNull?: string | string[];
-  };
-  /**
-   * @type object | undefined
-   */
-  sourceChannel?: {
-    eq?: SourceChannelEqEnumKey | SourceChannelEqEnumKey[];
-    ne?: SourceChannelNeEnumKey | SourceChannelNeEnumKey[];
-    in?: SourceChannelInEnumKey | SourceChannelInEnumKey[];
-    nin?: SourceChannelNinEnumKey | SourceChannelNinEnumKey[];
-    isNull?: SourceChannelIsNullEnumKey | SourceChannelIsNullEnumKey[];
-    isNotNull?: SourceChannelIsNotNullEnumKey | SourceChannelIsNotNullEnumKey[];
-  };
-  /**
-   * @type object | undefined
-   */
-  interestLevel?: {
-    eq?: InterestLevelEqEnumKey | InterestLevelEqEnumKey[];
-    ne?: InterestLevelNeEnumKey | InterestLevelNeEnumKey[];
-    in?: InterestLevelInEnumKey | InterestLevelInEnumKey[];
-    nin?: InterestLevelNinEnumKey | InterestLevelNinEnumKey[];
-    isNull?: InterestLevelIsNullEnumKey | InterestLevelIsNullEnumKey[];
-    isNotNull?: InterestLevelIsNotNullEnumKey | InterestLevelIsNotNullEnumKey[];
-  };
-  /**
-   * @type object | undefined
-   */
-  createdBy?: {
-    eq?: string | string[];
-    ne?: string | string[];
-    in?: string | string[];
-    nin?: string | string[];
     isNull?: string | string[];
     isNotNull?: string | string[];
   };
@@ -290,20 +57,6 @@ export type FilterGroupObject = {
    * @type object | undefined
    */
   updatedAt?: {
-    eq?: string | string[];
-    ne?: string | string[];
-    gt?: string | string[];
-    gte?: string | string[];
-    lt?: string | string[];
-    lte?: string | string[];
-    between?: string | string[];
-    isNull?: string | string[];
-    isNotNull?: string | string[];
-  };
-  /**
-   * @type object | undefined
-   */
-  deletedAt?: {
     eq?: string | string[];
     ne?: string | string[];
     gt?: string | string[];

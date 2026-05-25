@@ -8,67 +8,67 @@ import type { FilterGroupObject } from "./FilterGroupObject.ts";
 import type { Pagination } from "./Pagination.ts";
 import type { Problem } from "./Problem.ts";
 
-export const pipelineStateEqEnum2 = {
+export const pipelineStateEqEnum = {
   Contact: "Contact",
   Lead: "Lead",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
 
-export type PipelineStateEqEnum2Key =
-  (typeof pipelineStateEqEnum2)[keyof typeof pipelineStateEqEnum2];
+export type PipelineStateEqEnumKey =
+  (typeof pipelineStateEqEnum)[keyof typeof pipelineStateEqEnum];
 
-export const pipelineStateNeEnum2 = {
+export const pipelineStateNeEnum = {
   Contact: "Contact",
   Lead: "Lead",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
 
-export type PipelineStateNeEnum2Key =
-  (typeof pipelineStateNeEnum2)[keyof typeof pipelineStateNeEnum2];
+export type PipelineStateNeEnumKey =
+  (typeof pipelineStateNeEnum)[keyof typeof pipelineStateNeEnum];
 
-export const pipelineStateInEnum2 = {
+export const pipelineStateInEnum = {
   Contact: "Contact",
   Lead: "Lead",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
 
-export type PipelineStateInEnum2Key =
-  (typeof pipelineStateInEnum2)[keyof typeof pipelineStateInEnum2];
+export type PipelineStateInEnumKey =
+  (typeof pipelineStateInEnum)[keyof typeof pipelineStateInEnum];
 
-export const pipelineStateNinEnum2 = {
+export const pipelineStateNinEnum = {
   Contact: "Contact",
   Lead: "Lead",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
 
-export type PipelineStateNinEnum2Key =
-  (typeof pipelineStateNinEnum2)[keyof typeof pipelineStateNinEnum2];
+export type PipelineStateNinEnumKey =
+  (typeof pipelineStateNinEnum)[keyof typeof pipelineStateNinEnum];
 
-export const pipelineStateIsNullEnum2 = {
+export const pipelineStateIsNullEnum = {
   Contact: "Contact",
   Lead: "Lead",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
 
-export type PipelineStateIsNullEnum2Key =
-  (typeof pipelineStateIsNullEnum2)[keyof typeof pipelineStateIsNullEnum2];
+export type PipelineStateIsNullEnumKey =
+  (typeof pipelineStateIsNullEnum)[keyof typeof pipelineStateIsNullEnum];
 
-export const pipelineStateIsNotNullEnum2 = {
+export const pipelineStateIsNotNullEnum = {
   Contact: "Contact",
   Lead: "Lead",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
 
-export type PipelineStateIsNotNullEnum2Key =
-  (typeof pipelineStateIsNotNullEnum2)[keyof typeof pipelineStateIsNotNullEnum2];
+export type PipelineStateIsNotNullEnumKey =
+  (typeof pipelineStateIsNotNullEnum)[keyof typeof pipelineStateIsNotNullEnum];
 
-export const sourceChannelEqEnum2 = {
+export const sourceChannelEqEnum = {
   Instagram: "Instagram",
   WhatsApp: "WhatsApp",
   Referral: "Referral",
@@ -76,10 +76,10 @@ export const sourceChannelEqEnum2 = {
   Other: "Other",
 } as const;
 
-export type SourceChannelEqEnum2Key =
-  (typeof sourceChannelEqEnum2)[keyof typeof sourceChannelEqEnum2];
+export type SourceChannelEqEnumKey =
+  (typeof sourceChannelEqEnum)[keyof typeof sourceChannelEqEnum];
 
-export const sourceChannelNeEnum2 = {
+export const sourceChannelNeEnum = {
   Instagram: "Instagram",
   WhatsApp: "WhatsApp",
   Referral: "Referral",
@@ -87,10 +87,10 @@ export const sourceChannelNeEnum2 = {
   Other: "Other",
 } as const;
 
-export type SourceChannelNeEnum2Key =
-  (typeof sourceChannelNeEnum2)[keyof typeof sourceChannelNeEnum2];
+export type SourceChannelNeEnumKey =
+  (typeof sourceChannelNeEnum)[keyof typeof sourceChannelNeEnum];
 
-export const sourceChannelInEnum2 = {
+export const sourceChannelInEnum = {
   Instagram: "Instagram",
   WhatsApp: "WhatsApp",
   Referral: "Referral",
@@ -98,10 +98,10 @@ export const sourceChannelInEnum2 = {
   Other: "Other",
 } as const;
 
-export type SourceChannelInEnum2Key =
-  (typeof sourceChannelInEnum2)[keyof typeof sourceChannelInEnum2];
+export type SourceChannelInEnumKey =
+  (typeof sourceChannelInEnum)[keyof typeof sourceChannelInEnum];
 
-export const sourceChannelNinEnum2 = {
+export const sourceChannelNinEnum = {
   Instagram: "Instagram",
   WhatsApp: "WhatsApp",
   Referral: "Referral",
@@ -109,10 +109,10 @@ export const sourceChannelNinEnum2 = {
   Other: "Other",
 } as const;
 
-export type SourceChannelNinEnum2Key =
-  (typeof sourceChannelNinEnum2)[keyof typeof sourceChannelNinEnum2];
+export type SourceChannelNinEnumKey =
+  (typeof sourceChannelNinEnum)[keyof typeof sourceChannelNinEnum];
 
-export const sourceChannelIsNullEnum2 = {
+export const sourceChannelIsNullEnum = {
   Instagram: "Instagram",
   WhatsApp: "WhatsApp",
   Referral: "Referral",
@@ -120,10 +120,10 @@ export const sourceChannelIsNullEnum2 = {
   Other: "Other",
 } as const;
 
-export type SourceChannelIsNullEnum2Key =
-  (typeof sourceChannelIsNullEnum2)[keyof typeof sourceChannelIsNullEnum2];
+export type SourceChannelIsNullEnumKey =
+  (typeof sourceChannelIsNullEnum)[keyof typeof sourceChannelIsNullEnum];
 
-export const sourceChannelIsNotNullEnum2 = {
+export const sourceChannelIsNotNullEnum = {
   Instagram: "Instagram",
   WhatsApp: "WhatsApp",
   Referral: "Referral",
@@ -131,62 +131,62 @@ export const sourceChannelIsNotNullEnum2 = {
   Other: "Other",
 } as const;
 
-export type SourceChannelIsNotNullEnum2Key =
-  (typeof sourceChannelIsNotNullEnum2)[keyof typeof sourceChannelIsNotNullEnum2];
+export type SourceChannelIsNotNullEnumKey =
+  (typeof sourceChannelIsNotNullEnum)[keyof typeof sourceChannelIsNotNullEnum];
 
-export const interestLevelEqEnum2 = {
+export const interestLevelEqEnum = {
   Cold: "Cold",
   Warm: "Warm",
   Hot: "Hot",
 } as const;
 
-export type InterestLevelEqEnum2Key =
-  (typeof interestLevelEqEnum2)[keyof typeof interestLevelEqEnum2];
+export type InterestLevelEqEnumKey =
+  (typeof interestLevelEqEnum)[keyof typeof interestLevelEqEnum];
 
-export const interestLevelNeEnum2 = {
+export const interestLevelNeEnum = {
   Cold: "Cold",
   Warm: "Warm",
   Hot: "Hot",
 } as const;
 
-export type InterestLevelNeEnum2Key =
-  (typeof interestLevelNeEnum2)[keyof typeof interestLevelNeEnum2];
+export type InterestLevelNeEnumKey =
+  (typeof interestLevelNeEnum)[keyof typeof interestLevelNeEnum];
 
-export const interestLevelInEnum2 = {
+export const interestLevelInEnum = {
   Cold: "Cold",
   Warm: "Warm",
   Hot: "Hot",
 } as const;
 
-export type InterestLevelInEnum2Key =
-  (typeof interestLevelInEnum2)[keyof typeof interestLevelInEnum2];
+export type InterestLevelInEnumKey =
+  (typeof interestLevelInEnum)[keyof typeof interestLevelInEnum];
 
-export const interestLevelNinEnum2 = {
+export const interestLevelNinEnum = {
   Cold: "Cold",
   Warm: "Warm",
   Hot: "Hot",
 } as const;
 
-export type InterestLevelNinEnum2Key =
-  (typeof interestLevelNinEnum2)[keyof typeof interestLevelNinEnum2];
+export type InterestLevelNinEnumKey =
+  (typeof interestLevelNinEnum)[keyof typeof interestLevelNinEnum];
 
-export const interestLevelIsNullEnum2 = {
+export const interestLevelIsNullEnum = {
   Cold: "Cold",
   Warm: "Warm",
   Hot: "Hot",
 } as const;
 
-export type InterestLevelIsNullEnum2Key =
-  (typeof interestLevelIsNullEnum2)[keyof typeof interestLevelIsNullEnum2];
+export type InterestLevelIsNullEnumKey =
+  (typeof interestLevelIsNullEnum)[keyof typeof interestLevelIsNullEnum];
 
-export const interestLevelIsNotNullEnum2 = {
+export const interestLevelIsNotNullEnum = {
   Cold: "Cold",
   Warm: "Warm",
   Hot: "Hot",
 } as const;
 
-export type InterestLevelIsNotNullEnum2Key =
-  (typeof interestLevelIsNotNullEnum2)[keyof typeof interestLevelIsNotNullEnum2];
+export type InterestLevelIsNotNullEnumKey =
+  (typeof interestLevelIsNotNullEnum)[keyof typeof interestLevelIsNotNullEnum];
 
 export type GetContactsQueryParams = {
   /**
@@ -232,14 +232,14 @@ export type GetContactsQueryParams = {
      * @type object | undefined
      */
     pipelineState?: {
-      eq?: PipelineStateEqEnum2Key | PipelineStateEqEnum2Key[];
-      ne?: PipelineStateNeEnum2Key | PipelineStateNeEnum2Key[];
-      in?: PipelineStateInEnum2Key | PipelineStateInEnum2Key[];
-      nin?: PipelineStateNinEnum2Key | PipelineStateNinEnum2Key[];
-      isNull?: PipelineStateIsNullEnum2Key | PipelineStateIsNullEnum2Key[];
+      eq?: PipelineStateEqEnumKey | PipelineStateEqEnumKey[];
+      ne?: PipelineStateNeEnumKey | PipelineStateNeEnumKey[];
+      in?: PipelineStateInEnumKey | PipelineStateInEnumKey[];
+      nin?: PipelineStateNinEnumKey | PipelineStateNinEnumKey[];
+      isNull?: PipelineStateIsNullEnumKey | PipelineStateIsNullEnumKey[];
       isNotNull?:
-        | PipelineStateIsNotNullEnum2Key
-        | PipelineStateIsNotNullEnum2Key[];
+        | PipelineStateIsNotNullEnumKey
+        | PipelineStateIsNotNullEnumKey[];
     };
     /**
      * @type object | undefined
@@ -254,27 +254,27 @@ export type GetContactsQueryParams = {
      * @type object | undefined
      */
     sourceChannel?: {
-      eq?: SourceChannelEqEnum2Key | SourceChannelEqEnum2Key[];
-      ne?: SourceChannelNeEnum2Key | SourceChannelNeEnum2Key[];
-      in?: SourceChannelInEnum2Key | SourceChannelInEnum2Key[];
-      nin?: SourceChannelNinEnum2Key | SourceChannelNinEnum2Key[];
-      isNull?: SourceChannelIsNullEnum2Key | SourceChannelIsNullEnum2Key[];
+      eq?: SourceChannelEqEnumKey | SourceChannelEqEnumKey[];
+      ne?: SourceChannelNeEnumKey | SourceChannelNeEnumKey[];
+      in?: SourceChannelInEnumKey | SourceChannelInEnumKey[];
+      nin?: SourceChannelNinEnumKey | SourceChannelNinEnumKey[];
+      isNull?: SourceChannelIsNullEnumKey | SourceChannelIsNullEnumKey[];
       isNotNull?:
-        | SourceChannelIsNotNullEnum2Key
-        | SourceChannelIsNotNullEnum2Key[];
+        | SourceChannelIsNotNullEnumKey
+        | SourceChannelIsNotNullEnumKey[];
     };
     /**
      * @type object | undefined
      */
     interestLevel?: {
-      eq?: InterestLevelEqEnum2Key | InterestLevelEqEnum2Key[];
-      ne?: InterestLevelNeEnum2Key | InterestLevelNeEnum2Key[];
-      in?: InterestLevelInEnum2Key | InterestLevelInEnum2Key[];
-      nin?: InterestLevelNinEnum2Key | InterestLevelNinEnum2Key[];
-      isNull?: InterestLevelIsNullEnum2Key | InterestLevelIsNullEnum2Key[];
+      eq?: InterestLevelEqEnumKey | InterestLevelEqEnumKey[];
+      ne?: InterestLevelNeEnumKey | InterestLevelNeEnumKey[];
+      in?: InterestLevelInEnumKey | InterestLevelInEnumKey[];
+      nin?: InterestLevelNinEnumKey | InterestLevelNinEnumKey[];
+      isNull?: InterestLevelIsNullEnumKey | InterestLevelIsNullEnumKey[];
       isNotNull?:
-        | InterestLevelIsNotNullEnum2Key
-        | InterestLevelIsNotNullEnum2Key[];
+        | InterestLevelIsNotNullEnumKey
+        | InterestLevelIsNotNullEnumKey[];
     };
     /**
      * @type object | undefined
@@ -347,6 +347,11 @@ export type GetContactsQueryParams = {
    * @type string | undefined
    */
   sort?: string;
+  /**
+   * @description When true, resolves creator user data
+   * @type string | undefined
+   */
+  populated?: string;
 };
 
 /**

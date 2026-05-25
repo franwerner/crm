@@ -3,7 +3,11 @@
  * Do not edit manually.
  */
 
-import type { GetUsersQueryResponse, GetUsers401 } from "../types/GetUsers.ts";
+import type {
+  GetUsersQueryResponse,
+  GetUsersQueryParams,
+  GetUsers401,
+} from "../types/GetUsers.ts";
 import type {
   Client,
   RequestConfig,
@@ -18,16 +22,18 @@ import type {
 import { getUsers } from "../clients/getUsers.ts";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 
-export const getUsersSuspenseQueryKey = () => [{ url: "/users" }] as const;
+export const getUsersSuspenseQueryKey = (params?: GetUsersQueryParams) =>
+  [{ url: "/users" }, ...(params ? [params] : [])] as const;
 
 export type GetUsersSuspenseQueryKey = ReturnType<
   typeof getUsersSuspenseQueryKey
 >;
 
 export function getUsersSuspenseQueryOptions(
+  params?: GetUsersQueryParams,
   config: Partial<RequestConfig> & { client?: Client } = {},
 ) {
-  const queryKey = getUsersSuspenseQueryKey();
+  const queryKey = getUsersSuspenseQueryKey(params);
   return queryOptions<
     GetUsersQueryResponse,
     ResponseErrorConfig<GetUsers401>,
@@ -36,7 +42,7 @@ export function getUsersSuspenseQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      return getUsers({ ...config, signal: config.signal ?? signal });
+      return getUsers(params, { ...config, signal: config.signal ?? signal });
     },
   });
 }
@@ -49,6 +55,7 @@ export function useGetUsersSuspense<
   TData = GetUsersQueryResponse,
   TQueryKey extends QueryKey = GetUsersSuspenseQueryKey,
 >(
+  params?: GetUsersQueryParams,
   options: {
     query?: Partial<
       UseSuspenseQueryOptions<
@@ -63,11 +70,12 @@ export function useGetUsersSuspense<
 ) {
   const { query: queryConfig = {}, client: config = {} } = options ?? {};
   const { client: queryClient, ...resolvedOptions } = queryConfig;
-  const queryKey = resolvedOptions?.queryKey ?? getUsersSuspenseQueryKey();
+  const queryKey =
+    resolvedOptions?.queryKey ?? getUsersSuspenseQueryKey(params);
 
   const query = useSuspenseQuery(
     {
-      ...getUsersSuspenseQueryOptions(config),
+      ...getUsersSuspenseQueryOptions(params, config),
       ...resolvedOptions,
       queryKey,
     } as unknown as UseSuspenseQueryOptions,

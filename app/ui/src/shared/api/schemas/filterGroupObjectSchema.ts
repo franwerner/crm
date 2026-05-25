@@ -16,6 +16,17 @@ export const filterGroupObjectSchema = z.object({
       isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
     }),
   ),
+  email: z.optional(
+    z.object({
+      eq: z.optional(z.union([z.array(z.string()), z.string()])),
+      ne: z.optional(z.union([z.array(z.string()), z.string()])),
+      in: z.optional(z.union([z.array(z.string()), z.string()])),
+      nin: z.optional(z.union([z.array(z.string()), z.string()])),
+      ilike: z.optional(z.union([z.array(z.string()), z.string()])),
+      isNull: z.optional(z.union([z.array(z.string()), z.string()])),
+      isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
+    }),
+  ),
   name: z.optional(
     z.object({
       eq: z.optional(z.union([z.array(z.string()), z.string()])),
@@ -23,167 +34,6 @@ export const filterGroupObjectSchema = z.object({
       in: z.optional(z.union([z.array(z.string()), z.string()])),
       nin: z.optional(z.union([z.array(z.string()), z.string()])),
       ilike: z.optional(z.union([z.array(z.string()), z.string()])),
-      isNull: z.optional(z.union([z.array(z.string()), z.string()])),
-      isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
-    }),
-  ),
-  phone: z.optional(
-    z.object({
-      eq: z.optional(z.union([z.array(z.string()), z.string()])),
-      ne: z.optional(z.union([z.array(z.string()), z.string()])),
-      in: z.optional(z.union([z.array(z.string()), z.string()])),
-      nin: z.optional(z.union([z.array(z.string()), z.string()])),
-      ilike: z.optional(z.union([z.array(z.string()), z.string()])),
-      isNull: z.optional(z.union([z.array(z.string()), z.string()])),
-      isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
-    }),
-  ),
-  pipelineState: z.optional(
-    z.object({
-      eq: z.optional(
-        z.union([
-          z.array(z.enum(["Contact", "Lead", "Customer", "Discarded"])),
-          z.enum(["Contact", "Lead", "Customer", "Discarded"]),
-        ]),
-      ),
-      ne: z.optional(
-        z.union([
-          z.array(z.enum(["Contact", "Lead", "Customer", "Discarded"])),
-          z.enum(["Contact", "Lead", "Customer", "Discarded"]),
-        ]),
-      ),
-      in: z.optional(
-        z.union([
-          z.array(z.enum(["Contact", "Lead", "Customer", "Discarded"])),
-          z.enum(["Contact", "Lead", "Customer", "Discarded"]),
-        ]),
-      ),
-      nin: z.optional(
-        z.union([
-          z.array(z.enum(["Contact", "Lead", "Customer", "Discarded"])),
-          z.enum(["Contact", "Lead", "Customer", "Discarded"]),
-        ]),
-      ),
-      isNull: z.optional(
-        z.union([
-          z.array(z.enum(["Contact", "Lead", "Customer", "Discarded"])),
-          z.enum(["Contact", "Lead", "Customer", "Discarded"]),
-        ]),
-      ),
-      isNotNull: z.optional(
-        z.union([
-          z.array(z.enum(["Contact", "Lead", "Customer", "Discarded"])),
-          z.enum(["Contact", "Lead", "Customer", "Discarded"]),
-        ]),
-      ),
-    }),
-  ),
-  stateLocked: z.optional(
-    z.object({
-      eq: z.optional(z.union([z.array(z.string()), z.string()])),
-      ne: z.optional(z.union([z.array(z.string()), z.string()])),
-      isNull: z.optional(z.union([z.array(z.string()), z.string()])),
-      isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
-    }),
-  ),
-  sourceChannel: z.optional(
-    z.object({
-      eq: z.optional(
-        z.union([
-          z.array(
-            z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
-          ),
-          z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
-        ]),
-      ),
-      ne: z.optional(
-        z.union([
-          z.array(
-            z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
-          ),
-          z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
-        ]),
-      ),
-      in: z.optional(
-        z.union([
-          z.array(
-            z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
-          ),
-          z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
-        ]),
-      ),
-      nin: z.optional(
-        z.union([
-          z.array(
-            z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
-          ),
-          z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
-        ]),
-      ),
-      isNull: z.optional(
-        z.union([
-          z.array(
-            z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
-          ),
-          z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
-        ]),
-      ),
-      isNotNull: z.optional(
-        z.union([
-          z.array(
-            z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
-          ),
-          z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
-        ]),
-      ),
-    }),
-  ),
-  interestLevel: z.optional(
-    z.object({
-      eq: z.optional(
-        z.union([
-          z.array(z.enum(["Cold", "Warm", "Hot"])),
-          z.enum(["Cold", "Warm", "Hot"]),
-        ]),
-      ),
-      ne: z.optional(
-        z.union([
-          z.array(z.enum(["Cold", "Warm", "Hot"])),
-          z.enum(["Cold", "Warm", "Hot"]),
-        ]),
-      ),
-      in: z.optional(
-        z.union([
-          z.array(z.enum(["Cold", "Warm", "Hot"])),
-          z.enum(["Cold", "Warm", "Hot"]),
-        ]),
-      ),
-      nin: z.optional(
-        z.union([
-          z.array(z.enum(["Cold", "Warm", "Hot"])),
-          z.enum(["Cold", "Warm", "Hot"]),
-        ]),
-      ),
-      isNull: z.optional(
-        z.union([
-          z.array(z.enum(["Cold", "Warm", "Hot"])),
-          z.enum(["Cold", "Warm", "Hot"]),
-        ]),
-      ),
-      isNotNull: z.optional(
-        z.union([
-          z.array(z.enum(["Cold", "Warm", "Hot"])),
-          z.enum(["Cold", "Warm", "Hot"]),
-        ]),
-      ),
-    }),
-  ),
-  createdBy: z.optional(
-    z.object({
-      eq: z.optional(z.union([z.array(z.string()), z.string()])),
-      ne: z.optional(z.union([z.array(z.string()), z.string()])),
-      in: z.optional(z.union([z.array(z.string()), z.string()])),
-      nin: z.optional(z.union([z.array(z.string()), z.string()])),
       isNull: z.optional(z.union([z.array(z.string()), z.string()])),
       isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
     }),
@@ -202,19 +52,6 @@ export const filterGroupObjectSchema = z.object({
     }),
   ),
   updatedAt: z.optional(
-    z.object({
-      eq: z.optional(z.union([z.array(z.string()), z.string()])),
-      ne: z.optional(z.union([z.array(z.string()), z.string()])),
-      gt: z.optional(z.union([z.array(z.string()), z.string()])),
-      gte: z.optional(z.union([z.array(z.string()), z.string()])),
-      lt: z.optional(z.union([z.array(z.string()), z.string()])),
-      lte: z.optional(z.union([z.array(z.string()), z.string()])),
-      between: z.optional(z.union([z.array(z.string()), z.string()])),
-      isNull: z.optional(z.union([z.array(z.string()), z.string()])),
-      isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
-    }),
-  ),
-  deletedAt: z.optional(
     z.object({
       eq: z.optional(z.union([z.array(z.string()), z.string()])),
       ne: z.optional(z.union([z.array(z.string()), z.string()])),

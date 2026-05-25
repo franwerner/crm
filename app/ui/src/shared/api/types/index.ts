@@ -42,8 +42,19 @@ export type {
   DeleteUsersIdMutationResponse,
   DeleteUsersIdPathParams,
 } from "./DeleteUsersId.ts";
+export type { FilterGroupObject } from "./FilterGroupObject.ts";
 export type {
-  FilterGroupObject,
+  GetAuthMe200,
+  GetAuthMe401,
+  GetAuthMeQuery,
+  GetAuthMeQueryResponse,
+} from "./GetAuthMe.ts";
+export type {
+  GetContacts200,
+  GetContacts401,
+  GetContactsQuery,
+  GetContactsQueryParams,
+  GetContactsQueryResponse,
   InterestLevelEqEnumKey,
   InterestLevelInEnumKey,
   InterestLevelIsNotNullEnumKey,
@@ -62,37 +73,6 @@ export type {
   SourceChannelIsNullEnumKey,
   SourceChannelNeEnumKey,
   SourceChannelNinEnumKey,
-} from "./FilterGroupObject.ts";
-export type {
-  GetAuthMe200,
-  GetAuthMe401,
-  GetAuthMeQuery,
-  GetAuthMeQueryResponse,
-} from "./GetAuthMe.ts";
-export type {
-  GetContacts200,
-  GetContacts401,
-  GetContactsQuery,
-  GetContactsQueryParams,
-  GetContactsQueryResponse,
-  InterestLevelEqEnum2Key,
-  InterestLevelInEnum2Key,
-  InterestLevelIsNotNullEnum2Key,
-  InterestLevelIsNullEnum2Key,
-  InterestLevelNeEnum2Key,
-  InterestLevelNinEnum2Key,
-  PipelineStateEqEnum2Key,
-  PipelineStateInEnum2Key,
-  PipelineStateIsNotNullEnum2Key,
-  PipelineStateIsNullEnum2Key,
-  PipelineStateNeEnum2Key,
-  PipelineStateNinEnum2Key,
-  SourceChannelEqEnum2Key,
-  SourceChannelInEnum2Key,
-  SourceChannelIsNotNullEnum2Key,
-  SourceChannelIsNullEnum2Key,
-  SourceChannelNeEnum2Key,
-  SourceChannelNinEnum2Key,
 } from "./GetContacts.ts";
 export type {
   GetContactsId200,
@@ -128,6 +108,7 @@ export type {
   GetUsers200,
   GetUsers401,
   GetUsersQuery,
+  GetUsersQueryParams,
   GetUsersQueryResponse,
 } from "./GetUsers.ts";
 export type {
@@ -211,41 +192,23 @@ export { contactViewPipelineStateEnum } from "./ContactView.ts";
 export { contactViewSourceChannelEnum } from "./ContactView.ts";
 export { createContactBodyInterestLevelEnum } from "./CreateContactBody.ts";
 export { createContactBodySourceChannelEnum } from "./CreateContactBody.ts";
-export { interestLevelEqEnum } from "./FilterGroupObject.ts";
-export { interestLevelInEnum } from "./FilterGroupObject.ts";
-export { interestLevelIsNotNullEnum } from "./FilterGroupObject.ts";
-export { interestLevelIsNullEnum } from "./FilterGroupObject.ts";
-export { interestLevelNeEnum } from "./FilterGroupObject.ts";
-export { interestLevelNinEnum } from "./FilterGroupObject.ts";
-export { pipelineStateEqEnum } from "./FilterGroupObject.ts";
-export { pipelineStateInEnum } from "./FilterGroupObject.ts";
-export { pipelineStateIsNotNullEnum } from "./FilterGroupObject.ts";
-export { pipelineStateIsNullEnum } from "./FilterGroupObject.ts";
-export { pipelineStateNeEnum } from "./FilterGroupObject.ts";
-export { pipelineStateNinEnum } from "./FilterGroupObject.ts";
-export { sourceChannelEqEnum } from "./FilterGroupObject.ts";
-export { sourceChannelInEnum } from "./FilterGroupObject.ts";
-export { sourceChannelIsNotNullEnum } from "./FilterGroupObject.ts";
-export { sourceChannelIsNullEnum } from "./FilterGroupObject.ts";
-export { sourceChannelNeEnum } from "./FilterGroupObject.ts";
-export { sourceChannelNinEnum } from "./FilterGroupObject.ts";
-export { interestLevelEqEnum2 } from "./GetContacts.ts";
-export { interestLevelInEnum2 } from "./GetContacts.ts";
-export { interestLevelIsNotNullEnum2 } from "./GetContacts.ts";
-export { interestLevelIsNullEnum2 } from "./GetContacts.ts";
-export { interestLevelNeEnum2 } from "./GetContacts.ts";
-export { interestLevelNinEnum2 } from "./GetContacts.ts";
-export { pipelineStateEqEnum2 } from "./GetContacts.ts";
-export { pipelineStateInEnum2 } from "./GetContacts.ts";
-export { pipelineStateIsNotNullEnum2 } from "./GetContacts.ts";
-export { pipelineStateIsNullEnum2 } from "./GetContacts.ts";
-export { pipelineStateNeEnum2 } from "./GetContacts.ts";
-export { pipelineStateNinEnum2 } from "./GetContacts.ts";
-export { sourceChannelEqEnum2 } from "./GetContacts.ts";
-export { sourceChannelInEnum2 } from "./GetContacts.ts";
-export { sourceChannelIsNotNullEnum2 } from "./GetContacts.ts";
-export { sourceChannelIsNullEnum2 } from "./GetContacts.ts";
-export { sourceChannelNeEnum2 } from "./GetContacts.ts";
-export { sourceChannelNinEnum2 } from "./GetContacts.ts";
+export { interestLevelEqEnum } from "./GetContacts.ts";
+export { interestLevelInEnum } from "./GetContacts.ts";
+export { interestLevelIsNotNullEnum } from "./GetContacts.ts";
+export { interestLevelIsNullEnum } from "./GetContacts.ts";
+export { interestLevelNeEnum } from "./GetContacts.ts";
+export { interestLevelNinEnum } from "./GetContacts.ts";
+export { pipelineStateEqEnum } from "./GetContacts.ts";
+export { pipelineStateInEnum } from "./GetContacts.ts";
+export { pipelineStateIsNotNullEnum } from "./GetContacts.ts";
+export { pipelineStateIsNullEnum } from "./GetContacts.ts";
+export { pipelineStateNeEnum } from "./GetContacts.ts";
+export { pipelineStateNinEnum } from "./GetContacts.ts";
+export { sourceChannelEqEnum } from "./GetContacts.ts";
+export { sourceChannelInEnum } from "./GetContacts.ts";
+export { sourceChannelIsNotNullEnum } from "./GetContacts.ts";
+export { sourceChannelIsNullEnum } from "./GetContacts.ts";
+export { sourceChannelNeEnum } from "./GetContacts.ts";
+export { sourceChannelNinEnum } from "./GetContacts.ts";
 export { getHealth200StatusEnum } from "./GetHealth.ts";
 export { registerEventBodyEventTypeEnum } from "./RegisterEventBody.ts";

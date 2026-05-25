@@ -68,6 +68,7 @@ export {
 export {
   getUsers200Schema,
   getUsers401Schema,
+  getUsersQueryParamsSchema,
   getUsersQueryResponseSchema,
 } from "./getUsersSchema.ts";
 export { meResponseSchema } from "./meResponseSchema.ts";

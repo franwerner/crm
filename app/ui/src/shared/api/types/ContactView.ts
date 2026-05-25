@@ -69,6 +69,20 @@ export type ContactView = {
    */
   createdBy: string;
   /**
+   * @description Creator user data, present only when populated=true
+   * @type object | undefined
+   */
+  creator?: {
+    /**
+     * @type string
+     */
+    id: string;
+    /**
+     * @type string
+     */
+    name: string;
+  };
+  /**
    * @description ISO 8601 timestamp
    * @type string
    */

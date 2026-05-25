@@ -3,7 +3,11 @@
  * Do not edit manually.
  */
 
-import type { GetUsersQueryResponse, GetUsers401 } from "../types/GetUsers.ts";
+import type {
+  GetUsersQueryResponse,
+  GetUsersQueryParams,
+  GetUsers401,
+} from "../types/GetUsers.ts";
 import type {
   Client,
   RequestConfig,
@@ -18,14 +22,16 @@ import type {
 import { getUsers } from "../clients/getUsers.ts";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 
-export const getUsersQueryKey = () => [{ url: "/users" }] as const;
+export const getUsersQueryKey = (params?: GetUsersQueryParams) =>
+  [{ url: "/users" }, ...(params ? [params] : [])] as const;
 
 export type GetUsersQueryKey = ReturnType<typeof getUsersQueryKey>;
 
 export function getUsersQueryOptions(
+  params?: GetUsersQueryParams,
   config: Partial<RequestConfig> & { client?: Client } = {},
 ) {
-  const queryKey = getUsersQueryKey();
+  const queryKey = getUsersQueryKey(params);
   return queryOptions<
     GetUsersQueryResponse,
     ResponseErrorConfig<GetUsers401>,
@@ -34,7 +40,7 @@ export function getUsersQueryOptions(
   >({
     queryKey,
     queryFn: async ({ signal }) => {
-      return getUsers({ ...config, signal: config.signal ?? signal });
+      return getUsers(params, { ...config, signal: config.signal ?? signal });
     },
   });
 }
@@ -48,6 +54,7 @@ export function useGetUsers<
   TQueryData = GetUsersQueryResponse,
   TQueryKey extends QueryKey = GetUsersQueryKey,
 >(
+  params?: GetUsersQueryParams,
   options: {
     query?: Partial<
       QueryObserverOptions<
@@ -63,11 +70,11 @@ export function useGetUsers<
 ) {
   const { query: queryConfig = {}, client: config = {} } = options ?? {};
   const { client: queryClient, ...resolvedOptions } = queryConfig;
-  const queryKey = resolvedOptions?.queryKey ?? getUsersQueryKey();
+  const queryKey = resolvedOptions?.queryKey ?? getUsersQueryKey(params);
 
   const query = useQuery(
     {
-      ...getUsersQueryOptions(config),
+      ...getUsersQueryOptions(params, config),
       ...resolvedOptions,
       queryKey,
     } as unknown as QueryObserverOptions,

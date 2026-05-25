@@ -4,7 +4,11 @@
  */
 
 import fetch from "@shared/lib/http-client";
-import type { GetUsersQueryResponse, GetUsers401 } from "../types/GetUsers.ts";
+import type {
+  GetUsersQueryResponse,
+  GetUsersQueryParams,
+  GetUsers401,
+} from "../types/GetUsers.ts";
 import type {
   Client,
   RequestConfig,
@@ -21,6 +25,7 @@ function getGetUsersUrl() {
  * {@link /users}
  */
 export async function getUsers(
+  params?: GetUsersQueryParams,
   config: Partial<RequestConfig> & { client?: Client } = {},
 ) {
   const { client: request = fetch, ...requestConfig } = config;
@@ -29,6 +34,11 @@ export async function getUsers(
     GetUsersQueryResponse,
     ResponseErrorConfig<GetUsers401>,
     unknown
-  >({ method: "GET", url: getGetUsersUrl().url.toString(), ...requestConfig });
+  >({
+    method: "GET",
+    url: getGetUsersUrl().url.toString(),
+    params,
+    ...requestConfig,
+  });
   return res.data;
 }

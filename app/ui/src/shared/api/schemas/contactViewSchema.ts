@@ -16,6 +16,14 @@ export const contactViewSchema = z.object({
   ),
   interestLevel: z.nullable(z.enum(["Cold", "Warm", "Hot"])),
   createdBy: z.string().describe("User UUID who created this contact"),
+  creator: z.optional(
+    z
+      .object({
+        id: z.string(),
+        name: z.string(),
+      })
+      .describe("Creator user data, present only when populated=true"),
+  ),
   createdAt: z.string().describe("ISO 8601 timestamp"),
   updatedAt: z.string().describe("ISO 8601 timestamp"),
 });
