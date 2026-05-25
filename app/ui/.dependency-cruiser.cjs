@@ -18,13 +18,13 @@ module.exports = {
       to: { path: '^src/features/' },
     },
     {
-      name: 'adr02-3-5-api-only-in-feature-hooks',
+      name: 'adr02-3-5-api-not-in-shared-kernel',
       severity: 'error',
-      comment: 'ADR 02 #3 y #5: la salida de kubb (src/shared/api) es read-only y solo la consumen los hooks de feature (src/features/*/hooks). app/ puede tocarla para configurar el cliente/providers; shared/api se importa a sí misma.',
+      comment: 'ADR 02 #3/#5 (rev. 2026-05-24): la salida de kubb (src/shared/api) es read-only. Las features pueden importarla para derivar tipos/schemas del contrato (descriptors, types, hooks, components). El kernel shared (lib/ui) no la importa; shared/api se importa a sí misma.',
       from: {
         path: '^src/',
         pathNot: [
-          '^src/features/[^/]+/hooks/',
+          '^src/features/',
           '^src/app/',
           '^src/shared/api/',
         ],
@@ -32,13 +32,24 @@ module.exports = {
       to: { path: '^src/shared/api/' },
     },
     {
-      name: 'adr02-4-6-presentational-pure',
+      name: 'adr02-6-shared-ui-pure',
       severity: 'error',
-      comment: 'ADR 02 #4 y #6: los presentacionales (features/*/components y shared/ui) reciben datos por props; no importan la salida de kubb ni TanStack Query/Router ni kubb.',
-      from: { path: ['^src/features/[^/]+/components/', '^src/shared/ui/'] },
+      comment: 'ADR 02 #6: shared/ui (design system) es presentacional puro: no importa la salida de kubb ni TanStack Query/Router ni kubb.',
+      from: { path: ['^src/shared/ui/'] },
       to: {
         path: [
           '^src/shared/api/',
+          'node_modules/(@tanstack/react-query|@tanstack/react-router|@kubb|kubb)/',
+        ],
+      },
+    },
+    {
+      name: 'adr02-4-components-no-data-libs',
+      severity: 'error',
+      comment: 'ADR 02 #4 (rev. 2026-05-24): los componentes de feature no importan TanStack Query/Router ni kubb directo (reciben datos por props/hooks); sí pueden importar src/shared/api para tipos/schemas del contrato.',
+      from: { path: ['^src/features/[^/]+/components/'] },
+      to: {
+        path: [
           'node_modules/(@tanstack/react-query|@tanstack/react-router|@kubb|kubb)/',
         ],
       },

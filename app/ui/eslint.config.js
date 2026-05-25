@@ -63,7 +63,7 @@ export default tseslint.config(
             {
               from: ['feature-routes'],
               allow: [
-                'shared-ui', 'shared-lib',
+                'shared-ui', 'shared-lib', 'shared-api',
                 ['feature-components', { feature: '${from.feature}' }],
                 ['feature-hooks', { feature: '${from.feature}' }],
                 ['feature-types', { feature: '${from.feature}' }],
@@ -73,7 +73,7 @@ export default tseslint.config(
             {
               from: ['feature-hooks'],
               allow: [
-                'shared-lib', 'shared-api',
+                'shared-ui', 'shared-lib', 'shared-api',
                 ['feature-hooks', { feature: '${from.feature}' }],
                 ['feature-types', { feature: '${from.feature}' }],
               ],
@@ -81,14 +81,14 @@ export default tseslint.config(
             {
               from: ['feature-components'],
               allow: [
-                'shared-ui', 'shared-lib',
+                'shared-ui', 'shared-lib', 'shared-api',
                 ['feature-components', { feature: '${from.feature}' }],
                 ['feature-types', { feature: '${from.feature}' }],
               ],
             },
             {
               from: ['feature-types'],
-              allow: ['shared-lib', ['feature-types', { feature: '${from.feature}' }]],
+              allow: ['shared-ui', 'shared-lib', 'shared-api', ['feature-types', { feature: '${from.feature}' }]],
             },
             { from: ['shared-ui'], allow: ['shared-ui', 'shared-lib'] },
             { from: ['shared-lib'], allow: ['shared-lib'] },
