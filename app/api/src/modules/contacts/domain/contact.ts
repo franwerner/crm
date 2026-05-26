@@ -1,18 +1,26 @@
-import { ValidationError, BusinessRuleError } from '@shared/errors'
+import { ValidationError, BusinessRuleError, NotFoundError } from '@shared/errors'
 import type { PipelineState } from '@modules/contacts/domain/types/pipeline-state'
 import type { EventType } from '@modules/contacts/domain/types/event-type'
 import type { SourceChannel } from '@modules/contacts/domain/types/source-channel'
 import type { InterestLevel } from '@modules/contacts/domain/types/interest-level'
+import type { ContactType } from '@modules/contacts/domain/types/contact-type'
+import type { Sex } from '@modules/contacts/domain/types/sex'
 import type { ContactEvent } from '@modules/contacts/domain/entities/contact-event'
 import type { ContactStateChange } from '@modules/contacts/domain/entities/contact-state-change'
-import { resolveTargetState, isForwardTransition } from '@modules/contacts/domain/policies'
+import type { ContactChannel } from '@modules/contacts/domain/entities/contact-channel'
+import type { ContactAssignment } from '@modules/contacts/domain/entities/contact-assignment'
+import type { ContactAssignmentRole } from '@modules/contacts/domain/types/contact-assignment-role'
+import type { Address } from '@modules/contacts/domain/value-objects/address'
+import { applyTransition, isEventAllowed } from '@modules/contacts/domain/policies'
 
 export interface ContactProps {
   readonly id: string
   readonly name: string
-  readonly phone: string | null
+  readonly contactType: ContactType
+  readonly sex: Sex | null
+  readonly address: Address
+  readonly notes: string | null
   readonly pipelineState: PipelineState
-  readonly stateLocked: boolean
   readonly sourceChannel: SourceChannel | null
   readonly interestLevel: InterestLevel | null
   readonly createdBy: string
@@ -21,6 +29,8 @@ export interface ContactProps {
   readonly deletedAt: Date | null
   readonly events: readonly ContactEvent[]
   readonly stateChanges: readonly ContactStateChange[]
+  readonly channels: readonly ContactChannel[]
+  readonly assignments: readonly ContactAssignment[]
 }
 
 export class Contact {
@@ -41,12 +51,16 @@ export class Contact {
   static create(params: {
     id: string
     name: string
-    phone?: string | null
+    contactType?: ContactType
+    sex?: Sex | null
+    address?: Partial<Address>
+    notes?: string | null
     sourceChannel?: SourceChannel | null
     interestLevel?: InterestLevel | null
     createdBy: string
     createdAt: Date
     updatedAt: Date
+    channels?: readonly ContactChannel[]
   }): Contact {
     if (!params.name.trim()) {
       throw new ValidationError('Contact name cannot be empty', [
@@ -64,12 +78,39 @@ export class Contact {
       ])
     }
 
+    const contactType: ContactType = params.contactType ?? 'Person'
+
+    if (contactType === 'Company' && params.sex != null) {
+      throw new ValidationError('Company contacts cannot have a sex value', [
+        { field: 'sex', message: 'sex must be null for Company contacts' },
+      ])
+    }
+
+    const channels = params.channels ?? []
+    const primaryCount = channels.filter((c) => c.isPrimary).length
+    if (primaryCount > 1) {
+      throw new ValidationError('At most one channel can be primary', [
+        { field: 'channels', message: 'Multiple primary channels are not allowed' },
+      ])
+    }
+
+    const address: Address = {
+      street: params.address?.street ?? null,
+      number: params.address?.number ?? null,
+      postalCode: params.address?.postalCode ?? null,
+      city: params.address?.city ?? null,
+      province: params.address?.province ?? null,
+      country: params.address?.country ?? null,
+    }
+
     const props: ContactProps = {
       id: params.id,
       name: params.name.trim(),
-      phone: params.phone ?? null,
+      contactType,
+      sex: params.sex ?? null,
+      address,
+      notes: params.notes ?? null,
       pipelineState: 'Contact',
-      stateLocked: false,
       sourceChannel: params.sourceChannel ?? null,
       interestLevel: params.interestLevel ?? null,
       createdBy: params.createdBy,
@@ -78,6 +119,8 @@ export class Contact {
       deletedAt: null,
       events: [],
       stateChanges: [],
+      channels,
+      assignments: [],
     }
 
     return new Contact(props, [], [])
@@ -89,9 +132,11 @@ export class Contact {
 
   get id(): string { return this.props.id }
   get name(): string { return this.props.name }
-  get phone(): string | null { return this.props.phone }
+  get contactType(): ContactType { return this.props.contactType }
+  get sex(): Sex | null { return this.props.sex }
+  get address(): Address { return this.props.address }
+  get notes(): string | null { return this.props.notes }
   get pipelineState(): PipelineState { return this.props.pipelineState }
-  get stateLocked(): boolean { return this.props.stateLocked }
   get sourceChannel(): SourceChannel | null { return this.props.sourceChannel }
   get interestLevel(): InterestLevel | null { return this.props.interestLevel }
   get createdBy(): string { return this.props.createdBy }
@@ -100,6 +145,8 @@ export class Contact {
   get deletedAt(): Date | null { return this.props.deletedAt }
   get events(): readonly ContactEvent[] { return this.props.events }
   get stateChanges(): readonly ContactStateChange[] { return this.props.stateChanges }
+  get channels(): readonly ContactChannel[] { return this.props.channels }
+  get assignments(): readonly ContactAssignment[] { return this.props.assignments }
   get newEvents(): readonly ContactEvent[] { return this.pendingEvents }
   get newStateChanges(): readonly ContactStateChange[] { return this.pendingStateChanges }
 
@@ -112,6 +159,12 @@ export class Contact {
     occurredAt: Date
     now: Date
   }): Contact {
+    if (!isEventAllowed(this.props.pipelineState, params.eventType)) {
+      throw new BusinessRuleError(
+        `Event '${params.eventType}' is not allowed on a contact in state '${this.props.pipelineState}'`,
+      )
+    }
+
     const event: ContactEvent = {
       id: params.eventId,
       contactId: this.props.id,
@@ -122,8 +175,8 @@ export class Contact {
       createdAt: params.now,
     }
 
-    const targetState = resolveTargetState(params.eventType)
     const currentState = this.props.pipelineState
+    const targetState = applyTransition(currentState, params.eventType)
     const now = params.now
 
     let nextProps = {
@@ -135,7 +188,7 @@ export class Contact {
     const newPendingEvents = [...this.pendingEvents, event]
     const newPendingStateChanges = [...this.pendingStateChanges]
 
-    if (targetState !== null && !this.props.stateLocked && isForwardTransition(currentState, targetState)) {
+    if (targetState !== null) {
       const stateChange: ContactStateChange = {
         id: params.stateChangeId,
         contactId: this.props.id,
@@ -158,43 +211,6 @@ export class Contact {
     return new Contact(nextProps, newPendingEvents, newPendingStateChanges)
   }
 
-  changeStateManually(params: {
-    stateChangeId: string
-    newState: PipelineState
-    userId: string
-    now: Date
-  }): Contact {
-    if (this.props.deletedAt !== null) {
-      throw new BusinessRuleError('Cannot change state of a deleted contact')
-    }
-
-    const currentState = this.props.pipelineState
-
-    if (currentState === params.newState) {
-      return this
-    }
-
-    const stateChange: ContactStateChange = {
-      id: params.stateChangeId,
-      contactId: this.props.id,
-      previousState: currentState,
-      nextState: params.newState,
-      cause: { kind: 'manual', userId: params.userId },
-      changedAt: params.now,
-      createdAt: params.now,
-    }
-
-    const nextProps: ContactProps = {
-      ...this.props,
-      pipelineState: params.newState,
-      stateLocked: true,
-      updatedAt: params.now,
-      stateChanges: [...this.props.stateChanges, stateChange],
-    }
-
-    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges, stateChange])
-  }
-
   softDelete(now: Date): Contact {
     if (this.props.deletedAt !== null) {
       return this
@@ -203,6 +219,166 @@ export class Contact {
     const nextProps: ContactProps = {
       ...this.props,
       deletedAt: now,
+      updatedAt: now,
+    }
+
+    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+  }
+
+  update(
+    params: {
+      name?: string
+      contactType?: ContactType
+      sex?: Sex | null
+      address?: Partial<Address>
+      notes?: string | null
+      sourceChannel?: SourceChannel | null
+      interestLevel?: InterestLevel | null
+    },
+    now: Date,
+  ): Contact {
+    if (params.name !== undefined && !params.name.trim()) {
+      throw new ValidationError('Contact name cannot be empty', [
+        { field: 'name', message: 'Name is required' },
+      ])
+    }
+
+    const effectiveContactType = params.contactType ?? this.props.contactType
+    const effectiveSex = effectiveContactType === 'Company' ? null : (params.sex !== undefined ? params.sex : this.props.sex)
+
+    const nextAddress: Address = {
+      street: params.address?.street !== undefined ? params.address.street : this.props.address.street,
+      number: params.address?.number !== undefined ? params.address.number : this.props.address.number,
+      postalCode: params.address?.postalCode !== undefined ? params.address.postalCode : this.props.address.postalCode,
+      city: params.address?.city !== undefined ? params.address.city : this.props.address.city,
+      province: params.address?.province !== undefined ? params.address.province : this.props.address.province,
+      country: params.address?.country !== undefined ? params.address.country : this.props.address.country,
+    }
+
+    const nextProps: ContactProps = {
+      ...this.props,
+      name: params.name !== undefined ? params.name.trim() : this.props.name,
+      contactType: effectiveContactType,
+      sex: effectiveSex,
+      address: nextAddress,
+      notes: params.notes !== undefined ? params.notes : this.props.notes,
+      sourceChannel: params.sourceChannel !== undefined ? params.sourceChannel : this.props.sourceChannel,
+      interestLevel: params.interestLevel !== undefined ? params.interestLevel : this.props.interestLevel,
+      updatedAt: now,
+    }
+
+    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+  }
+
+  addChannel(channel: ContactChannel): Contact {
+    const demoted = this.props.channels.map((ch) =>
+      channel.isPrimary && ch.isPrimary ? { ...ch, isPrimary: false } : ch,
+    )
+
+    const nextProps: ContactProps = {
+      ...this.props,
+      channels: [...demoted, channel],
+      updatedAt: channel.createdAt,
+    }
+
+    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+  }
+
+  updateChannel(
+    channelId: string,
+    changes: { channelType?: ContactChannel['channelType']; value?: string; isPrimary?: boolean },
+    now: Date,
+  ): Contact {
+    const existing = this.props.channels.find((ch) => ch.id === channelId)
+    if (!existing) {
+      throw new NotFoundError(`Channel ${channelId} not found on contact ${this.props.id}`)
+    }
+
+    const settingPrimary = changes.isPrimary === true
+
+    const updated = this.props.channels.map((ch) => {
+      if (ch.id === channelId) {
+        return {
+          ...ch,
+          channelType: changes.channelType ?? ch.channelType,
+          value: changes.value ?? ch.value,
+          isPrimary: changes.isPrimary !== undefined ? changes.isPrimary : ch.isPrimary,
+          updatedAt: now,
+        }
+      }
+      if (settingPrimary && ch.isPrimary) {
+        return { ...ch, isPrimary: false, updatedAt: now }
+      }
+      return ch
+    })
+
+    const nextProps: ContactProps = {
+      ...this.props,
+      channels: updated,
+      updatedAt: now,
+    }
+
+    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+  }
+
+  removeChannel(channelId: string, now: Date): Contact {
+    const exists = this.props.channels.some((ch) => ch.id === channelId)
+    if (!exists) {
+      throw new NotFoundError(`Channel ${channelId} not found on contact ${this.props.id}`)
+    }
+
+    const nextProps: ContactProps = {
+      ...this.props,
+      channels: this.props.channels.filter((ch) => ch.id !== channelId),
+      updatedAt: now,
+    }
+
+    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+  }
+
+  addAssignment(assignment: ContactAssignment): Contact {
+    const alreadyAssigned = this.props.assignments.some((a) => a.userId === assignment.userId)
+    if (alreadyAssigned) {
+      throw new BusinessRuleError(`User ${assignment.userId} is already assigned to contact ${this.props.id}`)
+    }
+
+    const nextProps: ContactProps = {
+      ...this.props,
+      assignments: [...this.props.assignments, assignment],
+      updatedAt: assignment.createdAt,
+    }
+
+    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+  }
+
+  updateAssignmentRole(userId: string, role: ContactAssignmentRole, now: Date): Contact {
+    const existing = this.props.assignments.find((a) => a.userId === userId)
+    if (!existing) {
+      throw new NotFoundError(`Assignment for user ${userId} not found on contact ${this.props.id}`)
+    }
+
+    const updated = this.props.assignments.map((a) =>
+      a.userId === userId ? { ...a, role, updatedAt: now } : a,
+    )
+
+    const nextProps: ContactProps = {
+      ...this.props,
+      assignments: updated,
+      updatedAt: now,
+    }
+
+    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+  }
+
+  removeAssignment(userId: string, now: Date): Contact {
+    const exists = this.props.assignments.some((a) => a.userId === userId)
+    if (!exists) {
+      throw new NotFoundError(`Assignment for user ${userId} not found on contact ${this.props.id}`)
+    }
+
+    const nextProps: ContactProps = {
+      ...this.props,
+      assignments: this.props.assignments.filter((a) => a.userId !== userId),
       updatedAt: now,
     }
 

@@ -10,6 +10,8 @@ const EventTypeEnum = z.enum([
   'ProposalRejected',
   'FollowUpPending',
   'Note',
+  'Discarded',
+  'Reopened',
 ])
 
 export const ContactEventViewSchema = z

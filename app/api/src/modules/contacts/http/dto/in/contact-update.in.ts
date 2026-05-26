@@ -4,17 +4,10 @@ const SourceChannelEnum = z.enum(['Instagram', 'WhatsApp', 'Referral', 'Email', 
 const InterestLevelEnum = z.enum(['Cold', 'Warm', 'Hot'])
 const ContactTypeEnum = z.enum(['Person', 'Company'])
 const SexEnum = z.enum(['Male', 'Female', 'Other', 'Unspecified'])
-const ChannelTypeEnum = z.enum(['Phone', 'Email', 'WhatsApp', 'Instagram', 'Website', 'Other'])
 
-const ChannelSchema = z.object({
-  channelType: ChannelTypeEnum.openapi({ description: 'Communication channel type', example: 'Phone' }),
-  value: z.string().min(1).openapi({ description: 'Channel value (phone number, URL, handle)', example: '+1234567890' }),
-  isPrimary: z.boolean().openapi({ description: 'Whether this is the primary contact channel', example: false }),
-})
-
-export const CreateContactBodySchema = z
+export const UpdateContactBodySchema = z
   .object({
-    name: z.string().min(1).openapi({ description: 'Contact full name', example: 'Jane Doe' }),
+    name: z.string().min(1).optional().openapi({ description: 'Contact full name', example: 'Jane Doe' }),
     contactType: ContactTypeEnum.optional().openapi({ description: 'Contact type', example: 'Person' }),
     sex: SexEnum.nullable().optional().openapi({ description: 'Sex (only for Person contacts)', example: 'Female' }),
     addressStreet: z.string().nullable().optional().openapi({ description: 'Street name', example: 'Av. Corrientes' }),
@@ -26,7 +19,6 @@ export const CreateContactBodySchema = z
     notes: z.string().nullable().optional().openapi({ description: 'Free-form notes', example: 'Met at trade show' }),
     sourceChannel: SourceChannelEnum.nullable().optional().openapi({ description: 'Acquisition channel' }),
     interestLevel: InterestLevelEnum.nullable().optional().openapi({ description: 'Interest level' }),
-    channels: z.array(ChannelSchema).optional().openapi({ description: 'Communication channels' }),
   })
   .refine(
     (data) => {
@@ -40,16 +32,6 @@ export const CreateContactBodySchema = z
       path: ['sex'],
     },
   )
-  .refine(
-    (data) => {
-      const channels = data.channels ?? []
-      return channels.filter((c) => c.isPrimary).length <= 1
-    },
-    {
-      message: 'At most one channel can be primary',
-      path: ['channels'],
-    },
-  )
-  .openapi('CreateContactBody')
+  .openapi('UpdateContactBody')
 
-export type CreateContactRequest = z.infer<typeof CreateContactBodySchema>
+export type UpdateContactRequest = z.infer<typeof UpdateContactBodySchema>

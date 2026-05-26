@@ -8,5 +8,7 @@ export const EventType = {
   ProposalRejected: 'ProposalRejected',
   FollowUpPending: 'FollowUpPending',
   Note: 'Note',
+  Discarded: 'Discarded',
+  Reopened: 'Reopened',
 } as const
 export type EventType = (typeof EventType)[keyof typeof EventType]

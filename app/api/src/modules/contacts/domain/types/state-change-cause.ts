@@ -1,3 +1,1 @@
-export type StateChangeCause =
-  | { kind: 'event'; eventId: string }
-  | { kind: 'manual'; userId: string }
+export type StateChangeCause = { kind: 'event'; eventId: string }

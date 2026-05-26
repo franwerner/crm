@@ -1,28 +1,48 @@
 import { PipelineState } from '@modules/contacts/domain/types/pipeline-state'
-import type { EventType } from '@modules/contacts/domain/types/event-type'
+import { EventType } from '@modules/contacts/domain/types/event-type'
 
-export const STATE_ORDER: Record<PipelineState, number> = {
-  [PipelineState.Contact]: 0,
-  [PipelineState.Lead]: 1,
-  [PipelineState.Customer]: 2,
-  [PipelineState.Discarded]: 3,
+type TransitionMatrix = Partial<Record<PipelineState, Partial<Record<EventType, PipelineState>>>>
+
+const TRANSITIONS: TransitionMatrix = {
+  [PipelineState.Contact]: {
+    [EventType.ResponseReceived]: PipelineState.Lead,
+    [EventType.MeetingCall]: PipelineState.Lead,
+    [EventType.ProposalSent]: PipelineState.Lead,
+    [EventType.ProposalWon]: PipelineState.Customer,
+    [EventType.Discarded]: PipelineState.Discarded,
+  },
+  [PipelineState.Lead]: {
+    [EventType.ProposalWon]: PipelineState.Customer,
+    [EventType.ProposalRejected]: PipelineState.AtRisk,
+    [EventType.Discarded]: PipelineState.Discarded,
+  },
+  [PipelineState.AtRisk]: {
+    [EventType.ResponseReceived]: PipelineState.Lead,
+    [EventType.MeetingCall]: PipelineState.Lead,
+    [EventType.ProposalSent]: PipelineState.Lead,
+    [EventType.ProposalWon]: PipelineState.Customer,
+    [EventType.Discarded]: PipelineState.Discarded,
+  },
+  [PipelineState.Discarded]: {
+    [EventType.Reopened]: PipelineState.Contact,
+  },
 }
 
-export function resolveTargetState(eventType: EventType): PipelineState | null {
-  switch (eventType) {
-    case 'ResponseReceived':
-    case 'MeetingCall':
-    case 'ProposalSent':
-      return PipelineState.Lead
-    case 'ProposalWon':
-      return PipelineState.Customer
-    default:
-      return null
+export function applyTransition(current: PipelineState, eventType: EventType): PipelineState | null {
+  const next = TRANSITIONS[current]?.[eventType]
+  if (!next || next === current) return null
+  return next
+}
+
+const ALL_EVENT_TYPES: readonly EventType[] = Object.values(EventType)
+
+export function allowedEventsFor(state: PipelineState): readonly EventType[] {
+  if (state === PipelineState.Discarded) {
+    return [EventType.Reopened]
   }
+  return ALL_EVENT_TYPES
 }
 
-export function isForwardTransition(current: PipelineState, target: PipelineState): boolean {
-  if (current === PipelineState.Discarded) return false
-  if (target === PipelineState.Discarded) return false
-  return STATE_ORDER[target] > STATE_ORDER[current]
+export function isEventAllowed(state: PipelineState, eventType: EventType): boolean {
+  return allowedEventsFor(state).includes(eventType)
 }

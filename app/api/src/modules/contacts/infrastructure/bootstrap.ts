@@ -8,8 +8,17 @@ import { ContactListUseCase } from '@modules/contacts/application/use-cases/cont
 import { ContactListEventsUseCase } from '@modules/contacts/application/use-cases/contact-list-events.use-case'
 import { ContactListStateChangesUseCase } from '@modules/contacts/application/use-cases/contact-list-state-changes.use-case'
 import { ContactRegisterEventUseCase } from '@modules/contacts/application/use-cases/contact-register-event.use-case'
-import { ContactChangeStateUseCase } from '@modules/contacts/application/use-cases/contact-change-state.use-case'
 import { ContactDeleteUseCase } from '@modules/contacts/application/use-cases/contact-delete.use-case'
+import { ContactBulkDeleteUseCase } from '@modules/contacts/application/use-cases/contact-bulk-delete.use-case'
+import { ContactKpisUseCase } from '@modules/contacts/application/use-cases/contact-kpis.use-case'
+import { ContactUpdateUseCase } from '@modules/contacts/application/use-cases/contact-update.use-case'
+import { ContactAddChannelUseCase } from '@modules/contacts/application/use-cases/contact-add-channel.use-case'
+import { ContactUpdateChannelUseCase } from '@modules/contacts/application/use-cases/contact-update-channel.use-case'
+import { ContactRemoveChannelUseCase } from '@modules/contacts/application/use-cases/contact-remove-channel.use-case'
+import { ContactAddAssignmentUseCase } from '@modules/contacts/application/use-cases/contact-add-assignment.use-case'
+import { ContactUpdateAssignmentRoleUseCase } from '@modules/contacts/application/use-cases/contact-update-assignment-role.use-case'
+import { ContactRemoveAssignmentUseCase } from '@modules/contacts/application/use-cases/contact-remove-assignment.use-case'
+import { ContactListAssignmentsUseCase } from '@modules/contacts/application/use-cases/contact-list-assignments.use-case'
 import { ContactController } from '@modules/contacts/http/contact.controller'
 import { createContactsRouter } from '@modules/contacts/http/contact.routes'
 
@@ -23,13 +32,22 @@ export function bootstrapContacts(db: Db): ContactsModule {
 
   const controller = new ContactController({
     create: new ContactCreateUseCase(repo),
-    get: new ContactGetUseCase(repo),
+    get: new ContactGetUseCase(repo, queries),
     list: new ContactListUseCase(queries),
+    kpis: new ContactKpisUseCase(queries),
     listEvents: new ContactListEventsUseCase(repo),
     listStateChanges: new ContactListStateChangesUseCase(repo),
+    listAssignments: new ContactListAssignmentsUseCase(queries),
     registerEvent: new ContactRegisterEventUseCase(repo),
-    changeState: new ContactChangeStateUseCase(repo),
     delete: new ContactDeleteUseCase(repo),
+    bulkDelete: new ContactBulkDeleteUseCase(repo),
+    update: new ContactUpdateUseCase(repo),
+    addChannel: new ContactAddChannelUseCase(repo),
+    updateChannel: new ContactUpdateChannelUseCase(repo),
+    removeChannel: new ContactRemoveChannelUseCase(repo),
+    addAssignment: new ContactAddAssignmentUseCase(repo),
+    updateAssignmentRole: new ContactUpdateAssignmentRoleUseCase(repo),
+    removeAssignment: new ContactRemoveAssignmentUseCase(repo),
   })
 
   return {

@@ -35,7 +35,7 @@ export class ContactRegisterEventUseCase {
       now,
     })
 
-    await this.repo.save(updated)
+    await this.repo.appendEvent(updated)
     return updated
   }
 }

@@ -15,6 +15,6 @@ export class ContactDeleteUseCase {
     }
 
     const deleted = contact.softDelete(new Date())
-    await this.repo.save(deleted)
+    await this.repo.updateContact(deleted)
   }
 }

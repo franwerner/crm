@@ -1,6 +1,6 @@
 import { z } from '@hono/zod-openapi'
 
-const PipelineStateEnum = z.enum(['Contact', 'Lead', 'Customer', 'Discarded'])
+const PipelineStateEnum = z.enum(['Contact', 'Lead', 'AtRisk', 'Customer', 'Discarded'])
 
 export const ContactStateChangeViewSchema = z
   .object({
