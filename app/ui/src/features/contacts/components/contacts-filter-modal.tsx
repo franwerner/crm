@@ -11,8 +11,8 @@ import {
 } from '@shared/ui/dialog'
 import { Button } from '@shared/ui/button'
 import { FilterBuilder } from '@shared/ui/filter-builder/filter-builder'
-import { contactsFilterSchema } from '@features/contacts/contacts-filter-schema'
-import type { FilterGroups } from '@shared/lib/filter'
+import { contactsFilterSchema } from '@features/contacts/constants/contacts-filter-schema'
+import type { FilterGroups } from '@shared/lib/utils/filter'
 
 type Props = {
   open: boolean

@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { SlidersHorizontal, Plus } from 'lucide-react'
+import { SlidersHorizontal, Plus, X } from 'lucide-react'
 import { Button } from '@shared/ui/button'
 import { Badge } from '@shared/ui/badge'
-import { ContactsSearch } from './contacts-search'
+import { InputSearch } from '@shared/ui/input-search'
 import { ContactsFilterModal } from './contacts-filter-modal'
 import { CreateContactModal } from './create-contact-modal'
-import type { FilterGroups } from '@shared/lib/filter'
-import type { CreateContactFormValues } from '@features/contacts/contacts.types'
+import type { FilterGroups } from '@shared/lib/utils/filter'
+import type { CreateContactFormValues } from '@features/contacts/types/contacts.types'
 
 type Props = {
   search: string
@@ -41,7 +41,7 @@ export function ContactsToolbar({
   return (
     <>
       <div className="flex flex-1 items-center gap-2">
-        <ContactsSearch value={search} onChange={onSearchChange} placeholder={searchPlaceholder} />
+        <InputSearch value={search} onChange={onSearchChange} placeholder={searchPlaceholder} />
         <Button
           variant="outline"
           size="sm"
@@ -54,6 +54,14 @@ export function ContactsToolbar({
         {activeCount > 0 && (
           <Badge variant="primary">
             {activeCount} {activeCount === 1 ? 'filtro' : 'filtros'}
+            <button
+              type="button"
+              aria-label="Limpiar filtros"
+              onClick={() => onApplyFilters([])}
+              className="inline-flex cursor-pointer items-center opacity-70 transition-opacity hover:opacity-100"
+            >
+              <X className="size-3" />
+            </button>
           </Badge>
         )}
       </div>

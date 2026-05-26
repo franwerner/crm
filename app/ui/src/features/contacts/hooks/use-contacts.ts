@@ -1,6 +1,6 @@
 import { useGetContacts } from '@shared/api/hooks/useGetContacts'
 import type { GetContactsQueryParams } from '@shared/api/types/GetContacts'
-import { buildFilterParam, type FilterGroups } from '@shared/lib/filter'
+import { buildFilterParam, type FilterGroups } from '@shared/lib/utils/filter'
 
 const PAGE_SIZE = 20
 
@@ -19,7 +19,6 @@ export function useContacts({ page, search, filterGroups, sortField, sortDir }: 
 
   const params: GetContactsQueryParams = {
     pagination: { limit: PAGE_SIZE, offset },
-    populated: 'true',
     ...(search ? { search } : {}),
     ...(filter ? { filter } : {}),
     ...(sort ? { sort } : {}),

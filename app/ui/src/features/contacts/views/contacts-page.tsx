@@ -1,33 +1,53 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { toast } from 'sonner'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { useContacts } from '@features/contacts/hooks/use-contacts'
-import { useCreateContact, useBulkDeleteContacts, useBulkChangeState } from '@features/contacts/hooks/use-contact-mutations'
-import { contactColumns } from '@features/contacts/components/contacts-columns'
+import { useContactKpis } from '@features/contacts/hooks/use-contact-kpis'
+import { useCreateContact, useBulkDeleteContacts } from '@features/contacts/hooks/use-contact-mutations'
+import { contactBaseColumns, makeContactActionsColumn } from '@features/contacts/components/contacts-columns'
+import { ContactsKpiBar } from '@features/contacts/components/contacts-kpi-bar'
 import { ContactsToolbar } from '@features/contacts/components/contacts-toolbar'
 import { ContactsBulkbar } from '@features/contacts/components/contacts-bulkbar'
 import { DataTable } from '@shared/ui/data-table'
+import { DeleteDialog } from '@shared/ui/delete-dialog'
 import { toSearchPresentation } from '@shared/lib/data-view'
-import { contactsDescriptor } from '@features/contacts/contacts.descriptor'
-import type { FilterGroups } from '@shared/lib/filter'
+import { contactsDescriptor } from '@features/contacts/components/contacts.descriptor'
+import type { FilterGroups } from '@shared/lib/utils/filter'
+import type { RowOf } from '@shared/lib/data-view'
 import type { RowSelectionState, SortingState, OnChangeFn } from '@tanstack/react-table'
-import type { ContactPipelineState, CreateContactFormValues } from '@features/contacts/contacts.types'
+import type { CreateContactFormValues } from '@features/contacts/types/contacts.types'
 
 const { placeholder: searchPlaceholder } = toSearchPresentation(contactsDescriptor)
+
+type ContactRow = RowOf<typeof contactsDescriptor>
 
 export function ContactsPage() {
   const { page, search, filterGroups, sortField, sortDir } = useSearch({ from: '/_authenticated/contacts' })
   const navigate = useNavigate({ from: '/contacts' })
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null)
+
+  const goToDetail = (id: string) => navigate({ to: '/contacts/$id', params: { id } })
+
+  const contactColumns = useMemo(
+    () => [
+      ...contactBaseColumns,
+      makeContactActionsColumn({
+        onViewDetail: goToDetail,
+        onDelete: (id) => setDeleteTargetId(id),
+      }),
+    ],
+    [navigate],
+  )
 
   const sorting: SortingState = [{ id: sortField, desc: sortDir === 'desc' }]
 
   const { rows, total, pageSize, isLoading } = useContacts({ page, search, filterGroups, sortField, sortDir })
+  const { total: kpisTotal, kpis, isLoading: isLoadingKpis } = useContactKpis()
 
   const { createContact, isPending: isCreating, errorMessage: createError } = useCreateContact()
   const { bulkDelete, isPending: isDeleting } = useBulkDeleteContacts()
-  const { bulkChangeState, isPending: isChangingState } = useBulkChangeState()
 
   const selectedIds = Object.keys(rowSelection).filter((id) => rowSelection[id])
 
@@ -82,13 +102,14 @@ export function ContactsPage() {
     }
   }
 
-  async function handleBulkChangeState(state: ContactPipelineState) {
+  async function handleConfirmDelete() {
+    if (!deleteTargetId) return
     try {
-      await bulkChangeState(selectedIds, state)
+      await bulkDelete([deleteTargetId])
     } catch {
-      toast.error('Error al cambiar el estado de los contactos')
+      toast.error('Error al eliminar el contacto')
     } finally {
-      setRowSelection({})
+      setDeleteTargetId(null)
     }
   }
 
@@ -109,17 +130,13 @@ export function ContactsPage() {
     <ContactsBulkbar
       count={selectedIds.length}
       onDelete={handleBulkDelete}
-      onChangeState={handleBulkChangeState}
       isDeleting={isDeleting}
-      isChangingState={isChangingState}
     />
   )
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-3">
-        <h1 className="text-xl font-semibold text-foreground">Contactos</h1>
-      </div>
+    <div className="flex flex-col gap-8">
+      <ContactsKpiBar total={kpisTotal} kpis={kpis} isLoading={isLoadingKpis} />
 
       <DataTable
         columns={contactColumns}
@@ -139,6 +156,18 @@ export function ContactsPage() {
         enableSorting
         sorting={sorting}
         onSortingChange={handleSortingChange}
+        onRowClick={(row: ContactRow) => goToDetail(row.id)}
+      />
+
+      <DeleteDialog
+        open={deleteTargetId !== null}
+        onOpenChange={(open) => {
+          if (!open) setDeleteTargetId(null)
+        }}
+        title="Eliminar contacto"
+        content="¿Eliminar este contacto? Esta acción no se puede deshacer."
+        onDeleted={handleConfirmDelete}
+        isDeleting={isDeleting}
       />
     </div>
   )
