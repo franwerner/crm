@@ -18,10 +18,10 @@ export default defineConfig({
     pluginOas(),
     pluginTs({ output: { path: 'types' } }),
     pluginZod({ output: { path: 'schemas' } }),
-    pluginClient({ output: { path: 'clients' }, importPath: '@shared/lib/http-client', dataReturnType: 'data' }),
+    pluginClient({ output: { path: 'clients' }, importPath: '@shared/lib/utils/http-client', dataReturnType: 'data' }),
     pluginReactQuery({
       output: { path: 'hooks' },
-      client: { importPath: '@shared/lib/http-client', dataReturnType: 'data' },
+      client: { importPath: '@shared/lib/utils/http-client', dataReturnType: 'data' },
     }),
   ],
 })

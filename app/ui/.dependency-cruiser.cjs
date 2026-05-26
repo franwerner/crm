@@ -20,13 +20,14 @@ module.exports = {
     {
       name: 'adr02-3-5-api-not-in-shared-kernel',
       severity: 'error',
-      comment: 'ADR 02 #3/#5 (rev. 2026-05-24): la salida de kubb (src/shared/api) es read-only. Las features pueden importarla para derivar tipos/schemas del contrato (descriptors, types, hooks, components). El kernel shared (lib/ui) no la importa; shared/api se importa a sí misma.',
+      comment: 'ADR 02 #3/#5 (rev. 2026-05-24): la salida de kubb (src/shared/api) es read-only. Las features pueden importarla para derivar tipos/schemas del contrato (descriptors, types, hooks, components). El kernel shared (lib/ui) no la importa; shared/api se importa a sí misma. Excepción acotada (rev. 2026-05-25): shared/lib/data-view/relations/ (resolvers de relación contract-aware) puede importar shared/api.',
       from: {
         path: '^src/',
         pathNot: [
           '^src/features/',
           '^src/app/',
           '^src/shared/api/',
+          '^src/shared/lib/data-view/relations/',
         ],
       },
       to: { path: '^src/shared/api/' },
