@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { queryClient } from '@shared/lib/query-client'
+import { queryClient } from '@shared/lib/config/query-client'
 import { Toaster } from '@shared/ui/sonner'
 
 export function Providers({ children }: { children: ReactNode }) {

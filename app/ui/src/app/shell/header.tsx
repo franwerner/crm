@@ -1,8 +1,8 @@
 import { useNavigate } from '@tanstack/react-router'
-import { LogOut, User } from 'lucide-react'
+import { LogOut, ChevronDown } from 'lucide-react'
 import { useGetAuthMe, getAuthMeQueryKey } from '@shared/api/hooks/useGetAuthMe'
 import { usePostAuthLogout } from '@shared/api/hooks/usePostAuthLogout'
-import { queryClient } from '@shared/lib/query-client'
+import { queryClient } from '@shared/lib/config/query-client'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@shared/ui/dropdown-menu'
 import { Button } from '@shared/ui/button'
+import { Avatar } from '@shared/ui/avatar'
 
 export function Header() {
   const { data: me } = useGetAuthMe()
@@ -28,8 +29,10 @@ export function Header() {
     <header className="flex h-14 items-center justify-end border-b border-border bg-card px-4">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" aria-label="Menú de usuario">
-            <User className="size-4" />
+          <Button variant="ghost" className="gap-2 px-2" aria-label="Menú de usuario">
+            <Avatar name={me?.name ?? ''} size="sm" />
+            <span className="text-sm font-medium text-foreground">{me?.name}</span>
+            <ChevronDown className="text-muted-foreground" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-52">
@@ -46,6 +49,10 @@ export function Header() {
             <LogOut className="size-4" />
             {logout.isPending ? 'Cerrando sesión...' : 'Cerrar sesión'}
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <div className="px-2 py-1.5 font-mono text-[10px] text-muted-foreground">
+            v{__APP_VERSION__}
+          </div>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

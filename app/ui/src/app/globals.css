@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --ds-color-primary-50: #F3FBE0;
   --ds-color-primary-100: #E4F8B8;

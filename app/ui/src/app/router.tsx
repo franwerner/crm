@@ -5,48 +5,16 @@ import {
   Outlet,
   redirect,
 } from '@tanstack/react-router'
-import { z } from 'zod'
-import type { QueryClient } from '@tanstack/react-query'
-import { filterGroupsSchema } from '@shared/lib/filter'
-import { toSortFields } from '@shared/lib/data-view'
-import { queryClient, registerUnauthorizedHandler } from '@shared/lib/query-client'
+import { queryClient, registerUnauthorizedHandler } from '@shared/lib/config/query-client'
+import type { RouterContext } from '@shared/lib/config/query-client'
+import type { BreadcrumbItem } from '@shared/lib/breadcrumb'
 import { getAuthMeQueryOptions } from '@shared/api/hooks/useGetAuthMe'
-import { LoginPage } from '@features/auth/routes/login-page'
 import { AppShell } from '@app/shell/app-shell'
-import { ContactsPage } from '@features/contacts/routes/contacts-page'
-import { UsersPage } from '@features/users/routes/users-page'
-import { contactsDescriptor } from '@features/contacts/contacts.descriptor'
-import { usersDescriptor } from '@features/users/users.descriptor'
-
-const contactsSortDirEnum = z.enum(['asc', 'desc'])
-const contactsSortFieldEnum = z.enum(
-  toSortFields(contactsDescriptor) as [string, ...string[]],
-)
-
-const usersSortDirEnum = z.enum(['asc', 'desc'])
-const usersSortFieldEnum = z.enum(
-  toSortFields(usersDescriptor) as [string, ...string[]],
-)
-
-const contactsSearchSchema = z.object({
-  page: z.number().int().min(1).optional().default(1),
-  search: z.string().optional(),
-  filterGroups: filterGroupsSchema,
-  sortField: contactsSortFieldEnum.optional().default('createdAt'),
-  sortDir: contactsSortDirEnum.optional().default('desc'),
-})
-
-const usersSearchSchema = z.object({
-  page: z.number().int().min(1).optional().default(1),
-  search: z.string().optional(),
-  filterGroups: filterGroupsSchema,
-  sortField: usersSortFieldEnum.optional().default('createdAt'),
-  sortDir: usersSortDirEnum.optional().default('desc'),
-})
-
-type RouterContext = {
-  queryClient: QueryClient
-}
+import { createContactsRoutes } from '@features/contacts/routes/contacts.routes'
+import { createProjectsRoutes } from '@features/projects/routes/projects.routes'
+import { createUsersRoutes } from '@features/users/routes/users.routes'
+import { createSettingsRoutes } from '@features/settings/routes/settings.routes'
+import { createAuthRoutes } from '@features/auth/routes/auth.routes'
 
 const rootRoute = createRootRouteWithContext<RouterContext>()({
   component: () => <Outlet />,
@@ -73,37 +41,15 @@ const indexRoute = createRoute({
   },
 })
 
-const contactsRoute = createRoute({
-  getParentRoute: () => authenticatedRoute,
-  path: '/contacts',
-  validateSearch: contactsSearchSchema,
-  component: ContactsPage,
-})
-
-const usersRoute = createRoute({
-  getParentRoute: () => authenticatedRoute,
-  path: '/users',
-  validateSearch: usersSearchSchema,
-  component: UsersPage,
-})
-
-const loginRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/login',
-  beforeLoad: async ({ context }) => {
-    try {
-      await context.queryClient.ensureQueryData(getAuthMeQueryOptions())
-      throw redirect({ to: '/contacts' })
-    } catch (err) {
-      if (err instanceof Response || (err as { _isRedirect?: boolean })?._isRedirect) throw err
-    }
-  },
-  component: LoginPage,
-})
-
 const routeTree = rootRoute.addChildren([
-  authenticatedRoute.addChildren([indexRoute, contactsRoute, usersRoute]),
-  loginRoute,
+  authenticatedRoute.addChildren([
+    indexRoute,
+    ...createContactsRoutes(authenticatedRoute),
+    ...createProjectsRoutes(authenticatedRoute),
+    ...createUsersRoutes(authenticatedRoute),
+    ...createSettingsRoutes(authenticatedRoute),
+  ]),
+  ...createAuthRoutes(rootRoute),
 ])
 
 export const router = createRouter({
@@ -120,5 +66,8 @@ registerUnauthorizedHandler(() => {
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router
+  }
+  interface StaticDataRouteOption {
+    breadcrumb?: BreadcrumbItem[]
   }
 }
