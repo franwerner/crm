@@ -8,6 +8,7 @@ import { ValidationError } from '@shared/errors'
 import { bootstrapUsers } from '@modules/users/infrastructure/bootstrap'
 import { bootstrapAuth } from '@modules/auth/infrastructure/bootstrap'
 import { bootstrapContacts } from '@modules/contacts/infrastructure/bootstrap'
+import { bootstrapProjects } from '@modules/projects/infrastructure/bootstrap'
 
 export function createApp() {
   const app = new OpenAPIHono({
@@ -51,12 +52,14 @@ export function createApp() {
   }
 
   const users = bootstrapUsers(db)
-  const auth = bootstrapAuth(users.publicApi)
+  const auth = bootstrapAuth(db)
   const contacts = bootstrapContacts(db)
+  const projects = bootstrapProjects(db)
 
   app.route('/', auth.router)
   app.route('/', users.router)
   app.route('/', contacts.router)
+  app.route('/', projects.router)
 
   return app
 }

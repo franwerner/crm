@@ -18,16 +18,42 @@ services:
       timeout: 5s
       retries: 10
 
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio12345
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - crm-miniodata:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   api:
     build:
       context: ./app/api
     depends_on:
       postgres:
         condition: service_healthy
+      minio:
+        condition: service_healthy
     env_file:
       - ./app/api/.env
     environment:
       DATABASE_URL: postgres://crm:crm@postgres:5432/crm
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio12345
+      MINIO_BUCKET: crm-files
+      MINIO_REGION: us-east-1
+      MINIO_USE_SSL: "false"
     ports:
       - "3000:3000"
     volumes:
@@ -53,4 +79,5 @@ services:
 
 volumes:
   crm-pgdata:
+  crm-miniodata:
   ui_node_modules:

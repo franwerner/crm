@@ -9,6 +9,12 @@ const EnvSchema = z.object({
   // Atributos de la cookie de sesión (ADR 10): env vars opcionales con defaults seguros
   SESSION_COOKIE_NAME: z.string().min(1).default('session'),
   SESSION_MAX_AGE_SECONDS: z.coerce.number().int().positive().default(604800),
+  MINIO_ENDPOINT: z.string().url('MINIO_ENDPOINT must be a valid URL'),
+  MINIO_ACCESS_KEY: z.string().min(1, 'MINIO_ACCESS_KEY is required'),
+  MINIO_SECRET_KEY: z.string().min(1, 'MINIO_SECRET_KEY is required'),
+  MINIO_BUCKET: z.string().min(1, 'MINIO_BUCKET is required'),
+  MINIO_REGION: z.string().default('us-east-1'),
+  MINIO_USE_SSL: z.enum(['true', 'false']).default('false'),
 })
 
 const parsed = EnvSchema.safeParse(Bun.env)
@@ -35,6 +41,12 @@ export const config = {
   // Fuente única de verdad para los atributos de la cookie de sesión (ADR 10)
   sessionCookieName: env.SESSION_COOKIE_NAME,
   sessionMaxAgeSeconds: env.SESSION_MAX_AGE_SECONDS,
+  minioEndpoint: env.MINIO_ENDPOINT,
+  minioAccessKey: env.MINIO_ACCESS_KEY,
+  minioSecretKey: env.MINIO_SECRET_KEY,
+  minioBucket: env.MINIO_BUCKET,
+  minioRegion: env.MINIO_REGION,
+  minioUseSsl: env.MINIO_USE_SSL === 'true',
 } as const
 
 export type Config = typeof config
