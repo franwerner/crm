@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-17 (enforcement definido)
+- **Última actualización:** 2026-05-25
 - **Decisores:** ifran
 - **Fase del bootstrap:** 2
 
@@ -19,7 +19,8 @@ app/ui/
 │   │   └── <feature>/                  # ej: customers/
 │   │       ├── components/             # presentacionales (tontos)
 │   │       ├── hooks/                  # orquestación (usan hooks de kubb)
-│   │       ├── routes/                 # containers de ruta
+│   │       ├── routes/                 # definiciones de ruta (factories — ver ADR 12)
+│   │       ├── views/                  # pantallas/containers de ruta
 │   │       └── <feature>.types.ts      # tipos propios (NO los del API)
 │   ├── shared/                          # transversal — NO conoce features
 │   │   ├── ui/                          # design system (atomic, agnóstico de dominio)
@@ -35,11 +36,11 @@ app/ui/
 |---|---|
 | 1 | `src/features/A/**` NO importa de `src/features/B/**`. Features aisladas; lo común va a `shared/`, la composición a `app/`. |
 | 2 | `src/shared/**` NO importa de `src/features/**`. El kernel no conoce features. |
-| 3 | `src/shared/api/**` (salida kubb) es read-only generado: no se edita a mano. Lo pueden consumir las **features desde cualquier capa** (hooks, types, descriptors, components, routes) para derivar tipos/schemas del contrato. El kernel `shared/lib` y `shared/ui` NO lo importan. |
+| 3 | `src/shared/api/**` (salida kubb) es read-only generado: no se edita a mano. Lo pueden consumir las **features desde cualquier capa** (hooks, types, descriptors, components, routes) para derivar tipos/schemas del contrato. El kernel `shared/lib` y `shared/ui` NO lo importan. **Excepción acotada (2026-05-25):** `src/shared/lib/data-view/relations/**` SÍ puede importar `shared/api` — ahí viven los relation-resolvers contract-aware (ej. `userRelation`), una isla deliberada dentro del kernel. El resto de `shared/lib` y todo `shared/ui` siguen sin tocar `shared/api`. |
 | 4 | Componentes presentacionales (`src/features/*/components/**`, `src/shared/ui/**`) NO importan kubb, TanStack Query ni Router directo; reciben datos por props/hooks. Los de **feature** SÍ pueden importar `shared/api` (tipos/schemas del contrato); `shared/ui` NO. |
 | 5 | Las features pueden consumir `src/shared/api/**` desde cualquier capa (no solo hooks) para derivar del contrato y **evitar duplicación**. Trade-off consciente: se acopla la feature al artefacto generado, resignando el anti-corruption layer estricto (ver Historial 2026-05-24 y ADR 14). |
 | 6 | `src/shared/ui/**` (design system) es presentacional puro: NO conoce features, API ni Query. |
-| 7 | `src/app/**` (composición) es el ÚNICO que importa varias features para armar router/providers/guards. |
+| 7 | `src/app/**` (composición) es el ÚNICO punto de ensamblado del árbol de rutas y providers. Las features DEFINEN sus rutas como factories en `features/<f>/routes/` (reciben el padre por parámetro); `app/` inyecta el padre y ensambla el árbol final. Las features nunca se importan entre sí (regla #1); `shared` tampoco las importa (#2). |
 
 > La regla #4 mantiene la decisión container/presentational del ADR 01 para las **libs externas de datos** (TanStack Query/Router, kubb). El acceso a `shared/api` (artefacto interno generado) se relajó el 2026-05-24 para permitir derivar del contrato y eliminar duplicación — ver ADR 14.
 
@@ -77,3 +78,5 @@ Pasos (al scaffoldear el paquete, ANTES del primer feature):
 | 2026-05-17 | Decisión inicial | ifran |
 | 2026-05-17 | Enforcement definido: dependency-cruiser (CI gate) + eslint-plugin-boundaries (editor) | ifran |
 | 2026-05-24 | Reglas #3/#4/#5 relajadas: las features pueden importar `shared/api` desde cualquier capa para derivar del contrato (no solo hooks), eliminando duplicación de tipos/schemas. `shared/ui` sigue puro. Trade-off: se resigna el anti-corruption layer estricto. Habilita el patrón del ADR 14. Sincronizado en `eslint.config.js` y `.dependency-cruiser.cjs` | ifran |
+| 2026-05-25 | Excepción acotada a la regla #3: `shared/lib/data-view/relations/**` puede importar `shared/api` (relation-resolvers contract-aware reusables, ej. `userRelation`). Isla deliberada dentro del kernel; el resto de `shared/lib` y todo `shared/ui` siguen puros. Nuevo element type `shared-relations` en `eslint.config.js` y entrada en `pathNot` de `.dependency-cruiser.cjs` | ifran |
+| 2026-05-25 | Diagrama actualizado: `features/<f>/routes/` ahora son factories de ruta (no containers); pantallas/containers pasan a `features/<f>/views/`. Regla #7 matizada: las features definen sus rutas como factories que reciben el padre; `app/` inyecta el padre y ensambla el árbol final. | ifran |

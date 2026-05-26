@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-21
-- **Última actualización:** 2026-05-21
+- **Última actualización:** 2026-05-25
 - **Decisores:** ifran
 - **Fase del bootstrap:** post-bootstrap (hueco detectado al scaffoldear)
 
@@ -14,7 +14,7 @@ El ADR 02 ubica el router en `src/app/` (regla #7: única capa que compone varia
 
 - **Librería:** TanStack Router (ver `tech/tanstack-router.md`).
 - **Ubicación del árbol de rutas:** en `src/app/` exclusivamente. Es la única capa que importa varias features para componer el router (ADR 02 regla #7).
-- **Componentes de ruta por feature:** cada feature expone sus pantallas en `features/<f>/routes/` (containers de ruta — ADR 02). `src/app/` las referencia para armar el árbol; las features NO se importan entre sí (regla #1).
+- **Definiciones de ruta por feature:** cada feature define sus rutas en `features/<f>/routes/` como factories (`create<F>Routes(parentRoute: AnyRoute) → Route[]`). Las pantallas/containers viven en `features/<f>/views/`. `src/app/` importa las factories, les inyecta el padre y ensambla el árbol final; las features NO se importan entre sí (regla #1).
 - **Guards (rutas privadas):** se expresan con `beforeLoad`, consultando el auth-state (query a `/me`, ADR 10). Si no hay sesión → redirect a login. Centralizado en `src/app/`, nunca por componente.
 - **401 global:** se maneja en el cliente/QueryClient (ADR 04 §4.1: limpiar auth-state + redirigir a login), no en cada ruta. El guard cubre el acceso inicial; el 401 cubre la expiración en runtime.
 - **Search params:** cuando una ruta los use, se validan con zod (coherente con ADR 03 §3.4). Validación de UX, no fuente de verdad.
@@ -33,8 +33,8 @@ El ADR 02 ubica el router en `src/app/` (regla #7: única capa que compone varia
 
 ## Reglas concretas
 
-- El árbol de rutas, providers y guards viven SOLO en `src/app/` (ADR 02 regla #7).
-- Componentes de ruta de feature en `features/<f>/routes/`; nunca import feature→feature.
+- El árbol de rutas, providers y guards (ensamblado final) viven SOLO en `src/app/` (ADR 02 regla #7).
+- Factories de ruta en `features/<f>/routes/`; pantallas/containers en `features/<f>/views/`; nunca import feature→feature.
 - Protección de rutas privadas vía `beforeLoad` + auth-state (`/me`), nunca por componente.
 - 401 en runtime → manejo global (ADR 04 §4.1), no por ruta.
 - Search params validados con zod cuando se usen.
@@ -44,3 +44,4 @@ El ADR 02 ubica el router en `src/app/` (regla #7: única capa que compone varia
 | Fecha | Cambio | Por |
 |---|---|---|
 | 2026-05-21 | Decisión inicial. TanStack Router; árbol y guards en `src/app/`; guards vía `beforeLoad` + `/me` | ifran |
+| 2026-05-25 | Pantallas pasan a `features/<f>/views/`; `features/<f>/routes/` contiene factories de ruta (`create<F>Routes(parentRoute: AnyRoute)`). `app/router.tsx` queda como ensamblador puro. `RouterContext` expuesto en `shared/lib/config/query-client.ts` para uso en factories sin importar de `app/`. | ifran |

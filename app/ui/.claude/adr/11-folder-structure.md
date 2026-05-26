@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-23
+- **Última actualización:** 2026-05-25
 - **Decisores:** ifran
 - **Fase del bootstrap:** 5.7
 
@@ -21,7 +21,8 @@ Originalmente se adoptó Atomic Design (atoms/molecules/organisms) en `shared/ui
 | Hooks | archivo `use-<nombre>.ts` (kebab con prefijo `use`); función `use<Nombre>` |
 | Carpetas de feature | `features/<feature>/` (nombre del feature en minúscula) |
 | `shared/ui` (design system) | **carpeta plana**, sin taxonomía atómica |
-| Templates / pages | NO van en `shared/ui` — viven en `features/<f>/routes/` |
+| Templates / pages | NO van en `shared/ui` — viven en `features/<f>/views/` |
+| Definiciones de ruta | en `features/<f>/routes/` como factories (función `create<F>Routes(parentRoute)` que devuelve los `createRoute` del feature) |
 | Componentes de negocio | en `features/<f>/components/`, NUNCA en `shared/ui` |
 
 > El nombre de archivo es kebab, pero el identificador del componente React sigue siendo PascalCase por restricción de JSX (`data-table.tsx` → `export function DataTable()`).
@@ -51,3 +52,4 @@ Originalmente se adoptó Atomic Design (atoms/molecules/organisms) en `shared/ui
 |---|---|---|
 | 2026-05-17 | Decisión inicial (Atomic Design + PascalCase) | ifran |
 | 2026-05-23 | Revertido: `shared/ui` plano (sin Atomic Design) + naming kebab-case en todo el paquete (incl. hooks), por integración shadcn/ui (ADR 13) y consistencia con `app/api` | ifran |
+| 2026-05-25 | `features/<f>/routes/` pasa a contener factories de ruta (no pantallas). Pantallas/containers se mueven a `features/<f>/views/`. Tabla actualizada. | ifran |
