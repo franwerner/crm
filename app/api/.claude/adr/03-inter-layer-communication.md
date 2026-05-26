@@ -2,7 +2,7 @@
 
 - **Status:** Accepted (con sub-decisión §3.2 en Pending)
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-20 (use-cases pasan a class con `execute(input)`; las deps van en el constructor — `XxxDeps` deja de existir)
+- **Última actualización:** 2026-05-26 (reversión del patrón de API pública por módulo: el borde cross-slice de lectura pasa a read-port propio del consumidor — ver ADR 02/05/17)
 - **Decisores:** ifran
 - **Fase del bootstrap:** 3
 
@@ -55,7 +55,7 @@ Input es el contrato semántico (parámetro de `execute`); deps son los servicio
 
 **Closed types del dominio en los DTOs zod.** Los DTOs zod del borde HTTP (`<entity>-<acción>.in.ts`, `<entity>-<concepto>.out.ts`) NO importan los closed types del dominio (`PipelineState`, `EventType`, etc. de `domain/types/`). Cada DTO redeclara su `z.enum([...])` con los valores válidos. Razón: el DTO es contrato del **WIRE**, independiente del dominio interno. Que dominio y wire evolucionen separados es una FEATURE de aislamiento — agregar un valor de dominio no debe filtrarse automáticamente al OpenAPI/clients (exposición opt-in), ni renombrar internamente debe romper backwards-compat de la API. La "drift bomb" potencial se mitiga con disciplina en PR review, no con acoplamiento. La cruiser rule #3 permite técnicamente `http → domain`, pero esta convención prohíbe ese import para preservar la independencia de la API pública.
 
-**Borde de MÓDULO (cross-slice).** La misma filosofía DTO-no-entidad aplica entre slices. El consumidor importa SOLO el contrato público `<m>.public.ts` del proveedor (`import type`); cruzan DTOs publicados, NUNCA la entidad de dominio ni el repository. La mecánica completa (contrato + impl + wiring en el composition root + condiciones de correctitud) está en ADR 02 → "Colaboración cross-slice (API pública por módulo)".
+**Borde de MÓDULO (cross-slice).** La misma filosofía DTO-no-entidad aplica entre slices, pero la colaboración es **lectura directa del consumidor**, no un contrato publicado por el proveedor. Cuando un slice necesita datos de otro, define un read-port propio (`application/<x>.query.ts`) con read models planos (solo los campos que usa) y un adapter (`infrastructure/<x>.query.drizzle.ts`) que los lee del schema compartido `@shared/db`. Cruzan read models, NUNCA la entidad de dominio de otro slice. La mecánica completa y los límites (solo lecturas; el gate queda ciego al acoplamiento vía shared schema) están en ADR 02 → "Colaboración cross-slice (lectura directa por read-port del consumidor)".
 
 ### 3.2 — Comunicación / side-effects  *(Accepted + sub-Pending)*
 
@@ -100,7 +100,7 @@ Input es el contrato semántico (parámetro de `execute`); deps son los servicio
 - **Firma del use-case:** la class tiene `constructor(...deps)` para las dependencias y un método `async execute(input: XxxInput): Promise<...>` para la operación. El input NO incluye dependencias; las deps NO incluyen datos del input. Una sola operación por class (un solo `execute`).
 - **Salida:** `execute` devuelve entidad de dominio o `Page<Entidad>`. El controller mapea a un view-model que matchea el response schema DTO. La entidad NO se serializa directo a JSON.
 - **Controller:** `class <Entity>Controller` con un método handler por ruta; recibe las instancias de use-case por constructor (`constructor(ucs: <Entity>UseCases)`). El wiring de las instancias lo hace `infrastructure/bootstrap.ts` del slice.
-- **Cross-slice:** nunca import directo entre `src/modules/A` y `src/modules/B`; el bootstrap de A retorna su `publicApi` y `src/app.ts` la pasa al bootstrap de B que la consume.
+- **Cross-slice:** nunca import directo entre `src/modules/A` y `src/modules/B` (sin excepción). Si A necesita datos de B, A define un read-port propio (`application/*.query.ts` + adapter `infrastructure/*.query.drizzle.ts`) que lee el schema compartido `@shared/db`; el `bootstrap.ts` de A lo instancia con `db`.
 
 ## Historial
 
@@ -112,3 +112,4 @@ Input es el contrato semántico (parámetro de `execute`); deps son los servicio
 | 2026-05-20 | §3.3 FLIPEADA: port pasa de "nivel application del slice" a "dentro de `domain/` (hexagonal-pure)". El dominio sigue sin conocer persistencia (no hay impl en domain, solo el tipo). Adapter sigue en `infrastructure/`. Sub-regla `adr02-1b-port-contract` en ADR 02 acompaña (permite al port importar `shared/types`). Motivo: coherencia con la reorganización a carpetas por capa de ADR 02 (2026-05-20). | ifran |
 | 2026-05-20 | §3.1: agregada convención "Closed types del dominio en los DTOs zod": los DTOs zod del borde NO importan los closed types del dominio; cada DTO redeclara su `z.enum([...])`. Razón: el DTO es contrato del wire independiente del dominio interno (exposición opt-in, backwards-compat). Aunque la cruiser rule #3 permite técnicamente `http → domain`, esta convención lo prohíbe para preservar la independencia de la API pública. | ifran |
 | 2026-05-20 | §3.1: **firma del use-case migrada de función a class**. Pasa de `export async function xxxVerb(input, deps)` a `export class <Entity><Acción>UseCase { constructor(...deps) execute(input) }`. La interface separada `XxxDeps` se elimina: las deps se declaran como parámetros del constructor (`private readonly`). `XxxInput` se mantiene como interface co-locada. Controller también pasa a class (`<Entity>Controller`) con `constructor(ucs: <Entity>UseCases)`. Motivo: centralizar el wiring en `infrastructure/bootstrap.ts` por slice (ADR 02 regla #7 reescrita) y dar autocontención al módulo. Cross-slice queda orquestado por `src/app.ts` que conecta `publicApi` de un bootstrap al consumidor. Reglas concretas y "Flujo del controller" reescritas. Aplicado a contacts, users y auth. | ifran |
+| 2026-05-26 | **Reversión del patrón de API pública por módulo.** §3.1 "Borde de MÓDULO" y la regla concreta "Cross-slice" reescritas: la colaboración cross-módulo de lectura ya no usa contrato publicado (`<m>.public.ts`) ni `publicApi` inyectada por `app.ts`; el consumidor define un read-port propio (`application/*.query.ts` + adapter `infrastructure/*.query.drizzle.ts`) que lee directo el schema compartido `@shared/db`. Solo cubre lecturas. Coherente con ADR 02/05/17 (Historial 2026-05-26). | ifran |

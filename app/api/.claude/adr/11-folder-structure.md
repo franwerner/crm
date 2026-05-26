@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-20 (path aliases `@shared/*` y `@modules/*` adoptados como convención de imports; reversión consciente del "split plano": estructura por capas dentro del slice (`domain/` + `application/use-cases/` + `infrastructure/` + `http/` + `public/`) + sufijos `.use-case.ts` / `.in.ts` / `.out.ts` + orden `<sustantivo>-<acción>` para use-cases y DTOs in + archivos en singular)
+- **Última actualización:** 2026-05-26 (eliminado el patrón de API pública por módulo: se quita `public/` de la estructura y los sufijos `.public.ts`/`.public.impl.ts`; la colaboración cross-slice de lectura usa read-ports `.query.ts`/`.query.drizzle.ts` — ver ADR 02/03/05/17)
 - **Decisores:** ifran
 - **Fase del bootstrap:** 5.7
 
@@ -21,7 +21,7 @@ La estructura de carpetas quedó definida en el ADR 02 (slices + shared kernel).
 | Funciones, variables | `camelCase` (`createContact`, `dbClient`) |
 | Constantes de módulo | `UPPER_SNAKE_CASE` |
 | Carpeta de feature (slice) | **plural** (`contacts/`, `users/`, `auth/`) |
-| Archivos dentro del slice | **singular** según la entidad (`contact.ts`, `contact.routes.ts`, `user.public.ts`) |
+| Archivos dentro del slice | **singular** según la entidad (`contact.ts`, `contact.routes.ts`, `user.repository.ts`) |
 | Organización | por feature (Vertical Slice, ver ADR 01/02), NO por capa técnica global |
 
 ### Sufijos por rol
@@ -35,8 +35,8 @@ La estructura de carpetas quedó definida en el ADR 02 (slices + shared kernel).
 | `.use-case.ts` | `application/use-cases/` | Caso de uso con `XxxInput` + `XxxDeps` co-locados (ADR 03) |
 | `.repository.ts` | `domain/` | PORT del repo (hexagonal-pure, ADR 03 §3.3) |
 | `.repository.bun.ts` | `infrastructure/` | Adapter Drizzle |
-| `.public.ts` | `public/` | Contrato público del módulo (interface + DTOs, tipos puros) |
-| `.public.impl.ts` | `public/` | Impl de la API pública (`create<X>PublicApi(repo)`), wireada por el composition root |
+| `.query.ts` | `application/` | Read-port: read models planos + interface de lectura (CQRS-lite y lecturas cross-módulo, ADR 17 / ADR 02) |
+| `.query.drizzle.ts` | `infrastructure/` | Adapter de lectura Drizzle (proyecciones de lista + lecturas de otro módulo del schema compartido) |
 
 ### Orden de nombre
 
@@ -53,10 +53,9 @@ La estructura de carpetas quedó definida en el ADR 02 (slices + shared kernel).
 | `application/` | Casos de uso del slice | Contiene `use-cases/<entity>-<acción>.use-case.ts`. ADR 03: `XxxInput`/`XxxDeps` co-locados; firma `xxx(input, deps)`. ADR 02 regla #2: sin Hono, sin infrastructure, sin http. |
 | `infrastructure/` | Adapters concretos | Contiene `<entity>.repository.bun.ts`. Único punto que toca Drizzle/DB (ADR 02 #4). |
 | `http/` | Transporte HTTP (presentation) | Contiene `<entity>.routes.ts`, `<entity>.controller.ts`, `dto/in/<entity>-<acción>.in.ts`, `dto/out/<entity>-<concepto>.out.ts`. ADR 02 #3: sin DB ni adapter directo. |
-| `public/` | API pública del módulo (solo cross-slice) | Contiene `<entity>.public.ts` (contrato) y `<entity>.public.impl.ts` (impl). Ver ADR 02 "Colaboración cross-slice". |
 
 **Reglas duras**:
-- **Carpetas vacías NO se crean.** Si un slice no expone HTTP (`users` solo se consume vía API pública), no existe `http/`. Si no tiene entidad nominal (`auth` consume `UsersPublicApi`), no existen `domain/`, `infrastructure/` ni `public/`. La carpeta `value-objects/` se crea recién con el primer VO.
+- **Carpetas vacías NO se crean.** Si un slice no tiene entidad nominal (`auth`, que solo lee datos de otro módulo), no existe `domain/` — pero sí `infrastructure/` (su `bootstrap.ts` + el read-port `.query.drizzle.ts`). La carpeta `value-objects/` se crea recién con el primer VO.
 - **NO barrel `index.ts`**. Imports directos al archivo.
 - La raíz del agregado vive en `domain/<entity>.ts`, nunca dentro de `entities/` (que es solo entidades hijas no-raíz).
 
@@ -74,7 +73,7 @@ Configurados en `tsconfig.json` (Bun los resuelve nativamente; depcruise los nor
 | Alias | Apunta a | Uso |
 |---|---|---|
 | `@shared/*` | `src/shared/*` | Shared kernel: `@shared/errors`, `@shared/schemas/pagination.schema`, `@shared/db/client`, `@shared/types/pagination`. |
-| `@modules/*` | `src/modules/*` | Módulos: `@modules/contacts/domain/contact`, `@modules/users/public/user.public`. |
+| `@modules/*` | `src/modules/*` | Módulos: `@modules/contacts/domain/contact`, `@modules/auth/application/auth-user.query`. |
 
 **Regla de uso (única)**: TODO import que resuelva dentro de `src/shared/*` o `src/modules/*` usa el alias correspondiente — incluso intra-slice. Imports a archivos vecinos NO bajo `shared/` ni `modules/` (`server.ts ↔ app.ts`, etc.) se dejan relativos. No se crean alias adicionales (la granularidad de dos alias es suficiente para single-package).
 
@@ -99,7 +98,7 @@ Configurados en `tsconfig.json` (Bun los resuelve nativamente; depcruise los nor
 
 ## Reglas concretas
 
-- Un slice nuevo: carpeta `src/modules/<feature-plural>/` con las sub-carpetas por capa que tengan contenido. Mínimo común: `domain/<entity>.ts` + `application/use-cases/<entity>-<acción>.use-case.ts`. Si expone HTTP: `http/<entity>.routes.ts` + `http/<entity>.controller.ts` + `http/dto/in/` + `http/dto/out/`. Si persiste: `domain/<entity>.repository.ts` (PORT) + `infrastructure/<entity>.repository.bun.ts`. Si colabora cross-slice: `public/<entity>.public.ts` + `public/<entity>.public.impl.ts`.
+- Un slice nuevo: carpeta `src/modules/<feature-plural>/` con las sub-carpetas por capa que tengan contenido. Mínimo común: `domain/<entity>.ts` + `application/use-cases/<entity>-<acción>.use-case.ts`. Si expone HTTP: `http/<entity>.routes.ts` + `http/<entity>.controller.ts` + `http/dto/in/` + `http/dto/out/`. Si persiste: `domain/<entity>.repository.ts` (PORT) + `infrastructure/<entity>.repository.bun.ts`. Si colabora cross-slice (lee datos de otro módulo): `application/<x>.query.ts` (read-port) + `infrastructure/<x>.query.drizzle.ts` (adapter que lee el schema compartido).
 - Carpetas vacías NO se crean.
 - Tipos/clases `PascalCase`, funciones/vars `camelCase`, archivos `kebab-case`, constantes `UPPER_SNAKE_CASE`.
 - Singular en archivos (`contact.ts`), plural en la carpeta del slice (`contacts/`).
@@ -117,3 +116,4 @@ Configurados en `tsconfig.json` (Bun los resuelve nativamente; depcruise los nor
 | 2026-05-19 | Sumados sufijos `.public.ts` (contrato público del módulo) y `.public.impl.ts` (impl de API pública, wireada por el composition root). Mecánica y reglas en ADR 02 "Colaboración cross-slice". | ifran |
 | 2026-05-20 | **Reversión del split plano**: estructura por capas dentro del slice (`domain/`, `application/use-cases/`, `infrastructure/`, `http/`, `public/`). Archivos en singular (entidad), carpeta del slice en plural. Sufijos `.use-case.ts`, `.in.ts`, `.out.ts` explícitos. DTOs partidos en `http/dto/in/<entity>-<acción>.in.ts` + `http/dto/out/<entity>-<concepto>.out.ts` (cada archivo con su zod + `z.infer`). Orden `<sustantivo>-<acción>` para use-cases y DTOs in (revierte `<verbo-sustantivo>` original). Edge case auth: archivos nombrados por acción (`login.use-case.ts`). Carpetas vacías NO se crean. Razón: la raíz del slice acumulaba ~9 archivos sueltos al madurar y degradaba la lectura. | ifran |
 | 2026-05-20 | **Path aliases**: `@shared/*` → `src/shared/*` y `@modules/*` → `src/modules/*` (`tsconfig.paths`, sin `baseUrl`). Migrados los 39 archivos `.ts` de `src/` a alias absolutos para todo import que cae en `shared/` o `modules/`. Bun resuelve los paths nativamente; depcruise los normaliza por `tsConfig` (las reglas siguen escritas sobre `^src/...` físico). Razón: legibilidad y robustez a refactors estructurales (`../../../` quebraba al mover archivos). | ifran |
+| 2026-05-26 | **Eliminado el patrón de API pública por módulo.** Se quita `public/` de la estructura interna del slice y los sufijos `.public.ts` / `.public.impl.ts`. Se documentan los sufijos de read-port `.query.ts` (application) y `.query.drizzle.ts` (infrastructure), que son el mecanismo de colaboración cross-slice de lectura (ADR 02/03/17, Historial 2026-05-26). Ejemplos, nota de "carpetas vacías" y regla de slice nuevo actualizados. | ifran |

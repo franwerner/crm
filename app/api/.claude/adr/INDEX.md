@@ -15,7 +15,7 @@ Este índice te dice qué ADR consultar según lo que estés por hacer. Leé sol
 |---|---|---|---|
 | [00-context.md](00-context.md) | Accepted | Contexto del proyecto | Necesites entender qué tipo de proyecto es, stack, equipo, alcance. |
 | [01-architecture-style.md](01-architecture-style.md) | Accepted | Estilo arquitectónico y acoplamiento | Diseñes un módulo/feature nuevo o evalúes introducir una abstracción. |
-| [02-layers-and-dependencies.md](02-layers-and-dependencies.md) | Accepted | Capas y reglas de dependencia | Crees un archivo nuevo y debas decidir dónde va; agregues un import entre capas/slices. |
+| [02-layers-and-dependencies.md](02-layers-and-dependencies.md) | Accepted | Capas y reglas de dependencia | Crees un archivo nuevo y debas decidir dónde va; agregues un import entre capas/slices; necesites datos de otro módulo (colaboración cross-slice por read-port). |
 | [03-inter-layer-communication.md](03-inter-layer-communication.md) | Accepted | Comunicación entre capas | Pases datos entre handler/use-case/repo; decidas DTO vs entidad; ubiques validación; coordines slices. |
 | [04-error-handling.md](04-error-handling.md) | Accepted | Manejo de errores | Tires/atrapes una excepción; definas un error custom; respondas un error desde un endpoint. |
 | [05-dependency-injection.md](05-dependency-injection.md) | Accepted | DI | Conectes una dependencia, instancies un servicio, agregues un módulo a la composición. |
@@ -31,6 +31,8 @@ Este índice te dice qué ADR consultar según lo que estés por hacer. Leé sol
 | [15-filter-grammar.md](15-filter-grammar.md) | Accepted | Gramática de filtros en endpoints de listado | Agregues/modifiques filtros en un endpoint de listado; toques `buildListQuerySchema`, `applyFilterGroups`, o `ListQuery`; necesites entender la gramática DNF y el wire format. |
 | [16-sort.md](16-sort.md) | Accepted | Ordenamiento server-side en endpoints de listado | Agregues/modifiques ordenamiento en un endpoint de listado; toques `buildListQuerySchema`, `ListQuery`, o el repositorio de un recurso; necesites entender el wire format `campo:dir` y la whitelist por recurso. |
 | [17-read-models-for-lists.md](17-read-models-for-lists.md) | Accepted | Read models para listas (CQRS-lite) | Crees/modifiques un endpoint de listado que necesite proyección enriquecida (JOINs, datos relacionados); crees un `*.query.ts` o `*.query.drizzle.ts`; entiendas la separación entre reads de lista y reads/writes de dominio. |
+| [18-contact-state-machine.md](18-contact-state-machine.md) | Accepted | Máquina de estados del pipeline de Contact (event-only) | Toques transiciones de estado en `contacts`, agregues/modifiques `EventType` o `PipelineState`, edites `domain/policies.ts`, `Contact.registerEvent`, o cualquier punto que mencionaba `stateLocked` / `changeStateManually`. |
+| [19-file-storage.md](19-file-storage.md) | Accepted | Storage de archivos (object storage) | Manejes upload/download de archivos; agregues una entidad con documentos asociados; definas convención de keys de bucket, MIME whitelist o políticas de acceso. |
 | [tech/INDEX.md](tech/INDEX.md) | — | Catálogo de tecnologías concretas | Vayas a agregar/cambiar una dependencia, lib, framework, DB, ORM, herramienta. **Consultá siempre antes de instalar algo nuevo.** |
 
 **Leyenda de status:** `Accepted` = decisión vigente · `Pending` = decidir más adelante · `Not Applicable` = decidido conscientemente que no aplica · `Deferred` = postergado con condición de revisión · `Superseded` = reemplazado por otro ADR.
@@ -50,7 +52,7 @@ Este índice te dice qué ADR consultar según lo que estés por hacer. Leé sol
 
 ## Estado y mantenimiento
 
-- Última actualización: 2026-05-24 (ADR 17 agregado: read models para listas CQRS-lite, read port en application, adapter Drizzle en infrastructure)
+- Última actualización: 2026-05-26 (ADR 19 estrategia de bucket corregida: Bun.S3Client no expone createBucket, bucket pre-existencia obligatoria, bootstrap externo; ADR 19 lifecycle revisado: hard delete coordinado DB → MinIO al implementar F4 del módulo projects, sub-decisión Pending de limpieza de huérfanos eliminada; ADR 19 nuevo: storage de archivos con MinIO + Bun.s3 nativo, upload proxy + download presigned, naming de keys, caps de tamaño/TTL, MIME whitelist; ADR 18 nuevo: máquina de estados del pipeline de Contact pasa a modelo event-only — agrega `AtRisk`, eventos `Discarded`/`Reopened`, elimina `changeStateManually` y `stateLocked`)
 - Cada ADR tiene su propio `Status:`.
 - **Para actualizar una decisión:** editá el ADR, agregá entrada en `Historial`, actualizá `Status` y `Última actualización`.
 - **Para una decisión nueva:** creá un ADR nuevo y sumá fila en este INDEX.

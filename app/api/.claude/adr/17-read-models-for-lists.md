@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-24
-- **Última actualización:** 2026-05-24
+- **Última actualización:** 2026-05-26 (extensión: los read-ports también cubren lecturas cross-módulo y de detalle, no solo listas del propio slice)
 - **Decisores:** ifran
 - **Fase del bootstrap:** extensión transversal
 
@@ -14,7 +14,7 @@ El diseño CQRS-lite (sin event sourcing, sin buses) separa los paths de lectura
 
 ## Decisión
 
-Los listados devuelven una **proyección de lectura (read model)**, no el agregado de dominio. Los reads de detalle (get por id) y las escrituras siguen usando el repository de dominio.
+Los listados devuelven una **proyección de lectura (read model)**, no el agregado de dominio. Los reads de detalle (get por id) del PROPIO agregado y las escrituras siguen usando el repository de dominio; las lecturas de **otro módulo** (lista o detalle) usan un read-port (ver §Lecturas cross-módulo).
 
 ### Estructura por slice
 
@@ -33,6 +33,15 @@ Los listados devuelven una **proyección de lectura (read model)**, no el agrega
 - **Use-case de lista**: `application/use-cases/<entity>-list.use-case.ts`
   - Depende del port de lectura (`<Entity>Queries`), no del `<Entity>Repository`
   - Signature: `execute(input: <Entity>ListInput): Promise<Page<<Entity>ListItem>>`
+
+### Lecturas cross-módulo (extensión 2026-05-26)
+
+Los read-ports también son el mecanismo de **colaboración cross-módulo de lectura** (ADR 02, §"Colaboración cross-slice"), no solo de proyecciones de lista del propio slice. Cuando un slice necesita datos de otro módulo:
+
+- El consumidor define un read-port `application/<x>.query.ts` con SOLO las lecturas y los campos que necesita.
+- El adapter `infrastructure/<x>.query.drizzle.ts` lee directo las tablas de otro módulo del schema compartido `@shared/db`.
+
+Aplica tanto a listas como a **reads de detalle** (ej. auth obteniendo credenciales/perfil de `users` por email o id). Esta extensión reemplaza al patrón de API pública por módulo eliminado en ADR 02 (Historial 2026-05-26).
 
 ### Escalado del read port
 
@@ -76,3 +85,4 @@ Los listados devuelven una **proyección de lectura (read model)**, no el agrega
 | Fecha | Cambio | Por |
 |---|---|---|
 | 2026-05-24 | Decisión inicial. CQRS-lite para listados: read port en application, adapter Drizzle en infrastructure. Aplicado a contacts list. Users list pendiente de retrofit. | ifran |
+| 2026-05-26 | **Extensión a lecturas cross-módulo.** Los read-ports (`application/*.query.ts` + `infrastructure/*.query.drizzle.ts`) pasan a ser también el mecanismo de colaboración cross-módulo de lectura, no solo proyecciones de lista del propio slice — reemplaza al patrón de API pública por módulo (ver ADR 02, Historial 2026-05-26). Cubre listas y reads de detalle de otro módulo (ej. auth leyendo users). | ifran |

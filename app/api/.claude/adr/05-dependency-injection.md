@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-20 (mecánica del wiring: composition root distribuido en `infrastructure/bootstrap.ts` por slice + `src/app.ts` global como orquestador)
+- **Última actualización:** 2026-05-26 (se elimina la conexión de `publicApi` cross-slice: cada bootstrap cablea su propio read-port con `db`)
 - **Decisores:** ifran
 - **Fase del bootstrap:** 5.1
 
@@ -14,8 +14,8 @@ Hono NO provee DI. Algo tiene que cablear el adapter concreto (`*.repository.bun
 
 **Inyección manual en un composition root DISTRIBUIDO.** Sin librería de container. El wiring se reparte así:
 
-- **Por slice — `src/modules/<m>/infrastructure/bootstrap.ts`.** Es el mini composition-root del módulo. Instancia el adapter concreto del repo, los use-cases (pasándoles el repo en el constructor), el controller (pasándole el objeto con las instancias de use-case en el constructor) y el router (pasándole el controller). Retorna `{ router, publicApi? }`. Es el ÚNICO archivo del slice (junto con `src/app.ts`) que importa `*.repository.bun.ts` y `*.public.impl.ts` de SU PROPIO módulo.
-- **Global — `src/app.ts`.** Es el orquestador: llama a cada `bootstrap*` (pasándoles `db` u otra dep de borde), conecta los `publicApi` entre slices cuando hay cross-slice (`bootstrapUsers(db).publicApi → bootstrapAuth(publicApi)`), y monta los routers retornados.
+- **Por slice — `src/modules/<m>/infrastructure/bootstrap.ts`.** Es el mini composition-root del módulo. Instancia los adapters concretos del slice (repo `*.repository.bun.ts` y read-ports `*.query.drizzle.ts`, incluidos los que leen datos de otro módulo del schema compartido), los use-cases (pasándoles sus dependencias por constructor), el controller (pasándole el objeto con las instancias de use-case) y el router (pasándole el controller). Retorna `{ router }`. Es el ÚNICO archivo del slice (junto con `src/app.ts`) que importa `*.repository.bun.ts` y `*.query.drizzle.ts` de SU PROPIO módulo.
+- **Global — `src/app.ts`.** Es el orquestador: llama a cada `bootstrap*` (pasándoles `db` u otra dep de borde) y monta los routers retornados. Ya NO conecta `publicApi` entre slices: cada slice resuelve sus lecturas cross-módulo con su propio read-port sobre el schema compartido.
 
 Coherente con la regla #7 reescrita del ADR 02. Cada slice queda autocontenido: agregar un use-case nuevo se resuelve dentro del bootstrap del slice, sin tocar `app.ts`.
 
@@ -34,7 +34,7 @@ Coherente con la regla #7 reescrita del ADR 02. Cada slice queda autocontenido: 
 ## Reglas concretas
 
 - Toda construcción de adapters concretos del slice y wiring de SUS use-cases/controllers vive en `src/modules/<m>/infrastructure/bootstrap.ts`. Si un slice no tiene repo propio (ej. `auth`), igual existe `infrastructure/bootstrap.ts` — es la única razón por la que se permite la carpeta `infrastructure/` sin adapter.
-- `src/app.ts` instancia las deps de borde (`db`), llama a cada `bootstrap*`, conecta cross-slice por `publicApi` y monta los routers. NO instancia use-cases ni adapters directamente.
+- `src/app.ts` instancia las deps de borde (`db`), llama a cada `bootstrap*` y monta los routers. NO instancia use-cases ni adapters directamente, ni conecta `publicApi` entre slices.
 - Los use-cases reciben sus dependencias por constructor (`private readonly`); el método público es `execute(input)`. Nunca instancian sus dependencias.
 - Los controllers reciben las instancias de use-case por constructor (`constructor(ucs: <Entity>UseCases)`). Nunca instancian use-cases.
 
@@ -44,3 +44,4 @@ Coherente con la regla #7 reescrita del ADR 02. Cada slice queda autocontenido: 
 |---|---|---|
 | 2026-05-17 | Decisión inicial | ifran |
 | 2026-05-20 | **Composition root distribuido.** El wiring se mueve de un único `src/app.ts` a un esquema (a) `src/modules/<m>/infrastructure/bootstrap.ts` por slice — mini composition-root autocontenido que retorna `{ router, publicApi? }` —, (b) `src/app.ts` orquesta llamando a los `bootstrap*`, conectando `publicApi` cross-slice y montando los routers. Motivo: autocontención del módulo (use-cases nuevos no obligan a tocar `app.ts`) y coherencia con el refactor a class de use-cases/controllers (ADR 03 §3.1, ADR 02 regla #3). `.dependency-cruiser.js`: rules 4 y 7 actualizadas para reconocer `infrastructure/bootstrap.ts` como punto de wiring del slice. Aplicado a contacts, users y auth. | ifran |
+| 2026-05-26 | **Se elimina la conexión de `publicApi` cross-slice.** Al revertirse el patrón de API pública (ADR 02, Historial 2026-05-26), los `bootstrap*` ya no retornan `publicApi` ni `app.ts` la pasa de un slice a otro. Cada slice cablea sus lecturas cross-módulo con su propio read-port (`*.query.drizzle.ts`) instanciado con `db` dentro de su `bootstrap.ts`; `app.ts` solo pasa `db` y monta routers. El bootstrap deja de importar `*.public.impl.ts`. Migración incremental: arranca por auth. | ifran |

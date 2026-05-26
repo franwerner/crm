@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-20 (use-cases y controllers pasan a class; bootstrap por módulo en `infrastructure/bootstrap.ts` actúa como mini composition-root del slice. Reglas #3 y #7 reescritas; `.dependency-cruiser.js` actualizado)
+- **Última actualización:** 2026-05-26 (reversión del patrón de API pública por módulo: la colaboración cross-slice de lectura pasa a un read-port propio del consumidor sobre el schema compartido; reglas #2b/#5/#7 ajustadas)
 - **Decisores:** ifran
 - **Fase del bootstrap:** 2
 
@@ -31,16 +31,13 @@ app/api/
 │   │       │       └── <entity>-<acción>.use-case.ts  # con XxxInput / XxxDeps co-locados (ADR 03)
 │   │       ├── infrastructure/
 │   │       │   ├── <entity>.repository.bun.ts   # adapter Drizzle (único que toca la DB)
-│   │       │   └── bootstrap.ts                 # mini composition-root del slice: instancia repo, use-cases, controller, router; retorna { router, publicApi? }
-│   │       ├── http/                            # capa de transporte (presentation)
-│   │       │   ├── <entity>.routes.ts           # OpenAPIHono + createRoute + wiring; recibe el controller
-│   │       │   ├── <entity>.controller.ts       # class <Entity>Controller con un método handler por ruta
-│   │       │   └── dto/
-│   │       │       ├── in/<entity>-<acción>.in.ts    # zod schema + z.infer (request/query)
-│   │       │       └── out/<entity>-<concepto>.out.ts # zod schema + z.infer (view, reusable)
-│   │       └── public/                          # solo cuando el módulo colabora cross-slice
-│   │           ├── <entity>.public.ts           # contrato público: interface(s) + DTOs de borde, tipos puros
-│   │           └── <entity>.public.impl.ts      # create<X>PublicApi(repo), wireada por el composition root
+│   │       │   └── bootstrap.ts                 # mini composition-root del slice: instancia repo, use-cases, controller, router; retorna { router }
+│   │       └── http/                            # capa de transporte (presentation)
+│   │           ├── <entity>.routes.ts           # OpenAPIHono + createRoute + wiring; recibe el controller
+│   │           ├── <entity>.controller.ts       # class <Entity>Controller con un método handler por ruta
+│   │           └── dto/
+│   │               ├── in/<entity>-<acción>.in.ts    # zod schema + z.infer (request/query)
+│   │               └── out/<entity>-<concepto>.out.ts # zod schema + z.infer (view, reusable)
 │   ├── shared/                               # shared kernel — NO conoce features
 │   │   ├── errors/
 │   │   ├── http/
@@ -54,7 +51,7 @@ app/api/
 └── tests/                                    # ver ADR 06 (Pending)
 ```
 
-> **Carpetas vacías NO se crean.** Si un slice no expone HTTP (ej. `users` solo se consume vía API pública), no existe `http/`. Si no tiene entidad nominal propia (ej. `auth` consume `UsersPublicApi`), no existen `domain/` ni `public/` — pero **sí existe `infrastructure/`** porque ahí vive el `bootstrap.ts` del slice. La carpeta `value-objects/` se crea recién con el primer VO.
+> **Carpetas vacías NO se crean.** Si un slice no tiene entidad nominal propia (ej. `auth`, que solo lee datos de otro módulo vía un read-port propio), no existe `domain/` — pero **sí existe `infrastructure/`** porque ahí viven su `bootstrap.ts` y sus adapters de lectura. La carpeta `value-objects/` se crea recién con el primer VO.
 
 ## Reglas concretas (verificables — enforzables con dependency-cruiser)
 
@@ -63,38 +60,39 @@ app/api/
 | 1 | El **conjunto de dominio puro del slice** — `src/modules/*/domain/` salvo el port — solo importa dentro de su propio `domain/` y de `src/shared/errors/**`. NUNCA Hono, NUNCA DB, NUNCA otro slice. |
 | 1b | El **port** (`<entity>.repository.ts` dentro de `domain/`) es el contrato del dominio con la persistencia y es más permisivo que el dominio puro: puede importar adicionalmente `src/shared/types/**` (para `Page<T>`, `PageParams`) además de su propio `domain/` y `src/shared/errors/**`. NUNCA `http/`, `infrastructure/`, ni otro slice. |
 | 2 | `src/modules/*/application/use-cases/**` importa archivos de SU propio `domain/` (incluyendo el port) + `src/shared/**`. NUNCA Hono, NUNCA `infrastructure/**`, NUNCA `http/**` de NINGÚN slice. |
-| 2b | **Read ports** (`src/modules/*/application/*.query.ts`) — contratos de lectura para listas (CQRS-lite, ADR 17). Pueden importar su propio `domain/` y `src/shared/**`. NUNCA Hono, NUNCA `infrastructure/`, NUNCA `http/`. Son la interfaz que el use-case de lista consume en lugar del repository de dominio. |
+| 2b | **Read ports** (`src/modules/*/application/*.query.ts`) — contratos de lectura (CQRS-lite, ADR 17): proyecciones de lista Y **lecturas cross-módulo / de detalle** (ej. auth leyendo datos de la tabla users). Pueden importar su propio `domain/` y `src/shared/**`. NUNCA Hono, NUNCA `infrastructure/`, NUNCA `http/`. Son la interfaz que el use-case consume en lugar del repository de dominio. |
 | 3 | La capa presentation del slice vive en `http/` (`<entity>.routes.ts`, `<entity>.controller.ts`, `dto/in/*.in.ts`, `dto/out/*.out.ts`). `<entity>.controller.ts` es una **class** (`<Entity>Controller`) con un método handler por ruta; recibe las instancias de use-case por constructor (`constructor(ucs: <Entity>UseCases)`). Importa los `use-cases/**` de SU slice (sólo el tipo de la class) + `src/shared/http/**`. `<entity>.routes.ts` exporta `create<Entity>sRouter(controller: <Entity>Controller)`, importa sus DTOs (`dto/in,out/`) + el tipo del controller de SU slice. NINGÚN archivo bajo `http/` toca DB ni `infrastructure/` directamente. |
 | 4 | `src/modules/*/infrastructure/<entity>.repository.bun.ts` y `src/modules/*/infrastructure/<entity>.query.drizzle.ts` (adapters) implementan sus respectivos ports y pueden importar `src/shared/db/**`. Junto con `infrastructure/bootstrap.ts` del MISMO slice (ver regla #7), son los únicos que tocan la DB dentro del slice. |
-| 5 | **Slices aislados:** `src/modules/A/**` NO importa de `src/modules/B/**`. ÚNICA excepción: importar el contrato público `src/modules/B/public/<B>.public.ts` (solo `import type`). El resto de B (domain, application, infrastructure, http, `public.impl.ts`) sigue prohibido cross-slice. Ver "Colaboración cross-slice" abajo. |
+| 5 | **Slices aislados:** `src/modules/A/**` NO importa NADA de `src/modules/B/**`. **Sin excepción.** La colaboración cross-módulo NO es un import cross-slice: el consumidor obtiene los datos que necesita con un read-port propio (`application/*.query.ts` + adapter `infrastructure/*.query.drizzle.ts`) que lee el schema compartido `src/shared/db/**` (regla #4). Ver "Colaboración cross-slice" abajo. |
 | 6 | `src/shared/**` NO importa NADA de `src/modules/**`. El kernel no conoce features. |
-| 7 | **Composition root distribuido:** el wiring de adapters concretos y la instanciación de use-cases / controllers viven en (a) `src/modules/<m>/infrastructure/bootstrap.ts` para CADA slice — es el mini composition-root del módulo, autocontenido, y (b) `src/app.ts` que orquesta la composición global llamando a los `bootstrap*` de cada módulo y enrutándolos. Sólo estos archivos pueden importar `*.repository.bun.ts`, `*.query.drizzle.ts` y `*.public.impl.ts`. Cada `bootstrap.ts` puede cablear SOLO los archivos de SU PROPIO slice (la regla #5 sigue cubriendo el cross-slice). `app.ts` orquesta el pasaje de la `publicApi` que un bootstrap retorna hacia el bootstrap de otro slice que la consume. |
+| 7 | **Composition root distribuido:** el wiring de adapters concretos y la instanciación de use-cases / controllers viven en (a) `src/modules/<m>/infrastructure/bootstrap.ts` para CADA slice — es el mini composition-root del módulo, autocontenido, y (b) `src/app.ts` que orquesta la composición global llamando a los `bootstrap*` de cada módulo y enrutándolos. Sólo estos archivos pueden importar `*.repository.bun.ts` y `*.query.drizzle.ts`. Cada `bootstrap.ts` puede cablear SOLO los archivos de SU PROPIO slice (la regla #5 sigue cubriendo el cross-slice). `app.ts` instancia las deps de borde (`db`) y las pasa a cada `bootstrap*`. |
 
 > La regla #5 es el corazón del Vertical Slice. Es la que más se viola sin querer — vigilarla.
 
 > **Nota (ver ADR 12):** la capa presentation del slice vive bajo `http/`: `<entity>.routes.ts` (OpenAPIHono + createRoute + registro), `<entity>.controller.ts` (solo funciones handler), `dto/in/` y `dto/out/` (zod + `z.infer` del borde). El estilo está condicionado por la decisión de documentación/contrato de API — consultá `12-api-documentation.md` antes de crear o tocar rutas.
 
-## Colaboración cross-slice (API pública por módulo)
+## Colaboración cross-slice (lectura directa por read-port del consumidor)
 
-Cuando un módulo necesita datos u operaciones de otro, la colaboración es por **API pública publicada por el proveedor**. No consumer-defined, no import directo de internals, no eventos (los eventos in-process quedan en ADR 03 §3.2 Pending con su trigger).
+Cuando un módulo necesita **datos** de otro, NO hay contrato publicado por el proveedor ni inyección cross-slice. El **consumidor** se hace cargo: define un read-port propio y un adapter que lee el schema compartido.
 
 **Mecánica:**
 
-- El módulo proveedor publica `src/modules/<m>/public/<entity>.public.ts`: SOLO interface(s) de operaciones + DTOs de borde. Tipos puros, cero imports runtime. Nada de use-cases, repository, entidades ni schemas.
-- La implementación vive en `src/modules/<m>/public/<entity>.public.impl.ts`: `create<X>PublicApi(repo: <X>Repository): <X>PublicApi`. Adapta el PORT (en `domain/`, NUNCA el adapter concreto) y mapea a los DTOs publicados.
-- El consumidor importa SOLO `<entity>.public.ts` con `import type`, y recibe la API por sus `Deps` (ADR 03). El composition root instancia el adapter, llama `create<X>PublicApi(repo)` e inyecta la API en el consumidor.
+- El consumidor define el read-port en `src/modules/<consumidor>/application/<x>.query.ts`: interface(s) con las operaciones de lectura que necesita + los read models (DTOs planos) con SOLO las propiedades que va a usar. Tipos puros, sin imports de runtime de otro slice.
+- La implementación vive en `src/modules/<consumidor>/infrastructure/<x>.query.drizzle.ts`: hace el SELECT/JOIN sobre las tablas que necesita del schema compartido `@shared/db` (incluidas tablas "de" otro módulo) y mapea al read model. Sigue las reglas de DB de los adapters (#4 y #7).
+- El use-case del consumidor depende del read-port (no del repository de otro slice). El composition root del consumidor instancia el adapter con `db`.
 
-**Condiciones de correctitud (son REGLAS, no recomendaciones — sin ellas el patrón degrada a un monolito distribuido en un proceso):**
+**Consecuencias y límites (leer — esto REEMPLAZA una decisión anterior):**
 
-1. **Superficie mínima.** Se publica la operación mínima útil, revisada en PR. El contrato habla en operaciones intencionales y DTOs propios; NUNCA expone el repository, la entidad de dominio ni la forma interna del módulo.
-2. **Enforcement obligatorio.** La excepción de la regla #5 está codificada en `.dependency-cruiser.js` con gate de CI. El patrón es válido solo mientras el gate se sostenga: quitarlo, o permitir cross-import a algo que no sea `<entity>.public.ts`, invalida la decisión.
-3. **Sync solo para queries / comandos simples.** Hoy: llamada síncrona directa. Si una operación pasa a orquestar múltiples side-effects cross-módulo, se reevalúa hacia eventos in-process — ese es exactamente el trigger del Pending de ADR 03 §3.2.
+1. **El proveedor no expone nada.** Se eliminó el patrón de API pública por módulo (`public/<entity>.public.ts` + `.public.impl.ts`). Cada consumidor lee lo que necesita directo del schema compartido.
+2. **El gate de dependency-cruiser queda CIEGO al acoplamiento cross-módulo.** La regla #5 sigue prohibiendo imports `modules/A → modules/B`, pero el acoplamiento real se mudó a la lectura del schema compartido (`@shared/db`), que el gate permite (#4) y NO inspecciona. El consumidor depende de la forma de las tablas de otro módulo sin contrato que lo proteja. **Riesgo asumido conscientemente** (ver Historial 2026-05-26); se mitiga SOLO con review.
+3. **Solo cubre LECTURAS.** No hay mecanismo para invocar OPERACIONES de otro módulo (validaciones, comandos). Si aparece esa necesidad, hay que **reabrir esta decisión** (no improvisar): el read-port no resuelve comportamiento cross-módulo.
+4. **Datos sensibles cruzan sin filtro de contrato.** Ej. auth lee `passwordHash` directo de la tabla `users`. Es responsabilidad del consumidor no propagar en su read model más de lo que necesita.
 
-DTOs, NUNCA entidades de dominio, cruzan el borde de módulo (coherente con ADR 03 §3.1; ver ADR 11 para el naming).
+Read models planos, NUNCA entidades de dominio de otro slice, cruzan el borde (coherente con ADR 03 §3.1; ver ADR 11 para el naming).
 
 ## Enforcement (cómo se verifican estas reglas)
 
-**Decisión: `dependency-cruiser`** (ver `tech/dependency-cruiser.md`). No es opcional ni "either/or": las **10 reglas** (7 originales + `adr02-1b-port-contract` + `adr02-2b-read-port` + `no-circular`) se traducen a `.dependency-cruiser.js` y se verifican automáticamente. Globs específicos por capa: `domain/`, `application/use-cases/`, `application/*.query.ts`, `infrastructure/`, `http/`, `public/`.
+**Decisión: `dependency-cruiser`** (ver `tech/dependency-cruiser.md`). No es opcional ni "either/or": las **10 reglas** (7 originales + `adr02-1b-port-contract` + `adr02-2b-read-port` + `no-circular`) se traducen a `.dependency-cruiser.js` y se verifican automáticamente. Globs específicos por capa: `domain/`, `application/use-cases/`, `application/*.query.ts`, `infrastructure/`, `http/`. (Al eliminarse el patrón de API pública, la regla #5 quedó sin excepción y la #7 dejó de listar `*.public.impl.ts` — ver Historial 2026-05-26; el cambio en `.dependency-cruiser.js` se aplica junto con la migración del código.)
 
 Pasos (al scaffoldear el paquete, ANTES del primer feature):
 
@@ -134,3 +132,4 @@ Pasos (al scaffoldear el paquete, ANTES del primer feature):
 | 2026-05-20 | **Reversión consciente del split plano**. Reorganización a carpetas por capa dentro del slice: `domain/`, `application/use-cases/`, `infrastructure/`, `http/` (con `dto/in/` + `dto/out/`), `public/`. Port movido a `domain/` (hexagonal-pure, flipea ADR 03 §3.3). Nueva regla `adr02-1b-port-contract` permite al port importar `src/shared/types`. Todos los globs de `.dependency-cruiser.js` reescritos por capa. Carpetas vacías NO se crean. Aplicado a contacts (8 use-cases, http completo), auth (sin domain/infra/public), users (sin http). Archivos en singular, carpeta del slice en plural (ADR 11). Sufijos `.use-case.ts` / `.in.ts` / `.out.ts` agregados (ADR 11). | ifran |
 | 2026-05-20 | **Use-cases y controllers pasan a class; bootstrap por módulo.** Regla #3 reescrita: el controller es una `class <Entity>Controller` con un método handler por ruta y recibe los use-cases por constructor (`{ create, get, list, ... }`). Regla #7 reescrita: el composition root ahora es DISTRIBUIDO — cada slice expone `infrastructure/bootstrap.ts` que cablea repo + use-cases + controller + router y retorna `{ router, publicApi? }`; `src/app.ts` solo orquesta llamando a los `bootstrap*` y pasando el `publicApi` cross-slice cuando aplica. `.dependency-cruiser.js`: rule 4 y rule 7 actualizadas para reconocer `infrastructure/bootstrap.ts` como punto de wiring del slice (la regla #5 sigue impidiendo que un bootstrap cablee otro slice). Auth gana `infrastructure/` solo para su `bootstrap.ts` (excepción explícita a "carpetas vacías NO se crean"). Aplicado a contacts, users y auth en el mismo paso. | ifran |
 | 2026-05-24 | **Read ports (application/*.query.ts) y adapters query (*.query.drizzle.ts).** Nueva regla #2b: los archivos `application/*.query.ts` son contratos de lectura para listas (CQRS-lite, ADR 17); pueden importar `domain/` propio + `shared/**`, nunca Hono ni infrastructure. Regla #4 extendida para cubrir `*.query.drizzle.ts` (acceso DB). Regla #7 extendida: solo `bootstrap.ts`/`app.ts` instancian `*.query.drizzle.ts`. Enforcement: regla `adr02-2b-read-port` agregada a `.dependency-cruiser.js`. | ifran |
+| 2026-05-26 | **Reversión del patrón de API pública por módulo.** Se elimina la colaboración cross-slice vía contrato publicado por el proveedor (`public/<entity>.public.ts` + `.public.impl.ts`). La colaboración cross-módulo de LECTURA pasa a un read-port propio del consumidor (`application/*.query.ts` + adapter `infrastructure/*.query.drizzle.ts`) que lee directo el schema compartido `@shared/db`. Cambios: `public/` sale de la estructura; regla #2b extendida a lecturas cross-módulo/detalle; regla #5 queda **sin excepción**; regla #7 deja de listar `*.public.impl.ts`; sección "Colaboración cross-slice" reescrita. Trade-offs asumidos: el gate queda CIEGO al acoplamiento vía shared schema (se mitiga solo con review) y el patrón **solo cubre lecturas** (operaciones cross-módulo quedan sin mecanismo → reabrir decisión si surgen). Decisión del usuario tras discutir los límites del patrón anterior. Migración incremental: arranca por auth (deja de consumir `UsersPublicApi`); el cambio en `.dependency-cruiser.js` (#5 sin excepción, #7 sin `*.public.impl.ts`) y el borrado de `users/public/` se aplican en la fase de código. Impacta ADR 05 (DI) y ADR 17 (read ports). | ifran |

@@ -27,6 +27,11 @@ Registro vivo de las tecnologías concretas elegidas para este paquete. Cada ent
 |---|---|---|
 | [drizzle](drizzle.md) | latest / sin pinear | ORM SQL-first type-safe + drizzle-kit (migraciones); first-class en Bun; minimalista |
 
+### Object storage
+| Tech | Versión | Por qué |
+|---|---|---|
+| [minio](minio.md) | latest (image tag, sin pinear — decisión consciente para dev) | S3-compatible auto-hosteado para dev; mismo cliente `Bun.s3` nativo funciona contra MinIO o AWS S3 cambiando endpoint. ADR 19 |
+
 ### Validación
 | Tech | Versión | Por qué |
 |---|---|---|
