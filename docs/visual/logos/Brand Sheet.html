@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Freshup Labs — Brand Sheet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0A0A0A;
+    --paper: #FAFAF7;
+    --paper-soft: #F2F2EC;
+    --paper-line: #E5E5DD;
+    --forest: #143D2B;
+    --forest-line: #1F4F3A;
+    --lime: #B6F36A;
+    --lime-deep: #5E8E2A;
+    --muted: #6F6F6A;
+    --mono: ui-monospace, 'JetBrains Mono', Menlo, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: 'General Sans', system-ui, sans-serif; }
+  body { line-height: 1.5; }
+
+  .page { max-width: 1240px; margin: 0 auto; padding: 56px 40px 120px; }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 32px;
+    border-bottom: 1.5px solid var(--ink);
+    margin-bottom: 56px;
+  }
+  .topbar-title { font-size: 14px; font-weight: 500; letter-spacing: -0.01em; }
+  .topbar-doc {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  .section { margin-bottom: 88px; }
+  .section-head {
+    display: grid; grid-template-columns: 200px 1fr; gap: 40px;
+    margin-bottom: 32px;
+    align-items: baseline;
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .section-title {
+    font-size: 36px; font-weight: 600; letter-spacing: -0.025em;
+    margin: 0 0 8px;
+    line-height: 1.05;
+  }
+  .section-sub { margin: 0; font-size: 16px; color: var(--muted); max-width: 60ch; }
+  .section-body { padding-left: 240px; }
+  @media (max-width: 880px) {
+    .section-head { grid-template-columns: 1fr; gap: 12px; }
+    .section-body { padding-left: 0; }
+    .page { padding: 32px 20px 80px; }
+  }
+
+  /* shared tile look */
+  .tile {
+    border: 1.5px solid var(--ink);
+    border-radius: 14px;
+    background: var(--paper);
+    box-shadow: 4px 4px 0 var(--ink);
+    overflow: hidden;
+    position: relative;
+  }
+  .tile-label {
+    position: absolute; top: 10px; left: 12px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .tile-label-light { color: var(--muted); }
+  .tile-label-dark { color: rgba(250,250,247,0.55); }
+  .tile-label-lime { color: rgba(10,10,10,0.55); }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (max-width: 880px) {
+    .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* HERO TILE */
+  .hero-tile {
+    grid-column: 1 / -1;
+    padding: 80px 60px;
+    display: flex; align-items: center; gap: 60px;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: var(--paper);
+  }
+  .hero-tile-stamp {
+    position: absolute; right: 20px; bottom: 14px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* CALLOUT */
+  .callout {
+    background: var(--lime);
+    border: 1.5px solid var(--ink);
+    border-radius: 14px;
+    padding: 28px 32px;
+    box-shadow: 6px 6px 0 var(--ink);
+    font-size: 17px; font-weight: 500;
+    letter-spacing: -0.01em;
+    max-width: 60ch;
+    text-wrap: balance;
+  }
+  .callout em {
+    font-family: var(--mono); font-style: normal; font-size: 14px;
+    background: var(--ink); color: var(--lime); padding: 2px 8px;
+    border-radius: 4px; letter-spacing: -0.01em;
+  }
+
+  /* COLOR SWATCHES */
+  .swatch {
+    height: 200px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 20px;
+    border-radius: 14px;
+    border: 1.5px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    color: var(--ink);
+  }
+  .swatch-name { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+  .swatch-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; opacity: 0.65; margin-top: 4px; }
+  .sw-paper { background: var(--paper); }
+  .sw-ink { background: var(--ink); color: var(--paper); }
+  .sw-ink .swatch-meta { color: rgba(250,250,247,0.6); }
+  .sw-lime { background: var(--lime); }
+  .sw-forest { background: var(--forest); color: var(--paper); }
+  .sw-forest .swatch-meta { color: rgba(250,250,247,0.6); }
+
+  /* SCALE ROW */
+  .scale-row {
+    display: flex; align-items: flex-end; gap: 32px;
+    padding: 40px;
+    flex-wrap: wrap;
+  }
+  .scale-cell { text-align: center; }
+  .scale-meta {
+    font-family: var(--mono); font-size: 10px;
+    color: var(--muted); margin-top: 10px;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+
+  /* DON'TS */
+  .dont {
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+    position: relative;
+  }
+  .dont::after {
+    content: "DON’T";
+    position: absolute; bottom: 12px; right: 12px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    color: #C03A2B; background: var(--paper); padding: 2px 6px;
+    border: 1px solid #C03A2B; border-radius: 4px;
+  }
+  .dont-reason {
+    position: absolute; bottom: 12px; left: 12px; right: 70px;
+    font-family: var(--mono); font-size: 10px; color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* APPLICATIONS */
+  .app-tile { padding: 24px; min-height: 240px; display: flex; flex-direction: column; }
+  .app-tile-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+
+  /* Business card */
+  .biz {
+    width: 100%; aspect-ratio: 1.7 / 1;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    border-radius: 8px;
+    padding: 22px;
+    box-shadow: 4px 4px 0 var(--ink);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .biz-row { display: flex; justify-content: space-between; align-items: flex-start; }
+  .biz-name { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .biz-role { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .biz-contact { font-family: var(--mono); font-size: 11px; line-height: 1.6; }
+  .biz-back {
+    background: var(--forest);
+    color: var(--paper);
+  }
+
+  /* Browser bar */
+  .browser {
+    border: 1.5px solid var(--ink);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--paper);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .browser-bar {
+    background: #ECECE5;
+    padding: 8px 12px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .browser-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ink); }
+  .browser-dot.d2 { opacity: 0.5; }
+  .browser-dot.d3 { opacity: 0.25; }
+  .browser-tab {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    border-bottom: 0;
+    padding: 5px 12px 7px;
+    margin-left: 8px;
+    border-radius: 6px 6px 0 0;
+    font-size: 12px;
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 6px; margin-bottom: -1px;
+  }
+  .browser-tab-close {
+    width: 14px; height: 14px; border-radius: 50%;
+    display: grid; place-items: center; font-size: 10px;
+    color: var(--muted);
+  }
+  .browser-tab-fav { width: 16px; height: 16px; }
+  .browser-body { padding: 28px; min-height: 120px; }
+
+  /* T-shirt mock */
+  .tshirt {
+    aspect-ratio: 1.05;
+    background: var(--forest);
+    border: 1.5px solid var(--ink);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .tshirt::before {
+    content: "";
+    position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+    width: 80%; height: 30%;
+    background: var(--forest);
+    border-radius: 0 0 60% 60% / 0 0 100% 100%;
+  }
+  .tshirt-mark {
+    position: absolute; top: 28%; left: 50%; transform: translate(-50%, 0);
+  }
+
+  /* Sticker */
+  .sticker-row {
+    display: flex; gap: 20px; padding: 30px; align-items: center; justify-content: center;
+    flex-wrap: wrap;
+  }
+  .sticker-circle {
+    width: 110px; height: 110px;
+    background: var(--lime);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    box-shadow: 5px 5px 0 var(--ink);
+    display: grid; place-items: center;
+    transform: rotate(-6deg);
+  }
+  .sticker-pill {
+    background: var(--ink);
+    color: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 100px;
+    padding: 14px 22px;
+    display: inline-flex; align-items: center; gap: 12px;
+    box-shadow: 5px 5px 0 var(--lime);
+    transform: rotate(2deg);
+  }
+
+  /* Loading state */
+  .loader-tile {
+    background: var(--forest);
+    color: var(--paper);
+    padding: 40px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 18px;
+    min-height: 240px;
+  }
+  .loader-mark { animation: pulse 1.6s ease-in-out infinite; }
+  .loader-label {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em;
+    text-transform: uppercase; opacity: 0.7;
+  }
+  .node-a, .node-b, .node-c {
+    animation: nodepulse 2.4s ease-in-out infinite;
+  }
+  .node-a { animation-delay: 0s; transform-origin: 20px 44px; }
+  .node-b { animation-delay: 0.25s; transform-origin: 44px 20px; }
+  .node-c { animation-delay: 0.5s; transform-origin: 48px 44px; }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+  }
+  @keyframes nodepulse {
+    0%, 100% { transform: scale(1); }
+    20% { transform: scale(1.2); }
+    40% { transform: scale(1); }
+  }
+
+  /* Avatar / app icon */
+  .app-icon-row { display: flex; gap: 20px; padding: 30px; justify-content: center; align-items: flex-end; flex-wrap: wrap; }
+  .app-icon {
+    background: var(--lime);
+    border: 1.5px solid var(--ink);
+    border-radius: 22%;
+    box-shadow: 4px 4px 0 var(--ink);
+    display: grid; place-items: center;
+  }
+  .app-icon-big { width: 128px; height: 128px; }
+  .app-icon-med { width: 80px; height: 80px; }
+  .app-icon-sm { width: 48px; height: 48px; }
+  .app-icon-cap { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 6px; text-align: center; letter-spacing: 0.05em; }
+
+  .footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1.5px solid var(--ink);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.05em;
+  }
+
+  /* Clearspace tile */
+  .clearspace { padding: 40px; display: flex; justify-content: center; }
+  .clearspace-box {
+    position: relative;
+    padding: 32px;
+    border: 1px dashed var(--ink);
+  }
+  .clearspace-tag {
+    position: absolute;
+    font-family: var(--mono); font-size: 10px; color: var(--ink);
+    background: var(--paper); padding: 2px 6px;
+  }
+  .clearspace-tag.t-top { top: -8px; left: 50%; transform: translateX(-50%); }
+  .clearspace-tag.t-side { top: 50%; right: -22px; transform: translateY(-50%) rotate(90deg); transform-origin: center; }
+
+  /* Wordmark variants */
+  .wordmark-cell { padding: 30px; display: flex; align-items: center; justify-content: center; min-height: 140px; }
+
+  .copy-block { display: flex; flex-direction: column; gap: 16px; max-width: 60ch; }
+  .copy-block p { margin: 0; color: var(--muted); }
+
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="topbar">
+    <div class="topbar-title">Freshup Labs — Brand Sheet · Fizz / Nodes</div>
+    <div class="topbar-doc">v0.1 · DRAFT · 24 may 2026</div>
+  </header>
+
+  <!-- ===================== 00 · HERO ===================== -->
+  <section class="section">
+    <div class="hero-tile tile" style="grid-column:1/-1; padding: 80px 60px; display:flex; align-items:center; justify-content:center; gap:48px; flex-wrap:wrap;">
+      <div id="hero-mark"></div>
+      <div id="hero-wordmark"></div>
+      <div class="hero-tile-stamp">Primary lockup</div>
+    </div>
+  </section>
+
+  <!-- ===================== 01 · CONCEPTO ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">01 · Concepto</div>
+      <div>
+        <h2 class="section-title">Tres nodos. Una idea.</h2>
+        <p class="section-sub">El símbolo es un grafo mínimo de tres nodos conectados — la geometría más simple que se lee como sistema. El nodo dominante en lima es el punto de origen; los otros dos son las extensiones que crecen desde ahí.</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout">
+        “Lo que parecen burbujas, en realidad son <em>nodes</em>. Un sistema vivo, conectado y refrescante.”
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 02 · LOCKUPS ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">02 · Lockups</div>
+      <div>
+        <h2 class="section-title">4 lockups oficiales.</h2>
+        <p class="section-sub">Usá el horizontal por defecto. El stacked para favicons grandes o redes. El icon-only solo si la marca ya está establecida en contexto. El wordmark sin símbolo para firmas y formularios.</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div class="tile wordmark-cell">
+          <span class="tile-label tile-label-light">Horizontal</span>
+          <div id="lockup-horizontal"></div>
+        </div>
+        <div class="tile wordmark-cell" style="flex-direction:column; gap:14px;">
+          <span class="tile-label tile-label-light">Stacked</span>
+          <div id="lockup-stacked"></div>
+        </div>
+        <div class="tile wordmark-cell">
+          <span class="tile-label tile-label-light">Icon only</span>
+          <div id="lockup-icon"></div>
+        </div>
+        <div class="tile wordmark-cell">
+          <span class="tile-label tile-label-light">Wordmark only</span>
+          <div id="lockup-wordmark"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 03 · COLOR ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">03 · Color</div>
+      <div>
+        <h2 class="section-title">Paleta de marca.</h2>
+        <p class="section-sub">Cuatro colores. Lima como acento, ink y paper como neutros. Forest como fondo de superficies oscuras. No agregar más.</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="grid-4">
+        <div class="swatch sw-paper">
+          <div class="swatch-name">Paper</div>
+          <div class="swatch-meta">#FAFAF7 · neutral-0</div>
+        </div>
+        <div class="swatch sw-ink">
+          <div class="swatch-name">Ink</div>
+          <div class="swatch-meta">#0A0A0A · neutral-900</div>
+        </div>
+        <div class="swatch sw-lime">
+          <div class="swatch-name">Lime</div>
+          <div class="swatch-meta">#B6F36A · primary</div>
+        </div>
+        <div class="swatch sw-forest">
+          <div class="swatch-name">Forest</div>
+          <div class="swatch-meta">#143D2B · secondary</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 04 · VERSIONES DE COLOR ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">04 · Versiones</div>
+      <div>
+        <h2 class="section-title">Sobre cualquier fondo.</h2>
+        <p class="section-sub">Cuatro variantes para cubrir todos los casos. Si el fondo no es uno de estos, elegí el que mejor contraste.</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="grid-4">
+        <div class="tile wordmark-cell" style="background:#FAFAF7">
+          <span class="tile-label tile-label-light">Full color</span>
+          <div id="version-full"></div>
+        </div>
+        <div class="tile wordmark-cell" style="background:#143D2B">
+          <span class="tile-label tile-label-dark">On forest</span>
+          <div id="version-dark"></div>
+        </div>
+        <div class="tile wordmark-cell" style="background:#B6F36A">
+          <span class="tile-label tile-label-lime">On lime</span>
+          <div id="version-lime"></div>
+        </div>
+        <div class="tile wordmark-cell" style="background:#0A0A0A">
+          <span class="tile-label tile-label-dark">Mono ink</span>
+          <div id="version-mono"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 05 · ESCALA ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">05 · Escala</div>
+      <div>
+        <h2 class="section-title">Funciona a 16px.</h2>
+        <p class="section-sub">Mínimo absoluto del símbolo: 16px. Por debajo, usar el monogram FL como fallback para favicon a 12px.</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="tile scale-row">
+        <div class="scale-cell"><div id="scale-256"></div><div class="scale-meta">256px</div></div>
+        <div class="scale-cell"><div id="scale-128"></div><div class="scale-meta">128px</div></div>
+        <div class="scale-cell"><div id="scale-64"></div><div class="scale-meta">64px</div></div>
+        <div class="scale-cell"><div id="scale-32"></div><div class="scale-meta">32px</div></div>
+        <div class="scale-cell"><div id="scale-16"></div><div class="scale-meta">16px · min</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 06 · CLEARSPACE ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">06 · Clearspace</div>
+      <div>
+        <h2 class="section-title">Aire alrededor.</h2>
+        <p class="section-sub">Mantené alrededor del símbolo un margen mínimo equivalente al diámetro del nodo principal (lima). Nada se mete dentro de esa zona — ni texto, ni bordes, ni otros logos.</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="tile clearspace">
+        <div class="clearspace-box">
+          <span class="clearspace-tag t-top">x</span>
+          <span class="clearspace-tag t-side">x</span>
+          <div id="clearspace-mark"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 07 · DON'TS ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">07 · No</div>
+      <div>
+        <h2 class="section-title">Cosas que no.</h2>
+        <p class="section-sub">Cinco usos prohibidos. Si dudás, no lo hagas.</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="grid-3">
+        <div class="tile dont">
+          <div id="dont-stretch"></div>
+          <span class="dont-reason">Estirar / deformar</span>
+        </div>
+        <div class="tile dont">
+          <div id="dont-recolor"></div>
+          <span class="dont-reason">Recolorear fuera de paleta</span>
+        </div>
+        <div class="tile dont">
+          <div id="dont-rotate"></div>
+          <span class="dont-reason">Rotar el símbolo</span>
+        </div>
+        <div class="tile dont">
+          <div id="dont-shadow"></div>
+          <span class="dont-reason">Sombra de relleno (drop shadow)</span>
+        </div>
+        <div class="tile dont">
+          <div id="dont-busy"></div>
+          <span class="dont-reason">Encimar sobre imagen sin contraste</span>
+        </div>
+        <div class="tile dont">
+          <div id="dont-outline"></div>
+          <span class="dont-reason">Sólo outline / sin relleno</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 08 · APLICACIONES ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">08 · Aplicaciones</div>
+      <div>
+        <h2 class="section-title">Cómo se ve en el mundo.</h2>
+        <p class="section-sub">Mockups rápidos para entender cómo respira la marca en uso real.</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+
+        <!-- Browser tab + favicon -->
+        <div class="tile app-tile">
+          <div class="app-tile-cap">Browser tab</div>
+          <div class="browser">
+            <div class="browser-bar">
+              <div class="browser-dot"></div>
+              <div class="browser-dot d2"></div>
+              <div class="browser-dot d3"></div>
+            </div>
+            <div style="background:#ECECE5; padding: 0 12px;">
+              <div class="browser-tab">
+                <span class="browser-tab-fav" id="favicon-tab"></span>
+                <span>Freshup Labs · Software a medida</span>
+                <span class="browser-tab-close">×</span>
+              </div>
+            </div>
+            <div class="browser-body">
+              <div style="display:flex; align-items:center; gap:14px;">
+                <div id="browser-mark"></div>
+                <div style="font-size:14px; color: var(--muted);">freshuplabs.com</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- App icon sizes -->
+        <div class="tile app-tile">
+          <div class="app-tile-cap">App icon · iOS / web app</div>
+          <div class="app-icon-row" style="margin-top:auto; margin-bottom:auto;">
+            <div>
+              <div class="app-icon app-icon-big" id="appicon-big"></div>
+              <div class="app-icon-cap">1024 · store</div>
+            </div>
+            <div>
+              <div class="app-icon app-icon-med" id="appicon-med"></div>
+              <div class="app-icon-cap">192 · home</div>
+            </div>
+            <div>
+              <div class="app-icon app-icon-sm" id="appicon-sm"></div>
+              <div class="app-icon-cap">48 · system</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Business card -->
+        <div class="tile app-tile">
+          <div class="app-tile-cap">Business card · 85 × 50 mm</div>
+          <div style="display:flex; gap:14px; flex-wrap:wrap;">
+            <div class="biz" style="flex:1; min-width: 220px;">
+              <div id="biz-mark"></div>
+              <div class="biz-row">
+                <div>
+                  <div class="biz-name">Mateo Aguirre</div>
+                  <div class="biz-role">Co-founder · Product</div>
+                </div>
+                <div class="biz-contact">
+                  mateo@<br/>freshuplabs.com<br/>+54 11 5555 3211
+                </div>
+              </div>
+            </div>
+            <div class="biz biz-back" style="flex:1; min-width: 220px;">
+              <div style="flex:1; display:grid; place-items:center;">
+                <div id="biz-back-mark"></div>
+              </div>
+              <div style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; opacity: 0.7;">/labs · since 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- T-shirt + sticker -->
+        <div class="tile app-tile">
+          <div class="app-tile-cap">Merch · stickers + tee</div>
+          <div style="display:grid; grid-template-columns: 1fr 1.1fr; gap: 16px; align-items: center;">
+            <div class="tshirt">
+              <div class="tshirt-mark" id="tshirt-mark"></div>
+            </div>
+            <div class="sticker-row" style="padding: 10px;">
+              <div class="sticker-circle" id="sticker-mark"></div>
+              <div class="sticker-pill">
+                <span id="sticker-pill-mark"></span>
+                <span style="font-family: var(--mono); font-size: 12px; letter-spacing: 0.05em;">/labs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading state (animated) -->
+        <div class="tile loader-tile">
+          <div class="loader-mark" id="loader-mark"></div>
+          <div class="loader-label">Connecting nodes…</div>
+        </div>
+
+        <!-- Social avatar -->
+        <div class="tile app-tile">
+          <div class="app-tile-cap">Social avatar</div>
+          <div style="display:flex; align-items:center; gap:20px; padding: 20px; margin: auto 0;">
+            <div style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 1.5px solid var(--ink); display: grid; place-items: center; background: var(--lime);" id="avatar-mark"></div>
+            <div>
+              <div style="font-weight: 600; font-size: 16px;">Freshup Labs</div>
+              <div style="font-family: var(--mono); font-size: 12px; color: var(--muted);">@freshuplabs</div>
+              <div style="font-size: 13px; color: var(--muted); margin-top: 6px; max-width: 36ch;">Software a medida para equipos que ya no pueden esperar.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>FRESHUP LABS · BRAND SHEET</div>
+    <div>v0.1 · DRAFT</div>
+  </footer>
+</div>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <rect width="200" height="200" fill="#B6F36A"/>
+    <rect x="40" y="40" width="120" height="120" rx="22" fill="#FAFAF7" stroke="#0A0A0A" stroke-width="3"/>
+    <path d="M70 138 L130 60 M70 138 L140 128 M130 60 L140 128" stroke="#0A0A0A" stroke-width="4"/>
+    <circle cx="70" cy="138" r="20" fill="#B6F36A" stroke="#0A0A0A" stroke-width="3"/>
+    <circle cx="130" cy="60" r="14" fill="#0A0A0A"/>
+    <circle cx="140" cy="128" r="10" fill="#B6F36A" stroke="#0A0A0A" stroke-width="3"/>
+  </svg>
+</template>
+
+<script>
+  // ─────────────────────────────────────────────
+  // Inline SVG renderer for Fizz/Nodes mark.
+  // Plain JS so this page is fast + self-contained.
+  // ─────────────────────────────────────────────
+  function mark(opts) {
+    const { size = 64, color = '#0A0A0A', accent = '#B6F36A', surface = '#FAFAF7', frame = true, classes = '' } = opts || {};
+    const A = { cx: 20, cy: 44, r: 9 };
+    const B = { cx: 44, cy: 20, r: 6 };
+    const C = { cx: 48, cy: 44, r: 4 };
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 64 64" fill="none" class="${classes}">
+        ${frame ? `<rect x="2" y="2" width="60" height="60" rx="14" fill="${surface}" stroke="${color}" stroke-width="2.5"/>` : ''}
+        <path d="M${A.cx} ${A.cy} L${B.cx} ${B.cy} M${A.cx} ${A.cy} L${C.cx} ${C.cy} M${B.cx} ${B.cy} L${C.cx} ${C.cy}" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+        <circle class="node-a" cx="${A.cx}" cy="${A.cy}" r="${A.r}" fill="${accent}" stroke="${color}" stroke-width="2.5"/>
+        <circle class="node-b" cx="${B.cx}" cy="${B.cy}" r="${B.r}" fill="${color}"/>
+        <circle class="node-c" cx="${C.cx}" cy="${C.cy}" r="${C.r}" fill="${accent}" stroke="${color}" stroke-width="2"/>
+      </svg>`;
+  }
+
+  function wordmark(opts) {
+    const { color = '#0A0A0A', height = 28 } = opts || {};
+    const mono = Math.round(height * 0.78);
+    return `
+      <span style="font-family: 'General Sans', system-ui, sans-serif; font-size: ${height}px; font-weight: 700; letter-spacing: -0.025em; color: ${color}; line-height: 1; display: inline-flex; align-items: baseline; gap: 0.18em;">
+        Freshup<span style="font-family: ui-monospace, 'JetBrains Mono', Menlo, monospace; font-weight: 500; font-size: ${mono}px; letter-spacing: -0.02em;">/labs</span>
+      </span>`;
+  }
+
+  function $(id) { return document.getElementById(id); }
+  function set(id, html) { const el = $(id); if (el) el.innerHTML = html; }
+
+  // HERO
+  set('hero-mark', mark({ size: 200, frame: true }));
+  set('hero-wordmark', wordmark({ height: 64 }));
+
+  // LOCKUPS
+  set('lockup-horizontal',
+    `<div style="display:flex; align-items:center; gap:18px;">${mark({ size: 80 })}${wordmark({ height: 34 })}</div>`
+  );
+  set('lockup-stacked',
+    `<div style="display:flex; flex-direction:column; align-items:center; gap:14px;">${mark({ size: 110 })}${wordmark({ height: 24 })}</div>`
+  );
+  set('lockup-icon', mark({ size: 130 }));
+  set('lockup-wordmark', wordmark({ height: 42 }));
+
+  // VERSIONS
+  set('version-full', `<div style="display:flex; align-items:center; gap:14px;">${mark({ size: 64 })}${wordmark({ height: 22 })}</div>`);
+  set('version-dark', `<div style="display:flex; align-items:center; gap:14px;">${mark({ size: 64, color: '#FAFAF7', surface: '#143D2B', accent: '#B6F36A' })}${wordmark({ height: 22, color: '#FAFAF7' })}</div>`);
+  set('version-lime', `<div style="display:flex; align-items:center; gap:14px;">${mark({ size: 64, color: '#0A0A0A', surface: '#B6F36A', accent: '#FAFAF7' })}${wordmark({ height: 22 })}</div>`);
+  set('version-mono', `<div style="display:flex; align-items:center; gap:14px;">${mark({ size: 64, color: '#FAFAF7', surface: '#0A0A0A', accent: '#FAFAF7' })}${wordmark({ height: 22, color: '#FAFAF7' })}</div>`);
+
+  // SCALE
+  [256, 128, 64, 32, 16].forEach((s) => set(`scale-${s}`, mark({ size: s })));
+
+  // CLEARSPACE
+  set('clearspace-mark', mark({ size: 120 }));
+
+  // DON'Ts
+  set('dont-stretch', `<div style="transform: scaleX(1.7) scaleY(0.7);">${mark({ size: 80 })}</div>`);
+  set('dont-recolor', mark({ size: 80, accent: '#FF6E40', color: '#3F2B96', surface: '#FFE0B2' }));
+  set('dont-rotate', `<div style="transform: rotate(28deg);">${mark({ size: 80 })}</div>`);
+  set('dont-shadow', `<div style="filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5));">${mark({ size: 80 })}</div>`);
+  set('dont-busy', `<div style="background: repeating-linear-gradient(45deg, #999 0 10px, #777 10px 20px); padding: 30px; border-radius: 12px;">${mark({ size: 80 })}</div>`);
+  set('dont-outline', `
+    <svg width="80" height="80" viewBox="0 0 64 64" fill="none">
+      <rect x="2" y="2" width="60" height="60" rx="14" fill="none" stroke="#0A0A0A" stroke-width="2.5"/>
+      <path d="M20 44 L44 20 M20 44 L48 44 M44 20 L48 44" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="20" cy="44" r="9" fill="none" stroke="#0A0A0A" stroke-width="2.5"/>
+      <circle cx="44" cy="20" r="6" fill="none" stroke="#0A0A0A" stroke-width="2.5"/>
+      <circle cx="48" cy="44" r="4" fill="none" stroke="#0A0A0A" stroke-width="2"/>
+    </svg>`);
+
+  // APPLICATIONS
+  set('favicon-tab', mark({ size: 16, frame: true }));
+  set('browser-mark', mark({ size: 36 }));
+
+  set('appicon-big', mark({ size: 96, frame: false }));
+  set('appicon-med', mark({ size: 60, frame: false }));
+  set('appicon-sm', mark({ size: 34, frame: false }));
+
+  set('biz-mark', mark({ size: 48 }));
+  set('biz-back-mark', mark({ size: 90, color: '#FAFAF7', surface: '#143D2B', accent: '#B6F36A' }));
+
+  set('tshirt-mark', mark({ size: 60, color: '#FAFAF7', surface: '#143D2B', accent: '#B6F36A' }));
+
+  set('sticker-mark', mark({ size: 70, frame: false }));
+  set('sticker-pill-mark', mark({ size: 28, frame: false, color: '#FAFAF7', accent: '#B6F36A' }));
+
+  set('loader-mark', mark({ size: 96, color: '#FAFAF7', surface: '#143D2B', accent: '#B6F36A' }));
+
+  set('avatar-mark', mark({ size: 64, frame: false }));
+</script>
+</body>
+</html>
