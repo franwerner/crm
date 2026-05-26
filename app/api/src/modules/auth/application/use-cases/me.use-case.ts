@@ -1,11 +1,11 @@
 import { UnauthorizedError } from '@shared/errors'
-import type { UsersPublicApi, UserProfile } from '@modules/users/public/user.public'
+import type { AuthUserQueries, AuthUserProfile } from '@modules/auth/application/auth-user.query'
 
 export class MeUseCase {
-  constructor(private readonly usersApi: UsersPublicApi) {}
+  constructor(private readonly authUsers: AuthUserQueries) {}
 
-  async execute({ userId }: { userId: string }): Promise<UserProfile> {
-    const user = await this.usersApi.findById(userId)
+  async execute({ userId }: { userId: string }): Promise<AuthUserProfile> {
+    const user = await this.authUsers.findProfileById(userId)
 
     if (!user) {
       throw new UnauthorizedError('User not found')
