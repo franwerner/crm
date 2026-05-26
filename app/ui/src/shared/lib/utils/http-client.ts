@@ -1,5 +1,5 @@
 import type { RequestConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
-import { config } from './config'
+import { config } from '../config/env'
 
 export type { Client, RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 

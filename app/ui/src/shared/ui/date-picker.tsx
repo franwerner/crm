@@ -7,7 +7,7 @@ import type { DateRange } from "react-day-picker"
 import { CalendarIcon } from "lucide-react"
 import { Popover, PopoverContent, PopoverTrigger } from "@shared/ui/popover"
 import { Calendar } from "@shared/ui/calendar"
-import { cn } from "@shared/lib/cn"
+import { cn } from "@shared/lib/utils/cn"
 
 type SingleProps = {
   mode: "single"
@@ -100,7 +100,7 @@ const PRESETS: PresetDef[] = [
 function SingleDatePicker({ value, onValueChange, className }: SingleProps) {
   const [open, setOpen] = React.useState(false)
   const selected = parseSingle(value)
-  const label = selected ? formatDisplay(selected) : "elegir fecha…"
+  const label = selected ? formatDisplay(selected) : "Elegir fecha…"
 
   function handleSelect(day: Date | undefined) {
     if (!day) return

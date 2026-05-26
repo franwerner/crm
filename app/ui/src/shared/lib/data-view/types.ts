@@ -1,5 +1,6 @@
 import type React from 'react'
-import type { RelationResolver } from '@shared/lib/filter'
+import type { RelationResolver } from '@shared/lib/utils/filter'
+import type { Option } from '@shared/lib/types/option'
 
 export type FieldDescriptor<T, K extends keyof T = keyof T> = {
   key: K
@@ -7,7 +8,7 @@ export type FieldDescriptor<T, K extends keyof T = keyof T> = {
   sortable?: boolean
   filterable?: boolean
   filterType?: 'text' | 'enum' | 'date' | 'boolean' | 'relation'
-  options?: ReadonlyArray<{ value: string; label: string }>
+  options?: ReadonlyArray<Option>
   relation?: RelationResolver
   searchable?: boolean
   hidden?: boolean

@@ -1,4 +1,4 @@
-import type { FilterSchema } from '@shared/lib/filter'
+import type { FilterSchema } from '@shared/lib/utils/filter'
 import type { EntityDescriptor } from './types'
 
 export function toFilterSchema<T>(descriptor: EntityDescriptor<T>): FilterSchema {

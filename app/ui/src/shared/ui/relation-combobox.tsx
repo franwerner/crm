@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Check } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from '@shared/ui/popover'
 import { Command, CommandInput, CommandItem, CommandList } from '@shared/ui/command'
-import { cn } from '@shared/lib/cn'
-import type { RelationOption, RelationResolver } from '@shared/lib/filter'
+import { cn } from '@shared/lib/utils/cn'
+import type { RelationOption, RelationResolver } from '@shared/lib/utils/filter'
 
 type Props = {
   multiple: boolean
@@ -13,6 +13,8 @@ type Props = {
   resolve: RelationResolver['resolve']
   className?: string
   placeholder?: string
+  defaultOpen?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
 const DEBOUNCE_MS = 250
@@ -25,20 +27,26 @@ export function RelationCombobox({
   resolve,
   className,
   placeholder = 'buscar…',
+  defaultOpen = false,
+  onOpenChange,
 }: Props) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(defaultOpen)
+
+  function handleOpenChange(next: boolean) {
+    setOpen(next)
+    onOpenChange?.(next)
+  }
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<RelationOption[]>([])
   const [loading, setLoading] = useState(false)
   const [labels, setLabels] = useState<Record<string, string>>({})
-  const requestedRef = useRef<Set<string>>(new Set())
 
   const valueKey = value.join('|')
 
   useEffect(() => {
-    const missing = value.filter((id) => !requestedRef.current.has(id))
+    const ids = valueKey ? valueKey.split('|') : []
+    const missing = ids.filter((id) => !(id in labels))
     if (missing.length === 0) return
-    missing.forEach((id) => requestedRef.current.add(id))
     let active = true
     resolve(missing)
       .then((opts) => {
@@ -49,13 +57,11 @@ export function RelationCombobox({
           return next
         })
       })
-      .catch(() => {
-        missing.forEach((id) => requestedRef.current.delete(id))
-      })
+      .catch(() => {})
     return () => {
       active = false
     }
-  }, [valueKey, resolve, value])
+  }, [valueKey, resolve, labels])
 
   useEffect(() => {
     if (!open) {
@@ -93,7 +99,7 @@ export function RelationCombobox({
       onChange(value.includes(id) ? value.filter((v) => v !== id) : [...value, id])
     } else {
       onChange([id])
-      setOpen(false)
+      handleOpenChange(false)
     }
   }
 
@@ -101,7 +107,7 @@ export function RelationCombobox({
     value.length === 0 ? 'elegir…' : value.map((id) => labels[id] ?? id).join(', ')
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <button type="button" className={className}>
           {triggerLabel}

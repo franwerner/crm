@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { X } from 'lucide-react'
 import { Dialog as DialogPrimitive } from 'radix-ui'
-import { cn } from '@shared/lib/cn'
+import { cn } from '@shared/lib/utils/cn'
 
 function Dialog(props: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />

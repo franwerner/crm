@@ -1,8 +1,9 @@
 import { z } from 'zod'
+import type { Option } from '@shared/lib/types/option'
 
 export type FieldType = 'text' | 'enum' | 'boolean' | 'date' | 'relation'
 
-export type RelationOption = { value: string; label: string }
+export type RelationOption = Option
 
 export type RelationResolver = {
   search: (query: string) => Promise<RelationOption[]>
@@ -36,7 +37,7 @@ export type FieldDescriptor = {
   label: string
   type: FieldType
   ops?: Operator[]
-  options?: { value: string; label: string }[]
+  options?: Option[]
   relation?: RelationResolver
 }
 

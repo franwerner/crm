@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Slot as SlotPrimitive } from 'radix-ui'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from '@shared/lib/cn'
+import { cn } from '@shared/lib/utils/cn'
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center gap-2 whitespace-nowrap h-10 px-6 rounded-full border-[1.5px] border-brand text-sm font-medium shadow-brutal-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50 disabled:pointer-events-none disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-brutal-sm hover:-translate-x-px hover:-translate-y-px hover:shadow-brutal-md active:translate-x-0.5 active:translate-y-0.5 active:shadow-none [&_svg]:size-4 [&_svg]:shrink-0',

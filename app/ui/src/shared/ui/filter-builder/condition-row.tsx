@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { X } from 'lucide-react'
 import {
   Select,
@@ -10,7 +11,8 @@ import { Switch } from '@shared/ui/switch'
 import { Input } from '@shared/ui/input'
 import { DatePicker } from '@shared/ui/date-picker'
 import { RelationCombobox } from '@shared/ui/relation-combobox'
-import { cn } from '@shared/lib/cn'
+import { optionsToLabelMap } from '@shared/lib/data-view'
+import { cn } from '@shared/lib/utils/cn'
 import {
   OPERATOR_LABELS,
   defaultOpForField,
@@ -22,7 +24,7 @@ import {
   type FieldDescriptor,
   type FilterSchema,
   type Operator,
-} from '@shared/lib/filter'
+} from '@shared/lib/utils/filter'
 
 type Props = {
   schema: FilterSchema
@@ -34,6 +36,7 @@ type Props = {
 export function ConditionRow({ schema, condition, onChange, onRemove }: Props) {
   const descriptor = schema.find((f) => f.key === condition.field) ?? schema[0]!
   const fieldOps = opsForField(descriptor)
+  const optionLabels = useMemo(() => optionsToLabelMap(descriptor.options ?? []), [descriptor.options])
 
   function handleFieldChange(field: string) {
     const next = schema.find((f) => f.key === field) ?? schema[0]!
@@ -171,7 +174,7 @@ export function ConditionRow({ schema, condition, onChange, onRemove }: Props) {
         >
           <SelectTrigger size="sm" className={valuePill}>
             {typeof condition.value === 'string'
-              ? (descriptor.options?.find((e) => e.value === condition.value)?.label ?? condition.value)
+              ? (optionLabels[condition.value] ?? condition.value)
               : 'elegir…'}
           </SelectTrigger>
           <SelectContent align="start">
@@ -191,11 +194,8 @@ export function ConditionRow({ schema, condition, onChange, onRemove }: Props) {
               {currentArrayValues.length === 0
                 ? 'elegir…'
                 : currentArrayValues
-                    .map(
-                      (v) =>
-                        descriptor.options?.find((e) => e.value === v)?.label ?? v,
-                    )
-                    .join(', ')}
+                  .map((v) => optionLabels[v] ?? v)
+                  .join(', ')}
             </button>
           </PopoverTrigger>
           <PopoverContent align="start" className="w-48 p-2">

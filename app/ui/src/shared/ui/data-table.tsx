@@ -10,7 +10,7 @@ import {
   type OnChangeFn,
 } from '@tanstack/react-table'
 import { Button } from '@shared/ui/button'
-import { cn } from '@shared/lib/cn'
+import { cn } from '@shared/lib/utils/cn'
 
 type Props<TData> = {
   columns: ColumnDef<TData>[]
@@ -30,6 +30,7 @@ type Props<TData> = {
   sorting?: SortingState
   onSortingChange?: OnChangeFn<SortingState>
   enableSorting?: boolean
+  onRowClick?: (row: TData) => void
 }
 
 const SKELETON_ROWS = 8
@@ -64,6 +65,7 @@ export function DataTable<TData>({
   sorting = [],
   onSortingChange,
   enableSorting = false,
+  onRowClick,
 }: Props<TData>) {
   const pageCount = Math.ceil(total / pageSize)
 
@@ -125,7 +127,7 @@ export function DataTable<TData>({
                       key={header.id}
                       aria-sort={ariaSort}
                       className={cn(
-                        'px-4 py-3 text-left text-[length:var(--ds-font-size-xs)] uppercase tracking-[var(--ds-tracking-wide)]',
+                        'px-4 py-3 text-left text-[length:var(--ds-font-size-xs)] tracking-[var(--ds-tracking-wide)]',
                         'bg-muted border-b border-border whitespace-nowrap sticky top-0 z-[var(--ds-z-sticky)]',
                         sortDir
                           ? 'text-foreground font-[var(--ds-font-weight-semibold)]'
@@ -170,8 +172,18 @@ export function DataTable<TData>({
                     <tr
                       key={row.id}
                       aria-selected={row.getIsSelected() ? true : undefined}
+                      onClick={
+                        onRowClick
+                          ? (event) => {
+                              const target = event.target as HTMLElement
+                              if (target.closest('button, a, input, label, [role="checkbox"], [role="menuitem"]')) return
+                              onRowClick(row.original)
+                            }
+                          : undefined
+                      }
                       className={cn(
                         'border-b border-border last:border-0 hover:bg-muted transition-colors',
+                        onRowClick && 'cursor-pointer',
                         row.getIsSelected() && 'bg-[var(--ds-color-primary-50)] hover:bg-[var(--ds-color-primary-100)]',
                       )}
                     >

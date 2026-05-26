@@ -1,5 +1,9 @@
 import { QueryClient, QueryCache, MutationCache } from '@tanstack/react-query'
-import { getStatus } from './problem'
+import { getStatus } from '../utils/problem'
+
+export type RouterContext = {
+  queryClient: QueryClient
+}
 
 type RedirectHandler = () => void
 

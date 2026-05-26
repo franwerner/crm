@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { cn } from '@shared/lib/cn'
+import { cn } from '@shared/lib/utils/cn'
 
 export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return <div className={cn('rounded-lg border-[1.5px] border-brand bg-card text-card-foreground shadow-brutal-md', className)} {...props} />
