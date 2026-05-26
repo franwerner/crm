@@ -8,12 +8,9 @@ import { UserUpdateUseCase } from '@modules/users/application/use-cases/user-upd
 import { UserDeleteUseCase } from '@modules/users/application/use-cases/user-delete.use-case'
 import { UserController } from '@modules/users/http/user.controller'
 import { createUsersRouter } from '@modules/users/http/user.routes'
-import { createUsersPublicApi } from '@modules/users/public/user.public.impl'
-import type { UsersPublicApi } from '@modules/users/public/user.public'
 
 export interface UsersModule {
   router: OpenAPIHono
-  publicApi: UsersPublicApi
 }
 
 export function bootstrapUsers(db: Db): UsersModule {
@@ -29,6 +26,5 @@ export function bootstrapUsers(db: Db): UsersModule {
 
   return {
     router: createUsersRouter(controller),
-    publicApi: createUsersPublicApi(repo),
   }
 }

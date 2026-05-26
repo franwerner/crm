@@ -70,11 +70,11 @@ module.exports = {
     {
       name: 'adr02-5-slices-isolated',
       severity: 'error',
-      comment: 'ADR 02 #5: un slice no importa de otro slice; única excepción: el contrato público <m>/public/<entity>.public.ts (type-only). El composition root (app.ts) queda exento por no estar bajo src/modules/.',
+      comment: 'ADR 02 #5: un slice no importa NADA de otro slice (sin excepción). La colaboración cross-módulo de lectura no es un import cross-slice: el consumidor lee el schema compartido (src/shared/db) con su propio read-port. El composition root (app.ts) queda exento por no estar bajo src/modules/.',
       from: { path: '^src/modules/([^/]+)/' },
       to: {
         path: '^src/modules/([^/]+)/',
-        pathNot: ['^src/modules/$1/', '^src/modules/[^/]+/public/[^/]+\\.public\\.ts$'],
+        pathNot: ['^src/modules/$1/'],
       },
     },
     {
@@ -87,7 +87,7 @@ module.exports = {
     {
       name: 'adr02-7-only-root-wires-adapters',
       severity: 'error',
-      comment: 'ADR 02 #7: el composition root global (src/app.ts) y el bootstrap por módulo (src/modules/<m>/infrastructure/bootstrap.ts) son los únicos que importan adapters concretos (.repository.bun.ts) e impl de API pública (.public.impl.ts). El bootstrap solo puede cablear los archivos de SU PROPIO módulo.',
+      comment: 'ADR 02 #7: el composition root global (src/app.ts) y el bootstrap por módulo (src/modules/<m>/infrastructure/bootstrap.ts) son los únicos que importan adapters concretos (.repository.bun.ts, .query.drizzle.ts). El bootstrap solo puede cablear los archivos de SU PROPIO módulo.',
       from: {
         path: '^src/',
         pathNot: [
@@ -99,7 +99,6 @@ module.exports = {
         path: [
           '^src/modules/[^/]+/infrastructure/[^/]+\\.repository\\.bun\\.ts$',
           '^src/modules/[^/]+/infrastructure/[^/]+\\.query\\.drizzle\\.ts$',
-          '^src/modules/[^/]+/public/[^/]+\\.public\\.impl\\.ts$',
         ],
       },
     },
