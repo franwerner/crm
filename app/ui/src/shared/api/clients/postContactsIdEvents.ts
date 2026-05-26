@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import fetch from "@shared/lib/http-client";
+import fetch from "@shared/lib/utils/http-client";
 import type {
   PostContactsIdEventsMutationRequest,
   PostContactsIdEventsMutationResponse,
@@ -15,7 +15,7 @@ import type {
   Client,
   RequestConfig,
   ResponseErrorConfig,
-} from "@shared/lib/http-client";
+} from "@shared/lib/utils/http-client";
 
 function getPostContactsIdEventsUrl(id: PostContactsIdEventsPathParams["id"]) {
   const res = { method: "POST", url: `/contacts/${id}/events` as const };

@@ -34,7 +34,153 @@ export const getContactsQueryParamsSchema = z
             isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
           }),
         ),
-        phone: z.optional(
+        contactType: z.optional(
+          z.object({
+            eq: z.optional(
+              z.union([
+                z.array(z.enum(["Person", "Company"])),
+                z.enum(["Person", "Company"]),
+              ]),
+            ),
+            ne: z.optional(
+              z.union([
+                z.array(z.enum(["Person", "Company"])),
+                z.enum(["Person", "Company"]),
+              ]),
+            ),
+            in: z.optional(
+              z.union([
+                z.array(z.enum(["Person", "Company"])),
+                z.enum(["Person", "Company"]),
+              ]),
+            ),
+            nin: z.optional(
+              z.union([
+                z.array(z.enum(["Person", "Company"])),
+                z.enum(["Person", "Company"]),
+              ]),
+            ),
+            isNull: z.optional(
+              z.union([
+                z.array(z.enum(["Person", "Company"])),
+                z.enum(["Person", "Company"]),
+              ]),
+            ),
+            isNotNull: z.optional(
+              z.union([
+                z.array(z.enum(["Person", "Company"])),
+                z.enum(["Person", "Company"]),
+              ]),
+            ),
+          }),
+        ),
+        sex: z.optional(
+          z.object({
+            eq: z.optional(
+              z.union([
+                z.array(z.enum(["Male", "Female", "Other", "Unspecified"])),
+                z.enum(["Male", "Female", "Other", "Unspecified"]),
+              ]),
+            ),
+            ne: z.optional(
+              z.union([
+                z.array(z.enum(["Male", "Female", "Other", "Unspecified"])),
+                z.enum(["Male", "Female", "Other", "Unspecified"]),
+              ]),
+            ),
+            in: z.optional(
+              z.union([
+                z.array(z.enum(["Male", "Female", "Other", "Unspecified"])),
+                z.enum(["Male", "Female", "Other", "Unspecified"]),
+              ]),
+            ),
+            nin: z.optional(
+              z.union([
+                z.array(z.enum(["Male", "Female", "Other", "Unspecified"])),
+                z.enum(["Male", "Female", "Other", "Unspecified"]),
+              ]),
+            ),
+            isNull: z.optional(
+              z.union([
+                z.array(z.enum(["Male", "Female", "Other", "Unspecified"])),
+                z.enum(["Male", "Female", "Other", "Unspecified"]),
+              ]),
+            ),
+            isNotNull: z.optional(
+              z.union([
+                z.array(z.enum(["Male", "Female", "Other", "Unspecified"])),
+                z.enum(["Male", "Female", "Other", "Unspecified"]),
+              ]),
+            ),
+          }),
+        ),
+        addressStreet: z.optional(
+          z.object({
+            eq: z.optional(z.union([z.array(z.string()), z.string()])),
+            ne: z.optional(z.union([z.array(z.string()), z.string()])),
+            in: z.optional(z.union([z.array(z.string()), z.string()])),
+            nin: z.optional(z.union([z.array(z.string()), z.string()])),
+            ilike: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
+          }),
+        ),
+        addressNumber: z.optional(
+          z.object({
+            eq: z.optional(z.union([z.array(z.string()), z.string()])),
+            ne: z.optional(z.union([z.array(z.string()), z.string()])),
+            in: z.optional(z.union([z.array(z.string()), z.string()])),
+            nin: z.optional(z.union([z.array(z.string()), z.string()])),
+            ilike: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
+          }),
+        ),
+        addressPostalCode: z.optional(
+          z.object({
+            eq: z.optional(z.union([z.array(z.string()), z.string()])),
+            ne: z.optional(z.union([z.array(z.string()), z.string()])),
+            in: z.optional(z.union([z.array(z.string()), z.string()])),
+            nin: z.optional(z.union([z.array(z.string()), z.string()])),
+            ilike: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
+          }),
+        ),
+        addressCity: z.optional(
+          z.object({
+            eq: z.optional(z.union([z.array(z.string()), z.string()])),
+            ne: z.optional(z.union([z.array(z.string()), z.string()])),
+            in: z.optional(z.union([z.array(z.string()), z.string()])),
+            nin: z.optional(z.union([z.array(z.string()), z.string()])),
+            ilike: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
+          }),
+        ),
+        addressProvince: z.optional(
+          z.object({
+            eq: z.optional(z.union([z.array(z.string()), z.string()])),
+            ne: z.optional(z.union([z.array(z.string()), z.string()])),
+            in: z.optional(z.union([z.array(z.string()), z.string()])),
+            nin: z.optional(z.union([z.array(z.string()), z.string()])),
+            ilike: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
+          }),
+        ),
+        addressCountry: z.optional(
+          z.object({
+            eq: z.optional(z.union([z.array(z.string()), z.string()])),
+            ne: z.optional(z.union([z.array(z.string()), z.string()])),
+            in: z.optional(z.union([z.array(z.string()), z.string()])),
+            nin: z.optional(z.union([z.array(z.string()), z.string()])),
+            ilike: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
+            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
+          }),
+        ),
+        notes: z.optional(
           z.object({
             eq: z.optional(z.union([z.array(z.string()), z.string()])),
             ne: z.optional(z.union([z.array(z.string()), z.string()])),
@@ -49,48 +195,88 @@ export const getContactsQueryParamsSchema = z
           z.object({
             eq: z.optional(
               z.union([
-                z.array(z.enum(["Contact", "Lead", "Customer", "Discarded"])),
-                z.enum(["Contact", "Lead", "Customer", "Discarded"]),
+                z.array(
+                  z.enum([
+                    "Contact",
+                    "Lead",
+                    "AtRisk",
+                    "Customer",
+                    "Discarded",
+                  ]),
+                ),
+                z.enum(["Contact", "Lead", "AtRisk", "Customer", "Discarded"]),
               ]),
             ),
             ne: z.optional(
               z.union([
-                z.array(z.enum(["Contact", "Lead", "Customer", "Discarded"])),
-                z.enum(["Contact", "Lead", "Customer", "Discarded"]),
+                z.array(
+                  z.enum([
+                    "Contact",
+                    "Lead",
+                    "AtRisk",
+                    "Customer",
+                    "Discarded",
+                  ]),
+                ),
+                z.enum(["Contact", "Lead", "AtRisk", "Customer", "Discarded"]),
               ]),
             ),
             in: z.optional(
               z.union([
-                z.array(z.enum(["Contact", "Lead", "Customer", "Discarded"])),
-                z.enum(["Contact", "Lead", "Customer", "Discarded"]),
+                z.array(
+                  z.enum([
+                    "Contact",
+                    "Lead",
+                    "AtRisk",
+                    "Customer",
+                    "Discarded",
+                  ]),
+                ),
+                z.enum(["Contact", "Lead", "AtRisk", "Customer", "Discarded"]),
               ]),
             ),
             nin: z.optional(
               z.union([
-                z.array(z.enum(["Contact", "Lead", "Customer", "Discarded"])),
-                z.enum(["Contact", "Lead", "Customer", "Discarded"]),
+                z.array(
+                  z.enum([
+                    "Contact",
+                    "Lead",
+                    "AtRisk",
+                    "Customer",
+                    "Discarded",
+                  ]),
+                ),
+                z.enum(["Contact", "Lead", "AtRisk", "Customer", "Discarded"]),
               ]),
             ),
             isNull: z.optional(
               z.union([
-                z.array(z.enum(["Contact", "Lead", "Customer", "Discarded"])),
-                z.enum(["Contact", "Lead", "Customer", "Discarded"]),
+                z.array(
+                  z.enum([
+                    "Contact",
+                    "Lead",
+                    "AtRisk",
+                    "Customer",
+                    "Discarded",
+                  ]),
+                ),
+                z.enum(["Contact", "Lead", "AtRisk", "Customer", "Discarded"]),
               ]),
             ),
             isNotNull: z.optional(
               z.union([
-                z.array(z.enum(["Contact", "Lead", "Customer", "Discarded"])),
-                z.enum(["Contact", "Lead", "Customer", "Discarded"]),
+                z.array(
+                  z.enum([
+                    "Contact",
+                    "Lead",
+                    "AtRisk",
+                    "Customer",
+                    "Discarded",
+                  ]),
+                ),
+                z.enum(["Contact", "Lead", "AtRisk", "Customer", "Discarded"]),
               ]),
             ),
-          }),
-        ),
-        stateLocked: z.optional(
-          z.object({
-            eq: z.optional(z.union([z.array(z.string()), z.string()])),
-            ne: z.optional(z.union([z.array(z.string()), z.string()])),
-            isNull: z.optional(z.union([z.array(z.string()), z.string()])),
-            isNotNull: z.optional(z.union([z.array(z.string()), z.string()])),
           }),
         ),
         sourceChannel: z.optional(
@@ -280,9 +466,6 @@ export const getContactsQueryParamsSchema = z
       return paginationSchema.optional();
     },
     sort: z.optional(z.string()),
-    populated: z.optional(
-      z.string().describe("When true, resolves creator user data"),
-    ),
   })
   .optional();
 

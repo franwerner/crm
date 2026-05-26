@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "ids": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "maxItems": 500,
+      "description": "IDs of contacts to soft-delete (1 to 500).",
+      "example": ["c1a2b3", "d4e5f6"]
+    }
+  },
+  "required": ["ids"],
+  "x-readme-ref-name": "BulkDeleteContactsBody"
+}

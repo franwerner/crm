@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Presigned download URL",
+      "example": "https://..."
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 expiration timestamp"
+    }
+  },
+  "required": ["url", "expiresAt"],
+  "x-readme-ref-name": "ProjectDocumentDownloadUrl"
+}

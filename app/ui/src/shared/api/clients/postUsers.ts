@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import fetch from "@shared/lib/http-client";
+import fetch from "@shared/lib/utils/http-client";
 import type {
   PostUsersMutationRequest,
   PostUsersMutationResponse,
@@ -14,7 +14,7 @@ import type {
   Client,
   RequestConfig,
   ResponseErrorConfig,
-} from "@shared/lib/http-client";
+} from "@shared/lib/utils/http-client";
 
 function getPostUsersUrl() {
   const res = { method: "POST", url: `/users` as const };

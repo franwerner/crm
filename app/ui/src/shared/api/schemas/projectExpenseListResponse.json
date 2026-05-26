@@ -1,0 +1,51 @@
+{
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "Expense UUID" },
+          "projectId": { "type": "string", "description": "Project UUID" },
+          "concept": { "type": "string", "example": "Contractor invoice" },
+          "amountMinor": {
+            "type": "number",
+            "description": "Amount in minor currency units",
+            "example": 80000
+          },
+          "incurredAt": {
+            "type": "string",
+            "description": "Date expense was incurred (YYYY-MM-DD)",
+            "example": "2025-03-15"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "ISO 8601 timestamp"
+          },
+          "updatedAt": { "type": "string", "description": "ISO 8601 timestamp" }
+        },
+        "required": [
+          "id",
+          "projectId",
+          "concept",
+          "amountMinor",
+          "incurredAt",
+          "createdAt",
+          "updatedAt"
+        ],
+        "x-readme-ref-name": "ProjectExpenseView"
+      },
+      "description": "List of items"
+    },
+    "total": {
+      "type": "integer",
+      "description": "Total number of items",
+      "example": 0
+    },
+    "limit": { "type": "integer", "description": "Page size", "example": 20 },
+    "offset": { "type": "integer", "description": "Page offset", "example": 0 }
+  },
+  "required": ["items", "total", "limit", "offset"],
+  "x-readme-ref-name": "ProjectExpenseListResponse"
+}

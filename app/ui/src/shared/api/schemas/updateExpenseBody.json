@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "concept": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Expense description",
+      "example": "Contractor invoice"
+    },
+    "amountMinor": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Amount in minor currency units",
+      "example": 80000
+    },
+    "incurredAt": {
+      "type": "string",
+      "format": "date",
+      "description": "Date expense was incurred (YYYY-MM-DD)",
+      "example": "2025-03-15"
+    }
+  },
+  "x-readme-ref-name": "UpdateExpenseBody"
+}

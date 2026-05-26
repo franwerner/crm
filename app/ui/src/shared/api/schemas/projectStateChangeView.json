@@ -1,0 +1,40 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "description": "State change UUID" },
+    "projectId": { "type": "string", "description": "Project UUID" },
+    "previousState": {
+      "type": "string",
+      "enum": ["Draft", "Active", "Closed", "Cancelled"],
+      "example": "Draft"
+    },
+    "nextState": {
+      "type": "string",
+      "enum": ["Draft", "Active", "Closed", "Cancelled"],
+      "example": "Active"
+    },
+    "causeKind": {
+      "type": "string",
+      "enum": ["manual", "system"],
+      "example": "manual"
+    },
+    "causedByUserId": {
+      "type": "string",
+      "nullable": true,
+      "description": "User UUID (manual changes)"
+    },
+    "changedAt": { "type": "string", "description": "ISO 8601 timestamp" },
+    "createdAt": { "type": "string", "description": "ISO 8601 timestamp" }
+  },
+  "required": [
+    "id",
+    "projectId",
+    "previousState",
+    "nextState",
+    "causeKind",
+    "causedByUserId",
+    "changedAt",
+    "createdAt"
+  ],
+  "x-readme-ref-name": "ProjectStateChangeView"
+}

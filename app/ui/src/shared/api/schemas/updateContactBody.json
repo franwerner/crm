@@ -1,0 +1,79 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Contact full name",
+      "example": "Jane Doe"
+    },
+    "contactType": {
+      "type": "string",
+      "enum": ["Person", "Company"],
+      "description": "Contact type",
+      "example": "Person"
+    },
+    "sex": {
+      "type": "string",
+      "nullable": true,
+      "enum": ["Male", "Female", "Other", "Unspecified", null],
+      "description": "Sex (only for Person contacts)",
+      "example": "Female"
+    },
+    "addressStreet": {
+      "type": "string",
+      "nullable": true,
+      "description": "Street name",
+      "example": "Av. Corrientes"
+    },
+    "addressNumber": {
+      "type": "string",
+      "nullable": true,
+      "description": "Street number",
+      "example": "1234"
+    },
+    "addressPostalCode": {
+      "type": "string",
+      "nullable": true,
+      "description": "Postal code",
+      "example": "C1043"
+    },
+    "addressCity": {
+      "type": "string",
+      "nullable": true,
+      "description": "City",
+      "example": "Buenos Aires"
+    },
+    "addressProvince": {
+      "type": "string",
+      "nullable": true,
+      "description": "Province or state",
+      "example": "CABA"
+    },
+    "addressCountry": {
+      "type": "string",
+      "nullable": true,
+      "description": "Country",
+      "example": "Argentina"
+    },
+    "notes": {
+      "type": "string",
+      "nullable": true,
+      "description": "Free-form notes",
+      "example": "Met at trade show"
+    },
+    "sourceChannel": {
+      "type": "string",
+      "nullable": true,
+      "enum": ["Instagram", "WhatsApp", "Referral", "Email", "Other", null],
+      "description": "Acquisition channel"
+    },
+    "interestLevel": {
+      "type": "string",
+      "nullable": true,
+      "enum": ["Cold", "Warm", "Hot", null],
+      "description": "Interest level"
+    }
+  },
+  "x-readme-ref-name": "UpdateContactBody"
+}

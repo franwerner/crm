@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import fetch from "@shared/lib/http-client";
+import fetch from "@shared/lib/utils/http-client";
 import type {
   GetContactsIdStateChangesQueryResponse,
   GetContactsIdStateChangesPathParams,
@@ -14,7 +14,7 @@ import type {
   Client,
   RequestConfig,
   ResponseErrorConfig,
-} from "@shared/lib/http-client";
+} from "@shared/lib/utils/http-client";
 
 function getGetContactsIdStateChangesUrl(
   id: GetContactsIdStateChangesPathParams["id"],

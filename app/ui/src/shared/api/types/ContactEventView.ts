@@ -13,6 +13,8 @@ export const contactEventViewEventTypeEnum = {
   ProposalRejected: "ProposalRejected",
   FollowUpPending: "FollowUpPending",
   Note: "Note",
+  Discarded: "Discarded",
+  Reopened: "Reopened",
 } as const;
 
 export type ContactEventViewEventTypeEnumKey =

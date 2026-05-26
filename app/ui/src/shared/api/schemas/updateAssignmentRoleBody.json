@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": ["Owner", "Collaborator"],
+      "description": "New assignment role",
+      "example": "Collaborator"
+    }
+  },
+  "required": ["role"],
+  "x-readme-ref-name": "UpdateAssignmentRoleBody"
+}

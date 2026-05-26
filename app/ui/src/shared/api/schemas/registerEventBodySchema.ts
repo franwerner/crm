@@ -17,6 +17,8 @@ export const registerEventBodySchema = z.object({
       "ProposalRejected",
       "FollowUpPending",
       "Note",
+      "Discarded",
+      "Reopened",
     ])
     .describe("Type of event"),
   detail: z.optional(z.string().default("").describe("Event notes")),

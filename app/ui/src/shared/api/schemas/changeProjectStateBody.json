@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "newState": {
+      "type": "string",
+      "enum": ["Draft", "Active", "Closed", "Cancelled"],
+      "description": "Target project status",
+      "example": "Active"
+    }
+  },
+  "required": ["newState"],
+  "x-readme-ref-name": "ChangeProjectStateBody"
+}

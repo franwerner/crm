@@ -8,9 +8,114 @@ import type { FilterGroupObject } from "./FilterGroupObject.ts";
 import type { Pagination } from "./Pagination.ts";
 import type { Problem } from "./Problem.ts";
 
+export const contactTypeEqEnum = {
+  Person: "Person",
+  Company: "Company",
+} as const;
+
+export type ContactTypeEqEnumKey =
+  (typeof contactTypeEqEnum)[keyof typeof contactTypeEqEnum];
+
+export const contactTypeNeEnum = {
+  Person: "Person",
+  Company: "Company",
+} as const;
+
+export type ContactTypeNeEnumKey =
+  (typeof contactTypeNeEnum)[keyof typeof contactTypeNeEnum];
+
+export const contactTypeInEnum = {
+  Person: "Person",
+  Company: "Company",
+} as const;
+
+export type ContactTypeInEnumKey =
+  (typeof contactTypeInEnum)[keyof typeof contactTypeInEnum];
+
+export const contactTypeNinEnum = {
+  Person: "Person",
+  Company: "Company",
+} as const;
+
+export type ContactTypeNinEnumKey =
+  (typeof contactTypeNinEnum)[keyof typeof contactTypeNinEnum];
+
+export const contactTypeIsNullEnum = {
+  Person: "Person",
+  Company: "Company",
+} as const;
+
+export type ContactTypeIsNullEnumKey =
+  (typeof contactTypeIsNullEnum)[keyof typeof contactTypeIsNullEnum];
+
+export const contactTypeIsNotNullEnum = {
+  Person: "Person",
+  Company: "Company",
+} as const;
+
+export type ContactTypeIsNotNullEnumKey =
+  (typeof contactTypeIsNotNullEnum)[keyof typeof contactTypeIsNotNullEnum];
+
+export const sexEqEnum = {
+  Male: "Male",
+  Female: "Female",
+  Other: "Other",
+  Unspecified: "Unspecified",
+} as const;
+
+export type SexEqEnumKey = (typeof sexEqEnum)[keyof typeof sexEqEnum];
+
+export const sexNeEnum = {
+  Male: "Male",
+  Female: "Female",
+  Other: "Other",
+  Unspecified: "Unspecified",
+} as const;
+
+export type SexNeEnumKey = (typeof sexNeEnum)[keyof typeof sexNeEnum];
+
+export const sexInEnum = {
+  Male: "Male",
+  Female: "Female",
+  Other: "Other",
+  Unspecified: "Unspecified",
+} as const;
+
+export type SexInEnumKey = (typeof sexInEnum)[keyof typeof sexInEnum];
+
+export const sexNinEnum = {
+  Male: "Male",
+  Female: "Female",
+  Other: "Other",
+  Unspecified: "Unspecified",
+} as const;
+
+export type SexNinEnumKey = (typeof sexNinEnum)[keyof typeof sexNinEnum];
+
+export const sexIsNullEnum = {
+  Male: "Male",
+  Female: "Female",
+  Other: "Other",
+  Unspecified: "Unspecified",
+} as const;
+
+export type SexIsNullEnumKey =
+  (typeof sexIsNullEnum)[keyof typeof sexIsNullEnum];
+
+export const sexIsNotNullEnum = {
+  Male: "Male",
+  Female: "Female",
+  Other: "Other",
+  Unspecified: "Unspecified",
+} as const;
+
+export type SexIsNotNullEnumKey =
+  (typeof sexIsNotNullEnum)[keyof typeof sexIsNotNullEnum];
+
 export const pipelineStateEqEnum = {
   Contact: "Contact",
   Lead: "Lead",
+  AtRisk: "AtRisk",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
@@ -21,6 +126,7 @@ export type PipelineStateEqEnumKey =
 export const pipelineStateNeEnum = {
   Contact: "Contact",
   Lead: "Lead",
+  AtRisk: "AtRisk",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
@@ -31,6 +137,7 @@ export type PipelineStateNeEnumKey =
 export const pipelineStateInEnum = {
   Contact: "Contact",
   Lead: "Lead",
+  AtRisk: "AtRisk",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
@@ -41,6 +148,7 @@ export type PipelineStateInEnumKey =
 export const pipelineStateNinEnum = {
   Contact: "Contact",
   Lead: "Lead",
+  AtRisk: "AtRisk",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
@@ -51,6 +159,7 @@ export type PipelineStateNinEnumKey =
 export const pipelineStateIsNullEnum = {
   Contact: "Contact",
   Lead: "Lead",
+  AtRisk: "AtRisk",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
@@ -61,6 +170,7 @@ export type PipelineStateIsNullEnumKey =
 export const pipelineStateIsNotNullEnum = {
   Contact: "Contact",
   Lead: "Lead",
+  AtRisk: "AtRisk",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
@@ -219,7 +329,101 @@ export type GetContactsQueryParams = {
     /**
      * @type object | undefined
      */
-    phone?: {
+    contactType?: {
+      eq?: ContactTypeEqEnumKey | ContactTypeEqEnumKey[];
+      ne?: ContactTypeNeEnumKey | ContactTypeNeEnumKey[];
+      in?: ContactTypeInEnumKey | ContactTypeInEnumKey[];
+      nin?: ContactTypeNinEnumKey | ContactTypeNinEnumKey[];
+      isNull?: ContactTypeIsNullEnumKey | ContactTypeIsNullEnumKey[];
+      isNotNull?: ContactTypeIsNotNullEnumKey | ContactTypeIsNotNullEnumKey[];
+    };
+    /**
+     * @type object | undefined
+     */
+    sex?: {
+      eq?: SexEqEnumKey | SexEqEnumKey[];
+      ne?: SexNeEnumKey | SexNeEnumKey[];
+      in?: SexInEnumKey | SexInEnumKey[];
+      nin?: SexNinEnumKey | SexNinEnumKey[];
+      isNull?: SexIsNullEnumKey | SexIsNullEnumKey[];
+      isNotNull?: SexIsNotNullEnumKey | SexIsNotNullEnumKey[];
+    };
+    /**
+     * @type object | undefined
+     */
+    addressStreet?: {
+      eq?: string | string[];
+      ne?: string | string[];
+      in?: string | string[];
+      nin?: string | string[];
+      ilike?: string | string[];
+      isNull?: string | string[];
+      isNotNull?: string | string[];
+    };
+    /**
+     * @type object | undefined
+     */
+    addressNumber?: {
+      eq?: string | string[];
+      ne?: string | string[];
+      in?: string | string[];
+      nin?: string | string[];
+      ilike?: string | string[];
+      isNull?: string | string[];
+      isNotNull?: string | string[];
+    };
+    /**
+     * @type object | undefined
+     */
+    addressPostalCode?: {
+      eq?: string | string[];
+      ne?: string | string[];
+      in?: string | string[];
+      nin?: string | string[];
+      ilike?: string | string[];
+      isNull?: string | string[];
+      isNotNull?: string | string[];
+    };
+    /**
+     * @type object | undefined
+     */
+    addressCity?: {
+      eq?: string | string[];
+      ne?: string | string[];
+      in?: string | string[];
+      nin?: string | string[];
+      ilike?: string | string[];
+      isNull?: string | string[];
+      isNotNull?: string | string[];
+    };
+    /**
+     * @type object | undefined
+     */
+    addressProvince?: {
+      eq?: string | string[];
+      ne?: string | string[];
+      in?: string | string[];
+      nin?: string | string[];
+      ilike?: string | string[];
+      isNull?: string | string[];
+      isNotNull?: string | string[];
+    };
+    /**
+     * @type object | undefined
+     */
+    addressCountry?: {
+      eq?: string | string[];
+      ne?: string | string[];
+      in?: string | string[];
+      nin?: string | string[];
+      ilike?: string | string[];
+      isNull?: string | string[];
+      isNotNull?: string | string[];
+    };
+    /**
+     * @type object | undefined
+     */
+    notes?: {
       eq?: string | string[];
       ne?: string | string[];
       in?: string | string[];
@@ -240,15 +444,6 @@ export type GetContactsQueryParams = {
       isNotNull?:
         | PipelineStateIsNotNullEnumKey
         | PipelineStateIsNotNullEnumKey[];
-    };
-    /**
-     * @type object | undefined
-     */
-    stateLocked?: {
-      eq?: string | string[];
-      ne?: string | string[];
-      isNull?: string | string[];
-      isNotNull?: string | string[];
     };
     /**
      * @type object | undefined
@@ -347,11 +542,6 @@ export type GetContactsQueryParams = {
    * @type string | undefined
    */
   sort?: string;
-  /**
-   * @description When true, resolves creator user data
-   * @type string | undefined
-   */
-  populated?: string;
 };
 
 /**

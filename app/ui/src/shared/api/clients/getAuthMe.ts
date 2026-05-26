@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import fetch from "@shared/lib/http-client";
+import fetch from "@shared/lib/utils/http-client";
 import type {
   GetAuthMeQueryResponse,
   GetAuthMe401,
@@ -12,7 +12,7 @@ import type {
   Client,
   RequestConfig,
   ResponseErrorConfig,
-} from "@shared/lib/http-client";
+} from "@shared/lib/utils/http-client";
 
 function getGetAuthMeUrl() {
   const res = { method: "GET", url: `/auth/me` as const };

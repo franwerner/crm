@@ -13,6 +13,8 @@ export const registerEventBodyEventTypeEnum = {
   ProposalRejected: "ProposalRejected",
   FollowUpPending: "FollowUpPending",
   Note: "Note",
+  Discarded: "Discarded",
+  Reopened: "Reopened",
 } as const;
 
 export type RegisterEventBodyEventTypeEnumKey =

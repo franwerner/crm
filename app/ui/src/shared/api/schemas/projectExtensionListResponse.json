@@ -1,0 +1,79 @@
+{
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "Extension UUID" },
+          "projectId": { "type": "string", "description": "Project UUID" },
+          "additionalDays": {
+            "type": "number",
+            "description": "Number of additional days granted",
+            "example": 14
+          },
+          "appliedEndDate": {
+            "type": "string",
+            "description": "Computed end date after this extension (YYYY-MM-DD)",
+            "example": "2025-07-15"
+          },
+          "reason": {
+            "type": "string",
+            "example": "Client requested scope change"
+          },
+          "cost": {
+            "type": "number",
+            "nullable": true,
+            "description": "Extension cost in minor currency units",
+            "example": 50000
+          },
+          "billedAmount": {
+            "type": "number",
+            "nullable": true,
+            "description": "Amount billed in minor currency units",
+            "example": 75000
+          },
+          "grantedAt": {
+            "type": "string",
+            "description": "Date the extension was granted (YYYY-MM-DD)",
+            "example": "2025-06-01"
+          },
+          "grantedBy": {
+            "type": "string",
+            "description": "User UUID who granted the extension"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "ISO 8601 timestamp"
+          },
+          "updatedAt": { "type": "string", "description": "ISO 8601 timestamp" }
+        },
+        "required": [
+          "id",
+          "projectId",
+          "additionalDays",
+          "appliedEndDate",
+          "reason",
+          "cost",
+          "billedAmount",
+          "grantedAt",
+          "grantedBy",
+          "createdAt",
+          "updatedAt"
+        ],
+        "x-readme-ref-name": "ProjectExtensionView"
+      },
+      "description": "List of items"
+    },
+    "total": {
+      "type": "integer",
+      "description": "Total number of items",
+      "example": 0
+    },
+    "limit": { "type": "integer", "description": "Page size", "example": 20 },
+    "offset": { "type": "integer", "description": "Page offset", "example": 0 }
+  },
+  "required": ["items", "total", "limit", "offset"],
+  "x-readme-ref-name": "ProjectExtensionListResponse"
+}

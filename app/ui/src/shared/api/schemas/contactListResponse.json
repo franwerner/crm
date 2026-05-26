@@ -12,17 +12,27 @@
             "example": "01938b0c-..."
           },
           "name": { "type": "string", "example": "Jane Doe" },
-          "phone": {
+          "contactType": {
+            "type": "string",
+            "enum": ["Person", "Company"],
+            "example": "Person"
+          },
+          "sex": {
             "type": "string",
             "nullable": true,
-            "example": "+1234567890"
+            "enum": ["Male", "Female", "Other", "Unspecified", null],
+            "example": "Female"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true,
+            "example": "Met at trade show"
           },
           "pipelineState": {
             "type": "string",
-            "enum": ["Contact", "Lead", "Customer", "Discarded"],
+            "enum": ["Contact", "Lead", "AtRisk", "Customer", "Discarded"],
             "example": "Contact"
           },
-          "stateLocked": { "type": "boolean", "example": false },
           "sourceChannel": {
             "type": "string",
             "nullable": true,
@@ -48,12 +58,33 @@
           },
           "creator": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "id": { "type": "string" },
               "name": { "type": "string" }
             },
             "required": ["id", "name"],
-            "description": "Creator user data, present only when populated=true"
+            "description": "Creator user data. Null if the creator user no longer exists."
+          },
+          "primaryChannel": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "channelType": {
+                "type": "string",
+                "enum": [
+                  "Phone",
+                  "Email",
+                  "WhatsApp",
+                  "Instagram",
+                  "Website",
+                  "Other"
+                ]
+              },
+              "value": { "type": "string" }
+            },
+            "required": ["channelType", "value"],
+            "description": "Primary communication channel"
           },
           "createdAt": {
             "type": "string",
@@ -69,16 +100,19 @@
         "required": [
           "id",
           "name",
-          "phone",
+          "contactType",
+          "sex",
+          "notes",
           "pipelineState",
-          "stateLocked",
           "sourceChannel",
           "interestLevel",
           "createdBy",
+          "creator",
+          "primaryChannel",
           "createdAt",
           "updatedAt"
         ],
-        "x-readme-ref-name": "ContactView"
+        "x-readme-ref-name": "ContactListItem"
       },
       "description": "List of items"
     },

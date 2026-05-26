@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "concept": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Budget item description",
+      "example": "Design phase"
+    },
+    "amountMinor": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Amount in minor currency units (e.g. cents)",
+      "example": 150000
+    }
+  },
+  "required": ["concept", "amountMinor"],
+  "x-readme-ref-name": "AddBudgetItemBody"
+}

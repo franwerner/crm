@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import fetch from "@shared/lib/http-client";
+import fetch from "@shared/lib/utils/http-client";
 import type {
   GetContactsIdEventsQueryResponse,
   GetContactsIdEventsPathParams,
@@ -14,7 +14,7 @@ import type {
   Client,
   RequestConfig,
   ResponseErrorConfig,
-} from "@shared/lib/http-client";
+} from "@shared/lib/utils/http-client";
 
 function getGetContactsIdEventsUrl(id: GetContactsIdEventsPathParams["id"]) {
   const res = { method: "GET", url: `/contacts/${id}/events` as const };

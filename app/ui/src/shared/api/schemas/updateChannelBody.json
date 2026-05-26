@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "channelType": {
+      "type": "string",
+      "enum": ["Phone", "Email", "WhatsApp", "Instagram", "Website", "Other"],
+      "description": "Communication channel type",
+      "example": "Phone"
+    },
+    "value": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Channel value (phone number, URL, handle)",
+      "example": "+1234567890"
+    },
+    "isPrimary": {
+      "type": "boolean",
+      "description": "Whether this is the primary contact channel",
+      "example": false
+    }
+  },
+  "x-readme-ref-name": "UpdateChannelBody"
+}

@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID of the user being assigned",
+      "example": "01938b0c-..."
+    },
+    "role": {
+      "type": "string",
+      "enum": ["Owner", "Collaborator"],
+      "description": "Assignment role",
+      "example": "Owner"
+    }
+  },
+  "required": ["userId", "role"],
+  "x-readme-ref-name": "AddAssignmentBody"
+}

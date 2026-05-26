@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import fetch from "@shared/lib/http-client";
+import fetch from "@shared/lib/utils/http-client";
 import type {
   GetUsersQueryResponse,
   GetUsersQueryParams,
@@ -13,7 +13,7 @@ import type {
   Client,
   RequestConfig,
   ResponseErrorConfig,
-} from "@shared/lib/http-client";
+} from "@shared/lib/utils/http-client";
 
 function getGetUsersUrl() {
   const res = { method: "GET", url: `/users` as const };

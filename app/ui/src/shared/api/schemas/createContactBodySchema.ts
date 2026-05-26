@@ -7,7 +7,20 @@ import { z } from "zod/v4";
 
 export const createContactBodySchema = z.object({
   name: z.string().min(1).describe("Contact full name"),
-  phone: z.string().describe("Phone number").nullish(),
+  contactType: z.optional(
+    z.enum(["Person", "Company"]).describe("Contact type"),
+  ),
+  sex: z
+    .enum(["Male", "Female", "Other", "Unspecified"])
+    .describe("Sex (only for Person contacts)")
+    .nullish(),
+  addressStreet: z.string().describe("Street name").nullish(),
+  addressNumber: z.string().describe("Street number").nullish(),
+  addressPostalCode: z.string().describe("Postal code").nullish(),
+  addressCity: z.string().describe("City").nullish(),
+  addressProvince: z.string().describe("Province or state").nullish(),
+  addressCountry: z.string().describe("Country").nullish(),
+  notes: z.string().describe("Free-form notes").nullish(),
   sourceChannel: z
     .enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"])
     .describe("Acquisition channel")
@@ -16,4 +29,29 @@ export const createContactBodySchema = z.object({
     .enum(["Cold", "Warm", "Hot"])
     .describe("Interest level")
     .nullish(),
+  channels: z.optional(
+    z
+      .array(
+        z.object({
+          channelType: z
+            .enum([
+              "Phone",
+              "Email",
+              "WhatsApp",
+              "Instagram",
+              "Website",
+              "Other",
+            ])
+            .describe("Communication channel type"),
+          value: z
+            .string()
+            .min(1)
+            .describe("Channel value (phone number, URL, handle)"),
+          isPrimary: z
+            .boolean()
+            .describe("Whether this is the primary contact channel"),
+        }),
+      )
+      .describe("Communication channels"),
+  ),
 });

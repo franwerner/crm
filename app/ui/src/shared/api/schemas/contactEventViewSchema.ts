@@ -19,6 +19,8 @@ export const contactEventViewSchema = z.object({
     "ProposalRejected",
     "FollowUpPending",
     "Note",
+    "Discarded",
+    "Reopened",
   ]),
   detail: z.string(),
   occurredAt: z.string().describe("ISO 8601 timestamp"),

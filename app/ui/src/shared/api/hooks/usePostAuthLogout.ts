@@ -8,7 +8,7 @@ import type {
   Client,
   RequestConfig,
   ResponseErrorConfig,
-} from "@shared/lib/http-client";
+} from "@shared/lib/utils/http-client";
 import type {
   UseMutationOptions,
   UseMutationResult,

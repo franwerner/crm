@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import fetch from "@shared/lib/http-client";
+import fetch from "@shared/lib/utils/http-client";
 import type {
   DeleteUsersIdMutationResponse,
   DeleteUsersIdPathParams,
@@ -14,7 +14,7 @@ import type {
   Client,
   RequestConfig,
   ResponseErrorConfig,
-} from "@shared/lib/http-client";
+} from "@shared/lib/utils/http-client";
 
 function getDeleteUsersIdUrl(id: DeleteUsersIdPathParams["id"]) {
   const res = { method: "DELETE", url: `/users/${id}` as const };

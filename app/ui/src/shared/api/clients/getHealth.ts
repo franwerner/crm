@@ -3,13 +3,13 @@
  * Do not edit manually.
  */
 
-import fetch from "@shared/lib/http-client";
+import fetch from "@shared/lib/utils/http-client";
 import type { GetHealthQueryResponse } from "../types/GetHealth.ts";
 import type {
   Client,
   RequestConfig,
   ResponseErrorConfig,
-} from "@shared/lib/http-client";
+} from "@shared/lib/utils/http-client";
 
 function getGetHealthUrl() {
   const res = { method: "GET", url: `/health` as const };

@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "properties": {
+    "additionalDays": {
+      "type": "integer",
+      "minimum": 0,
+      "exclusiveMinimum": true,
+      "description": "Number of additional days",
+      "example": 14
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reason for the extension",
+      "example": "Client requested scope change"
+    },
+    "cost": {
+      "type": "integer",
+      "nullable": true,
+      "minimum": 0,
+      "description": "Extension cost in minor currency units",
+      "example": 50000
+    },
+    "billedAmount": {
+      "type": "integer",
+      "nullable": true,
+      "minimum": 0,
+      "description": "Amount billed in minor currency units",
+      "example": 75000
+    },
+    "grantedAt": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the extension was granted (YYYY-MM-DD)",
+      "example": "2025-06-01"
+    }
+  },
+  "x-readme-ref-name": "UpdateExtensionBody"
+}

@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": ["Lead", "Member"],
+      "description": "New responsible role",
+      "example": "Lead"
+    }
+  },
+  "required": ["role"],
+  "x-readme-ref-name": "UpdateResponsibleRoleBody"
+}

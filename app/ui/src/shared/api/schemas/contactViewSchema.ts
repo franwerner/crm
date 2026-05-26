@@ -8,9 +8,16 @@ import { z } from "zod/v4";
 export const contactViewSchema = z.object({
   id: z.string().describe("Contact UUID"),
   name: z.string(),
-  phone: z.nullable(z.string()),
-  pipelineState: z.enum(["Contact", "Lead", "Customer", "Discarded"]),
-  stateLocked: z.boolean(),
+  contactType: z.enum(["Person", "Company"]),
+  sex: z.nullable(z.enum(["Male", "Female", "Other", "Unspecified"])),
+  addressStreet: z.nullable(z.string()),
+  addressNumber: z.nullable(z.string()),
+  addressPostalCode: z.nullable(z.string()),
+  addressCity: z.nullable(z.string()),
+  addressProvince: z.nullable(z.string()),
+  addressCountry: z.nullable(z.string()),
+  notes: z.nullable(z.string()),
+  pipelineState: z.enum(["Contact", "Lead", "AtRisk", "Customer", "Discarded"]),
   sourceChannel: z.nullable(
     z.enum(["Instagram", "WhatsApp", "Referral", "Email", "Other"]),
   ),
@@ -22,8 +29,25 @@ export const contactViewSchema = z.object({
         id: z.string(),
         name: z.string(),
       })
-      .describe("Creator user data, present only when populated=true"),
+      .describe("Creator user data. Present on detail endpoint."),
   ),
+  channels: z
+    .array(
+      z.object({
+        id: z.string(),
+        channelType: z.enum([
+          "Phone",
+          "Email",
+          "WhatsApp",
+          "Instagram",
+          "Website",
+          "Other",
+        ]),
+        value: z.string(),
+        isPrimary: z.boolean(),
+      }),
+    )
+    .describe("Communication channels"),
   createdAt: z.string().describe("ISO 8601 timestamp"),
   updatedAt: z.string().describe("ISO 8601 timestamp"),
 });

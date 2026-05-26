@@ -3,13 +3,13 @@
  * Do not edit manually.
  */
 
-import fetch from "@shared/lib/http-client";
+import fetch from "@shared/lib/utils/http-client";
 import type { PostAuthLogoutMutationResponse } from "../types/PostAuthLogout.ts";
 import type {
   Client,
   RequestConfig,
   ResponseErrorConfig,
-} from "@shared/lib/http-client";
+} from "@shared/lib/utils/http-client";
 
 function getPostAuthLogoutUrl() {
   const res = { method: "POST", url: `/auth/logout` as const };

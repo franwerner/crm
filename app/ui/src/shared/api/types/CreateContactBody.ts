@@ -3,6 +3,24 @@
  * Do not edit manually.
  */
 
+export const createContactBodyContactTypeEnum = {
+  Person: "Person",
+  Company: "Company",
+} as const;
+
+export type CreateContactBodyContactTypeEnumKey =
+  (typeof createContactBodyContactTypeEnum)[keyof typeof createContactBodyContactTypeEnum];
+
+export const createContactBodySexEnum = {
+  Male: "Male",
+  Female: "Female",
+  Other: "Other",
+  Unspecified: "Unspecified",
+} as const;
+
+export type CreateContactBodySexEnumKey =
+  (typeof createContactBodySexEnum)[keyof typeof createContactBodySexEnum];
+
 export const createContactBodySourceChannelEnum = {
   Instagram: "Instagram",
   WhatsApp: "WhatsApp",
@@ -23,6 +41,18 @@ export const createContactBodyInterestLevelEnum = {
 export type CreateContactBodyInterestLevelEnumKey =
   (typeof createContactBodyInterestLevelEnum)[keyof typeof createContactBodyInterestLevelEnum];
 
+export const channelsChannelTypeEnum2 = {
+  Phone: "Phone",
+  Email: "Email",
+  WhatsApp: "WhatsApp",
+  Instagram: "Instagram",
+  Website: "Website",
+  Other: "Other",
+} as const;
+
+export type ChannelsChannelTypeEnum2Key =
+  (typeof channelsChannelTypeEnum2)[keyof typeof channelsChannelTypeEnum2];
+
 export type CreateContactBody = {
   /**
    * @description Contact full name
@@ -31,10 +61,50 @@ export type CreateContactBody = {
    */
   name: string;
   /**
-   * @description Phone number
+   * @description Contact type
+   * @type string | undefined
+   */
+  contactType?: CreateContactBodyContactTypeEnumKey;
+  /**
+   * @description Sex (only for Person contacts)
    * @type string
    */
-  phone?: string | null;
+  sex?: CreateContactBodySexEnumKey | null;
+  /**
+   * @description Street name
+   * @type string
+   */
+  addressStreet?: string | null;
+  /**
+   * @description Street number
+   * @type string
+   */
+  addressNumber?: string | null;
+  /**
+   * @description Postal code
+   * @type string
+   */
+  addressPostalCode?: string | null;
+  /**
+   * @description City
+   * @type string
+   */
+  addressCity?: string | null;
+  /**
+   * @description Province or state
+   * @type string
+   */
+  addressProvince?: string | null;
+  /**
+   * @description Country
+   * @type string
+   */
+  addressCountry?: string | null;
+  /**
+   * @description Free-form notes
+   * @type string
+   */
+  notes?: string | null;
   /**
    * @description Acquisition channel
    * @type string
@@ -45,4 +115,26 @@ export type CreateContactBody = {
    * @type string
    */
   interestLevel?: CreateContactBodyInterestLevelEnumKey | null;
+  /**
+   * @description Communication channels
+   * @type array | undefined
+   */
+  channels?: {
+    /**
+     * @description Communication channel type
+     * @type string
+     */
+    channelType: ChannelsChannelTypeEnum2Key;
+    /**
+     * @description Channel value (phone number, URL, handle)
+     * @minLength 1
+     * @type string
+     */
+    value: string;
+    /**
+     * @description Whether this is the primary contact channel
+     * @type boolean
+     */
+    isPrimary: boolean;
+  }[];
 };

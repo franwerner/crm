@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "amountMinor": {
+      "type": "number",
+      "description": "Amount in minor currency units",
+      "example": 150000
+    },
+    "currency": {
+      "type": "string",
+      "description": "ISO 4217 currency code",
+      "example": "USD"
+    }
+  },
+  "required": ["amountMinor", "currency"],
+  "x-readme-ref-name": "Money"
+}

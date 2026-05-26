@@ -7,11 +7,60 @@
       "description": "Contact full name",
       "example": "Jane Doe"
     },
-    "phone": {
+    "contactType": {
+      "type": "string",
+      "enum": ["Person", "Company"],
+      "description": "Contact type",
+      "example": "Person"
+    },
+    "sex": {
       "type": "string",
       "nullable": true,
-      "description": "Phone number",
-      "example": "+1234567890"
+      "enum": ["Male", "Female", "Other", "Unspecified", null],
+      "description": "Sex (only for Person contacts)",
+      "example": "Female"
+    },
+    "addressStreet": {
+      "type": "string",
+      "nullable": true,
+      "description": "Street name",
+      "example": "Av. Corrientes"
+    },
+    "addressNumber": {
+      "type": "string",
+      "nullable": true,
+      "description": "Street number",
+      "example": "1234"
+    },
+    "addressPostalCode": {
+      "type": "string",
+      "nullable": true,
+      "description": "Postal code",
+      "example": "C1043"
+    },
+    "addressCity": {
+      "type": "string",
+      "nullable": true,
+      "description": "City",
+      "example": "Buenos Aires"
+    },
+    "addressProvince": {
+      "type": "string",
+      "nullable": true,
+      "description": "Province or state",
+      "example": "CABA"
+    },
+    "addressCountry": {
+      "type": "string",
+      "nullable": true,
+      "description": "Country",
+      "example": "Argentina"
+    },
+    "notes": {
+      "type": "string",
+      "nullable": true,
+      "description": "Free-form notes",
+      "example": "Met at trade show"
     },
     "sourceChannel": {
       "type": "string",
@@ -24,6 +73,40 @@
       "nullable": true,
       "enum": ["Cold", "Warm", "Hot", null],
       "description": "Interest level"
+    },
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "channelType": {
+            "type": "string",
+            "enum": [
+              "Phone",
+              "Email",
+              "WhatsApp",
+              "Instagram",
+              "Website",
+              "Other"
+            ],
+            "description": "Communication channel type",
+            "example": "Phone"
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Channel value (phone number, URL, handle)",
+            "example": "+1234567890"
+          },
+          "isPrimary": {
+            "type": "boolean",
+            "description": "Whether this is the primary contact channel",
+            "example": false
+          }
+        },
+        "required": ["channelType", "value", "isPrimary"]
+      },
+      "description": "Communication channels"
     }
   },
   "required": ["name"],

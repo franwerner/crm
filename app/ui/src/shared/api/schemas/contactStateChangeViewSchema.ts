@@ -8,8 +8,8 @@ import { z } from "zod/v4";
 export const contactStateChangeViewSchema = z.object({
   id: z.string().describe("State change UUID"),
   contactId: z.string().describe("Contact UUID"),
-  previousState: z.enum(["Contact", "Lead", "Customer", "Discarded"]),
-  nextState: z.enum(["Contact", "Lead", "Customer", "Discarded"]),
+  previousState: z.enum(["Contact", "Lead", "AtRisk", "Customer", "Discarded"]),
+  nextState: z.enum(["Contact", "Lead", "AtRisk", "Customer", "Discarded"]),
   changedAt: z.string().describe("ISO 8601 timestamp"),
   createdAt: z.string().describe("ISO 8601 timestamp"),
 });

@@ -1,0 +1,44 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Project name",
+      "example": "Website Redesign"
+    },
+    "description": {
+      "type": "string",
+      "nullable": true,
+      "description": "Project description",
+      "example": "Full redesign of the corporate website"
+    },
+    "contactId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID of the associated contact",
+      "example": "01938b0c-..."
+    },
+    "currency": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 3,
+      "description": "ISO 4217 currency code",
+      "example": "USD"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Project start date (YYYY-MM-DD)",
+      "example": "2025-01-01"
+    },
+    "plannedEndDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Project planned end date (YYYY-MM-DD)",
+      "example": "2025-12-31"
+    }
+  },
+  "required": ["name", "contactId", "currency", "startDate", "plannedEndDate"],
+  "x-readme-ref-name": "CreateProjectBody"
+}

@@ -18,7 +18,9 @@
         "ProposalWon",
         "ProposalRejected",
         "FollowUpPending",
-        "Note"
+        "Note",
+        "Discarded",
+        "Reopened"
       ],
       "example": "Note"
     },

@@ -3,9 +3,28 @@
  * Do not edit manually.
  */
 
+export const contactViewContactTypeEnum = {
+  Person: "Person",
+  Company: "Company",
+} as const;
+
+export type ContactViewContactTypeEnumKey =
+  (typeof contactViewContactTypeEnum)[keyof typeof contactViewContactTypeEnum];
+
+export const contactViewSexEnum = {
+  Male: "Male",
+  Female: "Female",
+  Other: "Other",
+  Unspecified: "Unspecified",
+} as const;
+
+export type ContactViewSexEnumKey =
+  (typeof contactViewSexEnum)[keyof typeof contactViewSexEnum];
+
 export const contactViewPipelineStateEnum = {
   Contact: "Contact",
   Lead: "Lead",
+  AtRisk: "AtRisk",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
@@ -33,6 +52,18 @@ export const contactViewInterestLevelEnum = {
 export type ContactViewInterestLevelEnumKey =
   (typeof contactViewInterestLevelEnum)[keyof typeof contactViewInterestLevelEnum];
 
+export const channelsChannelTypeEnum = {
+  Phone: "Phone",
+  Email: "Email",
+  WhatsApp: "WhatsApp",
+  Instagram: "Instagram",
+  Website: "Website",
+  Other: "Other",
+} as const;
+
+export type ChannelsChannelTypeEnumKey =
+  (typeof channelsChannelTypeEnum)[keyof typeof channelsChannelTypeEnum];
+
 export type ContactView = {
   /**
    * @description Contact UUID
@@ -46,15 +77,43 @@ export type ContactView = {
   /**
    * @type string
    */
-  phone: string | null;
+  contactType: ContactViewContactTypeEnumKey;
+  /**
+   * @type string
+   */
+  sex: ContactViewSexEnumKey | null;
+  /**
+   * @type string
+   */
+  addressStreet: string | null;
+  /**
+   * @type string
+   */
+  addressNumber: string | null;
+  /**
+   * @type string
+   */
+  addressPostalCode: string | null;
+  /**
+   * @type string
+   */
+  addressCity: string | null;
+  /**
+   * @type string
+   */
+  addressProvince: string | null;
+  /**
+   * @type string
+   */
+  addressCountry: string | null;
+  /**
+   * @type string
+   */
+  notes: string | null;
   /**
    * @type string
    */
   pipelineState: ContactViewPipelineStateEnumKey;
-  /**
-   * @type boolean
-   */
-  stateLocked: boolean;
   /**
    * @type string
    */
@@ -69,7 +128,7 @@ export type ContactView = {
    */
   createdBy: string;
   /**
-   * @description Creator user data, present only when populated=true
+   * @description Creator user data. Present on detail endpoint.
    * @type object | undefined
    */
   creator?: {
@@ -82,6 +141,28 @@ export type ContactView = {
      */
     name: string;
   };
+  /**
+   * @description Communication channels
+   * @type array
+   */
+  channels: {
+    /**
+     * @type string
+     */
+    id: string;
+    /**
+     * @type string
+     */
+    channelType: ChannelsChannelTypeEnumKey;
+    /**
+     * @type string
+     */
+    value: string;
+    /**
+     * @type boolean
+     */
+    isPrimary: boolean;
+  }[];
   /**
    * @description ISO 8601 timestamp
    * @type string

@@ -3,14 +3,14 @@
  * Do not edit manually.
  */
 
-import type { ContactView } from "./ContactView.ts";
+import type { ContactListItem } from "./ContactListItem.ts";
 
 export type ContactListResponse = {
   /**
    * @description List of items
    * @type array
    */
-  items: ContactView[];
+  items: ContactListItem[];
   /**
    * @description Total number of items
    * @type integer

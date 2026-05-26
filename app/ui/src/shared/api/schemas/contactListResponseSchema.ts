@@ -3,12 +3,12 @@
  * Do not edit manually.
  */
 
-import { contactViewSchema } from "./contactViewSchema.ts";
+import { contactListItemSchema } from "./contactListItemSchema.ts";
 import { z } from "zod/v4";
 
 export const contactListResponseSchema = z.object({
   get items() {
-    return z.array(contactViewSchema).describe("List of items");
+    return z.array(contactListItemSchema).describe("List of items");
   },
   total: z.int().describe("Total number of items"),
   limit: z.int().describe("Page size"),

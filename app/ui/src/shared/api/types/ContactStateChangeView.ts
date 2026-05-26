@@ -6,6 +6,7 @@
 export const contactStateChangeViewPreviousStateEnum = {
   Contact: "Contact",
   Lead: "Lead",
+  AtRisk: "AtRisk",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;
@@ -16,6 +17,7 @@ export type ContactStateChangeViewPreviousStateEnumKey =
 export const contactStateChangeViewNextStateEnum = {
   Contact: "Contact",
   Lead: "Lead",
+  AtRisk: "AtRisk",
   Customer: "Customer",
   Discarded: "Discarded",
 } as const;

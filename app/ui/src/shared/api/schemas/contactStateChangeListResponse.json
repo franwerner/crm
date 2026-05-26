@@ -10,12 +10,12 @@
           "contactId": { "type": "string", "description": "Contact UUID" },
           "previousState": {
             "type": "string",
-            "enum": ["Contact", "Lead", "Customer", "Discarded"],
+            "enum": ["Contact", "Lead", "AtRisk", "Customer", "Discarded"],
             "example": "Contact"
           },
           "nextState": {
             "type": "string",
-            "enum": ["Contact", "Lead", "Customer", "Discarded"],
+            "enum": ["Contact", "Lead", "AtRisk", "Customer", "Discarded"],
             "example": "Lead"
           },
           "changedAt": {
