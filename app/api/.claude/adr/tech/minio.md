@@ -3,12 +3,12 @@
 - **Categoría:** Object storage (S3-compatible)
 - **Versión:** image tag `minio/minio:latest` (sin pinear — decisión consciente para dev, ver Notas)
 - **Status:** Accepted
-- **Decidido en fase:** extensión transversal (F0 módulo projects)
+- **Decidido en fase:** file-storage
 - **Fecha:** 2026-05-26
 
 ## Por qué la elegimos
 
-Object storage S3-compatible auto-hosteado: corre en contenedor con docker-compose, expone la misma API S3 estándar, y nos permite usar el mismo cliente (`Bun.s3`) tanto en dev (contra MinIO) como en prod (contra AWS S3, R2, etc.) cambiando solo el endpoint. Cero vendor lock-in, cero costo en dev, cero credenciales cloud para nuevos devs. Alineado con la filosofía del repo de evitar SDKs externos cuando la primitiva ya existe (igual que `hono/jwt` y `Bun.password` en ADR 10).
+Object storage S3-compatible auto-hosteado: corre en contenedor con docker-compose, expone la misma API S3 estándar, y nos permite usar el mismo cliente (`Bun.s3`) tanto en dev (contra MinIO) como en prod (contra AWS S3, R2, etc.) cambiando solo el endpoint. Cero vendor lock-in, cero costo en dev, cero credenciales cloud para nuevos devs. Alineado con la filosofía del repo de evitar SDKs externos cuando la primitiva ya existe (igual que `hono/jwt` y `Bun.password` en `auth.md`).
 
 ## Alternativas descartadas
 
@@ -19,8 +19,8 @@ Object storage S3-compatible auto-hosteado: corre en contenedor con docker-compo
 ## Notas
 
 - **Cliente: `Bun.s3` NATIVO** (`S3Client` integrado en Bun ≥ 1.2). NO requiere `@aws-sdk/client-s3` ni otro SDK npm. Aunque `tech/bun.md` no menciona explícitamente esta API, está disponible y la adoptamos como cliente único contra cualquier endpoint S3-compatible.
-- Endpoint configurado vía env var `MINIO_ENDPOINT` (ver ADR 08 + `src/shared/config/index.ts`).
-- Convenciones de buckets, naming de keys, límites de tamaño y MIME whitelist: ver `19-file-storage.md`.
+- Endpoint configurado vía env var `MINIO_ENDPOINT` (ver `configuration-secrets.md` + `src/shared/config/index.ts`).
+- Convenciones de buckets, naming de keys, límites de tamaño y MIME whitelist: ver `file-storage.md`.
 - En dev se exponen los puertos `9000` (API S3) y `9001` (consola web). Credenciales root en compose: `minio` / `minio12345`. **No reutilizar estas credenciales en prod** — generar access keys scoped vía la consola admin.
 - **Sin pinear (`latest`):** decisión del usuario, contrario al patrón de `postgres:16`. Riesgo: cambios silenciosos entre `docker compose pull`. Reevaluar si aparece un breaking change.
 - Healthcheck del compose usa `mc ready local` (la CLI `mc` viene incluida en la imagen oficial; el alias `local` es implícito para localhost dentro del contenedor).

@@ -24,14 +24,14 @@ Registro vivo de las tecnologías concretas elegidas para este paquete. Cada ent
 | [tailwindcss](tailwindcss.md) | v4 / sin pinear | Utility-first CSS-first (`@theme`); tokens en CSS, encaja con el handoff |
 | [shadcn](shadcn.md) | latest (CLI) | Componentes copy-paste sobre Radix; código propio, custom total según handoff |
 | [radix-ui](radix-ui.md) | ^1.4.3 | Primitivos accesibles base de shadcn; se adopta el paquete paraguas (import desde `"radix-ui"`) en vez de los individuales |
-| [sonner](sonner.md) | ^2.0.7 | Toasts (shadcn deprecó su Toast propio); feedback de mutaciones y errores globales (ADR 04 §4.4) |
+| [sonner](sonner.md) | ^2.0.7 | Toasts (shadcn deprecó su Toast propio); feedback de mutaciones y errores globales (`error-handling.md` §4.4) |
 | [react-day-picker](react-day-picker.md) | ^10.0.1 | Date picker headless; recomendado por handoff y shadcn; modos single/range; satélite: date-fns ^4.3.0 |
 | [cmdk](cmdk.md) | ^1.1.1 | Base shadcn de `Command` (combobox con búsqueda y a11y); usado por el filtro `relation` con `shouldFilter={false}` (búsqueda async) |
 
 ### Routing
 | Tech | Versión | Por qué |
 |---|---|---|
-| [tanstack-router](tanstack-router.md) | latest / sin pinear | Routing type-safe; mismo ecosistema que TanStack Query; guards vía `beforeLoad` (ADR 10); search params con zod |
+| [tanstack-router](tanstack-router.md) | latest / sin pinear | Routing type-safe; mismo ecosistema que TanStack Query; guards vía `beforeLoad` (`auth.md`); search params con zod |
 
 ### Estado de servidor / data fetching
 | Tech | Versión | Por qué |
@@ -51,19 +51,19 @@ Registro vivo de las tecnologías concretas elegidas para este paquete. Cada ent
 | [zod](zod.md) | latest / sin pinear | Validación de config (startup) + forms (schemas generados por kubb) |
 
 ### Estado de cliente global
-_Pendiente — React Context para lo mínimo (auth-state, tema). **Zustand** queda Pending (ver `03-inter-layer-communication.md` §3.2), trigger: el estado de cliente global crece._
+_Pendiente — React Context para lo mínimo (auth-state, tema). **Zustand** queda Pending (ver `inter-layer-communication.md` §3.2), trigger: el estado de cliente global crece._
 
 ### Testing
-_Pendiente de decidir — ver `06-testing-strategy.md` (Pending). Conflicto activo con `Strict TDD Mode` (decisión de proyecto, cerrada)._
+_Pendiente de decidir — ver `testing-strategy.md` (Pending). Conflicto activo con `Strict TDD Mode` (decisión de proyecto, cerrada)._
 
 ### Observabilidad / error tracking
-_Pendiente de decidir — ver `04-error-handling.md` §4.3 (Pending). Recomendación no adoptada: error tracker tipo Sentry._
+_Pendiente de decidir — ver `error-handling.md` §4.3 (Pending). Recomendación no adoptada: error tracker tipo Sentry._
 
 ### Enforcement de arquitectura
 | Tech | Versión | Por qué |
 |---|---|---|
-| [dependency-cruiser](dependency-cruiser.md) | latest / sin pinear | Gate de CI autoritativo: verifica las 7 reglas del ADR 02; mismo tooling que `app/api` |
-| [eslint-plugin-boundaries](eslint-plugin-boundaries.md) | latest / sin pinear | Feedback en editor de violaciones de las reglas del ADR 02 (no reemplaza el gate de CI) |
+| [dependency-cruiser](dependency-cruiser.md) | latest / sin pinear | Gate de CI autoritativo: verifica las 7 reglas del `layers-and-dependencies.md`; mismo tooling que `app/api` |
+| [eslint-plugin-boundaries](eslint-plugin-boundaries.md) | latest / sin pinear | Feedback en editor de violaciones de las reglas del `layers-and-dependencies.md` (no reemplaza el gate de CI) |
 
 ### Otros
 _(vacío)_

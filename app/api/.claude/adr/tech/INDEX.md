@@ -30,42 +30,42 @@ Registro vivo de las tecnologías concretas elegidas para este paquete. Cada ent
 ### Object storage
 | Tech | Versión | Por qué |
 |---|---|---|
-| [minio](minio.md) | latest (image tag, sin pinear — decisión consciente para dev) | S3-compatible auto-hosteado para dev; mismo cliente `Bun.s3` nativo funciona contra MinIO o AWS S3 cambiando endpoint. ADR 19 |
+| [minio](minio.md) | latest (image tag, sin pinear — decisión consciente para dev) | S3-compatible auto-hosteado para dev; mismo cliente `Bun.s3` nativo funciona contra MinIO o AWS S3 cambiando endpoint. `file-storage.md` |
 
 ### Validación
 | Tech | Versión | Por qué |
 |---|---|---|
-| [zod](zod.md) | latest / sin pinear | Validación de forma/tipos en el borde + inferencia TS; adapter oficial de Hono. Reusado en config (ADR 08) |
+| [zod](zod.md) | latest / sin pinear | Validación de forma/tipos en el borde + inferencia TS; adapter oficial de Hono. Reusado en config (`configuration-secrets.md`) |
 
 ### Testing
-_Pendiente de decidir — ver `06-testing-strategy.md` (Status: Pending). Conflicto activo con `Strict TDD Mode` del harness._
+_Pendiente de decidir — ver `testing-strategy.md` (Status: Pending). Conflicto activo con `Strict TDD Mode` del harness._
 
 ### Logging
-_Pendiente de decidir — ver `07-logging.md` (Status: Pending). Recomendación no adoptada: `pino`._
+_Pendiente de decidir — ver `logging.md` (Status: Pending). Recomendación no adoptada: `pino`._
 
 ### Configuración / Secretos
 | Tech | Versión | Por qué |
 |---|---|---|
-| [zod](zod.md) | (ver Validación) | Schema de config validado al startup en `src/shared/config` (ADR 08) |
+| [zod](zod.md) | (ver Validación) | Schema de config validado al startup en `src/shared/config` (`configuration-secrets.md`) |
 
 ### Auth
-_Sin dependencia externa — se usan `hono/jwt` (parte de Hono) y `Bun.password` (nativo de Bun). Ver `10-auth.md`. Refresh/rotación: Pending._
+_Sin dependencia externa — se usan `hono/jwt` (parte de Hono) y `Bun.password` (nativo de Bun). Ver `auth.md`. Refresh/rotación: Pending._
 
 ### Inyección de dependencias
-_Sin librería — DI manual en el composition root. Ver `05-dependency-injection.md`._
+_Sin librería — DI manual en el composition root. Ver `dependency-injection.md`._
 
 ### Documentación / Contrato de API
 | Tech | Versión | Por qué |
 |---|---|---|
-| [hono-zod-openapi](hono-zod-openapi.md) | latest / sin pinear | Schema zod del borde = validación + OpenAPI 3.x autogenerado (fuente única de verdad). ADR 12 |
-| [scalar-hono-api-reference](scalar-hono-api-reference.md) | latest / sin pinear | UI de docs moderna para humanos sobre el mismo spec. ADR 12 |
+| [hono-zod-openapi](hono-zod-openapi.md) | latest / sin pinear | Schema zod del borde = validación + OpenAPI 3.x autogenerado (fuente única de verdad). `api-documentation.md` |
+| [scalar-hono-api-reference](scalar-hono-api-reference.md) | latest / sin pinear | UI de docs moderna para humanos sobre el mismo spec. `api-documentation.md` |
 
-> **kubb** NO se registra acá: es consumidor del OpenAPI y vive en `app/ui` (se registra en su catálogo cuando se bootstrapee ese paquete). Ver `12-api-documentation.md`.
+> **kubb** NO se registra acá: es consumidor del OpenAPI y vive en `app/ui` (se registra en su catálogo cuando se bootstrapee ese paquete). Ver `api-documentation.md`.
 
 ### Enforcement de arquitectura
 | Tech | Versión | Por qué |
 |---|---|---|
-| [dependency-cruiser](dependency-cruiser.md) | latest / sin pinear | Verifica las 7 reglas del ADR 02 como globs de path; gate de CI obligatorio |
+| [dependency-cruiser](dependency-cruiser.md) | latest / sin pinear | Verifica las 7 reglas de `layers-and-dependencies.md` como globs de path; gate de CI obligatorio |
 
 ### Otros
 | Tech | Versión | Por qué |

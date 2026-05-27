@@ -3,7 +3,7 @@
 - **Categoría:** Framework UI
 - **Versión:** latest estable / sin pinear (greenfield — pinear con caret al inicializar)
 - **Status:** Accepted
-- **Decidido en fase:** 0
+- **Decidido en fase:** context
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
@@ -18,5 +18,5 @@ Un CRM es tablas, formularios, filtros, paginación y estado de servidor por tod
 
 ## Notas
 
-- SPA client-side (ver `00-context.md`). Sin SSR/SSG.
+- SPA client-side (ver `context.md`). Sin SSR/SSG.
 - El estado de servidor NO se maneja con estado de React crudo: va por TanStack Query (ver `tanstack-query.md`).

@@ -3,7 +3,7 @@
 - **Categoría:** Estilos / Design System
 - **Versión:** latest (CLI) / componentes vendorizados en el repo
 - **Status:** Accepted
-- **Decidido en fase:** 5.7 (ADR 13)
+- **Decidido en fase:** folder-structure (`styling-and-design-system.md`)
 - **Fecha:** 2026-05-23
 
 ## Por qué la elegimos
@@ -18,10 +18,10 @@ No es una librería cerrada: el CLI copia el código fuente de cada componente a
 
 ## Notas
 
-- Alias del CLI apuntando a `src/shared/ui` (componentes en kebab-case, ver ADR 11).
+- Alias del CLI apuntando a `src/shared/ui` (componentes en kebab-case, ver `folder-structure.md`).
 - Deps satélite que arrastra (no llevan mini-ADR propio):
   - `class-variance-authority` — variants de componentes.
   - `clsx` + `tailwind-merge` — helper `cn()` para componer clases.
   - `lucide-react` — íconos (estilo lineal, coherente con el handoff).
   - `@tailwindcss/vite` — plugin de Tailwind v4 para Vite.
-- Mapeo de tokens handoff → esquema shadcn: ver ADR 13.
+- Mapeo de tokens handoff → esquema shadcn: ver `styling-and-design-system.md`.

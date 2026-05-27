@@ -3,7 +3,7 @@
 - **Categoría:** Framework web
 - **Versión:** latest / sin pinear (greenfield — pinear con caret al inicializar, ej. `^4.x`)
 - **Status:** Accepted
-- **Decidido en fase:** 0
+- **Decidido en fase:** context
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
@@ -17,6 +17,6 @@ Framework HTTP minimalista y de los más rápidos del ecosistema JS. Da routing 
 
 ## Notas
 
-- **Implicancia arquitectónica clave:** Hono NO inyecta dependencias. La inyección de dependencias y el composition root son responsabilidad nuestra — ver `01-architecture-style.md`, `02-layers-and-dependencies.md` y `05-dependency-injection.md`.
-- API REST sobre Hono: usar `hono/validator` o adapter (zod) para validación en el borde — ver `03-inter-layer-communication.md`.
-- Manejo de errores: Hono expone `app.onError` para un handler global — ver `04-error-handling.md`.
+- **Implicancia arquitectónica clave:** Hono NO inyecta dependencias. La inyección de dependencias y el composition root son responsabilidad nuestra — ver `architecture-style.md`, `layers-and-dependencies.md` y `dependency-injection.md`.
+- API REST sobre Hono: usar `hono/validator` o adapter (zod) para validación en el borde — ver `inter-layer-communication.md`.
+- Manejo de errores: Hono expone `app.onError` para un handler global — ver `error-handling.md`.

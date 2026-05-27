@@ -36,7 +36,7 @@ el estado de cada relación.
 - Equipo chico de usuarios; volumen bajo-medio de contactos.
 - Autenticación: cuenta individual por usuario (login por usuario). El
   transporte ya está decidido cross-paquete (cookie `httpOnly` same-site, ver
-  ADR 10 de `app/api` ↔ `app/ui`). No se redefine acá.
+  `auth.md` de `app/api` ↔ `app/ui`). No se redefine acá.
 
 ## 3. Objetivos
 
@@ -254,7 +254,7 @@ tiene dos mitades que **no se mezclan**:
 - Modelado de datos implementado en `app/api` (schema Drizzle + aggregate
   `Contact` con motor y lock + repos + `User` + migración).
 
-> Follow-up de documentación pendiente (no bloqueante): anexar a ADR 10 de
+> Follow-up de documentación pendiente (no bloqueante): anexar a `auth.md` de
 > `app/api` la resolución "sin roles en el producto", y registrar el set de
 > convenciones de datos (UUIDv7, timestamps, soft-delete, pgEnum, naming) como
 > ADR del paquete.

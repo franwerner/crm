@@ -3,7 +3,7 @@
 - **Categoría:** Documentación / Contrato de API
 - **Versión:** latest / sin pinear (greenfield — pinear con caret al inicializar)
 - **Status:** Accepted
-- **Decidido en fase:** ADR 12 (decisión nueva post-bootstrap)
+- **Decidido en fase:** api-documentation
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
@@ -18,4 +18,4 @@ UI de documentación moderna y rápida para humanos, con cliente de prueba integ
 ## Notas
 
 - Es solo el render para humanos. El endpoint de spec crudo (`/openapi.json`) va igual y es lo que consume kubb.
-- **Exposición:** Scalar + spec abiertos solo en no-prod; **deshabilitados en producción vía flag de entorno** (ADR 08). Ver ADR 12 §exposición.
+- **Exposición:** Scalar + spec abiertos solo en no-prod; **deshabilitados en producción vía flag de entorno** (`configuration-secrets.md`). Ver `api-documentation.md` §exposición.

@@ -3,7 +3,7 @@
 - **Categoría:** ORM / Acceso a datos (incluye migraciones vía drizzle-kit)
 - **Versión:** latest / sin pinear (greenfield — pinear con caret al inicializar)
 - **Status:** Accepted
-- **Decidido en fase:** 5.5
+- **Decidido en fase:** data-access
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
@@ -18,6 +18,6 @@ ORM SQL-first y type-safe, liviano, sin engine separado y con soporte first-clas
 
 ## Notas
 
-- **Encapsulación obligatoria:** Drizzle vive SOLO dentro del adapter `*.repository.bun.ts` de cada slice. El use-case ve únicamente la interface del puerto (`*.repository.ts`) — nunca importa Drizzle. Esto preserva el acoplamiento Pragmático (Fase 1) y la regla #2/#4 (Fase 2).
-- Migraciones con `drizzle-kit` — directorio de migraciones versionado en el repo. Ver `09-data-access.md`.
+- **Encapsulación obligatoria:** Drizzle vive SOLO dentro del adapter `*.repository.bun.ts` de cada slice. El use-case ve únicamente la interface del puerto (`*.repository.ts`) — nunca importa Drizzle. Esto preserva el acoplamiento Pragmático (ver `architecture-style.md`) y la regla #2/#4 (ver `layers-and-dependencies.md`).
+- Migraciones con `drizzle-kit` — directorio de migraciones versionado en el repo. Ver `data-access.md`.
 - El schema de Drizzle es detalle de infraestructura, NO es el modelo de dominio. El dominio del slice (`customer.ts`) no se define con Drizzle; el adapter mapea entre fila DB ↔ entidad de dominio.

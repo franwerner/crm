@@ -3,12 +3,12 @@
 - **Categoría:** Enforcement de arquitectura
 - **Versión:** latest / sin pinear (greenfield — pinear como devDependency al scaffoldear)
 - **Status:** Accepted
-- **Decidido en fase:** 2 (enforcement, decisión post-bootstrap)
+- **Decidido en fase:** layers-and-dependencies
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
 
-Las 7 reglas de dependencia del ADR 02 están escritas como globs de path; dependency-cruiser las expresa 1:1 en su config y **falla el CI** si un import las viola. Es independiente del framework, así que es el **mismo tooling de enforcement para todo el monorepo** (`app/api` Bun/Hono y `app/ui` React/Vite) → consistencia.
+Las 7 reglas de dependencia de `layers-and-dependencies.md` están escritas como globs de path; dependency-cruiser las expresa 1:1 en su config y **falla el CI** si un import las viola. Es independiente del framework, así que es el **mismo tooling de enforcement para todo el monorepo** (`app/api` Bun/Hono y `app/ui` React/Vite) → consistencia.
 
 ## Alternativas descartadas
 
@@ -17,6 +17,6 @@ Las 7 reglas de dependencia del ADR 02 están escritas como globs de path; depen
 
 ## Notas
 
-- La config (`.dependency-cruiser.js`) traduce las 7 reglas del ADR 02. Mantenerla sincronizada si las reglas cambian.
+- La config (`.dependency-cruiser.js`) traduce las 7 reglas de `layers-and-dependencies.md`. Mantenerla sincronizada si las reglas cambian.
 - **Crítico:** debe correr en CI y romper el pipeline ante violación. Un script local sin gate de CI no cumple el objetivo.
 - Se configura al scaffoldear el paquete, ANTES del primer feature.

@@ -6,7 +6,7 @@ const EnvSchema = z.object({
   DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
   JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),
   API_DOCS_ENABLED: z.enum(['true', 'false']).optional(),
-  // Atributos de la cookie de sesión (ADR 10): env vars opcionales con defaults seguros
+  // Atributos de la cookie de sesión (auth.md): env vars opcionales con defaults seguros
   SESSION_COOKIE_NAME: z.string().min(1).default('session'),
   SESSION_MAX_AGE_SECONDS: z.coerce.number().int().positive().default(604800),
   MINIO_ENDPOINT: z.string().url('MINIO_ENDPOINT must be a valid URL'),
@@ -38,7 +38,7 @@ export const config = {
   jwtSecret: env.JWT_SECRET,
   apiDocsEnabled:
     env.API_DOCS_ENABLED === undefined ? !isProduction : env.API_DOCS_ENABLED === 'true',
-  // Fuente única de verdad para los atributos de la cookie de sesión (ADR 10)
+  // Fuente única de verdad para los atributos de la cookie de sesión (auth.md)
   sessionCookieName: env.SESSION_COOKIE_NAME,
   sessionMaxAgeSeconds: env.SESSION_MAX_AGE_SECONDS,
   minioEndpoint: env.MINIO_ENDPOINT,

@@ -3,7 +3,7 @@
 - **Categoría:** Package manager / runtime de tooling
 - **Versión:** latest / sin pinear (greenfield — pinear al inicializar)
 - **Status:** Accepted
-- **Decidido en fase:** 0
+- **Decidido en fase:** context
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos

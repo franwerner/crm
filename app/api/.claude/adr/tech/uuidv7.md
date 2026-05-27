@@ -3,7 +3,7 @@
 - **Categoría:** Otro (generación de identidad / UUID)
 - **Versión:** 1.2.1
 - **Status:** Accepted
-- **Decidido en fase:** 5.5
+- **Decidido en fase:** data-access
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
@@ -14,7 +14,7 @@ Genera UUID v7 conforme a RFC 9562, cero dependencias transitivas, mínimo y gar
 
 - **uuid (v9+):** estándar de facto y expone v7, pero más superficie de la que se usa y monotonicidad sub-ms menos explícita.
 - **Implementación propia (~20 líneas):** sin dependencia pero pasás a ser dueño de la corrección de un generador RFC 9562 (layout de bits, monotonicidad, regresión de reloj); riesgo alto en un punto donde un bug es difícil de detectar.
-- **Generación en la DB (Postgres `uuidv7()`/`gen_random_uuid()`):** contradice ADR 13 (id generado por la app en el borde, PK sin DEFAULT) y `gen_random_uuid()` es v4.
+- **Generación en la DB (Postgres `uuidv7()`/`gen_random_uuid()`):** contradice `data-modeling-conventions.md` (id generado por la app en el borde, PK sin DEFAULT) y `gen_random_uuid()` es v4.
 
 ## Notas
 

@@ -3,7 +3,7 @@
 - **Categoría:** Build tool / dev server
 - **Versión:** latest estable / sin pinear (greenfield — pinear con caret al inicializar)
 - **Status:** Accepted
-- **Decidido en fase:** 0
+- **Decidido en fase:** context
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos

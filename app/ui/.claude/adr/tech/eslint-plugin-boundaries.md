@@ -3,12 +3,12 @@
 - **Categoría:** Enforcement de arquitectura (DX en editor)
 - **Versión:** latest / sin pinear (greenfield — pinear como devDependency al scaffoldear)
 - **Status:** Accepted
-- **Decidido en fase:** 2 (enforcement, decisión post-bootstrap)
+- **Decidido en fase:** layers-and-dependencies (enforcement, decisión post-bootstrap)
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
 
-Da feedback **inmediato en el editor** cuando un import viola las reglas del ADR 02 (no esperás al CI). Capa de DX encima de dependency-cruiser, que sigue siendo el gate autoritativo en CI.
+Da feedback **inmediato en el editor** cuando un import viola las reglas del `layers-and-dependencies.md` (no esperás al CI). Capa de DX encima de dependency-cruiser, que sigue siendo el gate autoritativo en CI.
 
 ## Alternativas descartadas
 
@@ -17,5 +17,5 @@ Da feedback **inmediato en el editor** cuando un import viola las reglas del ADR
 ## Notas
 
 - Solo en `app/ui` (atado al setup de ESLint del front). `app/api` usa solo dependency-cruiser.
-- Mapea las reglas del ADR 02 a "tipos de elemento" (features, shared/ui, shared/api, app). Mantener sincronizado con el ADR 02 y con la config de dependency-cruiser.
+- Mapea las reglas del `layers-and-dependencies.md` a "tipos de elemento" (features, shared/ui, shared/api, app). Mantener sincronizado con el `layers-and-dependencies.md` y con la config de dependency-cruiser.
 - NO reemplaza el gate de CI: si boundaries y dependency-cruiser difieren, dependency-cruiser manda.

@@ -3,7 +3,7 @@
 - **Categoría:** Estilos / Design System
 - **Versión:** v4 (latest / sin pinear)
 - **Status:** Accepted
-- **Decidido en fase:** 5.7 (ADR 13)
+- **Decidido en fase:** folder-structure (`styling-and-design-system.md`)
 - **Fecha:** 2026-05-23
 
 ## Por qué la elegimos
@@ -19,4 +19,4 @@ Utility-first estándar para SPAs React. v4 es CSS-first (tokens en `@theme`), l
 ## Notas
 
 - Integración con Vite vía `@tailwindcss/vite` (plugin oficial de v4).
-- Tokens y capa semántica puente hacia shadcn: ver ADR 13.
+- Tokens y capa semántica puente hacia shadcn: ver `styling-and-design-system.md`.

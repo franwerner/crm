@@ -3,7 +3,7 @@
 - **Categoría:** Lenguaje
 - **Versión:** latest / sin pinear (greenfield — pinear como devDependency al inicializar; Bun ejecuta TS nativo sin transpile step)
 - **Status:** Accepted
-- **Decidido en fase:** 0
+- **Decidido en fase:** context
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
@@ -17,4 +17,4 @@ Tipado estático sobre JavaScript: contratos explícitos entre capas, refactors 
 ## Notas
 
 - `tsconfig.json` debe arrancar en modo estricto: `strict: true`, `noUncheckedIndexedAccess`, `noImplicitOverride`. Definir al inicializar.
-- Las reglas de dependencia entre capas (ver `02-layers-and-dependencies.md`) se podrán enforcar con un linter de imports (ej. `eslint-plugin-boundaries` o `dependency-cruiser`) apoyado en los paths de TS.
+- Las reglas de dependencia entre capas (ver `layers-and-dependencies.md`) se podrán enforcar con un linter de imports (ej. `eslint-plugin-boundaries` o `dependency-cruiser`) apoyado en los paths de TS.

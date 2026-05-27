@@ -3,7 +3,7 @@
 - **Categoría:** Base de datos
 - **Versión:** latest estable / sin pinear (greenfield — fijar versión mayor en infra/compose al inicializar, ej. 16)
 - **Status:** Accepted
-- **Decidido en fase:** 5.5
+- **Decidido en fase:** data-access
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
@@ -17,5 +17,5 @@ Un CRM es datos relacionales con integridad fuerte: clientes, deals, actividades
 
 ## Notas
 
-- El motor solo se accede desde el adapter del slice (`*.repository.bun.ts`) vía Drizzle — ver `09-data-access.md` y reglas de dependencia #4/#7 en `02-layers-and-dependencies.md`.
+- El motor solo se accede desde el adapter del slice (`*.repository.bun.ts`) vía Drizzle — ver `data-access.md` y reglas de dependencia #4/#7 en `layers-and-dependencies.md`.
 - Pinear la versión mayor en el setup de infraestructura (docker-compose / proveedor) al inicializar.

@@ -10,6 +10,6 @@ Si una decisión no está documentada o algo no queda claro, **preguntá al usua
 
 > **Importante:** las convenciones de este paquete NO se heredan de ni a otros paquetes (`app/ui`). Son autónomas.
 
-> **Override de Strict TDD (RESUELTO — autoritativo para este paquete):** el `~/.claude/CLAUDE.md` global declara `Strict TDD Mode: enabled` para todos los proyectos. **Para `crm/app/api` ese modo está DESACTIVADO**, en coherencia con la decisión de arquitectura del ADR 06 (arrancar sin tests, decisión consciente tras pushback x2). Este override es de alcance proyecto: NO toca la config global ni afecta otros repos. **No asumas TDD ni test-first al trabajar en `app/api`**: no escribas tests salvo pedido explícito; leé `06-testing-strategy.md` para el contexto y el trigger de reevaluación.
+> **Override de Strict TDD (RESUELTO — autoritativo para este paquete):** el `~/.claude/CLAUDE.md` global declara `Strict TDD Mode: enabled` para todos los proyectos. **Para `crm/app/api` ese modo está DESACTIVADO**, en coherencia con la decisión de arquitectura de `testing-strategy.md` (arrancar sin tests, decisión consciente tras pushback x2). Este override es de alcance proyecto: NO toca la config global ni afecta otros repos. **No asumas TDD ni test-first al trabajar en `app/api`**: no escribas tests salvo pedido explícito; leé `testing-strategy.md` para el contexto y el trigger de reevaluación.
 
-Para crear, actualizar o revisar decisiones arquitectónicas (incluyendo agregar/cambiar tecnologías del catálogo), usá la skill `architecture-boostrap`.
+Para crear, actualizar o revisar decisiones arquitectónicas (incluyendo agregar/cambiar tecnologías del catálogo), usá la skill `architecture-bootstrap`.

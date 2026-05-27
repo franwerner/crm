@@ -3,12 +3,12 @@
 - **Categoría:** Documentación / Contrato de API
 - **Versión:** latest / sin pinear (greenfield — pinear con caret al inicializar)
 - **Status:** Accepted
-- **Decidido en fase:** ADR 12 (decisión nueva post-bootstrap)
+- **Decidido en fase:** api-documentation
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
 
-Middleware oficial de Hono que convierte los schemas `zod` del borde en una sola fuente de verdad: el mismo schema valida request/response en runtime (ADR 03 §3.4) y genera el spec OpenAPI 3.x automáticamente. El contrato no puede desincronizarse de la implementación. El frontend `app/ui` consume ese OpenAPI vía kubb para generar tipos/cliente tipados.
+Middleware oficial de Hono que convierte los schemas `zod` del borde en una sola fuente de verdad: el mismo schema valida request/response en runtime (`inter-layer-communication.md` §3.4) y genera el spec OpenAPI 3.x automáticamente. El contrato no puede desincronizarse de la implementación. El frontend `app/ui` consume ese OpenAPI vía kubb para generar tipos/cliente tipados.
 
 ## Alternativas descartadas
 
@@ -17,6 +17,6 @@ Middleware oficial de Hono que convierte los schemas `zod` del borde en una sola
 
 ## Notas
 
-- **Implicancia arquitectónica (importante):** obliga a escribir la capa presentation con `OpenAPIHono` + `createRoute` (ruta + schema + metadata juntos). Define cómo se escribe `*.routes.ts` (ver ADR 02 presentation y ADR 12).
-- El contrato expuesto son los **schemas del borde** (input DTO / output view-model), NUNCA entidades de dominio (ADR 03 §3.1).
+- **Implicancia arquitectónica (importante):** obliga a escribir la capa presentation con `OpenAPIHono` + `createRoute` (ruta + schema + metadata juntos). Define cómo se escribe `*.routes.ts` (ver `layers-and-dependencies.md` y `api-documentation.md`).
+- El contrato expuesto son los **schemas del borde** (input DTO / output view-model), NUNCA entidades de dominio (`inter-layer-communication.md` §3.1).
 - Produce OpenAPI 3.x; kubb (en `app/ui`) lo consume en build/CI, no en runtime del navegador.

@@ -3,12 +3,12 @@
 - **Categoría:** Enforcement de arquitectura (CI gate)
 - **Versión:** latest / sin pinear (greenfield — pinear como devDependency al scaffoldear)
 - **Status:** Accepted
-- **Decidido en fase:** 2 (enforcement, decisión post-bootstrap)
+- **Decidido en fase:** layers-and-dependencies (enforcement, decisión post-bootstrap)
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
 
-Backbone de enforcement de las 7 reglas del ADR 02, expresadas como globs de path. Corre en CI y **falla el pipeline** ante un import que viole las reglas. Mismo tooling que `app/api` → consistencia de enforcement en todo el monorepo.
+Backbone de enforcement de las 7 reglas del `layers-and-dependencies.md`, expresadas como globs de path. Corre en CI y **falla el pipeline** ante un import que viole las reglas. Mismo tooling que `app/api` → consistencia de enforcement en todo el monorepo.
 
 ## Alternativas descartadas
 
@@ -17,6 +17,6 @@ Backbone de enforcement de las 7 reglas del ADR 02, expresadas como globs de pat
 
 ## Notas
 
-- `.dependency-cruiser.js` traduce las 7 reglas del ADR 02 (features aisladas, shared no conoce features, shared/api read-only, presentacionales sin kubb/Query, etc.).
+- `.dependency-cruiser.js` traduce las 7 reglas del `layers-and-dependencies.md` (features aisladas, shared no conoce features, shared/api read-only, presentacionales sin kubb/Query, etc.).
 - **Crítico:** gate de CI obligatorio. Sin eso, no cumple el objetivo.
 - Convive con `eslint-plugin-boundaries`: boundaries = feedback en editor; dependency-cruiser = verdad en CI.

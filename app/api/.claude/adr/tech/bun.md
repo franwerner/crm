@@ -3,7 +3,7 @@
 - **Categoría:** Lenguaje y runtime
 - **Versión:** latest / sin pinear (greenfield — pinear en `package.json` / `.bun-version` al inicializar el proyecto)
 - **Status:** Accepted
-- **Decidido en fase:** 0
+- **Decidido en fase:** context
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
@@ -18,5 +18,5 @@ Runtime único que reemplaza Node + npm/pnpm + Jest + esbuild: package manager, 
 ## Notas
 
 - Greenfield: pinear la versión de Bun apenas se inicialice el proyecto (`bun init`) — `bun.lockb` + campo `engines`/`.bun-version`.
-- Bun trae test runner propio (`bun test`) — ver `06-testing-strategy.md` cuando se defina la estrategia de testing.
+- Bun trae test runner propio (`bun test`) — ver `testing-strategy.md` cuando se defina la estrategia de testing.
 - El proyecto corre bajo **Strict TDD Mode**: el test runner de Bun debe quedar configurado y verde desde el primer commit.

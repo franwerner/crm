@@ -3,12 +3,12 @@
 - **Categoría:** Formularios / validación cliente
 - **Versión:** latest / sin pinear (greenfield — pinear con caret al inicializar)
 - **Status:** Accepted
-- **Decidido en fase:** 3.4
+- **Decidido en fase:** inter-layer-communication
 - **Fecha:** 2026-05-17
 
 ## Por qué la elegimos
 
-Manejo de formularios performante (uncontrolled, pocos re-renders) — importante en un CRM lleno de forms. Se integra con schemas zod vía `@hookform/resolvers`. Los schemas zod NO se escriben a mano: los genera `@kubb/plugin-zod` desde el OpenAPI de `app/api`, así la validación cliente deriva del mismo contrato que valida el backend (fuente única de verdad, ver `app/api` ADR 03 §3.4 y ADR 12).
+Manejo de formularios performante (uncontrolled, pocos re-renders) — importante en un CRM lleno de forms. Se integra con schemas zod vía `@hookform/resolvers`. Los schemas zod NO se escriben a mano: los genera `@kubb/plugin-zod` desde el OpenAPI de `app/api`, así la validación cliente deriva del mismo contrato que valida el backend (fuente única de verdad, ver `app/api` `data-access.md` §3.4 y `api-documentation.md`).
 
 ## Alternativas descartadas
 

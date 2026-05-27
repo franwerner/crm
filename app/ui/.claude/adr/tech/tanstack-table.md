@@ -3,7 +3,7 @@
 - **Categoría:** Estado de servidor / data fetching (tablas)
 - **Versión:** ^8.21.3
 - **Status:** Accepted
-- **Decidido en fase:** ADR 02 (implementación slice 2a — contacts list)
+- **Decidido en fase:** layers-and-dependencies (implementación slice 2a — contacts list)
 - **Fecha:** 2026-05-24
 
 ## Por qué la elegimos
