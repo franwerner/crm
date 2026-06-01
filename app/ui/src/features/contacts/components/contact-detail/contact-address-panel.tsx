@@ -5,7 +5,6 @@ import type { ContactView } from '@shared/api/types/ContactView'
 import { contactEditFields } from '@features/contacts/constants/contact-edit.form'
 import { InlineField } from '@shared/ui/inline-field'
 import { toFieldDef } from '@shared/lib/form-view/types'
-import { makeValues } from './contact-field-mappers'
 
 type Props = {
   contact: ContactView
@@ -23,7 +22,6 @@ const ADDRESS_KEYS: ReadonlyArray<keyof UpdateContactBody> = [
 ]
 
 export function ContactAddressPanel({ contact, onPatch, isPending }: Props) {
-  const values = makeValues(contact)
   const fields = contactEditFields.map(toFieldDef).filter((f) => ADDRESS_KEYS.includes(f.key))
 
   const handlePatch = useCallback(
@@ -41,7 +39,7 @@ export function ContactAddressPanel({ contact, onPatch, isPending }: Props) {
           <InlineField
             key={field.key}
             field={field}
-            currentValue={values[field.key]}
+            currentValue={contact[field.key]}
             onPatch={handlePatch}
             isPending={isPending}
           />

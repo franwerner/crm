@@ -7,7 +7,6 @@ import type { UpdateProjectBody } from '@shared/api/types/UpdateProjectBody'
 import { projectStatusBadge, projectStatusLabels } from '@features/projects/constants/projects.options'
 import { projectEditForm } from '@features/projects/constants/project-edit.form'
 import { formatDate } from '@shared/lib/utils/date'
-import { makeValues } from './project-field-mappers'
 
 const EDITABLE_KEYS: ReadonlyArray<keyof UpdateProjectBody> = [
   'name',
@@ -24,7 +23,6 @@ type Props = {
 }
 
 export function ProjectInfoPanel({ project, onPatch, isPending }: Props) {
-  const values = makeValues(project)
   const fields = projectEditForm.fields.map(toFieldDef).filter((f) => EDITABLE_KEYS.includes(f.key))
 
   return (
@@ -44,7 +42,7 @@ export function ProjectInfoPanel({ project, onPatch, isPending }: Props) {
           <InlineField
             key={field.key}
             field={field}
-            currentValue={values[field.key]}
+            currentValue={project[field.key]}
             onPatch={onPatch}
             isPending={isPending}
           />
