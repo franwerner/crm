@@ -1,6 +1,7 @@
 import { toast } from 'sonner'
 import { usePostContacts } from '@shared/api/hooks/usePostContacts'
 import { usePostContactsBulkDelete } from '@shared/api/hooks/usePostContactsBulkDelete'
+import { useDeleteContactsId } from '@shared/api/hooks/useDeleteContactsId'
 import { usePatchContactsId } from '@shared/api/hooks/usePatchContactsId'
 import { usePostContactsIdEvents } from '@shared/api/hooks/usePostContactsIdEvents'
 import { usePostContactsIdChannels } from '@shared/api/hooks/usePostContactsIdChannels'
@@ -47,6 +48,21 @@ export function useBulkDeleteContacts() {
 
   return {
     bulkDelete,
+    isPending: mutation.isPending,
+  }
+}
+
+export function useDeleteContact(contactId: string) {
+  const mutation = useDeleteContactsId()
+
+  async function deleteContact() {
+    await mutation.mutateAsync({ id: contactId })
+    await queryClient.invalidateQueries({ queryKey: getContactsQueryKey() })
+    toast.success('Contacto eliminado')
+  }
+
+  return {
+    deleteContact,
     isPending: mutation.isPending,
   }
 }

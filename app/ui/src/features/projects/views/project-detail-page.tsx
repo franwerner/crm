@@ -11,7 +11,7 @@ import { useAddResponsible, useUpdateResponsible, useRemoveResponsible } from '@
 import { useAddBudgetItem, useUpdateBudgetItem, useRemoveBudgetItem } from '@features/projects/hooks/use-project-budget-items-mutations'
 import { useAddExpense, useUpdateExpense, useRemoveExpense } from '@features/projects/hooks/use-project-expenses-mutations'
 import { useAddExtension, useUpdateExtension, useRemoveExtension } from '@features/projects/hooks/use-project-extensions-mutations'
-import { useProjectStateChange } from '@features/projects/hooks/use-project-state-change-mutation'
+import { ProjectDetailHeader } from '@features/projects/components/project-detail/project-detail-header'
 import { ProjectInfoPanel } from '@features/projects/components/project-detail/project-info-panel'
 import { ProjectTotalsPanel } from '@features/projects/components/project-detail/project-totals-panel'
 import { ProjectResponsiblesPanel } from '@features/projects/components/project-detail/project-responsibles-panel'
@@ -20,7 +20,6 @@ import { ProjectBudgetItemsPanel } from '@features/projects/components/project-d
 import { ProjectExpensesPanel } from '@features/projects/components/project-detail/project-expenses-panel'
 import { ProjectExtensionsPanel } from '@features/projects/components/project-detail/project-extensions-panel'
 import { ProjectDocumentsPanel } from '@features/projects/components/project-detail/project-documents-panel'
-import { StateChangeAction } from '@features/projects/components/project-detail/state-change-action'
 import type { ResponsibleCreateFormValues } from '@features/projects/constants/project-responsible.form'
 import type { ResponsibleEditFormValues } from '@features/projects/constants/project-responsible-edit.form'
 import type { BudgetItemCreateFormValues } from '@features/projects/constants/project-budget-item.form'
@@ -29,7 +28,6 @@ import type { ExpenseCreateFormValues } from '@features/projects/constants/proje
 import type { ExpenseEditFormValues } from '@features/projects/constants/project-expense-edit.form'
 import type { ExtensionCreateFormValues } from '@features/projects/constants/project-extension.form'
 import type { ExtensionEditFormValues } from '@features/projects/constants/project-extension-edit.form'
-import type { ChangeProjectStateBodyNewStateEnumKey } from '@shared/api/types/ChangeProjectStateBody'
 
 export function ProjectDetailPage() {
   const { id } = useParams({ from: '/_authenticated/projects/$id' })
@@ -62,8 +60,6 @@ export function ProjectDetailPage() {
   const { addExtension, isPending: isAddingExtension, errorMessage: addExtensionError } = useAddExtension(id)
   const { updateExtension, isPending: isUpdatingExtension, errorMessage: updateExtensionError } = useUpdateExtension(id)
   const { removeExtension, isPending: isRemovingExtension } = useRemoveExtension(id)
-
-  const { changeState, isPending: isChangingState } = useProjectStateChange(id)
 
   if (isLoading) {
     return (
@@ -125,20 +121,10 @@ export function ProjectDetailPage() {
     await removeExtension(extId)
   }
 
-  async function handleChangeState(newState: ChangeProjectStateBodyNewStateEnumKey) {
-    await changeState(newState)
-  }
-
   return (
     <>
       <div className="flex flex-col gap-6">
-        <div className="flex items-start justify-end gap-4">
-          <StateChangeAction
-            status={project.status}
-            onChangeState={handleChangeState}
-            isPending={isChangingState}
-          />
-        </div>
+        <ProjectDetailHeader project={project} />
 
         <div className="grid grid-cols-1 gap-6 items-start lg:grid-cols-2">
           <div className="flex flex-col gap-6">

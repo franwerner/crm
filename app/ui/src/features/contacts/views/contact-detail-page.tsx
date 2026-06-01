@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { toast } from 'sonner'
-import { useNavigate, useParams } from '@tanstack/react-router'
+import { useParams } from '@tanstack/react-router'
 import { useContact, useContactEvents, useContactStateChanges } from '@features/contacts/hooks/use-contact'
 import {
   useRegisterContactEvent,
@@ -8,9 +7,7 @@ import {
   useUpdateChannel,
   useRemoveChannel,
   useUpdateContact,
-  useBulkDeleteContacts,
 } from '@features/contacts/hooks/use-contact-mutations'
-import { DeleteDialog } from '@shared/ui/delete-dialog'
 import {
   useContactAssignments,
   useAddAssignment,
@@ -36,7 +33,6 @@ import { ContactDetailHeader } from '../components/contact-detail/contact-detail
 
 export function ContactDetailPage() {
   const { id } = useParams({ from: '/_authenticated/contacts/$id' })
-  const navigate = useNavigate()
 
   const { contact, isLoading } = useContact(id)
   const { events, total, isLoading: isLoadingEvents } = useContactEvents(id)
@@ -47,7 +43,6 @@ export function ContactDetailPage() {
   const { addChannel, isPending: isAdding, errorMessage: addError } = useAddChannel(id)
   const { updateChannel, isPending: isUpdatingChannel, errorMessage: updateError } = useUpdateChannel(id)
   const { removeChannel, isPending: isRemoving } = useRemoveChannel(id)
-  const { bulkDelete, isPending: isDeleting } = useBulkDeleteContacts()
 
   const { assignments, isLoading: isLoadingAssignments } = useContactAssignments(id)
   const { addAssignment, isPending: isAddingAssignment, errorMessage: addAssignmentError } = useAddAssignment(id)
@@ -55,7 +50,6 @@ export function ContactDetailPage() {
   const { removeAssignment, isPending: isRemovingAssignment } = useRemoveAssignment(id)
 
   const [registerOpen, setRegisterOpen] = useState(false)
-  const [deleteOpen, setDeleteOpen] = useState(false)
 
   if (isLoading) {
     return (
@@ -101,23 +95,12 @@ export function ContactDetailPage() {
     await updateAssignmentRole(userId, { role: data.role })
   }
 
-  async function handleConfirmDelete() {
-    try {
-      await bulkDelete([id])
-      setDeleteOpen(false)
-      navigate({ to: '/contacts' })
-    } catch {
-      toast.error('Error al eliminar el contacto')
-    }
-  }
-
   return (
     <>
       <div className="flex flex-col gap-6">
         <ContactDetailHeader
           contact={contact}
           onRegisterEvent={() => setRegisterOpen(true)}
-          onDelete={() => setDeleteOpen(true)}
         />
 
         <div className="grid grid-cols-1 gap-6 items-start lg:grid-cols-2">
@@ -181,15 +164,6 @@ export function ContactDetailPage() {
         isPending={isRegistering}
         errorMessage={registerError}
         pipelineState={contact.pipelineState}
-      />
-
-      <DeleteDialog
-        open={deleteOpen}
-        onOpenChange={setDeleteOpen}
-        title="Eliminar contacto"
-        content={`¿Eliminar a ${contact.name}? Esta acción no se puede deshacer.`}
-        onDeleted={handleConfirmDelete}
-        isDeleting={isDeleting}
       />
     </>
   )

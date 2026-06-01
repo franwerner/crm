@@ -1,6 +1,7 @@
 import { toast } from 'sonner'
 import { usePostProjects } from '@shared/api/hooks/usePostProjects'
 import { usePatchProjectsId } from '@shared/api/hooks/usePatchProjectsId'
+import { useDeleteProjectsId } from '@shared/api/hooks/useDeleteProjectsId'
 import { getProjectsQueryKey } from '@shared/api/hooks/useGetProjects'
 import { getProjectsIdQueryKey } from '@shared/api/hooks/useGetProjectsId'
 import { queryClient } from '@shared/lib/config/query-client'
@@ -44,5 +45,20 @@ export function useUpdateProject(projectId: string) {
     updateProject,
     isPending: mutation.isPending,
     errorMessage,
+  }
+}
+
+export function useDeleteProject(projectId: string) {
+  const mutation = useDeleteProjectsId()
+
+  async function deleteProject() {
+    await mutation.mutateAsync({ id: projectId })
+    await queryClient.invalidateQueries({ queryKey: getProjectsQueryKey() })
+    toast.success('Proyecto eliminado')
+  }
+
+  return {
+    deleteProject,
+    isPending: mutation.isPending,
   }
 }
