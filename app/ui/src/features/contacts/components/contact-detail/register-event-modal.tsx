@@ -3,7 +3,7 @@ import type { DefaultValues } from 'react-hook-form'
 import type { RegisterEventBody } from '@shared/api/types/RegisterEventBody'
 import type { ContactViewPipelineStateEnumKey } from '@shared/api/types/ContactView'
 import { registerEventBodySchema } from '@shared/api/schemas/registerEventBodySchema'
-import { makeRegisterEventForm } from '@features/contacts/constants/register-event.form'
+import { makeRegisterEventForm } from '@features/contacts/components/register-event.form'
 import {
   Dialog,
   DialogContent,
