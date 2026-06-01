@@ -1,6 +1,6 @@
 import type { ProjectListItem, ProjectListItemStatusEnumKey } from '@shared/api/types/ProjectListItem'
 import type { EntityDescriptor } from '@shared/lib/data-view'
-import { contactRelation } from '@shared/lib/data-view/relations/contact.relation'
+import { contactRelation } from '@shared/lib/relations/contact.relation'
 import { formatDate, formatDateTime } from '@shared/lib/utils/date'
 import { Badge } from '@shared/ui/badge'
 import { projectStatusBadge, projectStatusLabels, projectStatusOptions } from '../constants/projects.options'

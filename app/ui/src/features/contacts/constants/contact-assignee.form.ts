@@ -1,11 +1,9 @@
 import { z } from 'zod/v4'
 import type { FormDescriptor } from '@shared/lib/form-view/types'
-import { makeUserRelation } from '@shared/lib/data-view/relations/user.relation'
+import { addAssignmentBodySchema } from '@shared/api/schemas/addAssignmentBodySchema'
+import { makeUserRelation } from '@shared/lib/relations/user.relation'
 
-export const assigneeCreateFormSchema = z.object({
-  userId: z.uuid(),
-  role: z.enum(['Owner', 'Collaborator']),
-})
+export const assigneeCreateFormSchema = addAssignmentBodySchema
 
 export type AssigneeCreateFormValues = z.infer<typeof assigneeCreateFormSchema>
 

@@ -1,9 +1,8 @@
 import { z } from 'zod/v4'
 import type { FormDescriptor } from '@shared/lib/form-view/types'
+import { updateAssignmentRoleBodySchema } from '@shared/api/schemas/updateAssignmentRoleBodySchema'
 
-export const assigneeEditFormSchema = z.object({
-  role: z.enum(['Owner', 'Collaborator']),
-})
+export const assigneeEditFormSchema = updateAssignmentRoleBodySchema
 
 export type AssigneeEditFormValues = z.infer<typeof assigneeEditFormSchema>
 

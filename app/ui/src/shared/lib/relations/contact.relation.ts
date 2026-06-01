@@ -2,7 +2,7 @@ import { getContacts } from '@shared/api/clients'
 import { getContactsQueryKey } from '@shared/api/hooks/useGetContacts'
 import type { GetContactsQueryParams } from '@shared/api/types/GetContacts'
 import type { RelationResolver } from '@shared/lib/utils/filter'
-import { makeRelationResolver, SEARCH_LIMIT } from '../make-relation-resolver'
+import { makeRelationResolver, SEARCH_LIMIT } from '../data-view/make-relation-resolver'
 
 export const contactRelation: RelationResolver = makeRelationResolver({
   queryKey: (params: GetContactsQueryParams) => getContactsQueryKey(params),

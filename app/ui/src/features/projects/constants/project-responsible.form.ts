@@ -1,11 +1,9 @@
 import { z } from 'zod/v4'
 import type { FormDescriptor } from '@shared/lib/form-view/types'
-import { makeUserRelation } from '@shared/lib/data-view/relations/user.relation'
+import { addResponsibleBodySchema } from '@shared/api/schemas/addResponsibleBodySchema'
+import { makeUserRelation } from '@shared/lib/relations/user.relation'
 
-export const responsibleCreateFormSchema = z.object({
-  userId: z.uuid(),
-  role: z.enum(['Lead', 'Member']),
-})
+export const responsibleCreateFormSchema = addResponsibleBodySchema
 
 export type ResponsibleCreateFormValues = z.infer<typeof responsibleCreateFormSchema>
 

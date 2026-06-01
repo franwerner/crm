@@ -1,10 +1,9 @@
 import { z } from 'zod/v4'
 import type { FormDescriptor } from '@shared/lib/form-view/types'
+import { addChannelBodySchema } from '@shared/api/schemas/addChannelBodySchema'
 import { channelTypeOptions } from '@features/contacts/constants/contacts.options'
 
-export const channelCreateFormSchema = z.object({
-  channelType: z.enum(['Phone', 'Email', 'WhatsApp', 'Instagram', 'Website', 'Other']),
-  value: z.string().min(1, 'Requerido'),
+export const channelCreateFormSchema = addChannelBodySchema.extend({
   isPrimary: z.boolean(),
 })
 

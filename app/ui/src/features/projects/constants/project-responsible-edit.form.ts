@@ -1,9 +1,8 @@
 import { z } from 'zod/v4'
 import type { FormDescriptor } from '@shared/lib/form-view/types'
+import { updateResponsibleRoleBodySchema } from '@shared/api/schemas/updateResponsibleRoleBodySchema'
 
-export const responsibleEditFormSchema = z.object({
-  role: z.enum(['Lead', 'Member']),
-})
+export const responsibleEditFormSchema = updateResponsibleRoleBodySchema
 
 export type ResponsibleEditFormValues = z.infer<typeof responsibleEditFormSchema>
 

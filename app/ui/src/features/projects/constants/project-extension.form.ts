@@ -1,16 +1,13 @@
 import { z } from 'zod/v4'
 import type { FormDescriptor } from '@shared/lib/form-view/types'
+import { addExtensionBodySchema } from '@shared/api/schemas/addExtensionBodySchema'
 
 function toIsoDate(value: unknown): unknown {
   if (typeof value === 'string' && value.length > 10) return value.slice(0, 10)
   return value
 }
 
-export const extensionCreateFormSchema = z.object({
-  additionalDays: z.number().int().positive(),
-  reason: z.string().min(1),
-  cost: z.number().int().nonnegative().nullish(),
-  billedAmount: z.number().int().nonnegative().nullish(),
+export const extensionCreateFormSchema = addExtensionBodySchema.extend({
   grantedAt: z.preprocess(toIsoDate, z.iso.date()),
 })
 

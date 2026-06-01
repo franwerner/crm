@@ -1,15 +1,14 @@
 import { z } from 'zod/v4'
 import type { FormDescriptor } from '@shared/lib/form-view/types'
 import type { ProjectExpenseView } from '@shared/api/types/ProjectExpenseView'
+import { addExpenseBodySchema } from '@shared/api/schemas/addExpenseBodySchema'
 
 function toIsoDate(value: unknown): unknown {
   if (typeof value === 'string' && value.length > 10) return value.slice(0, 10)
   return value
 }
 
-export const expenseEditFormSchema = z.object({
-  concept: z.string().min(1),
-  amountMinor: z.number().int().nonnegative(),
+export const expenseEditFormSchema = addExpenseBodySchema.extend({
   incurredAt: z.preprocess(toIsoDate, z.iso.date()),
 })
 

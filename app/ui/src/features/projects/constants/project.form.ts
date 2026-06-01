@@ -1,17 +1,14 @@
 import { z } from 'zod/v4'
 import type { FormDescriptor } from '@shared/lib/form-view/types'
-import { contactRelation } from '@shared/lib/data-view/relations/contact.relation'
+import { createProjectBodySchema } from '@shared/api/schemas/createProjectBodySchema'
+import { contactRelation } from '@shared/lib/relations/contact.relation'
 
 function toIsoDate(value: unknown): unknown {
   if (typeof value === 'string' && value.length > 10) return value.slice(0, 10)
   return value
 }
 
-export const projectCreateFormSchema = z.object({
-  name: z.string().min(1),
-  description: z.string().nullish(),
-  contactId: z.uuid(),
-  currency: z.string().min(3).max(3),
+export const projectCreateFormSchema = createProjectBodySchema.extend({
   startDate: z.preprocess(toIsoDate, z.iso.date()),
   plannedEndDate: z.preprocess(toIsoDate, z.iso.date()),
 })

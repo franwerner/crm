@@ -1,10 +1,8 @@
 import { z } from 'zod/v4'
 import type { FormDescriptor } from '@shared/lib/form-view/types'
+import { addBudgetItemBodySchema } from '@shared/api/schemas/addBudgetItemBodySchema'
 
-export const budgetItemCreateFormSchema = z.object({
-  concept: z.string().min(1),
-  amountMinor: z.number().int().nonnegative(),
-})
+export const budgetItemCreateFormSchema = addBudgetItemBodySchema
 
 export type BudgetItemCreateFormValues = z.infer<typeof budgetItemCreateFormSchema>
 
