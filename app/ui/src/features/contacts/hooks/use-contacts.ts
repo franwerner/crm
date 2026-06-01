@@ -1,18 +1,11 @@
 import { useGetContacts } from '@shared/api/hooks/useGetContacts'
 import type { GetContactsQueryParams } from '@shared/api/types/GetContacts'
-import { buildFilterParam, type FilterGroups } from '@shared/lib/utils/filter'
+import { buildFilterParam } from '@shared/lib/utils/filter'
+import type { ListQueryParams } from '@shared/lib/types/list-query-params'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 15
 
-type Params = {
-  page: number
-  search?: string
-  filterGroups?: FilterGroups
-  sortField?: string
-  sortDir?: 'asc' | 'desc'
-}
-
-export function useContacts({ page, search, filterGroups, sortField, sortDir }: Params) {
+export function useContacts({ page, search, filterGroups, sortField, sortDir }: ListQueryParams) {
   const offset = (page - 1) * PAGE_SIZE
   const filter = buildFilterParam(filterGroups) as GetContactsQueryParams['filter']
   const sort = sortField && sortDir ? `${sortField}:${sortDir}` : undefined

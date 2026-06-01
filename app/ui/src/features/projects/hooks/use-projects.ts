@@ -1,18 +1,11 @@
 import { useGetProjects } from '@shared/api/hooks/useGetProjects'
 import type { GetProjectsQueryParams } from '@shared/api/types/GetProjects'
-import { buildFilterParam, type FilterGroups } from '@shared/lib/utils/filter'
+import { buildFilterParam } from '@shared/lib/utils/filter'
+import type { ListQueryParams } from '@shared/lib/types/list-query-params'
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 15
 
-type Params = {
-  page: number
-  search?: string
-  filterGroups?: FilterGroups
-  sortField?: string
-  sortDir?: 'asc' | 'desc'
-}
-
-export function useProjects({ page, search, filterGroups, sortField, sortDir }: Params) {
+export function useProjects({ page, search, filterGroups, sortField, sortDir }: ListQueryParams) {
   const offset = (page - 1) * PAGE_SIZE
   const filter = buildFilterParam(filterGroups) as GetProjectsQueryParams['filter']
   const sort = sortField && sortDir ? `${sortField}:${sortDir}` : undefined
