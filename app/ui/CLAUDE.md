@@ -1,19 +1,19 @@
 # Project Conventions for Claude — app/ui
 
-Las decisiones arquitectónicas y de convenciones de este paquete (`app/ui`) están en `.claude/adr/`.
+Las decisiones arquitectónicas y de convenciones de este paquete (`app/ui`) están en `.matecito-ai/adr/`.
 
-**Antes de escribir código que toque arquitectura, capas, estado, errores, auth, datos o convenciones, leé `.claude/adr/INDEX.md`** para saber qué ADR consultar.
+**Antes de escribir código que toque arquitectura, capas, estado, errores, auth, datos o convenciones, leé `.matecito-ai/adr/INDEX.md`** para saber qué ADR consultar.
 
-**Antes de construir o estilar UI (componentes, vistas, layouts), leé `.claude/adr/styling-and-design-system.md`** y usá `docs/visual/handoff/` (en la raíz del repo) como fuente visual: `tokens.css` (tokens del design system) y `components-reference.html` (referencia estructural/visual de cada componente). **No inventes colores ni espaciados: usá siempre los tokens** (roles shadcn / `--ds-*`). El stack es Tailwind v4 + shadcn/ui (componentes en `src/shared/ui`, los de dominio en `features/`). `docs/visual/brand-manual.md` describe otro producto (FinTech): NO lo uses como guía de composición.
+**Antes de construir o estilar UI (componentes, vistas, layouts), leé `.matecito-ai/adr/frontend/styling-and-design-system.md`** y usá `docs/visual/handoff/` (en la raíz del repo) como fuente visual: `tokens.css` (tokens del design system) y `components-reference.html` (referencia estructural/visual de cada componente). **No inventes colores ni espaciados: usá siempre los tokens** (roles shadcn / `--ds-*`). El stack es Tailwind v4 + shadcn/ui (componentes en `src/shared/ui`, los de dominio en `features/`). `docs/visual/brand-manual.md` describe otro producto (FinTech): NO lo uses como guía de composición.
 
-**Antes de instalar/sugerir cualquier dependencia nueva, leé `.claude/adr/tech/INDEX.md`** para ver qué tecnologías ya están elegidas. Si tu sugerencia pisa con algo ya registrado, no la introduzcas sin preguntar al usuario.
+**Antes de instalar/sugerir cualquier dependencia nueva, leé `.matecito-ai/adr/tech/INDEX.md`** para ver qué tecnologías ya están elegidas. Si tu sugerencia pisa con algo ya registrado, no la introduzcas sin preguntar al usuario.
 
 Si una decisión no está documentada o algo no queda claro, **preguntá al usuario antes de inventar una convención**. Las decisiones se registran como ADR, no se improvisan.
 
-> **Importante:** las convenciones de este paquete son **autónomas**. NO se heredan de `app/api`. Lo único compartido es el **contrato** (el OpenAPI de `app/api` que este paquete consume con kubb — ver `app/api` `api-documentation.md` y este `data-access.md`/`auth.md`).
+> **Importante:** las convenciones de este paquete son **autónomas**. NO se heredan de `app/api`. Lo único compartido es el **contrato** (el OpenAPI de `app/api` que este paquete consume con kubb — ver `app/api` `.matecito-ai/adr/contracts/api-contract.md` y este `.matecito-ai/adr/data/data-access.md` / `.matecito-ai/adr/security/auth.md`).
 
 > **Carpeta generada:** `src/shared/api/` es salida de kubb (artefacto). Es **read-only**: no se edita ni se revisa a mano; se regenera con el script `gen:api`.
 
-> **Aviso de conflicto activo:** el harness tiene `Strict TDD Mode: enabled` pero la decisión de proyecto (`testing-strategy.md`) es **arrancar sin tests**. Incoherencia consciente y documentada. No asumas TDD: leé `testing-strategy.md`.
+> **Aviso de conflicto activo:** el harness tiene `Strict TDD Mode: enabled` pero la decisión de proyecto (`.matecito-ai/adr/delivery/testing-strategy.md`) es **arrancar sin tests**. Incoherencia consciente y documentada. No asumas TDD: leé `.matecito-ai/adr/delivery/testing-strategy.md`.
 
-Para crear, actualizar o revisar decisiones arquitectónicas, usá la skill `architecture-bootstrap`.
+Para crear, actualizar o revisar decisiones arquitectónicas, usá la skill `project-decisions-bootstrap`.
