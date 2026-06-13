@@ -57,7 +57,8 @@ module.exports = {
       from: {
         path: '^src/',
         pathNot: [
-          '^src/modules/[^/]+/infrastructure/[^/]+\\.repository\\.bun\\.ts$',
+          '^src/modules/[^/]+/infrastructure/(repositories/)?[^/]+\\.repository\\.bun\\.ts$',
+          '^src/modules/[^/]+/infrastructure/repositories/[^/]+\\.repo-part\\.ts$',
           '^src/modules/[^/]+/infrastructure/[^/]+\\.query\\.drizzle\\.ts$',
           '^src/modules/[^/]+/infrastructure/bootstrap\\.ts$',
           '^src/modules/[^/]+/infrastructure/[^/]+\\.resource\\.ts$',
@@ -93,6 +94,7 @@ module.exports = {
         pathNot: [
           '^src/app\\.ts$',
           '^src/modules/[^/]+/infrastructure/bootstrap\\.ts$',
+          '^src/modules/[^/]+/infrastructure/repositories/[^/]+\\.repo-part\\.ts$',
         ],
       },
       to: {
