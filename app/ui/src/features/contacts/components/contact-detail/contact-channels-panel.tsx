@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Pencil, Trash2, Plus } from 'lucide-react'
 import type { ContactView } from '@shared/api/types/ContactView'
 import { channelTypeLabels } from '@features/contacts/constants/contacts.options'
-import { Card, CardHeader, CardTitle, CardContent } from '@shared/ui/card'
+import { PanelCard } from '@shared/ui/panel-card'
 import { Button } from '@shared/ui/button'
 import { EntityCreateModal } from '@shared/ui/entity-create-modal'
 import { EntityEditModal } from '@shared/ui/entity-edit-modal'
@@ -66,18 +66,15 @@ export function ContactChannelsPanel({
 
   return (
     <>
-      <Card>
-        <CardHeader className="pb-2">
-          <div className="flex items-center justify-between gap-4">
-            <CardTitle className="text-[length:var(--ds-font-size-md)]">Canales</CardTitle>
-            <Button variant="outline" size="sm" onClick={() => setCreateOpen(true)}>
-              <Plus className="h-3 w-3" />
-              Agregar
-            </Button>
-          </div>
-        </CardHeader>
-
-        <CardContent>
+      <PanelCard
+        title="Canales"
+        action={
+          <Button variant="outline" size="sm" onClick={() => setCreateOpen(true)}>
+            <Plus className="h-3 w-3" />
+            Agregar
+          </Button>
+        }
+      >
           {channels.length === 0 ? (
             <p className="text-[length:var(--ds-font-size-sm)] text-muted-foreground py-2">
               Sin canales registrados.
@@ -111,8 +108,7 @@ export function ContactChannelsPanel({
               ))}
             </ul>
           )}
-        </CardContent>
-      </Card>
+      </PanelCard>
 
       <EntityCreateModal
         open={createOpen}

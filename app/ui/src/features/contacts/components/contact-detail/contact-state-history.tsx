@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@shared/ui/card'
+import { PanelCard } from '@shared/ui/panel-card'
 import type { ContactStateChangeView } from '@shared/api/types/ContactStateChangeView'
 import { pipelineStateLabels } from '@features/contacts/constants/contacts.options'
 import { formatDateTime } from '@shared/lib/utils/date'
@@ -13,11 +13,7 @@ export function ContactStateHistory({ stateChanges }: Props) {
   )
 
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-[length:var(--ds-font-size-md)]">Historial de pipeline</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <PanelCard title="Historial de pipeline">
         {sorted.length === 0 ? (
           <p className="text-[length:var(--ds-font-size-sm)] text-muted-foreground py-2">
             Sin cambios de estado registrados.
@@ -36,7 +32,6 @@ export function ContactStateHistory({ stateChanges }: Props) {
             ))}
           </ul>
         )}
-      </CardContent>
-    </Card>
+    </PanelCard>
   )
 }

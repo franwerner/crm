@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { Card, CardHeader, CardTitle, CardContent } from '@shared/ui/card'
+import { PanelCard } from '@shared/ui/panel-card'
 import type { UpdateContactBody } from '@shared/api/types/UpdateContactBody'
 import type { ContactView } from '@shared/api/types/ContactView'
 import { contactEditFields } from '@features/contacts/constants/contact-edit.form'
@@ -30,21 +30,16 @@ export function ContactAddressPanel({ contact, onPatch, isPending }: Props) {
   )
 
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-[length:var(--ds-font-size-md)]">Dirección</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col divide-y divide-border">
-        {fields.map((field) => (
-          <InlineField
-            key={field.key}
-            field={field}
-            currentValue={contact[field.key]}
-            onPatch={handlePatch}
-            isPending={isPending}
-          />
-        ))}
-      </CardContent>
-    </Card>
+    <PanelCard title="Dirección" contentClassName="flex flex-col divide-y divide-border">
+      {fields.map((field) => (
+        <InlineField
+          key={field.key}
+          field={field}
+          currentValue={contact[field.key]}
+          onPatch={handlePatch}
+          isPending={isPending}
+        />
+      ))}
+    </PanelCard>
   )
 }

@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@shared/ui/card'
+import { PanelCard } from '@shared/ui/panel-card'
 import { Badge } from '@shared/ui/badge'
 import type { ContactView } from '@shared/api/types/ContactView'
 import { pipelineStateLabels } from '@features/contacts/constants/contacts.options'
@@ -11,11 +11,7 @@ type Props = {
 
 export function ContactProvenancePanel({ contact }: Props) {
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-[length:var(--ds-font-size-md)]">Procedencia</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col divide-y divide-border">
+    <PanelCard title="Procedencia" contentClassName="flex flex-col divide-y divide-border">
         <div className="flex justify-between items-center gap-4 py-1.5">
           <span className="text-[length:var(--ds-font-size-sm)] text-muted-foreground shrink-0">Estado</span>
           <Badge variant={pipelineStateBadge[contact.pipelineState]}>
@@ -36,7 +32,6 @@ export function ContactProvenancePanel({ contact }: Props) {
           <span className="text-[length:var(--ds-font-size-sm)] text-muted-foreground shrink-0">Actualización</span>
           <span className="text-[length:var(--ds-font-size-sm)] text-foreground text-right">{formatDateTime(contact.updatedAt)}</span>
         </div>
-      </CardContent>
-    </Card>
+    </PanelCard>
   )
 }

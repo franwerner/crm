@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@shared/ui/card'
+import { PanelCard } from '@shared/ui/panel-card'
 import { Timeline, TimelineItem, TimelineContent, TimelineMeta, TimelineQuote } from '@shared/ui/timeline'
 import type { ContactEventView, ContactEventViewEventTypeEnumKey } from '@shared/api/types/ContactEventView'
 import { eventTypeLabels } from '@features/contacts/constants/contacts.options'
@@ -20,11 +20,7 @@ export function ContactActivityTimeline({ events, total, isLoading }: Props) {
   const hasMore = total > events.length
 
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-[length:var(--ds-font-size-md)]">Actividad</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <PanelCard title="Actividad">
         {isLoading ? (
           <p className="text-[length:var(--ds-font-size-sm)] text-muted-foreground py-2">Cargando…</p>
         ) : sorted.length === 0 ? (
@@ -58,7 +54,6 @@ export function ContactActivityTimeline({ events, total, isLoading }: Props) {
             )}
           </>
         )}
-      </CardContent>
-    </Card>
+    </PanelCard>
   )
 }

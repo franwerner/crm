@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Pencil, Trash2, Plus } from 'lucide-react'
-import { Card, CardHeader, CardTitle, CardContent } from '@shared/ui/card'
+import { PanelCard } from '@shared/ui/panel-card'
 import { Button } from '@shared/ui/button'
 import { Avatar } from '@shared/ui/avatar'
 import { Badge } from '@shared/ui/badge'
@@ -85,18 +85,15 @@ export function ContactAssigneesPanel({
 
   return (
     <>
-      <Card>
-        <CardHeader className="pb-2">
-          <div className="flex items-center justify-between gap-4">
-            <CardTitle className="text-[length:var(--ds-font-size-md)]">Asignados</CardTitle>
-            <Button variant="outline" size="sm" onClick={() => setCreateOpen(true)}>
-              <Plus className="h-3 w-3" />
-              Agregar
-            </Button>
-          </div>
-        </CardHeader>
-
-        <CardContent>
+      <PanelCard
+        title="Asignados"
+        action={
+          <Button variant="outline" size="sm" onClick={() => setCreateOpen(true)}>
+            <Plus className="h-3 w-3" />
+            Agregar
+          </Button>
+        }
+      >
           {isLoading ? (
             <p className="text-[length:var(--ds-font-size-sm)] text-muted-foreground py-2">Cargando…</p>
           ) : assignments.length === 0 ? (
@@ -126,8 +123,7 @@ export function ContactAssigneesPanel({
               ))}
             </ul>
           )}
-        </CardContent>
-      </Card>
+      </PanelCard>
 
       <EntityCreateModal
         open={createOpen}
