@@ -1,0 +1,2 @@
+ALTER TABLE "projects" DROP CONSTRAINT "projects_currency_format";--> statement-breakpoint
+ALTER TABLE "projects" ADD CONSTRAINT "projects_currency_format" CHECK ("projects"."currency" ~ '^[A-Z]{3}$');

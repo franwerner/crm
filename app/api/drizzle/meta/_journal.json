@@ -57,6 +57,13 @@
       "when": 1779772810302,
       "tag": "0007_massive_nicolaos",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1781324869617,
+      "tag": "0008_serious_leopardon",
+      "breakpoints": true
     }
   ]
 }

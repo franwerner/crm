@@ -12,9 +12,9 @@ export const Money = {
         { field: 'amountMinor', message: 'amountMinor must be an integer >= 0' },
       ])
     }
-    if (currency.length !== 3 || currency !== currency.toUpperCase()) {
-      throw new ValidationError('Currency must be 3 uppercase ISO 4217 characters', [
-        { field: 'currency', message: 'expected 3-char uppercase ISO 4217 code' },
+    if (!/^[A-Z]{3}$/.test(currency)) {
+      throw new ValidationError('Currency must be 3 uppercase ISO 4217 letters', [
+        { field: 'currency', message: 'expected 3-letter uppercase ISO 4217 code' },
       ])
     }
     return { amountMinor, currency }

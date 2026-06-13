@@ -24,6 +24,7 @@ export type UpdateProjectBody = {
    * @description ISO 4217 currency code
    * @minLength 3
    * @maxLength 3
+   * @pattern ^[A-Za-z]{3}$
    * @type string | undefined
    */
   currency?: string;

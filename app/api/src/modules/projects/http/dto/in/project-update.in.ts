@@ -5,7 +5,7 @@ export const UpdateProjectBodySchema = z
     name: z.string().min(1).optional().openapi({ description: 'Project name', example: 'Website Redesign' }),
     description: z.string().nullable().optional().openapi({ description: 'Project description', example: 'Full redesign of the corporate website' }),
     contactId: z.string().uuid().optional().openapi({ description: 'UUID of the associated contact', example: '01938b0c-...' }),
-    currency: z.string().length(3).toUpperCase().optional().openapi({ description: 'ISO 4217 currency code', example: 'USD' }),
+    currency: z.string().length(3).regex(/^[A-Za-z]{3}$/, 'expected 3-letter ISO 4217 code').toUpperCase().optional().openapi({ description: 'ISO 4217 currency code', example: 'USD' }),
     startDate: z.string().date().optional().openapi({ description: 'Project start date (YYYY-MM-DD)', example: '2025-01-01' }),
     plannedEndDate: z.string().date().optional().openapi({ description: 'Project planned end date (YYYY-MM-DD)', example: '2025-12-31' }),
   })

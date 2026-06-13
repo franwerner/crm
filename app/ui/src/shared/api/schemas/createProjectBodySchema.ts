@@ -9,7 +9,12 @@ export const createProjectBodySchema = z.object({
   name: z.string().min(1).describe("Project name"),
   description: z.string().describe("Project description").nullish(),
   contactId: z.uuid().describe("UUID of the associated contact"),
-  currency: z.string().min(3).max(3).describe("ISO 4217 currency code"),
+  currency: z
+    .string()
+    .min(3)
+    .max(3)
+    .regex(/^[A-Za-z]{3}$/)
+    .describe("ISO 4217 currency code"),
   startDate: z.iso.date().describe("Project start date (YYYY-MM-DD)"),
   plannedEndDate: z.iso
     .date()

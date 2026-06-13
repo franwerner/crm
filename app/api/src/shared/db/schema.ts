@@ -191,7 +191,7 @@ export const projects = pgTable(
     deletedAt: timestamp('deleted_at', { withTimezone: true }),
   },
   (t) => ({
-    currencyCheck: check('projects_currency_format', sql`char_length(${t.currency}) = 3 AND ${t.currency} = upper(${t.currency})`),
+    currencyCheck: check('projects_currency_format', sql`${t.currency} ~ '^[A-Z]{3}$'`),
     dateOrderCheck: check('projects_date_order', sql`${t.plannedEndDate} >= ${t.startDate}`),
   }),
 )
