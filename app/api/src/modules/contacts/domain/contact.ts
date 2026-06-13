@@ -130,6 +130,10 @@ export class Contact {
     return new Contact(props, [], [])
   }
 
+  private withProps(patch: Partial<ContactProps>): Contact {
+    return new Contact({ ...this.props, ...patch }, [...this.pendingEvents], [...this.pendingStateChanges])
+  }
+
   get id(): string { return this.props.id }
   get name(): string { return this.props.name }
   get contactType(): ContactType { return this.props.contactType }
@@ -216,13 +220,7 @@ export class Contact {
       return this
     }
 
-    const nextProps: ContactProps = {
-      ...this.props,
-      deletedAt: now,
-      updatedAt: now,
-    }
-
-    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+    return this.withProps({ deletedAt: now, updatedAt: now })
   }
 
   update(
@@ -255,8 +253,7 @@ export class Contact {
       country: params.address?.country !== undefined ? params.address.country : this.props.address.country,
     }
 
-    const nextProps: ContactProps = {
-      ...this.props,
+    return this.withProps({
       name: params.name !== undefined ? params.name.trim() : this.props.name,
       contactType: effectiveContactType,
       sex: effectiveSex,
@@ -265,9 +262,7 @@ export class Contact {
       sourceChannel: params.sourceChannel !== undefined ? params.sourceChannel : this.props.sourceChannel,
       interestLevel: params.interestLevel !== undefined ? params.interestLevel : this.props.interestLevel,
       updatedAt: now,
-    }
-
-    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+    })
   }
 
   addChannel(channel: ContactChannel): Contact {
@@ -275,13 +270,7 @@ export class Contact {
       channel.isPrimary && ch.isPrimary ? { ...ch, isPrimary: false } : ch,
     )
 
-    const nextProps: ContactProps = {
-      ...this.props,
-      channels: [...demoted, channel],
-      updatedAt: channel.createdAt,
-    }
-
-    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+    return this.withProps({ channels: [...demoted, channel], updatedAt: channel.createdAt })
   }
 
   updateChannel(
@@ -312,13 +301,7 @@ export class Contact {
       return ch
     })
 
-    const nextProps: ContactProps = {
-      ...this.props,
-      channels: updated,
-      updatedAt: now,
-    }
-
-    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+    return this.withProps({ channels: updated, updatedAt: now })
   }
 
   removeChannel(channelId: string, now: Date): Contact {
@@ -327,13 +310,10 @@ export class Contact {
       throw new NotFoundError(`Channel ${channelId} not found on contact ${this.props.id}`)
     }
 
-    const nextProps: ContactProps = {
-      ...this.props,
+    return this.withProps({
       channels: this.props.channels.filter((ch) => ch.id !== channelId),
       updatedAt: now,
-    }
-
-    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+    })
   }
 
   addAssignment(assignment: ContactAssignment): Contact {
@@ -342,13 +322,10 @@ export class Contact {
       throw new BusinessRuleError(`User ${assignment.userId} is already assigned to contact ${this.props.id}`)
     }
 
-    const nextProps: ContactProps = {
-      ...this.props,
+    return this.withProps({
       assignments: [...this.props.assignments, assignment],
       updatedAt: assignment.createdAt,
-    }
-
-    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+    })
   }
 
   updateAssignmentRole(userId: string, role: ContactAssignmentRole, now: Date): Contact {
@@ -361,13 +338,7 @@ export class Contact {
       a.userId === userId ? { ...a, role, updatedAt: now } : a,
     )
 
-    const nextProps: ContactProps = {
-      ...this.props,
-      assignments: updated,
-      updatedAt: now,
-    }
-
-    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+    return this.withProps({ assignments: updated, updatedAt: now })
   }
 
   removeAssignment(userId: string, now: Date): Contact {
@@ -376,12 +347,9 @@ export class Contact {
       throw new NotFoundError(`Assignment for user ${userId} not found on contact ${this.props.id}`)
     }
 
-    const nextProps: ContactProps = {
-      ...this.props,
+    return this.withProps({
       assignments: this.props.assignments.filter((a) => a.userId !== userId),
       updatedAt: now,
-    }
-
-    return new Contact(nextProps, [...this.pendingEvents], [...this.pendingStateChanges])
+    })
   }
 }
