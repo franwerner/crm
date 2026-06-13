@@ -1,5 +1,5 @@
 import type { ProjectsRepository } from '@modules/projects/domain/project.repository'
-import type { DocumentStorage } from '@modules/projects/domain/document.storage'
+import type { ObjectStorage } from '@shared/storage'
 import { NotFoundError } from '@shared/errors'
 
 export interface DeleteDocumentInput {
@@ -10,7 +10,7 @@ export interface DeleteDocumentInput {
 export class ProjectDeleteDocumentUseCase {
   constructor(
     private readonly repo: ProjectsRepository,
-    private readonly storage: DocumentStorage,
+    private readonly storage: ObjectStorage,
   ) {}
 
   async execute(input: DeleteDocumentInput): Promise<void> {

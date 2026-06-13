@@ -9,6 +9,7 @@ import { bootstrapUsers } from '@modules/users/infrastructure/bootstrap'
 import { bootstrapAuth } from '@modules/auth/infrastructure/bootstrap'
 import { bootstrapContacts } from '@modules/contacts/infrastructure/bootstrap'
 import { bootstrapProjects } from '@modules/projects/infrastructure/bootstrap'
+import { BunObjectStorage } from '@shared/storage'
 
 export function createApp() {
   const app = new OpenAPIHono({
@@ -51,10 +52,18 @@ export function createApp() {
     app.get('/docs', Scalar({ url: '/openapi.json' }))
   }
 
+  const storage = new BunObjectStorage({
+    endpoint: config.minioEndpoint,
+    accessKeyId: config.minioAccessKey,
+    secretAccessKey: config.minioSecretKey,
+    bucket: config.minioBucket,
+    region: config.minioRegion,
+  })
+
   const users = bootstrapUsers(db)
   const auth = bootstrapAuth(db)
   const contacts = bootstrapContacts(db)
-  const projects = bootstrapProjects(db)
+  const projects = bootstrapProjects(db, storage)
 
   app.route('/', auth.router)
   app.route('/', users.router)

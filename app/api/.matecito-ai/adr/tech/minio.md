@@ -20,7 +20,7 @@ Object storage S3-compatible auto-hosteado: corre en contenedor con docker-compo
 
 - **Cliente: `Bun.s3` NATIVO** (`S3Client` integrado en Bun ≥ 1.2). NO requiere `@aws-sdk/client-s3` ni otro SDK npm. Aunque `bun.md` no menciona explícitamente esta API, está disponible y la adoptamos como cliente único contra cualquier endpoint S3-compatible.
 - Endpoint configurado vía env var `MINIO_ENDPOINT` (ver `../delivery/configuration.md` + `src/shared/config/index.ts`).
-- Convenciones de buckets, naming de keys, límites de tamaño y MIME whitelist: ver `../data/file-storage.md`.
+- Convenciones de buckets, naming de keys, límites de tamaño y MIME whitelist: ver `../data/file-storage.md`; el cliente `Bun.s3` ahora lo encapsula la capability compartida `src/shared/storage/object-storage.bun.ts` (antes era per-slice).
 - En dev se exponen los puertos `9000` (API S3) y `9001` (consola web). Credenciales root en compose: `minio` / `minio12345`. **No reutilizar estas credenciales en prod** — generar access keys scoped vía la consola admin.
 - **Sin pinear (`latest`):** decisión del usuario, contrario al patrón de `postgres:16`. Riesgo: cambios silenciosos entre `docker compose pull`. Reevaluar si aparece un breaking change.
 - Healthcheck del compose usa `mc ready local` (la CLI `mc` viene incluida en la imagen oficial; el alias `local` es implícito para localhost dentro del contenedor).

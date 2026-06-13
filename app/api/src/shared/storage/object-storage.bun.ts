@@ -1,6 +1,6 @@
-import type { DocumentStorage } from '@modules/projects/domain/document.storage'
+import type { ObjectStorage } from './object-storage'
 
-interface DocumentStorageConfig {
+export interface ObjectStorageConfig {
   endpoint: string
   accessKeyId: string
   secretAccessKey: string
@@ -8,10 +8,10 @@ interface DocumentStorageConfig {
   region: string
 }
 
-export class BunDocumentStorage implements DocumentStorage {
+export class BunObjectStorage implements ObjectStorage {
   private readonly client: InstanceType<typeof Bun.S3Client>
 
-  constructor(config: DocumentStorageConfig) {
+  constructor(config: ObjectStorageConfig) {
     this.client = new Bun.S3Client({
       endpoint: config.endpoint,
       accessKeyId: config.accessKeyId,

@@ -1,5 +1,5 @@
 import type { ProjectsRepository } from '@modules/projects/domain/project.repository'
-import type { DocumentStorage } from '@modules/projects/domain/document.storage'
+import type { ObjectStorage } from '@shared/storage'
 import { NotFoundError } from '@shared/errors'
 import { PRESIGNED_DOWNLOAD_TTL_SECONDS } from '@modules/projects/domain/constants'
 
@@ -16,7 +16,7 @@ export interface GetDocumentDownloadUrlResult {
 export class ProjectGetDocumentDownloadUrlUseCase {
   constructor(
     private readonly repo: ProjectsRepository,
-    private readonly storage: DocumentStorage,
+    private readonly storage: ObjectStorage,
   ) {}
 
   async execute(input: GetDocumentDownloadUrlInput): Promise<GetDocumentDownloadUrlResult> {

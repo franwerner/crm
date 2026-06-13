@@ -1,8 +1,8 @@
 import type { OpenAPIHono } from '@hono/zod-openapi'
 import type { Db } from '@shared/db/client'
+import type { ObjectStorage } from '@shared/storage'
 import { DrizzleProjectsRepository } from '@modules/projects/infrastructure/project.repository.bun'
 import { DrizzleProjectQueries } from '@modules/projects/infrastructure/project.query.drizzle'
-import { BunDocumentStorage } from '@modules/projects/infrastructure/document.storage.bun'
 import { ProjectCreateUseCase } from '@modules/projects/application/use-cases/project-create.use-case'
 import { ProjectGetUseCase } from '@modules/projects/application/use-cases/project-get.use-case'
 import { ProjectListUseCase } from '@modules/projects/application/use-cases/project-list.use-case'
@@ -31,23 +31,14 @@ import { ProjectDeleteDocumentUseCase } from '@modules/projects/application/use-
 import { ProjectListDocumentsUseCase } from '@modules/projects/application/use-cases/project-list-documents.use-case'
 import { ProjectController } from '@modules/projects/http/project.controller'
 import { createProjectsRouter } from '@modules/projects/http/project.routes'
-import { config } from '@shared/config'
 
 export interface ProjectsModule {
   router: OpenAPIHono
 }
 
-export function bootstrapProjects(db: Db): ProjectsModule {
+export function bootstrapProjects(db: Db, storage: ObjectStorage): ProjectsModule {
   const repo = new DrizzleProjectsRepository(db)
   const queries = new DrizzleProjectQueries(db)
-
-  const storage = new BunDocumentStorage({
-    endpoint: config.minioEndpoint,
-    accessKeyId: config.minioAccessKey,
-    secretAccessKey: config.minioSecretKey,
-    bucket: config.minioBucket,
-    region: config.minioRegion,
-  })
 
   const controller = new ProjectController({
     create: new ProjectCreateUseCase(repo),

@@ -1,9 +1,10 @@
 import type { ProjectDocument } from '@modules/projects/domain/entities/project-document'
 import type { ProjectsRepository } from '@modules/projects/domain/project.repository'
-import type { DocumentStorage } from '@modules/projects/domain/document.storage'
+import type { ObjectStorage } from '@shared/storage'
 import { NotFoundError, ValidationError } from '@shared/errors'
 import { newId } from '@shared/utils/id'
 import { MAX_FILE_SIZE_BYTES, ALLOWED_MIME_TYPES } from '@modules/projects/domain/constants'
+import { buildDocumentStorageKey } from '@modules/projects/application/document-storage-key'
 
 export interface UploadDocumentInput {
   projectId: string
@@ -14,17 +15,10 @@ export interface UploadDocumentInput {
   uploadedBy: string
 }
 
-function sanitizeFileName(name: string): string {
-  return name
-    .replace(/[^\x20-\x7E]/g, '-')
-    .replace(/\//g, '-')
-    .slice(0, 200)
-}
-
 export class ProjectUploadDocumentUseCase {
   constructor(
     private readonly repo: ProjectsRepository,
-    private readonly storage: DocumentStorage,
+    private readonly storage: ObjectStorage,
   ) {}
 
   async execute(input: UploadDocumentInput): Promise<ProjectDocument> {
@@ -47,8 +41,7 @@ export class ProjectUploadDocumentUseCase {
     }
 
     const documentId = newId()
-    const sanitizedFileName = sanitizeFileName(input.fileName)
-    const storageKey = `projects/documents/${input.projectId}/${documentId}-${sanitizedFileName}`
+    const { key: storageKey, sanitizedFileName } = buildDocumentStorageKey(input.projectId, documentId, input.fileName)
     const now = new Date()
 
     await this.storage.putObject(storageKey, input.body, input.contentType)
