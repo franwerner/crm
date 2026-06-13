@@ -35,7 +35,7 @@ export function KpiCard({ label, value, trend, className }: KpiCardProps) {
         {label}
       </span>
       <div className="flex items-baseline gap-2">
-        <span className="text-[36px] font-semibold leading-none tracking-[-0.02em] tabular-nums">
+        <span className="text-[32px] font-semibold leading-none tracking-[-0.02em] tabular-nums">
           {value}
         </span>
         {trend && (
