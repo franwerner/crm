@@ -5,6 +5,7 @@ import { filterGroupsSchema } from '@shared/lib/utils/filter'
 import { toSortFields } from '@shared/lib/data-view'
 import { getProjectsIdQueryOptions } from '@shared/api/hooks/useGetProjectsId'
 import { projectsDescriptor } from '@features/projects/components/projects.descriptor'
+import { PROJECT_TABS } from '@features/projects/constants/project-detail-tabs'
 import { ProjectsPage } from '../views/projects-page'
 import { ProjectDetailPage } from '../views/project-detail-page'
 
@@ -30,9 +31,14 @@ export function createProjectsRoutes<TParent extends AnyRoute>(parentRoute: TPar
     component: ProjectsPage,
   })
 
+  const projectDetailSearchSchema = z.object({
+    tab: z.enum(PROJECT_TABS).optional().default('summary'),
+  })
+
   const projectDetailRoute = createRoute({
     getParentRoute: () => parentRoute,
     path: '/projects/$id',
+    validateSearch: projectDetailSearchSchema,
     staticData: { breadcrumb: [{ label: 'Proyectos', to: '/projects' }, { label: 'Detalle de proyecto' }] },
     loader: async ({ context, params }) => {
       try {

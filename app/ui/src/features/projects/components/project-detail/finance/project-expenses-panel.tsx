@@ -1,35 +1,36 @@
 import { useState } from 'react'
-import { Card, CardHeader, CardTitle, CardContent } from '@shared/ui/card'
+import { PanelCard } from '@shared/ui/panel-card'
 import { Button } from '@shared/ui/button'
 import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { EntityCreateModal } from '@shared/ui/entity-create-modal'
 import { EntityEditModal } from '@shared/ui/entity-edit-modal'
 import { DeleteDialog } from '@shared/ui/delete-dialog'
-import type { ProjectBudgetItemView } from '@shared/api/types/ProjectBudgetItemView'
+import type { ProjectExpenseView } from '@shared/api/types/ProjectExpenseView'
 import {
-  budgetItemCreateForm,
-  budgetItemCreateFormSchema,
-  budgetItemCreateDefaultValues,
-} from '@features/projects/constants/project-budget-item.form'
-import type { BudgetItemCreateFormValues } from '@features/projects/constants/project-budget-item.form'
+  expenseCreateForm,
+  expenseCreateFormSchema,
+  expenseCreateDefaultValues,
+} from '@features/projects/constants/project-expense.form'
+import type { ExpenseCreateFormValues } from '@features/projects/constants/project-expense.form'
 import {
-  budgetItemEditForm,
-  budgetItemEditFormSchema,
-  getBudgetItemEditDefaults,
-} from '@features/projects/constants/project-budget-item-edit.form'
-import type { BudgetItemEditFormValues } from '@features/projects/constants/project-budget-item-edit.form'
+  expenseEditForm,
+  expenseEditFormSchema,
+  getExpenseEditDefaults,
+} from '@features/projects/constants/project-expense-edit.form'
+import type { ExpenseEditFormValues } from '@features/projects/constants/project-expense-edit.form'
+import { formatDate } from '@shared/lib/utils/date'
 
 type Props = {
-  budgetItems: ProjectBudgetItemView[]
+  expenses: ProjectExpenseView[]
   total: number
   page: number
   pageSize: number
   isLoading: boolean
   onPageChange: (page: number) => void
   currency: string
-  onAdd: (data: BudgetItemCreateFormValues) => Promise<void>
-  onEdit: (itemId: string, data: BudgetItemEditFormValues) => Promise<void>
-  onDelete: (itemId: string) => Promise<void>
+  onAdd: (data: ExpenseCreateFormValues) => Promise<void>
+  onEdit: (expenseId: string, data: ExpenseEditFormValues) => Promise<void>
+  onDelete: (expenseId: string) => Promise<void>
   isAdding: boolean
   isUpdating: boolean
   isRemoving: boolean
@@ -45,8 +46,8 @@ function formatMoney(amountMinor: number, currency: string): string {
   }).format(amountMinor / 100)
 }
 
-export function ProjectBudgetItemsPanel({
-  budgetItems,
+export function ProjectExpensesPanel({
+  expenses,
   total,
   page,
   pageSize,
@@ -65,14 +66,14 @@ export function ProjectBudgetItemsPanel({
   const totalPages = Math.ceil(total / pageSize)
 
   const [createOpen, setCreateOpen] = useState(false)
-  const [editTarget, setEditTarget] = useState<ProjectBudgetItemView | null>(null)
-  const [deleteTarget, setDeleteTarget] = useState<ProjectBudgetItemView | null>(null)
+  const [editTarget, setEditTarget] = useState<ProjectExpenseView | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<ProjectExpenseView | null>(null)
 
-  async function handleAdd(data: BudgetItemCreateFormValues) {
+  async function handleAdd(data: ExpenseCreateFormValues) {
     await onAdd(data)
   }
 
-  async function handleEdit(data: BudgetItemEditFormValues) {
+  async function handleEdit(data: ExpenseEditFormValues) {
     if (!editTarget) return
     await onEdit(editTarget.id, data)
   }
@@ -85,22 +86,20 @@ export function ProjectBudgetItemsPanel({
 
   return (
     <>
-      <Card>
-        <CardHeader className="pb-2">
-          <div className="flex items-center justify-between gap-4">
-            <CardTitle className="text-[length:var(--ds-font-size-md)]">Presupuesto</CardTitle>
-            <Button variant="outline" size="sm" onClick={() => setCreateOpen(true)}>
-              <Plus className="h-3 w-3" />
-              Agregar
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
+      <PanelCard
+        title="Gastos"
+        action={
+          <Button variant="outline" size="sm" onClick={() => setCreateOpen(true)}>
+            <Plus className="h-3 w-3" />
+            Agregar
+          </Button>
+        }
+      >
+        {isLoading ? (
             <p className="text-[length:var(--ds-font-size-sm)] text-muted-foreground py-2">Cargando…</p>
-          ) : budgetItems.length === 0 ? (
+          ) : expenses.length === 0 ? (
             <p className="text-[length:var(--ds-font-size-sm)] text-muted-foreground py-2">
-              Sin ítems de presupuesto.
+              Sin gastos registrados.
             </p>
           ) : (
             <>
@@ -108,23 +107,27 @@ export function ProjectBudgetItemsPanel({
                 <thead>
                   <tr className="border-b border-border">
                     <th className="py-2 text-left font-medium text-muted-foreground">Concepto</th>
+                    <th className="py-2 text-center font-medium text-muted-foreground">Fecha</th>
                     <th className="py-2 text-right font-medium text-muted-foreground">Monto</th>
                     <th className="py-2 w-16" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {budgetItems.map((item) => (
-                    <tr key={item.id}>
-                      <td className="py-2 text-foreground">{item.concept}</td>
+                  {expenses.map((expense) => (
+                    <tr key={expense.id}>
+                      <td className="py-2 text-foreground">{expense.concept}</td>
+                      <td className="py-2 text-center text-muted-foreground">
+                        {formatDate(expense.incurredAt)}
+                      </td>
                       <td className="py-2 text-right text-foreground">
-                        {formatMoney(item.amountMinor, currency)}
+                        {formatMoney(expense.amountMinor, currency)}
                       </td>
                       <td className="py-2">
                         <div className="flex items-center justify-end gap-1">
-                          <Button variant="ghost" size="sm" onClick={() => setEditTarget(item)} aria-label="Editar ítem">
+                          <Button variant="ghost" size="sm" onClick={() => setEditTarget(expense)} aria-label="Editar gasto">
                             <Pencil className="h-3 w-3" />
                           </Button>
-                          <Button variant="ghost" size="sm" onClick={() => setDeleteTarget(item)} aria-label="Eliminar ítem">
+                          <Button variant="ghost" size="sm" onClick={() => setDeleteTarget(expense)} aria-label="Eliminar gasto">
                             <Trash2 className="h-3 w-3 text-destructive" />
                           </Button>
                         </div>
@@ -160,18 +163,19 @@ export function ProjectBudgetItemsPanel({
               )}
             </>
           )}
-        </CardContent>
-      </Card>
+      </PanelCard>
 
       <EntityCreateModal
         open={createOpen}
         onOpenChange={setCreateOpen}
-        title="Agregar ítem de presupuesto"
-        description="Agregar un ítem al presupuesto del proyecto"
-        descriptor={budgetItemCreateForm}
-        schema={budgetItemCreateFormSchema}
-        defaultValues={budgetItemCreateDefaultValues}
+        title="Registrar gasto"
+        description="Agregar un gasto al proyecto"
+        descriptor={expenseCreateForm}
+        schema={expenseCreateFormSchema}
+        defaultValues={expenseCreateDefaultValues}
         onSubmit={handleAdd}
+        submitLabel="Registrar"
+        pendingLabel="Registrando…"
         isPending={isAdding}
         errorMessage={addError}
       />
@@ -180,11 +184,11 @@ export function ProjectBudgetItemsPanel({
         <EntityEditModal
           open={editTarget !== null}
           onOpenChange={(open) => { if (!open) setEditTarget(null) }}
-          title="Editar ítem de presupuesto"
-          description="Modificar los datos del ítem"
-          descriptor={budgetItemEditForm}
-          schema={budgetItemEditFormSchema}
-          defaultValues={getBudgetItemEditDefaults(editTarget)}
+          title="Editar gasto"
+          description="Modificar los datos del gasto"
+          descriptor={expenseEditForm}
+          schema={expenseEditFormSchema}
+          defaultValues={getExpenseEditDefaults(editTarget)}
           onSubmit={handleEdit}
           isPending={isUpdating}
           errorMessage={updateError}
@@ -195,10 +199,10 @@ export function ProjectBudgetItemsPanel({
         <DeleteDialog
           open={deleteTarget !== null}
           onOpenChange={(open) => { if (!open) setDeleteTarget(null) }}
-          title="Eliminar ítem de presupuesto"
+          title="Eliminar gasto"
           content={
             <p className="text-[length:var(--ds-font-size-sm)] text-foreground">
-              ¿Confirmás eliminar el ítem <strong>{deleteTarget.concept}</strong>?
+              ¿Confirmás eliminar el gasto <strong>{deleteTarget.concept}</strong>?
             </p>
           }
           onDeleted={handleDelete}

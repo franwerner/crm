@@ -47,8 +47,15 @@ module.exports = {
     {
       name: 'adr02-4-components-no-data-libs',
       severity: 'error',
-      comment: 'ADR 02 #4 (rev. 2026-05-24): los componentes de feature no importan TanStack Query/Router ni kubb directo (reciben datos por props/hooks); sí pueden importar src/shared/api para tipos/schemas del contrato.',
-      from: { path: ['^src/features/[^/]+/components/'] },
+      comment: 'ADR 02 #4 (rev. 2026-05-24): los componentes de feature no importan TanStack Query/Router ni kubb directo (reciben datos por props/hooks); sí pueden importar src/shared/api para tipos/schemas del contrato. Excepción por patrón: los componentes-contenedor (sufijos -tab.tsx, -tabs.tsx, -detail-header.tsx) orquestan hooks de datos o URL state — son containers, no presentacionales (ver folder-structure.md, sub-grupación de components/).',
+      from: {
+        path: ['^src/features/[^/]+/components/'],
+        pathNot: [
+          '-tab\\.tsx$',
+          '-tabs\\.tsx$',
+          '-detail-header\\.tsx$',
+        ],
+      },
       to: {
         path: [
           'node_modules/(@tanstack/react-query|@tanstack/react-router|@kubb|kubb)/',

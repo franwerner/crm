@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Card, CardHeader, CardContent } from '@shared/ui/card'
+import { PanelCard } from '@shared/ui/panel-card'
 import { Badge } from '@shared/ui/badge'
 import { Button } from '@shared/ui/button'
 import { Plus, Pencil, Trash2 } from 'lucide-react'
@@ -84,43 +84,40 @@ export function ProjectResponsiblesPanel({
 
   return (
     <>
-      <Card>
-        <CardHeader className="pb-2">
-          <div className="flex items-center justify-between gap-4">
-            <div className="text-[length:var(--ds-font-size-md)] font-semibold">Responsables</div>
-            <Button variant="outline" size="sm" onClick={() => setCreateOpen(true)}>
-              <Plus className="h-3 w-3" />
-              Agregar
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {responsibles.length === 0 ? (
-            <p className="text-[length:var(--ds-font-size-sm)] text-muted-foreground py-2">
-              Sin responsables asignados.
-            </p>
-          ) : (
-            <ul className="flex flex-col divide-y divide-border">
-              {responsibles.map((r) => (
-                <li key={r.id} className="flex items-center justify-between gap-4 py-2">
-                  <span className="text-[length:var(--ds-font-size-sm)] text-foreground">
-                    {r.userName ?? r.userId}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <Badge variant={roleBadgeVariant[r.role]}>{roleLabel[r.role]}</Badge>
-                    <Button variant="ghost" size="sm" onClick={() => setEditTarget(r)} aria-label="Editar rol">
-                      <Pencil className="h-3 w-3" />
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={() => setDeleteTarget(r)} aria-label="Eliminar responsable">
-                      <Trash2 className="h-3 w-3 text-destructive" />
-                    </Button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </CardContent>
-      </Card>
+      <PanelCard
+        title="Responsables"
+        action={
+          <Button variant="outline" size="sm" onClick={() => setCreateOpen(true)}>
+            <Plus className="h-3 w-3" />
+            Agregar
+          </Button>
+        }
+      >
+        {responsibles.length === 0 ? (
+          <p className="text-[length:var(--ds-font-size-sm)] text-muted-foreground py-2">
+            Sin responsables asignados.
+          </p>
+        ) : (
+          <ul className="flex flex-col divide-y divide-border">
+            {responsibles.map((r) => (
+              <li key={r.id} className="flex items-center justify-between gap-4 py-2">
+                <span className="text-[length:var(--ds-font-size-sm)] text-foreground">
+                  {r.userName ?? r.userId}
+                </span>
+                <div className="flex items-center gap-2">
+                  <Badge variant={roleBadgeVariant[r.role]}>{roleLabel[r.role]}</Badge>
+                  <Button variant="ghost" size="sm" onClick={() => setEditTarget(r)} aria-label="Editar rol">
+                    <Pencil className="h-3 w-3" />
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={() => setDeleteTarget(r)} aria-label="Eliminar responsable">
+                    <Trash2 className="h-3 w-3 text-destructive" />
+                  </Button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </PanelCard>
 
       <EntityCreateModal
         open={createOpen}
