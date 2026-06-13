@@ -1,14 +1,10 @@
-import type { User } from '@modules/users/domain/user'
-import type { UsersRepository } from '@modules/users/domain/user.repository'
-import type { ListQuery } from '@shared/types/filters'
+import type { UserQueries, UserListInput, UserListItem } from '@modules/users/application/user.query'
 import type { Page } from '@shared/types/pagination'
 
-export interface ListUsersInput extends ListQuery {}
-
 export class UserListUseCase {
-  constructor(private readonly repo: UsersRepository) {}
+  constructor(private readonly queries: UserQueries) {}
 
-  async execute(input: ListUsersInput): Promise<Page<User>> {
-    return this.repo.findMany(input)
+  async execute(input: UserListInput): Promise<Page<UserListItem>> {
+    return this.queries.list(input)
   }
 }

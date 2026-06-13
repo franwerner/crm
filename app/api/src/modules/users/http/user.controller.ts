@@ -57,7 +57,13 @@ export class UserController {
 
     return c.json(
       {
-        items: page.items.map(toUserView),
+        items: page.items.map((item) => ({
+          id: item.id,
+          email: item.email,
+          name: item.name,
+          createdAt: item.createdAt.toISOString(),
+          updatedAt: item.updatedAt.toISOString(),
+        })),
         total: page.total,
         limit: page.limit,
         offset: page.offset,
