@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-26 (eliminado el patrón de API pública por módulo: se quita `public/` de la estructura y los sufijos `.public.ts`/`.public.impl.ts`; la colaboración cross-slice de lectura usa read-ports `.query.ts`/`.query.drizzle.ts` — ver `layers-and-dependencies.md`/`inter-layer-communication.md`/`../delivery/dependency-injection.md`/`read-models-for-lists.md`)
+- **Última actualización:** 2026-06-13 (agregada sección de sub-agrupación dentro de una capa cuando un slice crece — pilot: projects; sufijo `.repo-part.ts` incorporado a la tabla de Sufijos por rol; dependency-cruiser actualizado para admitir `infrastructure/repositories/*.repo-part.ts` como DB-toucher legítimo)
 - **Decisores:** ifran
 - **Fase:** folder-structure
 
@@ -37,6 +37,7 @@ La estructura de carpetas quedó definida en `layers-and-dependencies.md` (slice
 | `.repository.bun.ts` | `infrastructure/` | Adapter Drizzle |
 | `.query.ts` | `application/` | Read-port: read models planos + interface de lectura (CQRS-lite y lecturas cross-módulo, `read-models-for-lists.md` / `layers-and-dependencies.md`) |
 | `.query.drizzle.ts` | `infrastructure/` | Adapter de lectura Drizzle (proyecciones de lista + lecturas de otro módulo del schema compartido) |
+| `.repo-part.ts` | `infrastructure/repositories/` | Parte de un repositorio adapter sub-agrupado; el root `<entity>.repository.bun.ts` las compone |
 
 ### Orden de nombre
 
@@ -58,6 +59,28 @@ La estructura de carpetas quedó definida en `layers-and-dependencies.md` (slice
 - **Carpetas vacías NO se crean.** Si un slice no tiene entidad nominal (`auth`, que solo lee datos de otro módulo), no existe `domain/` — pero sí `infrastructure/` (su `bootstrap.ts` + el read-port `.query.drizzle.ts`). La carpeta `value-objects/` se crea recién con el primer VO.
 - **NO barrel `index.ts`**. Imports directos al archivo.
 - La raíz del agregado vive en `domain/<entity>.ts`, nunca dentro de `entities/` (que es solo entidades hijas no-raíz).
+
+### Sub-agrupación dentro de una capa cuando un slice crece (pilot: projects)
+
+**Trigger**: aplicar cuando un slice supera ~aprox. 15 archivos en una sola capa o un archivo raíz de capa (`*.routes.ts`/`*.controller.ts`/`*.repository.bun.ts`) supera ~400-500 líneas con sub-conceptos claramente separables (sub-agregados del mismo aggregate). NO se crea un sub-slice (rompería el límite del agregado, contradice `architecture-style.md`): el agregado sigue siendo uno (un repo, un port, un router público).
+
+**Convención**: dentro de la capa, agrupar por sub-contexto (sub-agregado):
+- `application/use-cases/<subcontexto>/<entity>-<acción>.use-case.ts`
+- `http/routes/<entity>-<subcontexto>.routes.ts` + `http/controllers/<entity>-<subcontexto>.controller.ts`
+- `infrastructure/repositories/<entity>-<subcontexto>.repo-part.ts`
+- `domain/` y `http/dto/` NO se sub-agrupan (ya están organizados por entidad/concepto).
+
+**Patrón root-orquestador (la cara pública NO cambia)**:
+- `http/<entity>.routes.ts` mantiene `create<Entity>sRouter(controller)`: setea middlewares y llama a `register<Sub>Routes(router, controller)` de cada sub-routes.
+- `http/<entity>.controller.ts` mantiene la class `<Entity>Controller` con TODOS sus métodos públicos; cada método delega en un sub-controller interno construido desde el mismo `<Entity>UseCases`.
+- `infrastructure/<entity>.repository.bun.ts` mantiene la class adapter que `implements <Entity>Repository`; compone repo-parts pasándoles el mismo `db` y delega. Cada parte abre su propia transacción (un comando = una tx = una mutación del agregado); NO se comparte tx entre partes.
+- View-mappers compartidos entre sub-controllers viven en `http/controllers/view-mappers.ts` (regla: si lo usa >1 sub-controller, va ahí; nunca duplicado).
+
+**Naming**: carpeta de sub-contexto en singular (`budget/`, `expense/`); archivos `<entity>-<subcontexto>` para routes/controllers/repo-parts (`project-budget.routes.ts`), sufijo nuevo `.repo-part.ts` para partes de repositorio.
+
+**dependency-cruiser**: los globs de capa que usan `[^/]+` justo tras la carpeta de capa se ajustan para admitir `repositories/` (DB-isolation sigue valiendo: solo `infrastructure/**` toca DB). Los globs basados en prefijo de capa ya toleran la profundidad extra.
+
+**Generaliza a otros slices** (este es el pilot): contacts/users/auth aplican la misma convención cuando alcanzan el trigger. El sufijo `.repo-part.ts` se incorpora a la tabla de Sufijos por rol.
 
 ### Path aliases (imports absolutos)
 
