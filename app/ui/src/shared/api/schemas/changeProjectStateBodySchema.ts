@@ -9,4 +9,7 @@ export const changeProjectStateBodySchema = z.object({
   newState: z
     .enum(["Draft", "Active", "Closed", "Cancelled"])
     .describe("Target project status"),
+  note: z.optional(
+    z.string().describe("Optional note explaining the state change"),
+  ),
 });

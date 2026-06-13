@@ -8,6 +8,7 @@ export interface ChangeProjectStateInput {
   projectId: string
   newState: ProjectStatus
   userId: string
+  note?: string
 }
 
 export class ProjectChangeStateUseCase {
@@ -23,7 +24,7 @@ export class ProjectChangeStateUseCase {
     const updated = project.changeState({
       stateChangeId: newId(),
       newState: input.newState,
-      cause: { kind: 'manual', userId: input.userId },
+      cause: { kind: 'manual', userId: input.userId, note: input.note },
       now,
     })
 

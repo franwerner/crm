@@ -123,6 +123,7 @@ export function toStateChangeView(sc: ProjectStateChange) {
     nextState: sc.nextState,
     causeKind: sc.cause.kind,
     causedByUserId: sc.cause.kind === 'manual' ? sc.cause.userId : null,
+    note: sc.cause.kind === 'manual' ? sc.cause.note ?? null : null,
     changedAt: sc.changedAt.toISOString(),
     createdAt: sc.createdAt.toISOString(),
   }

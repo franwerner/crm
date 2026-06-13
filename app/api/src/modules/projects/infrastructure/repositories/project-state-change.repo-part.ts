@@ -13,7 +13,7 @@ type ProjectStateChangeRow = typeof projectStateChanges.$inferSelect
 
 export function toStateChangeCause(row: ProjectStateChangeRow): StateChangeCause {
   if (row.causeKind === 'manual') {
-    return { kind: 'manual', userId: row.causedByUserId ?? '' }
+    return { kind: 'manual', userId: row.causedByUserId ?? '', note: row.causeReason ?? undefined }
   }
   return { kind: 'system', reason: row.causeReason ?? '' }
 }
@@ -38,7 +38,7 @@ export function toStateChangeRow(sc: ProjectStateChange): typeof projectStateCha
     nextState: sc.nextState,
     causeKind: sc.cause.kind,
     causedByUserId: sc.cause.kind === 'manual' ? sc.cause.userId : null,
-    causeReason: sc.cause.kind === 'system' ? sc.cause.reason : null,
+    causeReason: sc.cause.kind === 'system' ? sc.cause.reason : sc.cause.note ?? null,
     changedAt: sc.changedAt,
     createdAt: sc.createdAt,
   }

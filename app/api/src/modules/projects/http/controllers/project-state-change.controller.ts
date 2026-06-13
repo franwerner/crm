@@ -22,6 +22,7 @@ export class ProjectStateChangeController {
       projectId,
       newState: body.newState,
       userId,
+      note: body.note,
     })
 
     return c.json(toProjectView(project), 200)

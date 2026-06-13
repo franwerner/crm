@@ -10,6 +10,7 @@ export const ProjectStateChangeViewSchema = z
     nextState: ProjectStatusEnum.openapi({ example: 'Active' }),
     causeKind: z.enum(['manual', 'system']).openapi({ example: 'manual' }),
     causedByUserId: z.string().nullable().openapi({ description: 'User UUID (manual changes)' }),
+    note: z.string().nullable().openapi({ description: 'Optional note for manual changes' }),
     changedAt: z.string().openapi({ description: 'ISO 8601 timestamp' }),
     createdAt: z.string().openapi({ description: 'ISO 8601 timestamp' }),
   })

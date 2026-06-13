@@ -8,7 +8,7 @@ import type { ProjectBudgetItem } from '@modules/projects/domain/entities/projec
 import type { ProjectExpense } from '@modules/projects/domain/entities/project-expense'
 import type { ProjectExtension } from '@modules/projects/domain/entities/project-extension'
 import type { ProjectDocument } from '@modules/projects/domain/entities/project-document'
-import { assertAllowedTransition } from '@modules/projects/domain/policies'
+import { assertAllowedTransition, assertNoteRequirement } from '@modules/projects/domain/policies'
 import { Money } from '@modules/projects/domain/value-objects/money'
 import type { ProjectProfit } from '@modules/projects/domain/value-objects/project-profit'
 import {
@@ -213,6 +213,8 @@ export class Project {
     now: Date
   }): Project {
     assertAllowedTransition(this.props.status, params.newState)
+    const note = params.cause.kind === 'manual' ? params.cause.note : undefined
+    assertNoteRequirement(this.props.status, params.newState, note)
 
     const stateChange: ProjectStateChange = {
       id: params.stateChangeId,

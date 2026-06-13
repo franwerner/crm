@@ -9,8 +9,8 @@ import type { ChangeProjectStateBodyNewStateEnumKey } from '@shared/api/types/Ch
 export function useProjectStateChange(projectId: string) {
   const mutation = usePostProjectsIdState()
 
-  async function changeState(newState: ChangeProjectStateBodyNewStateEnumKey) {
-    await mutation.mutateAsync({ id: projectId, data: { newState } })
+  async function changeState(newState: ChangeProjectStateBodyNewStateEnumKey, note?: string) {
+    await mutation.mutateAsync({ id: projectId, data: { newState, note: note?.trim() || undefined } })
     await Promise.all([
       queryClient.invalidateQueries({ queryKey: getProjectsIdQueryKey(projectId) }),
       queryClient.invalidateQueries({ queryKey: getProjectsIdStateChangesQueryKey(projectId) }),

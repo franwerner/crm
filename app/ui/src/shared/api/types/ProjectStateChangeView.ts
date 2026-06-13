@@ -60,6 +60,11 @@ export type ProjectStateChangeView = {
    */
   causedByUserId: string | null;
   /**
+   * @description Optional note for manual changes
+   * @type string
+   */
+  note: string | null;
+  /**
    * @description ISO 8601 timestamp
    * @type string
    */

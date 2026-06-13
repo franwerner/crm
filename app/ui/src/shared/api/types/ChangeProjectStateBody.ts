@@ -19,4 +19,9 @@ export type ChangeProjectStateBody = {
    * @type string
    */
   newState: ChangeProjectStateBodyNewStateEnumKey;
+  /**
+   * @description Optional note explaining the state change
+   * @type string | undefined
+   */
+  note?: string;
 };

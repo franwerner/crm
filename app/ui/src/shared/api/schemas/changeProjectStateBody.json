@@ -6,6 +6,11 @@
       "enum": ["Draft", "Active", "Closed", "Cancelled"],
       "description": "Target project status",
       "example": "Active"
+    },
+    "note": {
+      "type": "string",
+      "description": "Optional note explaining the state change",
+      "example": "Client approved the proposal"
     }
   },
   "required": ["newState"],

@@ -12,6 +12,7 @@ export const projectStateChangeViewSchema = z.object({
   nextState: z.enum(["Draft", "Active", "Closed", "Cancelled"]),
   causeKind: z.enum(["manual", "system"]),
   causedByUserId: z.nullable(z.string().describe("User UUID (manual changes)")),
+  note: z.nullable(z.string().describe("Optional note for manual changes")),
   changedAt: z.string().describe("ISO 8601 timestamp"),
   createdAt: z.string().describe("ISO 8601 timestamp"),
 });
