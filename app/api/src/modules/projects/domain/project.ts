@@ -11,6 +11,16 @@ import type { ProjectDocument } from '@modules/projects/domain/entities/project-
 import { assertAllowedTransition } from '@modules/projects/domain/policies'
 import { Money } from '@modules/projects/domain/value-objects/money'
 import type { ProjectProfit } from '@modules/projects/domain/value-objects/project-profit'
+import {
+  computeTotalBudget,
+  computeTotalExpenses,
+  computeProfit,
+} from '@modules/projects/domain/project-financials'
+import {
+  collectionAdd,
+  collectionUpdateById,
+  collectionRemoveById,
+} from '@modules/projects/domain/project-collection-ops'
 
 export interface ProjectProps {
   readonly id: string
@@ -40,6 +50,10 @@ export class Project {
   private constructor(props: ProjectProps, pendingStateChanges: ProjectStateChange[]) {
     this.props = props
     this.pendingStateChanges = pendingStateChanges
+  }
+
+  private withProps(patch: Partial<ProjectProps>): Project {
+    return new Project({ ...this.props, ...patch }, [...this.pendingStateChanges])
   }
 
   static create(params: {
@@ -139,31 +153,15 @@ export class Project {
   get newStateChanges(): readonly ProjectStateChange[] { return this.pendingStateChanges }
 
   get totalBudget(): Money {
-    const moneys: Money[] = [
-      ...this.props.budgetItems.map((i) => Money.of(i.amountMinor, this.props.currency)),
-      ...this.props.extensions
-        .filter((e) => e.billedAmount !== null)
-        .map((e) => Money.of(e.billedAmount!, this.props.currency)),
-    ]
-    if (moneys.length === 0) return Money.of(0, this.props.currency)
-    return Money.sum(moneys)
+    return computeTotalBudget(this.props.currency, this.props.budgetItems, this.props.extensions)
   }
 
   get totalExpenses(): Money {
-    const moneys: Money[] = [
-      ...this.props.expenses.map((e) => Money.of(e.amountMinor, this.props.currency)),
-      ...this.props.extensions
-        .filter((e) => e.cost !== null)
-        .map((e) => Money.of(e.cost!, this.props.currency)),
-    ]
-    if (moneys.length === 0) return Money.of(0, this.props.currency)
-    return Money.sum(moneys)
+    return computeTotalExpenses(this.props.currency, this.props.expenses, this.props.extensions)
   }
 
   get profit(): ProjectProfit {
-    const budget = this.totalBudget
-    const expenses = this.totalExpenses
-    return { amountMinor: budget.amountMinor - expenses.amountMinor, currency: this.props.currency }
+    return computeProfit(this.props.currency, this.props.budgetItems, this.props.expenses, this.props.extensions)
   }
 
   update(
@@ -197,8 +195,7 @@ export class Project {
       ])
     }
 
-    const nextProps: ProjectProps = {
-      ...this.props,
+    return this.withProps({
       name: params.name !== undefined ? params.name.trim() : this.props.name,
       description: params.description !== undefined ? params.description : this.props.description,
       contactId: params.contactId !== undefined ? params.contactId : this.props.contactId,
@@ -206,9 +203,7 @@ export class Project {
       startDate: effectiveStartDate,
       originalPlannedEndDate: effectivePlannedEndDate,
       updatedAt: now,
-    }
-
-    return new Project(nextProps, [...this.pendingStateChanges])
+    })
   }
 
   changeState(params: {
@@ -245,13 +240,10 @@ export class Project {
       throw new BusinessRuleError(`User ${responsible.userId} is already a responsible on project ${this.props.id}`)
     }
 
-    const nextProps: ProjectProps = {
-      ...this.props,
+    return this.withProps({
       responsibles: [...this.props.responsibles, responsible],
       updatedAt: responsible.createdAt,
-    }
-
-    return new Project(nextProps, [...this.pendingStateChanges])
+    })
   }
 
   updateResponsibleRole(userId: string, role: ProjectResponsibleRole, now: Date): Project {
@@ -264,13 +256,7 @@ export class Project {
       r.userId === userId ? { ...r, role, updatedAt: now } : r,
     )
 
-    const nextProps: ProjectProps = {
-      ...this.props,
-      responsibles: updated,
-      updatedAt: now,
-    }
-
-    return new Project(nextProps, [...this.pendingStateChanges])
+    return this.withProps({ responsibles: updated, updatedAt: now })
   }
 
   removeResponsible(userId: string, now: Date): Project {
@@ -290,13 +276,7 @@ export class Project {
       throw new BusinessRuleError('Project must have at least one responsible with role Lead')
     }
 
-    const nextProps: ProjectProps = {
-      ...this.props,
-      responsibles: remaining,
-      updatedAt: now,
-    }
-
-    return new Project(nextProps, [...this.pendingStateChanges])
+    return this.withProps({ responsibles: remaining, updatedAt: now })
   }
 
   softDelete(now: Date): Project {
@@ -304,113 +284,81 @@ export class Project {
       return this
     }
 
-    const nextProps: ProjectProps = {
-      ...this.props,
-      deletedAt: now,
-      updatedAt: now,
-    }
-
-    return new Project(nextProps, [...this.pendingStateChanges])
+    return this.withProps({ deletedAt: now, updatedAt: now })
   }
 
   addBudgetItem(item: ProjectBudgetItem): Project {
-    const nextProps: ProjectProps = {
-      ...this.props,
-      budgetItems: [...this.props.budgetItems, item],
+    return this.withProps({
+      budgetItems: collectionAdd(this.props.budgetItems, item),
       updatedAt: item.createdAt,
-    }
-    return new Project(nextProps, [...this.pendingStateChanges])
+    })
   }
 
   updateBudgetItem(itemId: string, changes: { concept?: string; amountMinor?: number }, now: Date): Project {
-    const existing = this.props.budgetItems.find((i) => i.id === itemId)
-    if (!existing) {
-      throw new NotFoundError(`Budget item ${itemId} not found on project ${this.props.id}`)
-    }
-    const updated = this.props.budgetItems.map((i) =>
-      i.id === itemId
-        ? {
-            ...i,
-            concept: changes.concept !== undefined ? changes.concept : i.concept,
-            amountMinor: changes.amountMinor !== undefined ? changes.amountMinor : i.amountMinor,
-            updatedAt: now,
-          }
-        : i,
+    const updated = collectionUpdateById(
+      this.props.budgetItems,
+      itemId,
+      `Budget item ${itemId} not found on project ${this.props.id}`,
+      (i) => ({
+        ...i,
+        concept: changes.concept !== undefined ? changes.concept : i.concept,
+        amountMinor: changes.amountMinor !== undefined ? changes.amountMinor : i.amountMinor,
+        updatedAt: now,
+      }),
     )
-    const nextProps: ProjectProps = {
-      ...this.props,
-      budgetItems: updated,
-      updatedAt: now,
-    }
-    return new Project(nextProps, [...this.pendingStateChanges])
+    return this.withProps({ budgetItems: updated, updatedAt: now })
   }
 
   removeBudgetItem(itemId: string, now: Date): Project {
-    const exists = this.props.budgetItems.some((i) => i.id === itemId)
-    if (!exists) {
-      throw new NotFoundError(`Budget item ${itemId} not found on project ${this.props.id}`)
-    }
-    const nextProps: ProjectProps = {
-      ...this.props,
-      budgetItems: this.props.budgetItems.filter((i) => i.id !== itemId),
+    return this.withProps({
+      budgetItems: collectionRemoveById(
+        this.props.budgetItems,
+        itemId,
+        `Budget item ${itemId} not found on project ${this.props.id}`,
+      ),
       updatedAt: now,
-    }
-    return new Project(nextProps, [...this.pendingStateChanges])
+    })
   }
 
   addExpense(expense: ProjectExpense): Project {
-    const nextProps: ProjectProps = {
-      ...this.props,
-      expenses: [...this.props.expenses, expense],
+    return this.withProps({
+      expenses: collectionAdd(this.props.expenses, expense),
       updatedAt: expense.createdAt,
-    }
-    return new Project(nextProps, [...this.pendingStateChanges])
+    })
   }
 
   updateExpense(expenseId: string, changes: { concept?: string; amountMinor?: number; incurredAt?: Date }, now: Date): Project {
-    const existing = this.props.expenses.find((e) => e.id === expenseId)
-    if (!existing) {
-      throw new NotFoundError(`Expense ${expenseId} not found on project ${this.props.id}`)
-    }
-    const updated = this.props.expenses.map((e) =>
-      e.id === expenseId
-        ? {
-            ...e,
-            concept: changes.concept !== undefined ? changes.concept : e.concept,
-            amountMinor: changes.amountMinor !== undefined ? changes.amountMinor : e.amountMinor,
-            incurredAt: changes.incurredAt !== undefined ? changes.incurredAt : e.incurredAt,
-            updatedAt: now,
-          }
-        : e,
+    const updated = collectionUpdateById(
+      this.props.expenses,
+      expenseId,
+      `Expense ${expenseId} not found on project ${this.props.id}`,
+      (e) => ({
+        ...e,
+        concept: changes.concept !== undefined ? changes.concept : e.concept,
+        amountMinor: changes.amountMinor !== undefined ? changes.amountMinor : e.amountMinor,
+        incurredAt: changes.incurredAt !== undefined ? changes.incurredAt : e.incurredAt,
+        updatedAt: now,
+      }),
     )
-    const nextProps: ProjectProps = {
-      ...this.props,
-      expenses: updated,
-      updatedAt: now,
-    }
-    return new Project(nextProps, [...this.pendingStateChanges])
+    return this.withProps({ expenses: updated, updatedAt: now })
   }
 
   removeExpense(expenseId: string, now: Date): Project {
-    const exists = this.props.expenses.some((e) => e.id === expenseId)
-    if (!exists) {
-      throw new NotFoundError(`Expense ${expenseId} not found on project ${this.props.id}`)
-    }
-    const nextProps: ProjectProps = {
-      ...this.props,
-      expenses: this.props.expenses.filter((e) => e.id !== expenseId),
+    return this.withProps({
+      expenses: collectionRemoveById(
+        this.props.expenses,
+        expenseId,
+        `Expense ${expenseId} not found on project ${this.props.id}`,
+      ),
       updatedAt: now,
-    }
-    return new Project(nextProps, [...this.pendingStateChanges])
+    })
   }
 
   addExtension(extension: ProjectExtension): Project {
-    const nextProps: ProjectProps = {
-      ...this.props,
-      extensions: [...this.props.extensions, extension],
+    return this.withProps({
+      extensions: collectionAdd(this.props.extensions, extension),
       updatedAt: extension.createdAt,
-    }
-    return new Project(nextProps, [...this.pendingStateChanges])
+    })
   }
 
   updateExtension(
@@ -425,64 +373,50 @@ export class Project {
     },
     now: Date,
   ): Project {
-    const existing = this.props.extensions.find((e) => e.id === extId)
-    if (!existing) {
-      throw new NotFoundError(`Extension ${extId} not found on project ${this.props.id}`)
-    }
-    const updated = this.props.extensions.map((e) =>
-      e.id === extId
-        ? {
-            ...e,
-            additionalDays: changes.additionalDays !== undefined ? changes.additionalDays : e.additionalDays,
-            reason: changes.reason !== undefined ? changes.reason : e.reason,
-            cost: changes.cost !== undefined ? changes.cost : e.cost,
-            billedAmount: changes.billedAmount !== undefined ? changes.billedAmount : e.billedAmount,
-            grantedAt: changes.grantedAt !== undefined ? changes.grantedAt : e.grantedAt,
-            appliedEndDate: changes.appliedEndDate !== undefined ? changes.appliedEndDate : e.appliedEndDate,
-            updatedAt: now,
-          }
-        : e,
+    const updated = collectionUpdateById(
+      this.props.extensions,
+      extId,
+      `Extension ${extId} not found on project ${this.props.id}`,
+      (e) => ({
+        ...e,
+        additionalDays: changes.additionalDays !== undefined ? changes.additionalDays : e.additionalDays,
+        reason: changes.reason !== undefined ? changes.reason : e.reason,
+        cost: changes.cost !== undefined ? changes.cost : e.cost,
+        billedAmount: changes.billedAmount !== undefined ? changes.billedAmount : e.billedAmount,
+        grantedAt: changes.grantedAt !== undefined ? changes.grantedAt : e.grantedAt,
+        appliedEndDate: changes.appliedEndDate !== undefined ? changes.appliedEndDate : e.appliedEndDate,
+        updatedAt: now,
+      }),
     )
-    const nextProps: ProjectProps = {
-      ...this.props,
-      extensions: updated,
-      updatedAt: now,
-    }
-    return new Project(nextProps, [...this.pendingStateChanges])
+    return this.withProps({ extensions: updated, updatedAt: now })
   }
 
   removeExtension(extId: string, now: Date): Project {
-    const exists = this.props.extensions.some((e) => e.id === extId)
-    if (!exists) {
-      throw new NotFoundError(`Extension ${extId} not found on project ${this.props.id}`)
-    }
-    const nextProps: ProjectProps = {
-      ...this.props,
-      extensions: this.props.extensions.filter((e) => e.id !== extId),
+    return this.withProps({
+      extensions: collectionRemoveById(
+        this.props.extensions,
+        extId,
+        `Extension ${extId} not found on project ${this.props.id}`,
+      ),
       updatedAt: now,
-    }
-    return new Project(nextProps, [...this.pendingStateChanges])
+    })
   }
 
   addDocument(document: ProjectDocument): Project {
-    const nextProps: ProjectProps = {
-      ...this.props,
-      documents: [...this.props.documents, document],
+    return this.withProps({
+      documents: collectionAdd(this.props.documents, document),
       updatedAt: document.uploadedAt,
-    }
-    return new Project(nextProps, [...this.pendingStateChanges])
+    })
   }
 
   removeDocument(documentId: string, now: Date): Project {
-    const exists = this.props.documents.some((d) => d.id === documentId)
-    if (!exists) {
-      throw new NotFoundError(`Document ${documentId} not found on project ${this.props.id}`)
-    }
-    const nextProps: ProjectProps = {
-      ...this.props,
-      documents: this.props.documents.filter((d) => d.id !== documentId),
+    return this.withProps({
+      documents: collectionRemoveById(
+        this.props.documents,
+        documentId,
+        `Document ${documentId} not found on project ${this.props.id}`,
+      ),
       updatedAt: now,
-    }
-    return new Project(nextProps, [...this.pendingStateChanges])
+    })
   }
 }
