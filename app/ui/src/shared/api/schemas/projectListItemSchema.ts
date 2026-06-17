@@ -16,6 +16,9 @@ export const projectListItemSchema = z.object({
   startDate: z.string().describe("Start date (YYYY-MM-DD)"),
   plannedEndDate: z.string().describe("Planned end date (YYYY-MM-DD)"),
   createdBy: z.string().describe("User UUID who created this project"),
+  createdByName: z.nullable(
+    z.string().describe("Display name of the user who created this project"),
+  ),
   responsiblesCount: z.int().describe("Total number of responsibles"),
   leads: z
     .array(

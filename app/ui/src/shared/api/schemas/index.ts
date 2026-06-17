@@ -5,6 +5,7 @@ export { addExpenseBodySchema } from "./addExpenseBodySchema.ts";
 export { addExtensionBodySchema } from "./addExtensionBodySchema.ts";
 export { addResponsibleBodySchema } from "./addResponsibleBodySchema.ts";
 export { bulkDeleteContactsBodySchema } from "./bulkDeleteContactsBodySchema.ts";
+export { bulkDeleteProjectsBodySchema } from "./bulkDeleteProjectsBodySchema.ts";
 export { changeProjectStateBodySchema } from "./changeProjectStateBodySchema.ts";
 export { contactAssignmentListItemSchema } from "./contactAssignmentListItemSchema.ts";
 export { contactAssignmentListResponseSchema } from "./contactAssignmentListResponseSchema.ts";
@@ -194,6 +195,11 @@ export {
   getProjectsIdStateChangesQueryResponseSchema,
 } from "./getProjectsIdStateChangesSchema.ts";
 export {
+  getProjectsKpis200Schema,
+  getProjectsKpis401Schema,
+  getProjectsKpisQueryResponseSchema,
+} from "./getProjectsKpisSchema.ts";
+export {
   getProjects200Schema,
   getProjects401Schema,
   getProjectsQueryParamsSchema,
@@ -334,6 +340,12 @@ export {
   postContactsMutationResponseSchema,
 } from "./postContactsSchema.ts";
 export {
+  postProjectsBulkDelete204Schema,
+  postProjectsBulkDelete401Schema,
+  postProjectsBulkDeleteMutationRequestSchema,
+  postProjectsBulkDeleteMutationResponseSchema,
+} from "./postProjectsBulkDeleteSchema.ts";
+export {
   postProjectsIdBudgetItems200Schema,
   postProjectsIdBudgetItems401Schema,
   postProjectsIdBudgetItems404Schema,
@@ -405,6 +417,7 @@ export { projectExpenseListResponseSchema } from "./projectExpenseListResponseSc
 export { projectExpenseViewSchema } from "./projectExpenseViewSchema.ts";
 export { projectExtensionListResponseSchema } from "./projectExtensionListResponseSchema.ts";
 export { projectExtensionViewSchema } from "./projectExtensionViewSchema.ts";
+export { projectKpisResponseSchema } from "./projectKpisResponseSchema.ts";
 export { projectListItemSchema } from "./projectListItemSchema.ts";
 export { projectListResponseSchema } from "./projectListResponseSchema.ts";
 export { projectProfitSchema } from "./projectProfitSchema.ts";

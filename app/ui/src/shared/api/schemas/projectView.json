@@ -42,6 +42,15 @@
       "type": "string",
       "description": "User UUID who created this project"
     },
+    "creator": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["id", "name"],
+      "description": "Creator user data. Present on detail endpoint."
+    },
     "responsibles": {
       "type": "array",
       "items": {

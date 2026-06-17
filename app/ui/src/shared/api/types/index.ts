@@ -14,6 +14,7 @@ export type {
   AddResponsibleBodyRoleEnumKey,
 } from "./AddResponsibleBody.ts";
 export type { BulkDeleteContactsBody } from "./BulkDeleteContactsBody.ts";
+export type { BulkDeleteProjectsBody } from "./BulkDeleteProjectsBody.ts";
 export type {
   ChangeProjectStateBody,
   ChangeProjectStateBodyNewStateEnumKey,
@@ -323,6 +324,12 @@ export type {
   PreviousStateNinEnumKey,
 } from "./GetProjectsIdStateChanges.ts";
 export type {
+  GetProjectsKpis200,
+  GetProjectsKpis401,
+  GetProjectsKpisQuery,
+  GetProjectsKpisQueryResponse,
+} from "./GetProjectsKpis.ts";
+export type {
   GetUsers200,
   GetUsers401,
   GetUsersQuery,
@@ -482,6 +489,13 @@ export type {
   PostProjectsMutationResponse,
 } from "./PostProjects.ts";
 export type {
+  PostProjectsBulkDelete204,
+  PostProjectsBulkDelete401,
+  PostProjectsBulkDeleteMutation,
+  PostProjectsBulkDeleteMutationRequest,
+  PostProjectsBulkDeleteMutationResponse,
+} from "./PostProjectsBulkDelete.ts";
+export type {
   PostProjectsIdBudgetItems200,
   PostProjectsIdBudgetItems401,
   PostProjectsIdBudgetItems404,
@@ -554,6 +568,10 @@ export type { ProjectExpenseListResponse } from "./ProjectExpenseListResponse.ts
 export type { ProjectExpenseView } from "./ProjectExpenseView.ts";
 export type { ProjectExtensionListResponse } from "./ProjectExtensionListResponse.ts";
 export type { ProjectExtensionView } from "./ProjectExtensionView.ts";
+export type {
+  ProjectKpisResponse,
+  StatesStateEnum2Key,
+} from "./ProjectKpisResponse.ts";
 export type {
   LeadsRoleEnumKey,
   ProjectListItem,
@@ -678,6 +696,7 @@ export { previousStateIsNotNullEnum } from "./GetProjectsIdStateChanges.ts";
 export { previousStateIsNullEnum } from "./GetProjectsIdStateChanges.ts";
 export { previousStateNeEnum } from "./GetProjectsIdStateChanges.ts";
 export { previousStateNinEnum } from "./GetProjectsIdStateChanges.ts";
+export { statesStateEnum2 } from "./ProjectKpisResponse.ts";
 export { leadsRoleEnum } from "./ProjectListItem.ts";
 export { projectListItemStatusEnum } from "./ProjectListItem.ts";
 export { projectStateChangeViewCauseKindEnum } from "./ProjectStateChangeView.ts";

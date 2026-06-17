@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "properties": {
+    "total": {
+      "type": "object",
+      "properties": {
+        "count": { "type": "integer", "minimum": 0 },
+        "current": { "type": "integer", "minimum": 0 },
+        "previous": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["count", "current", "previous"]
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": ["Draft", "Active", "Closed", "Cancelled"]
+          },
+          "current": { "type": "integer", "minimum": 0 },
+          "previous": { "type": "integer", "minimum": 0 }
+        },
+        "required": ["state", "current", "previous"]
+      }
+    }
+  },
+  "required": ["total", "states"],
+  "x-readme-ref-name": "ProjectKpisResponse"
+}

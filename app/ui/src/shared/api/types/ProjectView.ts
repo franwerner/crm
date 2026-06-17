@@ -73,6 +73,20 @@ export type ProjectView = {
    */
   createdBy: string;
   /**
+   * @description Creator user data. Present on detail endpoint.
+   * @type object | undefined
+   */
+  creator?: {
+    /**
+     * @type string
+     */
+    id: string;
+    /**
+     * @type string
+     */
+    name: string;
+  };
+  /**
    * @description Project responsibles
    * @type array
    */

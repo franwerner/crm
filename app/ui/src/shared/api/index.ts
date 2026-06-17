@@ -39,6 +39,8 @@ export type { GetProjectsIdExtensionsSuspenseQueryKey } from "./hooks/useGetProj
 export type { GetProjectsIdStateChangesQueryKey } from "./hooks/useGetProjectsIdStateChanges.ts";
 export type { GetProjectsIdStateChangesSuspenseQueryKey } from "./hooks/useGetProjectsIdStateChangesSuspense.ts";
 export type { GetProjectsIdSuspenseQueryKey } from "./hooks/useGetProjectsIdSuspense.ts";
+export type { GetProjectsKpisQueryKey } from "./hooks/useGetProjectsKpis.ts";
+export type { GetProjectsKpisSuspenseQueryKey } from "./hooks/useGetProjectsKpisSuspense.ts";
 export type { GetProjectsSuspenseQueryKey } from "./hooks/useGetProjectsSuspense.ts";
 export type { GetUsersQueryKey } from "./hooks/useGetUsers.ts";
 export type { GetUsersIdQueryKey } from "./hooks/useGetUsersId.ts";
@@ -61,6 +63,7 @@ export type { PostContactsIdAssignmentsMutationKey } from "./hooks/usePostContac
 export type { PostContactsIdChannelsMutationKey } from "./hooks/usePostContactsIdChannels.ts";
 export type { PostContactsIdEventsMutationKey } from "./hooks/usePostContactsIdEvents.ts";
 export type { PostProjectsMutationKey } from "./hooks/usePostProjects.ts";
+export type { PostProjectsBulkDeleteMutationKey } from "./hooks/usePostProjectsBulkDelete.ts";
 export type { PostProjectsIdBudgetItemsMutationKey } from "./hooks/usePostProjectsIdBudgetItems.ts";
 export type { PostProjectsIdDocumentsMutationKey } from "./hooks/usePostProjectsIdDocuments.ts";
 export type { PostProjectsIdExpensesMutationKey } from "./hooks/usePostProjectsIdExpenses.ts";
@@ -84,6 +87,7 @@ export type {
   AddResponsibleBodyRoleEnumKey,
 } from "./types/AddResponsibleBody.ts";
 export type { BulkDeleteContactsBody } from "./types/BulkDeleteContactsBody.ts";
+export type { BulkDeleteProjectsBody } from "./types/BulkDeleteProjectsBody.ts";
 export type {
   ChangeProjectStateBody,
   ChangeProjectStateBodyNewStateEnumKey,
@@ -393,6 +397,12 @@ export type {
   PreviousStateNinEnumKey,
 } from "./types/GetProjectsIdStateChanges.ts";
 export type {
+  GetProjectsKpis200,
+  GetProjectsKpis401,
+  GetProjectsKpisQuery,
+  GetProjectsKpisQueryResponse,
+} from "./types/GetProjectsKpis.ts";
+export type {
   GetUsers200,
   GetUsers401,
   GetUsersQuery,
@@ -552,6 +562,13 @@ export type {
   PostProjectsMutationResponse,
 } from "./types/PostProjects.ts";
 export type {
+  PostProjectsBulkDelete204,
+  PostProjectsBulkDelete401,
+  PostProjectsBulkDeleteMutation,
+  PostProjectsBulkDeleteMutationRequest,
+  PostProjectsBulkDeleteMutationResponse,
+} from "./types/PostProjectsBulkDelete.ts";
+export type {
   PostProjectsIdBudgetItems200,
   PostProjectsIdBudgetItems401,
   PostProjectsIdBudgetItems404,
@@ -624,6 +641,10 @@ export type { ProjectExpenseListResponse } from "./types/ProjectExpenseListRespo
 export type { ProjectExpenseView } from "./types/ProjectExpenseView.ts";
 export type { ProjectExtensionListResponse } from "./types/ProjectExtensionListResponse.ts";
 export type { ProjectExtensionView } from "./types/ProjectExtensionView.ts";
+export type {
+  ProjectKpisResponse,
+  StatesStateEnum2Key,
+} from "./types/ProjectKpisResponse.ts";
 export type {
   LeadsRoleEnumKey,
   ProjectListItem,
@@ -699,6 +720,7 @@ export { getProjectsIdDocumentsDocidDownloadUrl } from "./clients/getProjectsIdD
 export { getProjectsIdExpenses } from "./clients/getProjectsIdExpenses.ts";
 export { getProjectsIdExtensions } from "./clients/getProjectsIdExtensions.ts";
 export { getProjectsIdStateChanges } from "./clients/getProjectsIdStateChanges.ts";
+export { getProjectsKpis } from "./clients/getProjectsKpis.ts";
 export { getUsers } from "./clients/getUsers.ts";
 export { getUsersId } from "./clients/getUsersId.ts";
 export { patchContactsId } from "./clients/patchContactsId.ts";
@@ -718,6 +740,7 @@ export { postContactsIdAssignments } from "./clients/postContactsIdAssignments.t
 export { postContactsIdChannels } from "./clients/postContactsIdChannels.ts";
 export { postContactsIdEvents } from "./clients/postContactsIdEvents.ts";
 export { postProjects } from "./clients/postProjects.ts";
+export { postProjectsBulkDelete } from "./clients/postProjectsBulkDelete.ts";
 export { postProjectsIdBudgetItems } from "./clients/postProjectsIdBudgetItems.ts";
 export { postProjectsIdDocuments } from "./clients/postProjectsIdDocuments.ts";
 export { postProjectsIdExpenses } from "./clients/postProjectsIdExpenses.ts";
@@ -848,6 +871,12 @@ export { useGetProjectsIdStateChangesSuspense } from "./hooks/useGetProjectsIdSt
 export { getProjectsIdSuspenseQueryKey } from "./hooks/useGetProjectsIdSuspense.ts";
 export { getProjectsIdSuspenseQueryOptions } from "./hooks/useGetProjectsIdSuspense.ts";
 export { useGetProjectsIdSuspense } from "./hooks/useGetProjectsIdSuspense.ts";
+export { getProjectsKpisQueryKey } from "./hooks/useGetProjectsKpis.ts";
+export { getProjectsKpisQueryOptions } from "./hooks/useGetProjectsKpis.ts";
+export { useGetProjectsKpis } from "./hooks/useGetProjectsKpis.ts";
+export { getProjectsKpisSuspenseQueryKey } from "./hooks/useGetProjectsKpisSuspense.ts";
+export { getProjectsKpisSuspenseQueryOptions } from "./hooks/useGetProjectsKpisSuspense.ts";
+export { useGetProjectsKpisSuspense } from "./hooks/useGetProjectsKpisSuspense.ts";
 export { getProjectsSuspenseQueryKey } from "./hooks/useGetProjectsSuspense.ts";
 export { getProjectsSuspenseQueryOptions } from "./hooks/useGetProjectsSuspense.ts";
 export { useGetProjectsSuspense } from "./hooks/useGetProjectsSuspense.ts";
@@ -914,6 +943,9 @@ export { usePostContactsIdEvents } from "./hooks/usePostContactsIdEvents.ts";
 export { postProjectsMutationKey } from "./hooks/usePostProjects.ts";
 export { postProjectsMutationOptions } from "./hooks/usePostProjects.ts";
 export { usePostProjects } from "./hooks/usePostProjects.ts";
+export { postProjectsBulkDeleteMutationKey } from "./hooks/usePostProjectsBulkDelete.ts";
+export { postProjectsBulkDeleteMutationOptions } from "./hooks/usePostProjectsBulkDelete.ts";
+export { usePostProjectsBulkDelete } from "./hooks/usePostProjectsBulkDelete.ts";
 export { postProjectsIdBudgetItemsMutationKey } from "./hooks/usePostProjectsIdBudgetItems.ts";
 export { postProjectsIdBudgetItemsMutationOptions } from "./hooks/usePostProjectsIdBudgetItems.ts";
 export { usePostProjectsIdBudgetItems } from "./hooks/usePostProjectsIdBudgetItems.ts";
@@ -942,6 +974,7 @@ export { addExpenseBodySchema } from "./schemas/addExpenseBodySchema.ts";
 export { addExtensionBodySchema } from "./schemas/addExtensionBodySchema.ts";
 export { addResponsibleBodySchema } from "./schemas/addResponsibleBodySchema.ts";
 export { bulkDeleteContactsBodySchema } from "./schemas/bulkDeleteContactsBodySchema.ts";
+export { bulkDeleteProjectsBodySchema } from "./schemas/bulkDeleteProjectsBodySchema.ts";
 export { changeProjectStateBodySchema } from "./schemas/changeProjectStateBodySchema.ts";
 export { contactAssignmentListItemSchema } from "./schemas/contactAssignmentListItemSchema.ts";
 export { contactAssignmentListResponseSchema } from "./schemas/contactAssignmentListResponseSchema.ts";
@@ -1131,6 +1164,11 @@ export {
   getProjectsIdStateChangesQueryResponseSchema,
 } from "./schemas/getProjectsIdStateChangesSchema.ts";
 export {
+  getProjectsKpis200Schema,
+  getProjectsKpis401Schema,
+  getProjectsKpisQueryResponseSchema,
+} from "./schemas/getProjectsKpisSchema.ts";
+export {
   getProjects200Schema,
   getProjects401Schema,
   getProjectsQueryParamsSchema,
@@ -1271,6 +1309,12 @@ export {
   postContactsMutationResponseSchema,
 } from "./schemas/postContactsSchema.ts";
 export {
+  postProjectsBulkDelete204Schema,
+  postProjectsBulkDelete401Schema,
+  postProjectsBulkDeleteMutationRequestSchema,
+  postProjectsBulkDeleteMutationResponseSchema,
+} from "./schemas/postProjectsBulkDeleteSchema.ts";
+export {
   postProjectsIdBudgetItems200Schema,
   postProjectsIdBudgetItems401Schema,
   postProjectsIdBudgetItems404Schema,
@@ -1342,6 +1386,7 @@ export { projectExpenseListResponseSchema } from "./schemas/projectExpenseListRe
 export { projectExpenseViewSchema } from "./schemas/projectExpenseViewSchema.ts";
 export { projectExtensionListResponseSchema } from "./schemas/projectExtensionListResponseSchema.ts";
 export { projectExtensionViewSchema } from "./schemas/projectExtensionViewSchema.ts";
+export { projectKpisResponseSchema } from "./schemas/projectKpisResponseSchema.ts";
 export { projectListItemSchema } from "./schemas/projectListItemSchema.ts";
 export { projectListResponseSchema } from "./schemas/projectListResponseSchema.ts";
 export { projectProfitSchema } from "./schemas/projectProfitSchema.ts";
@@ -1435,6 +1480,7 @@ export { previousStateIsNotNullEnum } from "./types/GetProjectsIdStateChanges.ts
 export { previousStateIsNullEnum } from "./types/GetProjectsIdStateChanges.ts";
 export { previousStateNeEnum } from "./types/GetProjectsIdStateChanges.ts";
 export { previousStateNinEnum } from "./types/GetProjectsIdStateChanges.ts";
+export { statesStateEnum2 } from "./types/ProjectKpisResponse.ts";
 export { leadsRoleEnum } from "./types/ProjectListItem.ts";
 export { projectListItemStatusEnum } from "./types/ProjectListItem.ts";
 export { projectStateChangeViewCauseKindEnum } from "./types/ProjectStateChangeView.ts";

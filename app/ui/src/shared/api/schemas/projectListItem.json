@@ -43,6 +43,12 @@
       "type": "string",
       "description": "User UUID who created this project"
     },
+    "createdByName": {
+      "type": "string",
+      "nullable": true,
+      "description": "Display name of the user who created this project",
+      "example": "John Doe"
+    },
     "responsiblesCount": {
       "type": "integer",
       "description": "Total number of responsibles",
@@ -83,6 +89,7 @@
     "startDate",
     "plannedEndDate",
     "createdBy",
+    "createdByName",
     "responsiblesCount",
     "leads",
     "createdAt",

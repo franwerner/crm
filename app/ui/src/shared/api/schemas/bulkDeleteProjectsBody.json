@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "ids": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "maxItems": 500,
+      "description": "IDs of projects to soft-delete (1 to 500).",
+      "example": ["p1a2b3", "q4e5f6"]
+    }
+  },
+  "required": ["ids"],
+  "x-readme-ref-name": "BulkDeleteProjectsBody"
+}

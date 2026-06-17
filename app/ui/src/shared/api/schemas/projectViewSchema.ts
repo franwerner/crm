@@ -22,6 +22,14 @@ export const projectViewSchema = z.object({
     .string()
     .describe("Derived planned end date including all extensions (YYYY-MM-DD)"),
   createdBy: z.string().describe("User UUID who created this project"),
+  creator: z.optional(
+    z
+      .object({
+        id: z.string(),
+        name: z.string(),
+      })
+      .describe("Creator user data. Present on detail endpoint."),
+  ),
   responsibles: z
     .array(
       z.object({

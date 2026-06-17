@@ -70,6 +70,11 @@ export type ProjectListItem = {
    */
   createdBy: string;
   /**
+   * @description Display name of the user who created this project
+   * @type string
+   */
+  createdByName: string | null;
+  /**
    * @description Total number of responsibles
    * @type integer
    */

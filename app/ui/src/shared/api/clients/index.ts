@@ -24,6 +24,7 @@ export { getProjectsIdDocumentsDocidDownloadUrl } from "./getProjectsIdDocuments
 export { getProjectsIdExpenses } from "./getProjectsIdExpenses.ts";
 export { getProjectsIdExtensions } from "./getProjectsIdExtensions.ts";
 export { getProjectsIdStateChanges } from "./getProjectsIdStateChanges.ts";
+export { getProjectsKpis } from "./getProjectsKpis.ts";
 export { getUsers } from "./getUsers.ts";
 export { getUsersId } from "./getUsersId.ts";
 export { patchContactsId } from "./patchContactsId.ts";
@@ -43,6 +44,7 @@ export { postContactsIdAssignments } from "./postContactsIdAssignments.ts";
 export { postContactsIdChannels } from "./postContactsIdChannels.ts";
 export { postContactsIdEvents } from "./postContactsIdEvents.ts";
 export { postProjects } from "./postProjects.ts";
+export { postProjectsBulkDelete } from "./postProjectsBulkDelete.ts";
 export { postProjectsIdBudgetItems } from "./postProjectsIdBudgetItems.ts";
 export { postProjectsIdDocuments } from "./postProjectsIdDocuments.ts";
 export { postProjectsIdExpenses } from "./postProjectsIdExpenses.ts";
