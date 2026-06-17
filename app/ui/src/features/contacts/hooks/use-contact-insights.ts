@@ -1,10 +1,7 @@
 import { useGetEnrichments } from '@shared/api/hooks/useGetEnrichments'
-import type { GetEnrichmentsId200 } from '@shared/api/types/GetEnrichmentsId'
+import type { InsightOut } from '@shared/api/types/InsightOut'
 
-// The list endpoint returns the same object shape as the single-insight endpoint.
-// GetEnrichmentsQueryResponse is incorrectly typed by kubb (enum key array instead of
-// object array), so we cast to the correct item type from GetEnrichmentsId200.
-export type ContactInsightItem = GetEnrichmentsId200
+export type ContactInsightItem = InsightOut
 
 export function useContactInsights(contactId: string) {
   const query = useGetEnrichments(
@@ -13,7 +10,7 @@ export function useContactInsights(contactId: string) {
   )
 
   return {
-    insights: (query.data ?? []) as unknown as ContactInsightItem[],
+    insights: query.data ?? [],
     isLoading: query.isLoading,
     isError: query.isError,
     error: query.error,
