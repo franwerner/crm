@@ -18,13 +18,13 @@ Contexto del proyecto: qué se construye, stack, equipo, alcance, madurez. Marco
 Estructura del código: estilo arquitectónico (Vertical Slice), capas y reglas de dependencia, comunicación entre capas, organización de carpetas/naming y read models para listas (CQRS-lite). **Consultá cuando** crees archivos, agregues imports entre capas/slices, diseñes un módulo o toques la organización del código.
 
 ### [runtime/](runtime/INDEX.md)
-Comportamiento en ejecución: manejo de errores (excepciones, RFC 7807, boundary handling global). **Consultá cuando** tires/atrapes una excepción, definas un error custom o respondas un error desde un endpoint.
+Comportamiento en ejecución: manejo de errores (excepciones, RFC 7807, boundary handling global) y trabajos asíncronos (BullMQ/Redis). **Consultá cuando** tires/atrapes una excepción, definas un error custom, respondas un error desde un endpoint, o toques jobs/workers/colas.
 
 ### [data/](data/INDEX.md)
 Persistencia y datos: acceso a datos (Drizzle + Postgres, repositorios, transacciones), convenciones de modelado (IDs, timestamps, borrado, enums, naming DB) y object storage. **Consultá cuando** escribas queries, definas tablas/migraciones o manejes archivos.
 
 ### [observability/](observability/INDEX.md)
-Visibilidad operacional: logging (Pending). **Consultá cuando** agregues un log o configures niveles. Hoy sin infraestructura — leé la razón de aplazamiento.
+Visibilidad operacional: logging (pino + interface Logger, Accepted). **Consultá cuando** agregues un log, configures niveles o toques el request-logger.
 
 ### [security/](security/INDEX.md)
 Seguridad: autenticación (JWT en cookie httpOnly, sin roles), CSRF, y manejo de secretos. **Consultá cuando** toques login/permisos/tokens/middleware de auth, o aprovisiones/consumas un secreto.
@@ -41,7 +41,7 @@ Reglas de negocio del dominio del CRM: máquina de estados del pipeline de Conta
 ## Catálogo de tecnologías
 
 ### [tech/](tech/INDEX.md)
-Cross-cutting (NO es un dominio): registro vivo de las tecnologías concretas elegidas (Bun, Hono, Drizzle, Postgres, zod, MinIO, etc.) con su "por qué" y alternativas descartadas. **Consultá SIEMPRE antes de agregar/cambiar una dependencia, lib, framework, DB o herramienta.**
+Cross-cutting (NO es un dominio): registro vivo de las tecnologías concretas elegidas (Bun, Hono, Drizzle, Postgres, zod, MinIO, pino, BullMQ, Redis, ioredis, etc.) con su "por qué" y alternativas descartadas. **Consultá SIEMPRE antes de agregar/cambiar una dependencia, lib, framework, DB o herramienta.**
 
 ## Dominios sin uso
 
@@ -72,7 +72,6 @@ Dominios canónicos del catálogo que hoy NO tienen ADRs en este paquete:
 | Origen | Qué falta decidir | Trigger esperado |
 |---|---|---|
 | `delivery/testing-strategy.md` | Estrategia de testing completa | Cuando haya lógica de negocio no trivial · **además: conflicto con `Strict TDD Mode: enabled` del harness** |
-| `observability/logging.md` | Estrategia de logging | Cuando se opere en entorno real / deje de ser prototipo local |
 | `structure/inter-layer-communication.md` §3.2 | Eventos de dominio in-process | Cuando la orquestación cross-slice ensucie el composition root |
 | `data/data-access.md` §tx | Port de Unit of Work | Cuando un use-case necesite atomicidad sobre más de un repo |
 | `security/auth.md` §refresh | Refresh token + rotación | Cuando sesiones largas o revocación sean requisito real |
@@ -81,7 +80,7 @@ Dominios canónicos del catálogo que hoy NO tienen ADRs en este paquete:
 
 ## Estado y mantenimiento
 
-- Última actualización: 2026-06-01
+- Última actualización: 2026-06-16
 - Cada ADR tiene su propio `Status:`.
 - **Actualizar una decisión (cambio menor):** editá el ADR. El historial lo lleva git.
 - **Cambiar una decisión (cambio de fondo):** creá un ADR nuevo, marcá el viejo `Superseded` con link al nuevo. No edites la decisión vieja en el lugar.

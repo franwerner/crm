@@ -41,7 +41,16 @@ Registro vivo de las tecnologías concretas elegidas para este paquete. Cada ent
 _Pendiente de decidir — ver `../delivery/testing-strategy.md` (Status: Pending). Conflicto activo con `Strict TDD Mode` del harness._
 
 ### Logging
-_Pendiente de decidir — ver `../observability/logging.md` (Status: Pending). Recomendación no adoptada: `pino`._
+| Tech | Versión | Por qué (resumen) |
+|---|---|---|
+| [pino](pino.md) | ^10.3.1 (+ pino-pretty ^13.1.3) | Logger JSON estructurado de bajo overhead; detrás de la interface `Logger` en `src/shared/logger`. `../observability/logging.md` |
+
+### Background jobs / Cola
+| Tech | Versión | Por qué (resumen) |
+|---|---|---|
+| [redis](redis.md) | 7-alpine | Backing store de BullMQ para colas durables. `../runtime/background-jobs.md` |
+| [bullmq](bullmq.md) | ^5.78.1 | Cola sobre Redis con retry/backoff/DLQ/repeatable. `../runtime/background-jobs.md` |
+| [ioredis](ioredis.md) | ^5.11.1 | Cliente Redis que BullMQ exige; riesgo Bun documentado. `../runtime/background-jobs.md` |
 
 ### Configuración / Secretos
 | Tech | Versión | Por qué |
