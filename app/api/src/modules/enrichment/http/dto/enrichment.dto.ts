@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '@hono/zod-openapi'
 import { FILTER_OPS, MAX_OR_GROUPS, MAX_CONDITIONS_PER_GROUP } from '@shared/types/filters'
 
 // --- Inbound DTOs ---
@@ -81,7 +81,7 @@ export const InsightOutSchema = z.object({
   completedAt: z.string().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
-})
+}).openapi('InsightOut')
 export type InsightOut = z.infer<typeof InsightOutSchema>
 
 export const BatchEnrichResponseSchema = z.object({
