@@ -38,6 +38,9 @@ Contrato externo de la API: documentación/OpenAPI y estándares compartidos del
 ### [domain-logic/](domain-logic/INDEX.md)
 Reglas de negocio del dominio del CRM: máquina de estados del pipeline de Contact (event-only). **Consultá cuando** toques transiciones de estado, `EventType`/`PipelineState`, `domain/policies.ts` o `Contact.registerEvent`.
 
+### [integration/](integration/INDEX.md)
+Bordes de integración con sistemas externos: contratos de puerto hacia APIs/servicios de terceros, credenciales de la integración, timeouts y mapeo de errores externos. Activado en Fase 2 con la integración LLM (OpenRouter). **Consultá cuando** llames a un sistema externo, definas/toques un adapter de integración, o manejes errores/secretos de un borde externo.
+
 ## Catálogo de tecnologías
 
 ### [tech/](tech/INDEX.md)
@@ -53,7 +56,6 @@ Dominios canónicos del catálogo que hoy NO tienen ADRs en este paquete:
 
 **Reservados (sin uso):**
 - `lifecycle` — sin políticas de ciclo de vida de datos/entidades formalizadas aún.
-- `integration` — sin integraciones con sistemas externos por ahora.
 - `privacy` — sin política de privacidad/retención de PII formalizada (más allá del scrubbing de logs en `runtime/error-handling.md`).
 - `release` — sin estrategia de release/deploy/versionado documentada todavía.
 - `compliance` — sin requisitos regulatorios formalizados.

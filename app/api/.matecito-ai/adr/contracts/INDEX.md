@@ -15,4 +15,4 @@ Concerns que la matriz marca relevantes para `api-rest` pero sin ADR propio en e
 
 | Concern | Razón |
 |---|---|
-| event-contract | La API no publica eventos ni webhooks todavía. |
+| event-contract | La API no publica eventos ni webhooks todavía. **Confirmado N/A en Fase 2 (Enriquecimiento LLM):** el progreso del enriquecimiento se observa por **polling** del estado del insight, sin SSE/streaming hacia el cliente. No se introduce contrato de eventos. |

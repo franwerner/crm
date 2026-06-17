@@ -86,6 +86,11 @@ _Sin librería — DI manual en el composition root. Ver `../delivery/dependency
 |---|---|---|
 | [libphonenumber-js](libphonenumber-js.md) | latest / sin pinear | Normalización de teléfonos a E.164; puro JS sin deps nativas; funciona en Bun. Usar `/min`. Región default vía config. |
 
+### LLM gateway
+| Tech | Versión | Por qué |
+|---|---|---|
+| [openrouter](openrouter.md) | dep `openai` latest / sin pinear | Gateway LLM OpenAI-compatible; se usa el auto-router `openrouter/free` (slug único, `OPENROUTER_MODEL`); el gateway gestiona selección/rotación de modelos internamente. Resiliencia del lado CRM: `../runtime/llm-resilience.md`. Contrato del port: `../integration/llm-provider.md`. |
+
 ### Otros
 | Tech | Versión | Por qué |
 |---|---|---|
