@@ -123,6 +123,7 @@ export function ContactsPage() {
       onCreateContact={handleCreateContact}
       isCreating={isCreating}
       createError={createError}
+      filteredTotal={total}
     />
   )
 

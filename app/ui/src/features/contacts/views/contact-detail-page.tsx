@@ -14,13 +14,8 @@ import {
   useUpdateAssignmentRole,
   useRemoveAssignment,
 } from '@features/contacts/hooks/use-contact-assignments'
-import { ContactDataPanel } from '@features/contacts/components/contact-detail/contact-data-panel'
-import { ContactAddressPanel } from '@features/contacts/components/contact-detail/contact-address-panel'
-import { ContactProvenancePanel } from '@features/contacts/components/contact-detail/contact-provenance-panel'
-import { ContactChannelsPanel } from '@features/contacts/components/contact-detail/contact-channels-panel'
-import { ContactAssigneesPanel } from '@features/contacts/components/contact-detail/contact-assignees-panel'
-import { ContactStateHistory } from '@features/contacts/components/contact-detail/contact-state-history'
-import { ContactActivityTimeline } from '@features/contacts/components/contact-detail/contact-activity-timeline'
+import { ContactDetailHeader } from '../components/contact-detail/contact-detail-header'
+import { ContactDetailTabs } from '../components/contact-detail/contact-detail-tabs'
 import { RegisterEventModal } from '@features/contacts/components/contact-detail/register-event-modal'
 import type { RegisterEventBody } from '@shared/api/types/RegisterEventBody'
 import type { AddChannelBodyChannelTypeEnumKey } from '@shared/api/types/AddChannelBody'
@@ -29,15 +24,17 @@ import type { ChannelCreateFormValues } from '@features/contacts/constants/conta
 import type { ChannelEditFormValues } from '@features/contacts/constants/contact-channel-edit.form'
 import type { AssigneeCreateFormValues } from '@features/contacts/constants/contact-assignee.form'
 import type { AssigneeEditFormValues } from '@features/contacts/constants/contact-assignee-edit.form'
-import { ContactDetailHeader } from '../components/contact-detail/contact-detail-header'
 
 export function ContactDetailPage() {
   const { id } = useParams({ from: '/_authenticated/contacts/$id' })
 
+  // These hooks fetch data consumed across multiple tabs and must stay at the root view.
   const { contact, isLoading } = useContact(id)
   const { events, total, isLoading: isLoadingEvents } = useContactEvents(id)
   const { stateChanges } = useContactStateChanges(id)
 
+  // updateContact is used by ContactDataPanel and ContactAddressPanel (both in overview tab);
+  // keeping it here avoids prop-drilling through the tabs container.
   const { updateContact, isPending: isUpdatingContact, errorMessage: updateContactError } = useUpdateContact(id)
   const { registerEvent, isPending: isRegistering, errorMessage: registerError } = useRegisterContactEvent(id)
   const { addChannel, isPending: isAdding, errorMessage: addError } = useAddChannel(id)
@@ -103,57 +100,33 @@ export function ContactDetailPage() {
           onRegisterEvent={() => setRegisterOpen(true)}
         />
 
-        <div className="grid grid-cols-1 gap-6 items-start lg:grid-cols-2">
-          <div className="flex flex-col gap-6">
-            <ContactDataPanel
-              contact={contact}
-              onPatch={updateContact}
-              isPending={isUpdatingContact}
-            />
-            <ContactAddressPanel
-              contact={contact}
-              onPatch={updateContact}
-              isPending={isUpdatingContact}
-            />
-            <ContactProvenancePanel contact={contact} />
-          </div>
-
-          <div className="flex flex-col gap-6">
-            <ContactAssigneesPanel
-              assignments={assignments}
-              isLoading={isLoadingAssignments}
-              onAdd={handleAddAssignment}
-              onEdit={handleEditAssignment}
-              onRemove={removeAssignment}
-              isAdding={isAddingAssignment}
-              isUpdating={isUpdatingAssignment}
-              isRemoving={isRemovingAssignment}
-              addError={addAssignmentError}
-              updateError={updateAssignmentError}
-            />
-            <ContactChannelsPanel
-              channels={contact.channels}
-              onAdd={handleAddChannel}
-              onEdit={handleEditChannel}
-              onRemove={handleRemoveChannel}
-              isAdding={isAdding}
-              isUpdating={isUpdatingChannel}
-              isRemoving={isRemoving}
-              addError={addError}
-              updateError={updateError}
-            />
-            <ContactStateHistory stateChanges={stateChanges} />
-          </div>
-        </div>
-
-        {updateContactError && (
-          <p className="text-[length:var(--ds-font-size-sm)] text-destructive">{updateContactError}</p>
-        )}
-
-        <ContactActivityTimeline
+        <ContactDetailTabs
+          contact={contact}
+          onPatch={updateContact}
+          isUpdatingContact={isUpdatingContact}
+          updateContactError={updateContactError}
+          onAddChannel={handleAddChannel}
+          onEditChannel={handleEditChannel}
+          onRemoveChannel={handleRemoveChannel}
+          isAddingChannel={isAdding}
+          isUpdatingChannel={isUpdatingChannel}
+          isRemovingChannel={isRemoving}
+          addChannelError={addError}
+          updateChannelError={updateError}
+          assignments={assignments}
+          isLoadingAssignments={isLoadingAssignments}
+          onAddAssignment={handleAddAssignment}
+          onEditAssignment={handleEditAssignment}
+          onRemoveAssignment={removeAssignment}
+          isAddingAssignment={isAddingAssignment}
+          isUpdatingAssignment={isUpdatingAssignment}
+          isRemovingAssignment={isRemovingAssignment}
+          addAssignmentError={addAssignmentError}
+          updateAssignmentError={updateAssignmentError}
+          stateChanges={stateChanges}
           events={events}
-          total={total}
-          isLoading={isLoadingEvents}
+          totalEvents={total}
+          isLoadingEvents={isLoadingEvents}
         />
       </div>
 

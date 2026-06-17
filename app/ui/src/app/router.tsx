@@ -15,6 +15,7 @@ import { createProjectsRoutes } from '@features/projects/routes/projects.routes'
 import { createUsersRoutes } from '@features/users/routes/users.routes'
 import { createSettingsRoutes } from '@features/settings/routes/settings.routes'
 import { createAuthRoutes } from '@features/auth/routes/auth.routes'
+import { createImportsRoutes } from '@features/imports/routes/imports.routes'
 
 const rootRoute = createRootRouteWithContext<RouterContext>()({
   component: () => <Outlet />,
@@ -48,6 +49,7 @@ const routeTree = rootRoute.addChildren([
     ...createProjectsRoutes(authenticatedRoute),
     ...createUsersRoutes(authenticatedRoute),
     ...createSettingsRoutes(authenticatedRoute),
+    ...createImportsRoutes(authenticatedRoute),
   ]),
   ...createAuthRoutes(rootRoute),
 ])

@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { SlidersHorizontal, Plus, X } from 'lucide-react'
+import { SlidersHorizontal, Plus, X, BrainCircuit } from 'lucide-react'
 import { Button } from '@shared/ui/button'
 import { Badge } from '@shared/ui/badge'
 import { InputSearch } from '@shared/ui/input-search'
 import { ContactsFilterModal } from './contacts-filter-modal'
 import { CreateContactModal } from './create-contact-modal'
+import { ContactsBulkAnalyzeModal } from './contacts-bulk-analyze-modal'
 import type { FilterGroups } from '@shared/lib/utils/filter'
 import type { CreateContactFormValues } from '@features/contacts/types/contacts.types'
 
@@ -17,6 +18,8 @@ type Props = {
   onCreateContact: (data: CreateContactFormValues) => Promise<void>
   isCreating: boolean
   createError: string | null
+  /** Total contacts matching the active filter. Used for "Analizar N filtrados". */
+  filteredTotal: number
 }
 
 function countActiveConditions(groups: FilterGroups): number {
@@ -32,11 +35,17 @@ export function ContactsToolbar({
   onCreateContact,
   isCreating,
   createError,
+  filteredTotal,
 }: Props) {
   const [filterModalOpen, setFilterModalOpen] = useState(false)
   const [createModalOpen, setCreateModalOpen] = useState(false)
+  const [bulkAnalyzeOpen, setBulkAnalyzeOpen] = useState(false)
 
   const activeCount = countActiveConditions(committedGroups)
+
+  // Show "Analizar N filtrados" when there is at least one active filter or search term
+  // and there are contacts to enrich.
+  const showBulkAnalyze = (activeCount > 0 || search.length > 0) && filteredTotal > 0
 
   return (
     <>
@@ -66,6 +75,18 @@ export function ContactsToolbar({
         )}
       </div>
 
+      {showBulkAnalyze && (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setBulkAnalyzeOpen(true)}
+          className="shrink-0"
+        >
+          <BrainCircuit />
+          Analizar {filteredTotal} filtrado{filteredTotal !== 1 ? 's' : ''}
+        </Button>
+      )}
+
       <Button
         variant="default"
         size="sm"
@@ -89,6 +110,14 @@ export function ContactsToolbar({
         onSubmit={onCreateContact}
         isPending={isCreating}
         errorMessage={createError}
+      />
+
+      <ContactsBulkAnalyzeModal
+        open={bulkAnalyzeOpen}
+        onOpenChange={setBulkAnalyzeOpen}
+        filteredCount={filteredTotal}
+        filterGroups={committedGroups}
+        search={search || undefined}
       />
     </>
   )

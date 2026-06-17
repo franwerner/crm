@@ -5,6 +5,7 @@ import { filterGroupsSchema } from '@shared/lib/utils/filter'
 import { toSortFields } from '@shared/lib/data-view'
 import { getContactsIdQueryOptions } from '@shared/api/hooks/useGetContactsId'
 import { contactsDescriptor } from '@features/contacts/components/contacts.descriptor'
+import { CONTACT_TABS } from '@features/contacts/constants/contact-detail-tabs'
 import { ContactsPage } from '../views/contacts-page'
 import { ContactDetailPage } from '../views/contact-detail-page'
 
@@ -30,9 +31,14 @@ export function createContactsRoutes<TParent extends AnyRoute>(parentRoute: TPar
     component: ContactsPage,
   })
 
+  const contactDetailSearchSchema = z.object({
+    tab: z.enum(CONTACT_TABS).optional().default('overview'),
+  })
+
   const contactDetailRoute = createRoute({
     getParentRoute: () => parentRoute,
     path: '/contacts/$id',
+    validateSearch: contactDetailSearchSchema,
     staticData: { breadcrumb: [{ label: 'Contactos', to: '/contacts' }, { label: 'Detalle de contacto' }] },
     loader: async ({ context, params }) => {
       try {

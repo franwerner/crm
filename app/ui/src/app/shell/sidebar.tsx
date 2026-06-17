@@ -1,11 +1,12 @@
 import { Link } from '@tanstack/react-router'
-import { Briefcase, Users, Contact, Settings } from 'lucide-react'
+import { Briefcase, Users, Contact, Settings, FileSpreadsheet } from 'lucide-react'
 import { Logo } from '@shared/ui/logo'
 
 const navItems = [
   { to: '/contacts', label: 'Contactos', icon: Contact },
   { to: '/projects', label: 'Proyectos', icon: Briefcase },
   { to: '/users', label: 'Usuarios', icon: Users },
+  { to: '/imports', label: 'Ingestas', icon: FileSpreadsheet },
 ] as const
 
 export function Sidebar() {

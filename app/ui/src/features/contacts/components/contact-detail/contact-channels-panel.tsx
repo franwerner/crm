@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { Pencil, Trash2, Plus } from 'lucide-react'
-import type { ContactView } from '@shared/api/types/ContactView'
+import { useState, type ReactElement } from 'react'
+import { Pencil, Trash2, Plus, CheckCircle2, AlertTriangle, MinusCircle } from 'lucide-react'
+import type { ContactView, ChannelsVerificationStatusEnumKey } from '@shared/api/types/ContactView'
 import { channelTypeLabels } from '@features/contacts/constants/contacts.options'
 import { PanelCard } from '@shared/ui/panel-card'
 import { Button } from '@shared/ui/button'
@@ -20,7 +20,22 @@ import {
 } from '@features/contacts/constants/contact-channel-edit.form'
 import type { ChannelEditFormValues } from '@features/contacts/constants/contact-channel-edit.form'
 
-export type ChannelView = ContactView['channels'][number]
+type ChannelView = ContactView['channels'][number]
+
+const VERIFICATION_ICON: Record<ChannelsVerificationStatusEnumKey, { label: string; element: ReactElement }> = {
+  valid: {
+    label: 'Verificado',
+    element: <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-[var(--ds-color-success-700)]" />,
+  },
+  invalid: {
+    label: 'Inválido',
+    element: <AlertTriangle className="h-3.5 w-3.5 shrink-0 text-destructive" />,
+  },
+  unverified: {
+    label: 'Sin verificar',
+    element: <MinusCircle className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />,
+  },
+}
 
 type Props = {
   channels: ChannelView[]
@@ -90,6 +105,14 @@ export function ContactChannelsPanel({
                     <span className="truncate text-[length:var(--ds-font-size-sm)] text-foreground">
                       {ch.value}
                     </span>
+                    {(() => {
+                      const info = VERIFICATION_ICON[ch.verificationStatus]
+                      return (
+                        <span title={info.label} className="inline-flex shrink-0 items-center">
+                          {info.element}
+                        </span>
+                      )
+                    })()}
                     {ch.isPrimary && (
                       <span className="shrink-0 rounded-full border-[1.5px] border-brand bg-primary px-2 py-0.5 text-[length:var(--ds-font-size-xs)] font-medium text-primary-foreground">
                         Principal
