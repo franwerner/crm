@@ -14,6 +14,7 @@ import type {
   ReconciliationJob,
   WorkerRegistry,
 } from './queue'
+import type { Logger } from '@shared/logger'
 
 export class BullMQAdapter implements QueueProducer, WorkerRegistry {
   // Standalone ioredis client used only for ping health checks.
@@ -24,9 +25,12 @@ export class BullMQAdapter implements QueueProducer, WorkerRegistry {
   private readonly queues = new Map<QueueName, Queue>()
   // Active Worker instances (kept to prevent GC)
   private readonly workers: Worker[] = []
+  // Optional logger — provided by the worker process; absent in the API process.
+  private readonly logger?: Logger
 
-  constructor(redisUrl: string) {
+  constructor(redisUrl: string, logger?: Logger) {
     this.redisUrl = redisUrl
+    this.logger = logger
     // Health-check connection: no retries and a short connect timeout so the
     // fail-fast ping at startup exits quickly when Redis is unreachable.
     this.healthConn = new IORedis(redisUrl, {
@@ -67,13 +71,21 @@ export class BullMQAdapter implements QueueProducer, WorkerRegistry {
   }
 
   /**
-   * Registers periodic reconciliation jobs (cron-style repeatable jobs via BullMQ).
-   * Phase 0: contract + hook only — no concrete table logic yet (see Phases 1/2).
+   * Runs each reconciliation job once at worker startup (run-on-startup pattern).
+   * Each job recovers stale/pending records from the durable DB store by re-enqueueing them.
+   * Failures are isolated: one job's error does not affect others or the worker startup.
+   * The jobs themselves handle internal logging; this method logs the scheduling boundary.
    */
   registerReconciliation(jobs: ReconciliationJob[]): void {
-    // Phase 0 placeholder: reconciliation jobs are registered here in Phases 1/2.
-    // The parameter is typed to lock down the contract early.
-    void jobs
+    for (const job of jobs) {
+      this.logger?.info(`Scheduling reconciliation job at startup: ${job.name}`)
+      // Fire-and-forget: do not await; do not block worker startup.
+      // Each job's run() already wraps its logic in try/catch and logs internally.
+      job.run().catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : String(err)
+        this.logger?.error({ err }, `Reconciliation job '${job.name}' threw unexpectedly: ${msg}`)
+      })
+    }
   }
 
   async start(): Promise<void> {
