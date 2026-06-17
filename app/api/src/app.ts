@@ -4,15 +4,19 @@ import { config } from '@shared/config'
 import { db } from '@shared/db/client'
 import { errorHandler } from '@shared/http/error-handler'
 import { requestLogger } from '@shared/http/request-logger'
-
 import { ValidationError } from '@shared/errors'
 import { bootstrapUsers } from '@modules/users/infrastructure/bootstrap'
 import { bootstrapAuth } from '@modules/auth/infrastructure/bootstrap'
 import { bootstrapContacts } from '@modules/contacts/infrastructure/bootstrap'
 import { bootstrapProjects } from '@modules/projects/infrastructure/bootstrap'
+import { bootstrapImports } from '@modules/imports/infrastructure/bootstrap'
 import { BunObjectStorage } from '@shared/storage'
 import { createPinoLogger } from '@shared/logger'
 import { BullMQAdapter } from '@shared/queue/queue.bullmq'
+import { DnsPhoneChannelChecker } from '@shared/verification/dns-phone-channel-checker'
+import { BunRedisMxCache } from '@shared/verification/mx-cache.bun-redis'
+import { Contact } from '@modules/contacts/domain/contact'
+import type { ImportContactRecord, ImportBulkContactPort } from '@modules/imports/application/ports'
 
 export function createApp() {
   // Composition root: build infrastructure singletons here and inject downward.
@@ -76,15 +80,54 @@ export function createApp() {
     region: config.minioRegion,
   })
 
+  // MxCache backed by Bun.redis native client (D6, ADR redis.md).
+  // Replaces the no-op placeholder from Phase 2/3; now MX lookups are cached with 1h TTL.
+  const mxCache = new BunRedisMxCache(config.redisUrl)
+
+  // ChannelChecker built once here and shared with all slices that need it (D8).
+  const checker = new DnsPhoneChannelChecker(mxCache, config.importDefaultPhoneRegion)
+
   const users = bootstrapUsers(db)
   const auth = bootstrapAuth(db)
-  const contacts = bootstrapContacts(db)
+  const contacts = bootstrapContacts(db, checker)
   const projects = bootstrapProjects(db, storage, logger)
+
+  // Bridge: maps ImportContactRecord → Contact so ContactBulkRepository satisfies ImportBulkContactPort.
+  // Lives here (composition root) because cross-slice wiring is only allowed in app.ts (adr02-5).
+  const importBulkPort: ImportBulkContactPort = {
+    async createMany(records: ImportContactRecord[], tx?: unknown): Promise<void> {
+      const mapped = records.map((r) =>
+        Contact.create({
+          id: r.id,
+          name: r.name,
+          createdBy: r.createdBy,
+          createdAt: r.createdAt,
+          updatedAt: r.updatedAt,
+          channels: r.channels.map((ch) => ({
+            id: ch.id,
+            contactId: ch.contactId,
+            channelType: ch.channelType,
+            value: ch.value,
+            isPrimary: ch.isPrimary,
+            createdAt: ch.createdAt,
+            updatedAt: ch.updatedAt,
+            verificationStatus: ch.verificationStatus,
+            verifiedAt: ch.verifiedAt,
+            verificationDetail: ch.verificationDetail,
+          })),
+        }),
+      )
+      await contacts.bulkRepo.createMany(mapped, tx)
+    },
+  }
+
+  const imports = bootstrapImports(db, storage, queue, logger, checker, importBulkPort)
 
   app.route('/', auth.router)
   app.route('/', users.router)
   app.route('/', contacts.router)
   app.route('/', projects.router)
+  app.route('/', imports.router)
 
   // Return queue so server.ts can use it for the ping health check.
   return { app, logger, queue }

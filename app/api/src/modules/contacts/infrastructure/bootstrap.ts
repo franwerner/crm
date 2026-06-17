@@ -1,7 +1,10 @@
 import type { OpenAPIHono } from '@hono/zod-openapi'
 import type { Db } from '@shared/db/client'
+import type { ChannelChecker } from '@shared/verification/channel-checker'
+import type { ContactBulkRepository } from '@modules/contacts/domain/contact-bulk.repository'
 import { DrizzleContactsRepository } from '@modules/contacts/infrastructure/contact.repository.bun'
 import { DrizzleContactQueries } from '@modules/contacts/infrastructure/contact.query.drizzle'
+import { DrizzleContactBulkRepository } from '@modules/contacts/infrastructure/repositories/contact-bulk.repo-part'
 import { ContactCreateUseCase } from '@modules/contacts/application/use-cases/contact/contact-create.use-case'
 import { ContactGetUseCase } from '@modules/contacts/application/use-cases/contact/contact-get.use-case'
 import { ContactListUseCase } from '@modules/contacts/application/use-cases/contact/contact-list.use-case'
@@ -24,11 +27,20 @@ import { createContactsRouter } from '@modules/contacts/http/contact.routes'
 
 export interface ContactsModule {
   router: OpenAPIHono
+  // Exposed so app.ts can pass this instance to the imports bootstrap (shared bulk-insert contract).
+  bulkRepo: ContactBulkRepository
 }
 
-export function bootstrapContacts(db: Db): ContactsModule {
+/**
+ * Bootstrap the contacts module.
+ *
+ * @param db      Drizzle database instance (shared across modules).
+ * @param checker Channel verification service built once in app.ts and shared with imports (D8).
+ */
+export function bootstrapContacts(db: Db, checker: ChannelChecker): ContactsModule {
   const repo = new DrizzleContactsRepository(db)
   const queries = new DrizzleContactQueries(db)
+  const bulkRepo = new DrizzleContactBulkRepository(db)
 
   const controller = new ContactController({
     create: new ContactCreateUseCase(repo),
@@ -42,8 +54,8 @@ export function bootstrapContacts(db: Db): ContactsModule {
     delete: new ContactDeleteUseCase(repo),
     bulkDelete: new ContactBulkDeleteUseCase(repo),
     update: new ContactUpdateUseCase(repo),
-    addChannel: new ContactAddChannelUseCase(repo),
-    updateChannel: new ContactUpdateChannelUseCase(repo),
+    addChannel: new ContactAddChannelUseCase(repo, checker),
+    updateChannel: new ContactUpdateChannelUseCase(repo, checker),
     removeChannel: new ContactRemoveChannelUseCase(repo),
     addAssignment: new ContactAddAssignmentUseCase(repo),
     updateAssignmentRole: new ContactUpdateAssignmentRoleUseCase(repo),
@@ -52,5 +64,6 @@ export function bootstrapContacts(db: Db): ContactsModule {
 
   return {
     router: createContactsRouter(controller),
+    bulkRepo,
   }
 }

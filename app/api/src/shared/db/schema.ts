@@ -1,4 +1,4 @@
-import { pgEnum, pgTable, text, timestamp, uniqueIndex, uuid, boolean, varchar, date, check, bigint, integer } from 'drizzle-orm/pg-core'
+import { pgEnum, pgTable, text, timestamp, uniqueIndex, uuid, boolean, varchar, date, check, bigint, integer, jsonb, index } from 'drizzle-orm/pg-core'
 import { sql } from 'drizzle-orm'
 
 export const pipelineStateEnum = pgEnum('pipeline_state', [
@@ -62,6 +62,32 @@ export const contactAssignmentRoleEnum = pgEnum('contact_assignment_role', [
   'Owner',
   'Collaborator',
 ])
+
+// --- Enums added for Fase 1: Ingesta de Contactos por Excel ---
+
+export const importStatusEnum = pgEnum('import_status', [
+  'awaiting_mapping',
+  'pending',
+  'processing',
+  'completed',
+  'failed',
+])
+
+export const importStageEnum = pgEnum('import_stage', [
+  'counting',
+  'ingesting',
+  'finalizing',
+])
+
+// Unverified = not yet attempted; invalid = conclusively bad; valid = passed all checks.
+// A transient error (e.g. DNS timeout) yields unverified + reason in verificationDetail.
+export const contactVerificationStatusEnum = pgEnum('contact_verification_status', [
+  'unverified',
+  'valid',
+  'invalid',
+])
+
+// --- End Fase 1 enums ---
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey(),
@@ -129,6 +155,10 @@ export const contactChannels = pgTable('contact_channels', {
   isPrimary: boolean('is_primary').notNull().default(false),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull(),
+  // --- Verification fields added for Fase 1 (R8.1) ---
+  verificationStatus: contactVerificationStatusEnum('verification_status').notNull().default('unverified'),
+  verifiedAt: timestamp('verified_at', { withTimezone: true }),
+  verificationDetail: jsonb('verification_detail'),
 })
 
 export const events = pgTable('events', {
@@ -320,3 +350,42 @@ export const projectDocuments = pgTable(
   }),
 )
 
+// --- imports table (Fase 1: Ingesta de Contactos por Excel, D6) ---
+
+export const imports = pgTable(
+  'imports',
+  {
+    id: uuid('id').primaryKey(),
+    filename: text('filename').notNull(),
+    fileKey: text('file_key').notNull(),
+    status: importStatusEnum('status').notNull(),
+    // NULL until the worker begins processing
+    stage: importStageEnum('stage'),
+    columnHeaders: jsonb('column_headers').notNull(),
+    // NULL until the user submits a mapping
+    mapping: jsonb('mapping'),
+    // nullable, no FK — templates are out of scope in Fase 1
+    templateId: uuid('template_id'),
+    totalRows: integer('total_rows'),
+    processedRows: integer('processed_rows').notNull().default(0),
+    okCount: integer('ok_count').notNull().default(0),
+    failedCount: integer('failed_count').notNull().default(0),
+    duplicatedCount: integer('duplicated_count').notNull().default(0),
+    // NULL when zero rejects (R5.3)
+    rejectedCsvKey: text('rejected_csv_key'),
+    createdBy: uuid('created_by')
+      .notNull()
+      .references(() => users.id),
+    // Set when processing begins; used by the reconciliation stale-threshold heuristic (D9)
+    startedAt: timestamp('started_at', { withTimezone: true }),
+    // Blank-safe resume anchor: the actual Excel row.number of the last committed batch (D7)
+    lastRowNumber: integer('last_row_number').notNull().default(0),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    // Used by the reconciliation scan (D9)
+    statusIdx: index('idx_imports_status').on(t.status),
+    createdByIdx: index('idx_imports_created_by').on(t.createdBy),
+  }),
+)

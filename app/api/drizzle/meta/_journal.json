@@ -64,6 +64,13 @@
       "when": 1781324869617,
       "tag": "0008_serious_leopardon",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1781661026898,
+      "tag": "0009_short_snowbird",
+      "breakpoints": true
     }
   ]
 }

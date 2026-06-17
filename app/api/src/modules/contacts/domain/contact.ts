@@ -275,7 +275,15 @@ export class Contact {
 
   updateChannel(
     channelId: string,
-    changes: { channelType?: ContactChannel['channelType']; value?: string; isPrimary?: boolean },
+    changes: {
+      channelType?: ContactChannel['channelType']
+      value?: string
+      isPrimary?: boolean
+      // Verification fields updated when the checker runs after a value change (R8.4).
+      verificationStatus?: ContactChannel['verificationStatus']
+      verifiedAt?: Date | null
+      verificationDetail?: object | null
+    },
     now: Date,
   ): Contact {
     const existing = this.props.channels.find((ch) => ch.id === channelId)
@@ -293,6 +301,10 @@ export class Contact {
           value: changes.value ?? ch.value,
           isPrimary: changes.isPrimary !== undefined ? changes.isPrimary : ch.isPrimary,
           updatedAt: now,
+          // Apply verification fields when provided; otherwise preserve the existing values.
+          verificationStatus: changes.verificationStatus !== undefined ? changes.verificationStatus : ch.verificationStatus,
+          verifiedAt: changes.verifiedAt !== undefined ? changes.verifiedAt : ch.verifiedAt,
+          verificationDetail: changes.verificationDetail !== undefined ? changes.verificationDetail : ch.verificationDetail,
         }
       }
       if (settingPrimary && ch.isPrimary) {

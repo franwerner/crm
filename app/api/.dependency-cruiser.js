@@ -62,7 +62,11 @@ module.exports = {
           '^src/modules/[^/]+/infrastructure/[^/]+\\.query\\.drizzle\\.ts$',
           '^src/modules/[^/]+/infrastructure/bootstrap\\.ts$',
           '^src/modules/[^/]+/infrastructure/[^/]+\\.resource\\.ts$',
+          // UoW adapter is infrastructure-only DB code — same category as .repository.bun.ts
+          '^src/modules/[^/]+/infrastructure/drizzle-unit-of-work\\.ts$',
           '^src/app\\.ts$',
+          // Worker entrypoint is a composition root equivalent to app.ts
+          '^src/worker\\.ts$',
           '^src/shared/db/',
         ],
       },
@@ -93,6 +97,8 @@ module.exports = {
         path: '^src/',
         pathNot: [
           '^src/app\\.ts$',
+          // Worker entrypoint is a composition root — may wire concrete adapters
+          '^src/worker\\.ts$',
           '^src/modules/[^/]+/infrastructure/bootstrap\\.ts$',
           '^src/modules/[^/]+/infrastructure/repositories/[^/]+\\.repo-part\\.ts$',
         ],

@@ -4,6 +4,7 @@ import { contactChannels, contacts } from '@shared/db/schema'
 import type { Contact } from '@modules/contacts/domain/contact'
 import type { ContactChannel } from '@modules/contacts/domain/entities/contact-channel'
 import type { ChannelType } from '@modules/contacts/domain/types/channel-type'
+import type { ChannelVerificationStatus } from '@modules/contacts/domain/types/channel-verification-status'
 
 type ContactChannelRow = typeof contactChannels.$inferSelect
 
@@ -16,6 +17,10 @@ export function toContactChannel(row: ContactChannelRow): ContactChannel {
     isPrimary: row.isPrimary,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
+    // Verification fields (R8.1); rows inserted before migration default to 'unverified'.
+    verificationStatus: row.verificationStatus as ChannelVerificationStatus,
+    verifiedAt: row.verifiedAt ?? null,
+    verificationDetail: (row.verificationDetail as object | null) ?? null,
   }
 }
 
@@ -28,6 +33,9 @@ export function toChannelRow(ch: ContactChannel): typeof contactChannels.$inferI
     isPrimary: ch.isPrimary,
     createdAt: ch.createdAt,
     updatedAt: ch.updatedAt,
+    verificationStatus: ch.verificationStatus,
+    verifiedAt: ch.verifiedAt ?? undefined,
+    verificationDetail: ch.verificationDetail ?? undefined,
   }
 }
 
@@ -68,6 +76,10 @@ export class ContactChannelRepoPart {
           value: channel.value,
           isPrimary: channel.isPrimary,
           updatedAt: channel.updatedAt,
+          // Persist verification fields so a checker result from the use-case is saved (R8.4).
+          verificationStatus: channel.verificationStatus,
+          verifiedAt: channel.verifiedAt ?? undefined,
+          verificationDetail: channel.verificationDetail ?? undefined,
         })
         .where(eq(contactChannels.id, channelId))
       await tx

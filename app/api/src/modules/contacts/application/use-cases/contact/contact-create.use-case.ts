@@ -41,6 +41,10 @@ export class ContactCreateUseCase {
       isPrimary: ch.isPrimary,
       createdAt: now,
       updatedAt: now,
+      // Channels created directly start unverified; the checker runs separately via addChannel use-case.
+      verificationStatus: 'unverified' as const,
+      verifiedAt: null,
+      verificationDetail: null,
     }))
 
     const contactId = newId()

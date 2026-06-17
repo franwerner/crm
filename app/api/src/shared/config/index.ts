@@ -23,6 +23,10 @@ const EnvSchema = z.object({
   // --- RESERVED (defined now, consumed in later phases) ---
   // LLM gateway retries — consumed in Phase 1/2 (enrich-llm jobs)
   LLM_MAX_ATTEMPTS: z.coerce.number().int().positive().default(5),
+  // --- Fase 1: Ingesta de Contactos por Excel (D3) ---
+  IMPORT_MAX_FILE_SIZE_MB: z.coerce.number().int().positive().default(50),
+  IMPORT_DEFAULT_PHONE_REGION: z.string().min(1).default('AR'),
+  IMPORT_PROCESSING_STALE_MS: z.coerce.number().int().positive().default(600000),
 })
 
 const parsed = EnvSchema.safeParse(Bun.env)
@@ -61,6 +65,12 @@ export const config = {
   logLevel: env.LOG_LEVEL ?? (isProduction ? ('info' as const) : ('debug' as const)),
   // Reserved — no consumer yet; typed and available for Phases 1/2
   llmMaxAttempts: env.LLM_MAX_ATTEMPTS,
+  // Fase 1: Ingesta de Contactos por Excel (D3)
+  importMaxFileSizeMb: env.IMPORT_MAX_FILE_SIZE_MB,
+  // Derived: bytes value ready for HTTP-layer size guards
+  importMaxFileSizeBytes: env.IMPORT_MAX_FILE_SIZE_MB * 1024 * 1024,
+  importDefaultPhoneRegion: env.IMPORT_DEFAULT_PHONE_REGION,
+  importProcessingStaleMs: env.IMPORT_PROCESSING_STALE_MS,
 } as const
 
 export type Config = typeof config
