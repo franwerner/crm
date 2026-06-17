@@ -37,7 +37,7 @@ const channelTypeLabels: Record<PrimaryChannelChannelTypeEnumKey, string> = {
 export const contactsDescriptor: EntityDescriptor<ContactListItem> = {
   name: 'contacts',
   selectable: true,
-  defaultSort: { field: 'createdAt', dir: 'desc' },
+  defaultSort: { field: 'updatedAt', dir: 'desc' },
   fields: [
     {
       key: 'id',

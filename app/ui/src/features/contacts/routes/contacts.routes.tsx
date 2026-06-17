@@ -17,7 +17,7 @@ export const contactsSearchSchema = z.object({
   page: z.number().int().min(1).optional().default(1),
   search: z.string().optional(),
   filterGroups: filterGroupsSchema,
-  sortField: contactsSortFieldEnum.optional().default('createdAt'),
+  sortField: contactsSortFieldEnum.optional().default('updatedAt'),
   sortDir: contactsSortDirEnum.optional().default('desc'),
 })
 
