@@ -15,6 +15,14 @@ const EnvSchema = z.object({
   MINIO_BUCKET: z.string().min(1, 'MINIO_BUCKET is required'),
   MINIO_REGION: z.string().default('us-east-1'),
   MINIO_USE_SSL: z.enum(['true', 'false']).default('false'),
+  // --- ACTIVE in Phase 0 (async infra) ---
+  REDIS_URL: z.string().min(1, 'REDIS_URL is required'),
+  LOG_LEVEL: z
+    .enum(['trace', 'debug', 'info', 'warn', 'error', 'fatal'])
+    .optional(),
+  // --- RESERVED (defined now, consumed in later phases) ---
+  // LLM gateway retries — consumed in Phase 1/2 (enrich-llm jobs)
+  LLM_MAX_ATTEMPTS: z.coerce.number().int().positive().default(5),
 })
 
 const parsed = EnvSchema.safeParse(Bun.env)
@@ -47,6 +55,12 @@ export const config = {
   minioBucket: env.MINIO_BUCKET,
   minioRegion: env.MINIO_REGION,
   minioUseSsl: env.MINIO_USE_SSL === 'true',
+  // Async infra (Phase 0+)
+  redisUrl: env.REDIS_URL,
+  // Default log level: debug in dev/test, info in production
+  logLevel: env.LOG_LEVEL ?? (isProduction ? ('info' as const) : ('debug' as const)),
+  // Reserved — no consumer yet; typed and available for Phases 1/2
+  llmMaxAttempts: env.LLM_MAX_ATTEMPTS,
 } as const
 
 export type Config = typeof config
