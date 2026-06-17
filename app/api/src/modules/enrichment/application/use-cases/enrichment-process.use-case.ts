@@ -71,16 +71,18 @@ export class EnrichmentProcessUseCase {
       throw err
     }
 
-    // Parse and validate the output shape
+    // Free models often wrap the JSON in markdown fences or prose, so extract it first.
+    // If it still doesn't parse, record and rethrow: BullMQ retries and the auto-router
+    // may route the next attempt to a model that returns clean JSON.
     let parsed: z.infer<typeof InsightOutputSchema>
     try {
-      const raw = JSON.parse(completion.content) as unknown
+      const raw = JSON.parse(extractJsonObject(completion.content)) as unknown
       parsed = InsightOutputSchema.parse(raw)
     } catch (parseErr) {
       const msg = parseErr instanceof Error ? parseErr.message : String(parseErr)
-      const failed = processing.markFailed(`Invalid LLM output: ${msg}`, new Date())
-      await this.insightRepo.save(failed)
-      return
+      const withError = processing.recordError(`Invalid LLM output: ${msg}`, new Date())
+      await this.insightRepo.save(withError)
+      throw parseErr
     }
 
     const completed = processing.markCompleted(
@@ -119,4 +121,15 @@ export class EnrichmentProcessUseCase {
     }
     return lines.join('\n')
   }
+}
+
+// Recovers the JSON object from a "dirty" LLM response: strips markdown fences and
+// trims surrounding prose by slicing from the first '{' to the last '}'.
+function extractJsonObject(content: string): string {
+  const trimmed = content.trim()
+  const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)\s*```/i)
+  const candidate = fenced?.[1]?.trim() ?? trimmed
+  const start = candidate.indexOf('{')
+  const end = candidate.lastIndexOf('}')
+  return start !== -1 && end > start ? candidate.slice(start, end + 1) : candidate
 }
