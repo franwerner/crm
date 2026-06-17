@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { FILTER_OPS, MAX_OR_GROUPS, MAX_CONDITIONS_PER_GROUP } from '@shared/types/filters'
 
 // --- Inbound DTOs ---
 
@@ -8,11 +9,47 @@ export const EnrichRequestInSchema = z.object({
 })
 export type EnrichRequestIn = z.infer<typeof EnrichRequestInSchema>
 
-export const BatchEnrichRequestInSchema = z.object({
+// Filter schema for batch-by-filter (mirrors FilterGroup[] from @shared/types/filters).
+// Accepts filterGroups as a parsed JSON array instead of query-param wire format,
+// because this is a POST body — no need to qs-decode.
+const FilterConditionSchema = z.object({
+  field: z.string().min(1),
+  op: z.enum(FILTER_OPS),
+  value: z.union([z.string(), z.number(), z.boolean(), z.null(), z.array(z.union([z.string(), z.number(), z.boolean(), z.null()]))]).optional(),
+})
+
+const FilterGroupSchema = z.array(FilterConditionSchema).max(MAX_CONDITIONS_PER_GROUP)
+
+const FilterGroupsSchema = z.array(FilterGroupSchema).max(MAX_OR_GROUPS)
+
+// Discriminated union: existing `ids` shape (kind defaults to 'ids' for backward compat)
+// OR new `filter` shape.
+export const BatchEnrichByIdsSchema = z.object({
+  kind: z.literal('ids').optional().default('ids'),
   contactIds: z.array(z.string().uuid()).min(1),
   templateId: z.string().uuid(),
 })
+
+export const BatchEnrichByFilterSchema = z.object({
+  kind: z.literal('filter'),
+  filterGroups: FilterGroupsSchema,
+  search: z.string().min(1).optional(),
+  templateId: z.string().uuid(),
+})
+
+// Union: route handler validates with the combined schema and discriminates on `kind`.
+export const BatchEnrichRequestInSchema = z.discriminatedUnion('kind', [
+  BatchEnrichByFilterSchema,
+  z.object({
+    kind: z.literal('ids'),
+    contactIds: z.array(z.string().uuid()).min(1),
+    templateId: z.string().uuid(),
+  }),
+])
+
 export type BatchEnrichRequestIn = z.infer<typeof BatchEnrichRequestInSchema>
+export type BatchEnrichByIdsIn = z.infer<typeof BatchEnrichByIdsSchema>
+export type BatchEnrichByFilterIn = z.infer<typeof BatchEnrichByFilterSchema>
 
 export const RetryEnrichInSchema = z.object({
   insightId: z.string().uuid(),
@@ -50,4 +87,12 @@ export type InsightOut = z.infer<typeof InsightOutSchema>
 export const BatchEnrichResponseSchema = z.object({
   insightIds: z.array(z.string().uuid()),
   count: z.number().int(),
+  skipped: z.number().int().optional(),
+  exceededMax: z.boolean().optional(),
 })
+
+// Query schema for GET /enrichments?contactId={id}
+export const InsightListByContactQuerySchema = z.object({
+  contactId: z.string().uuid(),
+})
+export type InsightListByContactQuery = z.infer<typeof InsightListByContactQuerySchema>

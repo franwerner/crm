@@ -1,5 +1,5 @@
 // Drizzle adapter — Drizzle ONLY inside this file (ADR data-access.md).
-import { and, lt, or, eq } from 'drizzle-orm'
+import { and, lt, or, eq, desc } from 'drizzle-orm'
 import type { Db } from '@shared/db/client'
 import { contactInsights } from '@shared/db/schema'
 import { ContactInsight } from '@modules/enrichment/domain/entities/contact-insight'
@@ -115,5 +115,14 @@ export class DrizzleContactInsightRepository implements ContactInsightRepository
       .limit(1)
     const row = rows[0]
     return row ? rowToInsight(row) : null
+  }
+
+  async findByContactId(contactId: string): Promise<ContactInsight[]> {
+    const rows = await this.db
+      .select()
+      .from(contactInsights)
+      .where(eq(contactInsights.contactId, contactId))
+      .orderBy(desc(contactInsights.createdAt))
+    return rows.map(rowToInsight)
   }
 }

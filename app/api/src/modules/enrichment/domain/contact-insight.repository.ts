@@ -6,4 +6,5 @@ export interface ContactInsightRepository {
   save(insight: ContactInsight): Promise<void>
   findStale(olderThanMs: number): Promise<ContactInsight[]>
   findByContactAndTemplate(contactId: string, templateId: string): Promise<ContactInsight | null>
+  findByContactId(contactId: string): Promise<ContactInsight[]>
 }

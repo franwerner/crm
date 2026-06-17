@@ -17,6 +17,7 @@ import { TemplateListUseCase } from '@modules/enrichment/application/use-cases/t
 import { TemplateUpdateUseCase } from '@modules/enrichment/application/use-cases/template-update.use-case'
 import { TemplateDeactivateUseCase } from '@modules/enrichment/application/use-cases/template-deactivate.use-case'
 import { InsightGetUseCase } from '@modules/enrichment/application/use-cases/insight-get.use-case'
+import { InsightListByContactUseCase } from '@modules/enrichment/application/use-cases/insight-list-by-contact.use-case'
 import { EnrichmentController } from '@modules/enrichment/http/enrichment.controller'
 import { TemplateController } from '@modules/enrichment/http/template.controller'
 import { createEnrichmentRouter } from '@modules/enrichment/http/enrichment.routes'
@@ -52,7 +53,8 @@ export function bootstrapEnrichment(
 
   const llmProvider = new OpenRouterLLMProvider(config.openrouterApiKey, config.openrouterBaseUrl)
 
-  const enqueueUseCase = new EnrichmentEnqueueUseCase(insightRepo, templateRepo, queue)
+  // contactReadQuery passed so the filter-based batch (Fase 3) can resolve IDs.
+  const enqueueUseCase = new EnrichmentEnqueueUseCase(insightRepo, templateRepo, queue, contactReadQuery)
   const processUseCase = new EnrichmentProcessUseCase(
     insightRepo,
     templateRepo,
@@ -67,11 +69,13 @@ export function bootstrapEnrichment(
   const templateUpdateUseCase = new TemplateUpdateUseCase(templateRepo)
   const templateDeactivateUseCase = new TemplateDeactivateUseCase(templateRepo)
   const insightGetUseCase = new InsightGetUseCase(insightRepo)
+  const insightListByContactUseCase = new InsightListByContactUseCase(insightRepo)
 
   const enrichmentController = new EnrichmentController({
     enqueue: enqueueUseCase,
     retry: retryUseCase,
     get: insightGetUseCase,
+    listByContact: insightListByContactUseCase,
   })
   const templateController = new TemplateController({
     create: templateCreateUseCase,

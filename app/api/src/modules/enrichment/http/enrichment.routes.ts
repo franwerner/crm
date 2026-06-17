@@ -7,6 +7,7 @@ import {
   BatchEnrichRequestInSchema,
   InsightOutSchema,
   BatchEnrichResponseSchema,
+  InsightListByContactQuerySchema,
 } from '@modules/enrichment/http/dto/enrichment.dto'
 import type { EnrichmentController } from '@modules/enrichment/http/enrichment.controller'
 
@@ -77,6 +78,25 @@ const retryRoute = createRoute({
   },
 })
 
+// GET /enrichments?contactId={id} — list all insights for a contact (ordered by createdAt DESC)
+const listByContactRoute = createRoute({
+  method: 'get',
+  path: '/enrichments',
+  summary: 'List enrichment insights for a contact',
+  tags: ['enrichments'],
+  request: {
+    query: InsightListByContactQuerySchema,
+  },
+  responses: {
+    200: {
+      description: 'Insights for the given contact, newest first.',
+      content: { 'application/json': { schema: z.array(InsightOutSchema) } },
+    },
+    400: { description: 'Missing or invalid contactId.', content: { 'application/problem+json': { schema: ProblemSchema } } },
+    401: { description: 'Unauthorized.', content: { 'application/problem+json': { schema: ProblemSchema } } },
+  },
+})
+
 // GET /enrichments/:id — polling (state + tracking)
 const getInsightRoute = createRoute({
   method: 'get',
@@ -104,6 +124,7 @@ export function createEnrichmentRouter(controller: EnrichmentController): OpenAP
   router.openapi(enqueueIndividualRoute, (c) => controller.enqueueIndividual(c) as never)
   router.openapi(enqueueBatchRoute, (c) => controller.enqueueBatch(c) as never)
   router.openapi(retryRoute, (c) => controller.retry(c) as never)
+  router.openapi(listByContactRoute, (c) => controller.listByContact(c) as never)
   router.openapi(getInsightRoute, (c) => controller.getInsight(c) as never)
 
   return router

@@ -1,5 +1,6 @@
 import type { ContactInsightRepository } from '@modules/enrichment/domain/contact-insight.repository'
 import type { AnalysisTemplateRepository } from '@modules/enrichment/domain/analysis-template.repository'
+import type { ContactReadQuery, ContactFilterInput } from '@modules/enrichment/application/ports'
 import type { QueueProducer } from '@shared/queue'
 import { ContactInsight } from '@modules/enrichment/domain/entities/contact-insight'
 import { NotFoundError, BusinessRuleError } from '@shared/errors'
@@ -20,11 +21,21 @@ export interface EnqueueBatchInput {
   triggerKind?: TriggerKind
 }
 
-export type EnqueueInput = EnqueueIndividualInput | EnqueueBatchInput
+export interface EnqueueFilterInput {
+  kind: 'filter'
+  filter: ContactFilterInput
+  templateId: string
+}
+
+export type EnqueueInput = EnqueueIndividualInput | EnqueueBatchInput | EnqueueFilterInput
 
 export interface EnqueueBatchResult {
   insightIds: string[]
   count: number
+  /** Contacts skipped because they already have an insight for this template. */
+  skipped?: number
+  /** True when resolved IDs exceeded ENRICHMENT_BATCH_MAX. */
+  exceededMax?: boolean
 }
 
 export class EnrichmentEnqueueUseCase {
@@ -32,6 +43,8 @@ export class EnrichmentEnqueueUseCase {
     private readonly insightRepo: ContactInsightRepository,
     private readonly templateRepo: AnalysisTemplateRepository,
     private readonly queue: QueueProducer,
+    // Optional: only needed for filter-based batch (Fase 3, ADR cross-slice-id-resolution).
+    private readonly contactReadQuery?: ContactReadQuery,
   ) {}
 
   async execute(input: EnqueueInput): Promise<EnqueueBatchResult> {
@@ -45,6 +58,16 @@ export class EnrichmentEnqueueUseCase {
 
     if (input.kind === 'individual') {
       return this.enqueueOne(input.contactId, template.id, template.version, 'individual')
+    }
+
+    if (input.kind === 'filter') {
+      if (!this.contactReadQuery) {
+        throw new BusinessRuleError('Filter-based batch requires a contact read query — check composition root')
+      }
+      const allIds = await this.contactReadQuery.resolveByFilter(input.filter)
+      const exceededMax = allIds.length > config.enrichmentBatchMax
+      const result = await this.enqueueBatch(allIds, template.id, template.version, 'batch')
+      return { ...result, exceededMax }
     }
 
     return this.enqueueBatch(
@@ -109,12 +132,16 @@ export class EnrichmentEnqueueUseCase {
     // Respect the batch max throttle
     const capped = contactIds.slice(0, config.enrichmentBatchMax)
     const insightIds: string[] = []
+    let skipped = 0
     const now = new Date()
 
     for (const contactId of capped) {
       // Skip contacts that already have an insight for this template
       const existing = await this.insightRepo.findByContactAndTemplate(contactId, templateId)
-      if (existing) continue
+      if (existing) {
+        skipped++
+        continue
+      }
 
       const insight = ContactInsight.create({
         id: newId(),
@@ -138,6 +165,6 @@ export class EnrichmentEnqueueUseCase {
       insightIds.push(insight.id)
     }
 
-    return { insightIds, count: insightIds.length }
+    return { insightIds, count: insightIds.length, skipped }
   }
 }
