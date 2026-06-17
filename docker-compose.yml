@@ -18,6 +18,22 @@ services:
       timeout: 5s
       retries: 10
 
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
   minio:
     image: minio/minio:latest
     restart: unless-stopped
@@ -63,6 +79,8 @@ services:
         condition: service_healthy
       minio-init:
         condition: service_completed_successfully
+      redis:
+        condition: service_healthy
     env_file:
       - ./app/api/.env
     environment:
@@ -73,11 +91,41 @@ services:
       MINIO_BUCKET: crm-files
       MINIO_REGION: us-east-1
       MINIO_USE_SSL: "false"
+      REDIS_URL: redis://redis:6379
     ports:
       - "3000:3000"
     volumes:
       - ./app/api:/app
       - /app/node_modules
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  worker:
+    build:
+      context: ./app/api
+    command: ["bun", "run", "src/worker.ts"]
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - ./app/api/.env
+    environment:
+      DATABASE_URL: postgres://crm:crm@postgres:5432/crm
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - ./app/api:/app
+      - /app/node_modules
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   ui:
     build:

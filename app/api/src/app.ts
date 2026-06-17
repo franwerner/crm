@@ -3,6 +3,7 @@ import { Scalar } from '@scalar/hono-api-reference'
 import { config } from '@shared/config'
 import { db } from '@shared/db/client'
 import { errorHandler } from '@shared/http/error-handler'
+import { requestLogger } from '@shared/http/request-logger'
 
 import { ValidationError } from '@shared/errors'
 import { bootstrapUsers } from '@modules/users/infrastructure/bootstrap'
@@ -10,8 +11,20 @@ import { bootstrapAuth } from '@modules/auth/infrastructure/bootstrap'
 import { bootstrapContacts } from '@modules/contacts/infrastructure/bootstrap'
 import { bootstrapProjects } from '@modules/projects/infrastructure/bootstrap'
 import { BunObjectStorage } from '@shared/storage'
+import { createPinoLogger } from '@shared/logger'
+import { BullMQAdapter } from '@shared/queue/queue.bullmq'
 
 export function createApp() {
+  // Composition root: build infrastructure singletons here and inject downward.
+  const logger = createPinoLogger({
+    level: config.logLevel,
+    isDevelopment: !config.isProduction,
+  })
+
+  // QueueProducer available for use-cases that need to enqueue jobs (Phases 1/2).
+  // Constructed here so the connection is shared within the API process.
+  const queue = new BullMQAdapter(config.redisUrl)
+
   const app = new OpenAPIHono({
     defaultHook: (result) => {
       if (!result.success) {
@@ -27,6 +40,9 @@ export function createApp() {
   })
 
   app.onError(errorHandler)
+
+  // Mount request logger first so every subsequent handler has c.var.logger.
+  app.use('*', requestLogger(logger))
 
   const healthRoute = createRoute({
     method: 'get',
@@ -63,14 +79,15 @@ export function createApp() {
   const users = bootstrapUsers(db)
   const auth = bootstrapAuth(db)
   const contacts = bootstrapContacts(db)
-  const projects = bootstrapProjects(db, storage)
+  const projects = bootstrapProjects(db, storage, logger)
 
   app.route('/', auth.router)
   app.route('/', users.router)
   app.route('/', contacts.router)
   app.route('/', projects.router)
 
-  return app
+  // Return queue so server.ts can use it for the ping health check.
+  return { app, logger, queue }
 }
 
-export type App = ReturnType<typeof createApp>
+export type App = ReturnType<typeof createApp>['app']
