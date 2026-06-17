@@ -30,7 +30,7 @@ Seguridad del frontend: autenticación (cookie httpOnly same-site), estado de se
 Configuración y prueba del paquete: carga/validación de config (`VITE_*`) y estrategia de testing (Pending). **Consultá cuando** agregues una env var, leas config por entorno o decidas testear algo.
 
 ### [frontend/](frontend/INDEX.md)
-Capa de presentación de la SPA: styling y design system, routing y guards, vistas de listado schema-driven y patrones de CRUD UI (inline vs modal). **Consultá cuando** toques estilos/tokens, definas rutas, construyas una vista de listado o un detail page con edición.
+Capa de presentación de la SPA: styling y design system, routing y guards, vistas de listado schema-driven, patrones de CRUD UI (inline vs modal), polling de estado con `refetchInterval`, wizards multi-step con `useReducer` y navegación de sub-secciones de Configuración. **Consultá cuando** toques estilos/tokens, definas rutas, construyas una vista de listado o un detail page con edición, hagas polling de un recurso async, armes un flujo multi-step o agregues una sub-sección de Config.
 
 ## Catálogo de tecnologías
 
@@ -76,7 +76,7 @@ Paquete autónomo. Lo único compartido es el **contrato OpenAPI** que este paqu
 
 ## Estado y mantenimiento
 
-- Última actualización: 2026-06-01
+- Última actualización: 2026-06-17
 - Cada ADR tiene su propio `Status:`.
 - **Actualizar una decisión (cambio menor):** editá el ADR. El historial lo lleva git.
 - **Cambiar una decisión (cambio de fondo):** creá un ADR nuevo, marcá el viejo `Superseded` con link al nuevo.

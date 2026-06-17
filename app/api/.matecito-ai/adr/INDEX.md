@@ -15,7 +15,7 @@ Este índice enruta **por dominio**. Cada dominio agrupa las decisiones de un mi
 Contexto del proyecto: qué se construye, stack, equipo, alcance, madurez. Marco para todo lo demás. **Consultá cuando** necesites entender el tipo de proyecto y sus premisas.
 
 ### [structure/](structure/INDEX.md)
-Estructura del código: estilo arquitectónico (Vertical Slice), capas y reglas de dependencia, comunicación entre capas, organización de carpetas/naming y read models para listas (CQRS-lite). **Consultá cuando** crees archivos, agregues imports entre capas/slices, diseñes un módulo o toques la organización del código.
+Estructura del código: estilo arquitectónico (Vertical Slice), capas y reglas de dependencia, comunicación entre capas, organización de carpetas/naming, read models para listas (CQRS-lite) y resolución de IDs cross-slice por filtro. **Consultá cuando** crees archivos, agregues imports entre capas/slices, diseñes un módulo, resuelvas datos de otro slice por read-port o toques la organización del código.
 
 ### [runtime/](runtime/INDEX.md)
 Comportamiento en ejecución: manejo de errores (excepciones, RFC 7807, boundary handling global) y trabajos asíncronos (BullMQ/Redis). **Consultá cuando** tires/atrapes una excepción, definas un error custom, respondas un error desde un endpoint, o toques jobs/workers/colas.
