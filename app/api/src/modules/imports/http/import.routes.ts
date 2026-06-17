@@ -2,11 +2,34 @@ import { createRoute, z } from '@hono/zod-openapi'
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { authMiddleware } from '@shared/http/auth-middleware'
 import { ProblemSchema } from '@shared/schemas/problem.schema'
+import { PaginationQuerySchema } from '@shared/schemas/pagination.schema'
 import { SetMappingBodySchema } from '@modules/imports/http/dto/in/import-set-mapping.in'
 import { ImportUploadResponseSchema } from '@modules/imports/http/dto/out/import-upload.out'
 import { ImportSetMappingResponseSchema } from '@modules/imports/http/dto/out/import-set-mapping.out'
 import { ImportStatusResponseSchema } from '@modules/imports/http/dto/out/import-status.out'
+import { ImportListResponseSchema } from '@modules/imports/http/dto/out/import-list.out'
 import type { ImportsController } from '@modules/imports/http/import.controller'
+
+// GET /imports — paginated list of imports, newest first.
+const listImportsRoute = createRoute({
+  method: 'get',
+  path: '/imports',
+  summary: 'List imports (paginated)',
+  tags: ['imports'],
+  request: {
+    query: PaginationQuerySchema,
+  },
+  responses: {
+    200: {
+      description: 'Paginated list of imports, newest first.',
+      content: { 'application/json': { schema: ImportListResponseSchema } },
+    },
+    401: {
+      description: 'Unauthorized.',
+      content: { 'application/problem+json': { schema: ProblemSchema } },
+    },
+  },
+})
 
 // POST /imports — upload xlsx, receive column header preview (D10).
 const uploadImportRoute = createRoute({
@@ -93,6 +116,7 @@ export function createImportsRouter(controller: ImportsController): OpenAPIHono 
 
   router.use('*', authMiddleware)
 
+  router.openapi(listImportsRoute, (c) => controller.listImports(c) as never)
   router.openapi(uploadImportRoute, (c) => controller.uploadImport(c) as never)
   router.openapi(setMappingRoute, (c) => controller.setMapping(c) as never)
   router.openapi(getImportStatusRoute, (c) => controller.getImportStatus(c) as never)

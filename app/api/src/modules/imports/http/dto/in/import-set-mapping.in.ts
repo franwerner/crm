@@ -18,6 +18,24 @@ export const SetMappingBodySchema = z
         description: 'Optional template UUID to associate with this import (no FK in Fase 1).',
         example: '01938b0c-0000-7000-0000-000000000001',
       }),
+    // Fase 3 opt-in: trigger enrichment analysis after the import completes (D5 / B.9).
+    analyzeOnComplete: z
+      .boolean()
+      .optional()
+      .openapi({
+        description: 'When true, enqueues enrichment for all imported contacts on completion.',
+        example: true,
+      }),
+    // UUID of the analysis template to use when analyzeOnComplete is true.
+    enrichmentTemplateId: z
+      .string()
+      .uuid()
+      .optional()
+      .nullable()
+      .openapi({
+        description: 'Analysis template UUID used when analyzeOnComplete is true.',
+        example: '01938b0c-0000-7000-0000-000000000002',
+      }),
   })
   .openapi('SetMappingBody')
 

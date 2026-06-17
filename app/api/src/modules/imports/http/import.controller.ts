@@ -4,7 +4,9 @@ import { config } from '@shared/config'
 import type { ImportUploadUseCase } from '@modules/imports/application/use-cases/import-upload.use-case'
 import type { ImportSetMappingUseCase } from '@modules/imports/application/use-cases/import-set-mapping.use-case'
 import type { ImportGetUseCase } from '@modules/imports/application/use-cases/import-get.use-case'
+import type { ImportListUseCase } from '@modules/imports/application/use-cases/import-list.use-case'
 import type { SetMappingRequest } from '@modules/imports/http/dto/in/import-set-mapping.in'
+import type { PageParams } from '@shared/types/pagination'
 
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
@@ -12,6 +14,7 @@ export interface ImportsUseCases {
   upload: ImportUploadUseCase
   setMapping: ImportSetMappingUseCase
   get: ImportGetUseCase
+  list: ImportListUseCase
 }
 
 export class ImportsController {
@@ -70,6 +73,8 @@ export class ImportsController {
       importId,
       mapping: body.mapping,
       templateId: body.templateId ?? null,
+      analyzeOnComplete: body.analyzeOnComplete,
+      enrichmentTemplateId: body.enrichmentTemplateId ?? null,
     })
 
     return c.json(
@@ -100,6 +105,33 @@ export class ImportsController {
         columnHeaders: Array.from(dto.columnHeaders),
         createdAt: dto.createdAt.toISOString(),
         updatedAt: dto.updatedAt.toISOString(),
+      },
+      200,
+    )
+  }
+
+  async listImports(c: Context): Promise<Response> {
+    const query = c.req.valid('query' as never) as PageParams
+
+    const page = await this.ucs.list.execute(query)
+
+    return c.json(
+      {
+        items: page.items.map((item) => ({
+          id: item.id,
+          status: item.status,
+          stage: item.stage,
+          totalRows: item.totalRows,
+          processedRows: item.processedRows,
+          okCount: item.okCount,
+          failedCount: item.failedCount,
+          duplicatedCount: item.duplicatedCount,
+          rejectedCsvUrl: item.rejectedCsvUrl,
+          createdAt: item.createdAt.toISOString(),
+        })),
+        total: page.total,
+        limit: page.limit,
+        offset: page.offset,
       },
       200,
     )

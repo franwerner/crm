@@ -7,6 +7,9 @@ export interface SetMappingInput {
   importId: string
   mapping: Record<string, string>
   templateId?: string | null
+  // Fase 3: opt-in enrichment trigger (B.9)
+  analyzeOnComplete?: boolean
+  enrichmentTemplateId?: string | null
 }
 
 export interface SetMappingOutput {
@@ -35,7 +38,15 @@ export class ImportSetMappingUseCase {
     }
 
     const now = new Date()
-    const updated = importRecord.setMapping(input.mapping, now)
+    let updated = importRecord.setMapping(input.mapping, now)
+
+    // Persist analyze-on-completion options when provided (Fase 3, B.9).
+    if (input.analyzeOnComplete !== undefined) {
+      updated = updated.setAnalyzeOptions({
+        analyzeOnComplete: input.analyzeOnComplete,
+        enrichmentTemplateId: input.enrichmentTemplateId ?? null,
+      })
+    }
 
     await this.repo.save(updated)
 

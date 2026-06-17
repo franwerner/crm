@@ -8,12 +8,14 @@ import type { Logger } from '@shared/logger'
 import type { ChannelChecker } from '@shared/verification/channel-checker'
 import type { ImportBulkContactPort } from '@modules/imports/application/ports'
 import { DrizzleImportsRepository } from '@modules/imports/infrastructure/import.repository.bun'
+import { DrizzleImportQueries } from '@modules/imports/infrastructure/import.query.drizzle'
 import { DrizzleContactChannelLookup } from '@modules/imports/infrastructure/contact-channel.query.drizzle'
 import { DrizzleUnitOfWork, ImportUnitOfWorkAdapter } from '@modules/imports/infrastructure/drizzle-unit-of-work'
 import { XlsxSpreadsheetReader } from '@modules/imports/infrastructure/xlsx-spreadsheet-reader'
 import { ImportUploadUseCase } from '@modules/imports/application/use-cases/import-upload.use-case'
 import { ImportSetMappingUseCase } from '@modules/imports/application/use-cases/import-set-mapping.use-case'
 import { ImportGetUseCase } from '@modules/imports/application/use-cases/import-get.use-case'
+import { ImportListUseCase } from '@modules/imports/application/use-cases/import-list.use-case'
 import { ImportProcessUseCase } from '@modules/imports/application/use-cases/import-process.use-case'
 import { ImportReconcileUseCase } from '@modules/imports/application/use-cases/import-reconcile.use-case'
 import { ImportsController } from '@modules/imports/http/import.controller'
@@ -25,6 +27,7 @@ export interface ImportsModule {
   upload: ImportUploadUseCase
   setMapping: ImportSetMappingUseCase
   get: ImportGetUseCase
+  list: ImportListUseCase
   processUseCase: ImportProcessUseCase
   reconcileUseCase: ImportReconcileUseCase
 }
@@ -51,6 +54,7 @@ export function bootstrapImports(
   void logger
 
   const repo = new DrizzleImportsRepository(db)
+  const queries = new DrizzleImportQueries(db, storage)
   const channelLookup = new DrizzleContactChannelLookup(db)
   const uow = new DrizzleUnitOfWork(db)
   const importUow = new ImportUnitOfWorkAdapter(uow)
@@ -59,6 +63,7 @@ export function bootstrapImports(
   const upload = new ImportUploadUseCase(repo, storage, reader)
   const setMapping = new ImportSetMappingUseCase(repo, queue)
   const get = new ImportGetUseCase(repo, storage)
+  const list = new ImportListUseCase(queries)
   const processUseCase = new ImportProcessUseCase(
     repo,
     bulkPort,
@@ -70,7 +75,7 @@ export function bootstrapImports(
   )
   const reconcileUseCase = new ImportReconcileUseCase(repo, queue)
 
-  const controller = new ImportsController({ upload, setMapping, get })
+  const controller = new ImportsController({ upload, setMapping, get, list })
   const router = createImportsRouter(controller)
 
   return {
@@ -78,6 +83,7 @@ export function bootstrapImports(
     upload,
     setMapping,
     get,
+    list,
     processUseCase,
     reconcileUseCase,
   }

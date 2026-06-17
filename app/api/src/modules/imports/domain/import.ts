@@ -132,6 +132,15 @@ export class Import {
     })
   }
 
+  // Fase 3 (B.9): set enrichment-on-completion options alongside or after mapping.
+  // Kept separate so the caller can chain after setMapping without needing to overload it.
+  setAnalyzeOptions(params: { analyzeOnComplete: boolean; enrichmentTemplateId: string | null }): Import {
+    return this.withProps({
+      analyzeOnComplete: params.analyzeOnComplete,
+      enrichmentTemplateId: params.enrichmentTemplateId,
+    })
+  }
+
   startProcessing(now: Date): Import {
     this.assertTransition('processing')
     return this.withProps({
