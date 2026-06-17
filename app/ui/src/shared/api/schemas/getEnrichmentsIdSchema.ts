@@ -3,6 +3,7 @@
  * Do not edit manually.
  */
 
+import { insightOutSchema } from "./insightOutSchema.ts";
 import { problemSchema } from "./problemSchema.ts";
 import { z } from "zod/v4";
 
@@ -13,30 +14,7 @@ export const getEnrichmentsIdPathParamsSchema = z.object({
 /**
  * @description Insight status, result (if completed), and tracking fields.
  */
-export const getEnrichmentsId200Schema = z.object({
-  id: z.uuid(),
-  contactId: z.uuid(),
-  templateId: z.uuid(),
-  templateVersion: z.int(),
-  triggerKind: z.enum(["post_import", "batch", "individual", "retry"]),
-  status: z.enum(["queued", "processing", "completed", "failed"]),
-  attempts: z.int(),
-  result: z.nullable(
-    z.object({
-      resumen: z.string(),
-      recomendaciones: z.array(z.string()),
-      observaciones: z.string(),
-    }),
-  ),
-  modelUsed: z.nullable(z.string()),
-  promptTokens: z.nullable(z.int()),
-  completionTokens: z.nullable(z.int()),
-  costUsd: z.nullable(z.string()),
-  lastError: z.nullable(z.string()),
-  completedAt: z.nullable(z.string()),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-});
+export const getEnrichmentsId200Schema = z.lazy(() => insightOutSchema);
 
 /**
  * @description Unauthorized.

@@ -3,6 +3,7 @@
  * Do not edit manually.
  */
 
+import type { InsightOut } from "./InsightOut.ts";
 import type { Problem } from "./Problem.ts";
 
 export type GetEnrichmentsIdPathParams = {
@@ -12,108 +13,10 @@ export type GetEnrichmentsIdPathParams = {
   id: string;
 };
 
-export const getEnrichmentsId200TriggerKindEnum = {
-  post_import: "post_import",
-  batch: "batch",
-  individual: "individual",
-  retry: "retry",
-} as const;
-
-export type GetEnrichmentsId200TriggerKindEnumKey =
-  (typeof getEnrichmentsId200TriggerKindEnum)[keyof typeof getEnrichmentsId200TriggerKindEnum];
-
-export const getEnrichmentsId200StatusEnum = {
-  queued: "queued",
-  processing: "processing",
-  completed: "completed",
-  failed: "failed",
-} as const;
-
-export type GetEnrichmentsId200StatusEnumKey =
-  (typeof getEnrichmentsId200StatusEnum)[keyof typeof getEnrichmentsId200StatusEnum];
-
 /**
  * @description Insight status, result (if completed), and tracking fields.
  */
-export type GetEnrichmentsId200 = {
-  /**
-   * @type string, uuid
-   */
-  id: string;
-  /**
-   * @type string, uuid
-   */
-  contactId: string;
-  /**
-   * @type string, uuid
-   */
-  templateId: string;
-  /**
-   * @type integer
-   */
-  templateVersion: number;
-  /**
-   * @type string
-   */
-  triggerKind: GetEnrichmentsId200TriggerKindEnumKey;
-  /**
-   * @type string
-   */
-  status: GetEnrichmentsId200StatusEnumKey;
-  /**
-   * @type integer
-   */
-  attempts: number;
-  /**
-   * @type object
-   */
-  result: {
-    /**
-     * @type string
-     */
-    resumen: string;
-    /**
-     * @type array
-     */
-    recomendaciones: string[];
-    /**
-     * @type string
-     */
-    observaciones: string;
-  } | null;
-  /**
-   * @type string
-   */
-  modelUsed: string | null;
-  /**
-   * @type integer
-   */
-  promptTokens: number | null;
-  /**
-   * @type integer
-   */
-  completionTokens: number | null;
-  /**
-   * @type string
-   */
-  costUsd: string | null;
-  /**
-   * @type string
-   */
-  lastError: string | null;
-  /**
-   * @type string
-   */
-  completedAt: string | null;
-  /**
-   * @type string
-   */
-  createdAt: string;
-  /**
-   * @type string
-   */
-  updatedAt: string;
-};
+export type GetEnrichmentsId200 = InsightOut;
 
 /**
  * @description Unauthorized.

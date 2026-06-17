@@ -1,0 +1,55 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "contactId": { "type": "string", "format": "uuid" },
+    "templateId": { "type": "string", "format": "uuid" },
+    "templateVersion": { "type": "integer" },
+    "triggerKind": {
+      "type": "string",
+      "enum": ["post_import", "batch", "individual", "retry"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["queued", "processing", "completed", "failed"]
+    },
+    "attempts": { "type": "integer" },
+    "result": {
+      "type": "object",
+      "nullable": true,
+      "properties": {
+        "resumen": { "type": "string" },
+        "recomendaciones": { "type": "array", "items": { "type": "string" } },
+        "observaciones": { "type": "string" }
+      },
+      "required": ["resumen", "recomendaciones", "observaciones"]
+    },
+    "modelUsed": { "type": "string", "nullable": true },
+    "promptTokens": { "type": "integer", "nullable": true },
+    "completionTokens": { "type": "integer", "nullable": true },
+    "costUsd": { "type": "string", "nullable": true },
+    "lastError": { "type": "string", "nullable": true },
+    "completedAt": { "type": "string", "nullable": true },
+    "createdAt": { "type": "string" },
+    "updatedAt": { "type": "string" }
+  },
+  "required": [
+    "id",
+    "contactId",
+    "templateId",
+    "templateVersion",
+    "triggerKind",
+    "status",
+    "attempts",
+    "result",
+    "modelUsed",
+    "promptTokens",
+    "completionTokens",
+    "costUsd",
+    "lastError",
+    "completedAt",
+    "createdAt",
+    "updatedAt"
+  ],
+  "x-readme-ref-name": "InsightOut"
+}

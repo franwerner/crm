@@ -262,6 +262,7 @@ export { importListResponseSchema } from "./importListResponseSchema.ts";
 export { importSetMappingResponseSchema } from "./importSetMappingResponseSchema.ts";
 export { importStatusResponseSchema } from "./importStatusResponseSchema.ts";
 export { importUploadResponseSchema } from "./importUploadResponseSchema.ts";
+export { insightOutSchema } from "./insightOutSchema.ts";
 export { meResponseSchema } from "./meResponseSchema.ts";
 export { moneySchema } from "./moneySchema.ts";
 export { paginationSchema } from "./paginationSchema.ts";

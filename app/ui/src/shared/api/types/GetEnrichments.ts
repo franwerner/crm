@@ -3,6 +3,7 @@
  * Do not edit manually.
  */
 
+import type { InsightOut } from "./InsightOut.ts";
 import type { Problem } from "./Problem.ts";
 
 export type GetEnrichmentsQueryParams = {
@@ -12,30 +13,10 @@ export type GetEnrichmentsQueryParams = {
   contactId: string;
 };
 
-export const getEnrichments200TriggerKindEnum = {
-  post_import: "post_import",
-  batch: "batch",
-  individual: "individual",
-  retry: "retry",
-} as const;
-
-export type GetEnrichments200TriggerKindEnumKey =
-  (typeof getEnrichments200TriggerKindEnum)[keyof typeof getEnrichments200TriggerKindEnum];
-
-export const getEnrichments200StatusEnum = {
-  queued: "queued",
-  processing: "processing",
-  completed: "completed",
-  failed: "failed",
-} as const;
-
-export type GetEnrichments200StatusEnumKey =
-  (typeof getEnrichments200StatusEnum)[keyof typeof getEnrichments200StatusEnum];
-
 /**
  * @description Insights for the given contact, newest first.
  */
-export type GetEnrichments200 = GetEnrichments200TriggerKindEnumKey[];
+export type GetEnrichments200 = InsightOut[];
 
 /**
  * @description Missing or invalid contactId.
