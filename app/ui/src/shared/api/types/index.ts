@@ -238,6 +238,14 @@ export type {
   GetHealthQueryResponse,
 } from "./GetHealth.ts";
 export type {
+  GetImportsId200,
+  GetImportsId401,
+  GetImportsId404,
+  GetImportsIdPathParams,
+  GetImportsIdQuery,
+  GetImportsIdQueryResponse,
+} from "./GetImportsId.ts";
+export type {
   GetProjects200,
   GetProjects401,
   GetProjectsQuery,
@@ -344,6 +352,9 @@ export type {
   GetUsersIdQuery,
   GetUsersIdQueryResponse,
 } from "./GetUsersId.ts";
+export type { ImportSetMappingResponse } from "./ImportSetMappingResponse.ts";
+export type { ImportStatusResponse } from "./ImportStatusResponse.ts";
+export type { ImportUploadResponse } from "./ImportUploadResponse.ts";
 export type { MeResponse } from "./MeResponse.ts";
 export type { Money } from "./Money.ts";
 export type { Pagination } from "./Pagination.ts";
@@ -374,6 +385,16 @@ export type {
   PatchContactsIdChannelsChannelidMutationResponse,
   PatchContactsIdChannelsChannelidPathParams,
 } from "./PatchContactsIdChannelsChannelid.ts";
+export type {
+  PatchImportsIdMapping200,
+  PatchImportsIdMapping400,
+  PatchImportsIdMapping401,
+  PatchImportsIdMapping404,
+  PatchImportsIdMappingMutation,
+  PatchImportsIdMappingMutationRequest,
+  PatchImportsIdMappingMutationResponse,
+  PatchImportsIdMappingPathParams,
+} from "./PatchImportsIdMapping.ts";
 export type {
   PatchProjectsId200,
   PatchProjectsId401,
@@ -481,6 +502,13 @@ export type {
   PostContactsIdEventsMutationResponse,
   PostContactsIdEventsPathParams,
 } from "./PostContactsIdEvents.ts";
+export type {
+  PostImports201,
+  PostImports400,
+  PostImports401,
+  PostImportsMutation,
+  PostImportsMutationResponse,
+} from "./PostImports.ts";
 export type {
   PostProjects201,
   PostProjects401,
@@ -595,6 +623,7 @@ export type {
   RegisterEventBody,
   RegisterEventBodyEventTypeEnumKey,
 } from "./RegisterEventBody.ts";
+export type { SetMappingBody } from "./SetMappingBody.ts";
 export type {
   UpdateAssignmentRoleBody,
   UpdateAssignmentRoleBodyRoleEnumKey,

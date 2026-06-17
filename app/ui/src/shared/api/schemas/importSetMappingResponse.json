@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "importId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID of the import record",
+      "example": "01938b0c-0000-7000-0000-000000000001"
+    },
+    "status": {
+      "type": "string",
+      "description": "Import status after mapping (pending)",
+      "example": "pending"
+    }
+  },
+  "required": ["importId", "status"],
+  "x-readme-ref-name": "ImportSetMappingResponse"
+}
