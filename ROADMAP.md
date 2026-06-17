@@ -81,23 +81,25 @@ en procesos separados). La DB es la fuente de verdad; las colas son transporte d
 
 ## Fase 1 — Ingesta de contactos por Excel
 
-- [ ] Módulo `imports` (hexagonal: domain/application/infrastructure/http)
-- [ ] Tabla `imports` (archivo, estado, etapa, progreso, contadores, `template_id`, mapping) + migración
-- [ ] Registrar tech `exceljs` (streaming) en el catálogo
-- [ ] Endpoint **upload** → guardar Excel en MinIO + parsear headers (preview de columnas)
-- [ ] Endpoint **definir mapping** (columna Excel → campo Contact)
-- [ ] Crear `import` en `pending` + encolar job
-- [ ] Worker de ingesta: lectura en **streaming**, batch `clamp(ceil(total/100), 200, 2000)`
-- [ ] Batch **transaccional**: bulk-insert de contactos + checkpoint `processedRows` en el mismo commit
-- [ ] **Resume desde offset** al reintentar (leer `processedRows`, saltar filas ya procesadas)
-- [ ] UI deriva el % de progreso de `processedRows / totalRows`
-- [ ] **Dedup** por email-o-teléfono → saltar; contar aparte `ok` / `fallidas` / `duplicadas`
-- [ ] Extender `contact_channels` con `verificationStatus` (unverified/valid/invalid), `verifiedAt`, `verificationDetail` (JSON) + migración
-- [ ] **Checker de canales** como servicio compartido: email (sintaxis + MX DNS, cache por dominio), teléfono (libphonenumber-js → E.164)
-- [ ] Conectar el checker en la ingesta + en `addChannel`/`updateChannel` (alta/edición manual)
-- [ ] Registrar tech `libphonenumber-js`
-- [ ] Acumular rechazados/duplicados → generar `rejected.csv` → subir a MinIO + linkear en `imports`
-- [ ] Endpoint de **estado/progreso** (polling)
+> Completa y verificada end-to-end (flujo SDD lane full, archive 2026-06-17). Migración `0009` aplicada, cliente kubb regenerado, smoke e2e OK (upload→mapping→worker→status, dedup, rejected.csv, E.164). Decisiones: streaming real con `exceljs` WorkbookReader (spike validó RAM ~180 MB constante), UoW port (`data-access` ADR Accepted), límite config-driven (`IMPORT_MAX_FILE_SIZE_MB`), cache MX con `Bun.redis` nativo (ioredis sigue exclusivo de BullMQ). Tras el smoke se ajustó: canal con sintaxis inválida → fila rechazada (no entra basura), y `value` de teléfono persistido en E.164. Follow-ups menores: dedup por teléfono usa el formato raw (no E.164); BullMQAdapter sin error-hooks (observabilidad).
+
+- [x] Módulo `imports` (hexagonal: domain/application/infrastructure/http)
+- [x] Tabla `imports` (archivo, estado, etapa, progreso, contadores, `template_id`, mapping) + migración
+- [x] Registrar tech `exceljs` (streaming) en el catálogo
+- [x] Endpoint **upload** → guardar Excel en MinIO + parsear headers (preview de columnas)
+- [x] Endpoint **definir mapping** (columna Excel → campo Contact)
+- [x] Crear `import` en `pending` + encolar job
+- [x] Worker de ingesta: lectura en **streaming**, batch `clamp(ceil(total/100), 200, 2000)`
+- [x] Batch **transaccional**: bulk-insert de contactos + checkpoint `processedRows` en el mismo commit
+- [x] **Resume desde offset** al reintentar (leer `processedRows`, saltar filas ya procesadas)
+- [x] UI deriva el % de progreso de `processedRows / totalRows`
+- [x] **Dedup** por email-o-teléfono → saltar; contar aparte `ok` / `fallidas` / `duplicadas`
+- [x] Extender `contact_channels` con `verificationStatus` (unverified/valid/invalid), `verifiedAt`, `verificationDetail` (JSON) + migración
+- [x] **Checker de canales** como servicio compartido: email (sintaxis + MX DNS, cache por dominio), teléfono (libphonenumber-js → E.164)
+- [x] Conectar el checker en la ingesta + en `addChannel`/`updateChannel` (alta/edición manual)
+- [x] Registrar tech `libphonenumber-js`
+- [x] Acumular rechazados/duplicados → generar `rejected.csv` → subir a MinIO + linkear en `imports`
+- [x] Endpoint de **estado/progreso** (polling)
 
 ## Fase 2 — Enriquecimiento LLM
 
