@@ -3,8 +3,10 @@ import type { OpenAPIHono } from '@hono/zod-openapi'
 import { ProblemSchema } from '@shared/schemas/problem.schema'
 import { CreateProjectBodySchema } from '@modules/projects/http/dto/in/project-create.in'
 import { UpdateProjectBodySchema } from '@modules/projects/http/dto/in/project-update.in'
+import { BulkDeleteProjectsBodySchema } from '@modules/projects/http/dto/in/project-bulk-delete.in'
 import { ProjectViewSchema } from '@modules/projects/http/dto/out/project.out'
 import { ProjectListResponseSchema } from '@modules/projects/http/dto/out/project-list.out'
+import { ProjectKpisResponseSchema } from '@modules/projects/http/dto/out/project-kpis.out'
 import { projectListQuerySchema } from '@modules/projects/infrastructure/project.resource'
 import type { ProjectController } from '@modules/projects/http/project.controller'
 
@@ -124,10 +126,49 @@ const listProjectsRoute = createRoute({
   },
 })
 
+const getProjectKpisRoute = createRoute({
+  method: 'get',
+  path: '/projects/kpis',
+  summary: 'Get status KPIs for projects',
+  tags: ['projects'],
+  responses: {
+    200: {
+      description: 'Status KPIs for current and previous 30-day windows.',
+      content: { 'application/json': { schema: ProjectKpisResponseSchema } },
+    },
+    401: {
+      description: 'Unauthorized.',
+      content: { 'application/problem+json': { schema: ProblemSchema } },
+    },
+  },
+})
+
+const bulkDeleteProjectsRoute = createRoute({
+  method: 'post',
+  path: '/projects/bulk-delete',
+  summary: 'Soft-delete multiple projects',
+  tags: ['projects'],
+  request: {
+    body: {
+      required: true,
+      content: { 'application/json': { schema: BulkDeleteProjectsBodySchema } },
+    },
+  },
+  responses: {
+    204: { description: 'Projects deleted (missing IDs are ignored).' },
+    401: {
+      description: 'Unauthorized.',
+      content: { 'application/problem+json': { schema: ProblemSchema } },
+    },
+  },
+})
+
 export function registerCoreRoutes(router: OpenAPIHono, controller: ProjectController): void {
   router.openapi(createProjectRoute, (c) => controller.createProject(c) as never)
   router.openapi(listProjectsRoute, (c) => controller.listProjects(c) as never)
+  router.openapi(getProjectKpisRoute, (c) => controller.getProjectKpis(c) as never)
   router.openapi(getProjectRoute, (c) => controller.getProject(c) as never)
   router.openapi(updateProjectRoute, (c) => controller.updateProject(c) as never)
   router.openapi(deleteProjectRoute, (c) => controller.deleteProject(c) as never)
+  router.openapi(bulkDeleteProjectsRoute, (c) => controller.bulkDeleteProjects(c) as never)
 }

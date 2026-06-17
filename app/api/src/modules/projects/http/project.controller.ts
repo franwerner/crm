@@ -4,6 +4,8 @@ import type { ProjectGetUseCase } from '@modules/projects/application/use-cases/
 import type { ProjectListUseCase } from '@modules/projects/application/use-cases/project/project-list.use-case'
 import type { ProjectUpdateUseCase } from '@modules/projects/application/use-cases/project/project-update.use-case'
 import type { ProjectDeleteUseCase } from '@modules/projects/application/use-cases/project/project-delete.use-case'
+import type { ProjectBulkDeleteUseCase } from '@modules/projects/application/use-cases/project/project-bulk-delete.use-case'
+import type { ProjectKpisUseCase } from '@modules/projects/application/use-cases/project/project-kpis.use-case'
 import type { ProjectChangeStateUseCase } from '@modules/projects/application/use-cases/project/project-change-state.use-case'
 import type { ProjectAddResponsibleUseCase } from '@modules/projects/application/use-cases/responsible/project-add-responsible.use-case'
 import type { ProjectUpdateResponsibleRoleUseCase } from '@modules/projects/application/use-cases/responsible/project-update-responsible-role.use-case'
@@ -39,6 +41,8 @@ export interface ProjectUseCases {
   list: ProjectListUseCase
   update: ProjectUpdateUseCase
   delete: ProjectDeleteUseCase
+  bulkDelete: ProjectBulkDeleteUseCase
+  kpis: ProjectKpisUseCase
   changeState: ProjectChangeStateUseCase
   addResponsible: ProjectAddResponsibleUseCase
   updateResponsibleRole: ProjectUpdateResponsibleRoleUseCase
@@ -99,6 +103,14 @@ export class ProjectController {
 
   async deleteProject(c: Context): Promise<Response> {
     return this.core.deleteProject(c)
+  }
+
+  async bulkDeleteProjects(c: Context): Promise<Response> {
+    return this.core.bulkDeleteProjects(c)
+  }
+
+  async getProjectKpis(c: Context): Promise<Response> {
+    return this.core.getProjectKpis(c)
   }
 
   async changeState(c: Context): Promise<Response> {

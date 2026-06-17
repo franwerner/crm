@@ -4,8 +4,11 @@ import type { ProjectGetUseCase } from '@modules/projects/application/use-cases/
 import type { ProjectListUseCase } from '@modules/projects/application/use-cases/project/project-list.use-case'
 import type { ProjectUpdateUseCase } from '@modules/projects/application/use-cases/project/project-update.use-case'
 import type { ProjectDeleteUseCase } from '@modules/projects/application/use-cases/project/project-delete.use-case'
+import type { ProjectBulkDeleteUseCase } from '@modules/projects/application/use-cases/project/project-bulk-delete.use-case'
+import type { ProjectKpisUseCase } from '@modules/projects/application/use-cases/project/project-kpis.use-case'
 import type { CreateProjectRequest } from '@modules/projects/http/dto/in/project-create.in'
 import type { UpdateProjectRequest } from '@modules/projects/http/dto/in/project-update.in'
+import type { BulkDeleteProjectsRequest } from '@modules/projects/http/dto/in/project-bulk-delete.in'
 import type { ProjectListInput } from '@modules/projects/application/project.query'
 import { toProjectView, toProjectListView } from './view-mappers'
 
@@ -15,6 +18,8 @@ export interface ProjectCoreUseCases {
   list: ProjectListUseCase
   update: ProjectUpdateUseCase
   delete: ProjectDeleteUseCase
+  bulkDelete: ProjectBulkDeleteUseCase
+  kpis: ProjectKpisUseCase
 }
 
 export class ProjectCoreController {
@@ -40,9 +45,9 @@ export class ProjectCoreController {
   async getProject(c: Context): Promise<Response> {
     const id = c.req.param('id') as string
 
-    const project = await this.ucs.get.execute({ id })
+    const { project, creator } = await this.ucs.get.execute({ id })
 
-    return c.json(toProjectView(project), 200)
+    return c.json(toProjectView(project, creator), 200)
   }
 
   async listProjects(c: Context): Promise<Response> {
@@ -84,5 +89,32 @@ export class ProjectCoreController {
     await this.ucs.delete.execute({ id })
 
     return c.body(null, 204)
+  }
+
+  async bulkDeleteProjects(c: Context): Promise<Response> {
+    const body = c.req.valid('json' as never) as BulkDeleteProjectsRequest
+
+    await this.ucs.bulkDelete.execute({ ids: body.ids })
+
+    return c.body(null, 204)
+  }
+
+  async getProjectKpis(c: Context): Promise<Response> {
+    const result = await this.ucs.kpis.execute()
+    return c.json(
+      {
+        total: {
+          count: Number(result.total.count),
+          current: Number(result.total.current),
+          previous: Number(result.total.previous),
+        },
+        states: result.states.map((s) => ({
+          state: s.state,
+          current: Number(s.current),
+          previous: Number(s.previous),
+        })),
+      },
+      200,
+    )
   }
 }

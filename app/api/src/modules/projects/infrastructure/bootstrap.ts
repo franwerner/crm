@@ -1,6 +1,7 @@
 import type { OpenAPIHono } from '@hono/zod-openapi'
 import type { Db } from '@shared/db/client'
 import type { ObjectStorage } from '@shared/storage'
+import type { Logger } from '@shared/logger'
 import { DrizzleProjectsRepository } from '@modules/projects/infrastructure/project.repository.bun'
 import { DrizzleProjectQueries } from '@modules/projects/infrastructure/project.query.drizzle'
 import { ProjectCreateUseCase } from '@modules/projects/application/use-cases/project/project-create.use-case'
@@ -8,6 +9,8 @@ import { ProjectGetUseCase } from '@modules/projects/application/use-cases/proje
 import { ProjectListUseCase } from '@modules/projects/application/use-cases/project/project-list.use-case'
 import { ProjectUpdateUseCase } from '@modules/projects/application/use-cases/project/project-update.use-case'
 import { ProjectDeleteUseCase } from '@modules/projects/application/use-cases/project/project-delete.use-case'
+import { ProjectBulkDeleteUseCase } from '@modules/projects/application/use-cases/project/project-bulk-delete.use-case'
+import { ProjectKpisUseCase } from '@modules/projects/application/use-cases/project/project-kpis.use-case'
 import { ProjectChangeStateUseCase } from '@modules/projects/application/use-cases/project/project-change-state.use-case'
 import { ProjectAddResponsibleUseCase } from '@modules/projects/application/use-cases/responsible/project-add-responsible.use-case'
 import { ProjectUpdateResponsibleRoleUseCase } from '@modules/projects/application/use-cases/responsible/project-update-responsible-role.use-case'
@@ -36,16 +39,18 @@ export interface ProjectsModule {
   router: OpenAPIHono
 }
 
-export function bootstrapProjects(db: Db, storage: ObjectStorage): ProjectsModule {
+export function bootstrapProjects(db: Db, storage: ObjectStorage, logger: Logger): ProjectsModule {
   const repo = new DrizzleProjectsRepository(db)
   const queries = new DrizzleProjectQueries(db)
 
   const controller = new ProjectController({
     create: new ProjectCreateUseCase(repo),
-    get: new ProjectGetUseCase(repo),
+    get: new ProjectGetUseCase(repo, queries),
     list: new ProjectListUseCase(queries),
     update: new ProjectUpdateUseCase(repo),
     delete: new ProjectDeleteUseCase(repo),
+    bulkDelete: new ProjectBulkDeleteUseCase(repo),
+    kpis: new ProjectKpisUseCase(queries),
     changeState: new ProjectChangeStateUseCase(repo),
     addResponsible: new ProjectAddResponsibleUseCase(repo),
     updateResponsibleRole: new ProjectUpdateResponsibleRoleUseCase(repo),
@@ -63,9 +68,9 @@ export function bootstrapProjects(db: Db, storage: ObjectStorage): ProjectsModul
     updateExtension: new ProjectUpdateExtensionUseCase(repo),
     removeExtension: new ProjectRemoveExtensionUseCase(repo),
     listExtensions: new ProjectListExtensionsUseCase(repo),
-    uploadDocument: new ProjectUploadDocumentUseCase(repo, storage),
+    uploadDocument: new ProjectUploadDocumentUseCase(repo, storage, logger),
     getDocumentDownloadUrl: new ProjectGetDocumentDownloadUrlUseCase(repo, storage),
-    deleteDocument: new ProjectDeleteDocumentUseCase(repo, storage),
+    deleteDocument: new ProjectDeleteDocumentUseCase(repo, storage, logger),
     listDocuments: new ProjectListDocumentsUseCase(repo),
   })
 

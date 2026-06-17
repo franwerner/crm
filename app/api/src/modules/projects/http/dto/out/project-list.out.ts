@@ -22,6 +22,7 @@ export const ProjectListItemSchema = z
     startDate: z.string().openapi({ description: 'Start date (YYYY-MM-DD)', example: '2025-01-01' }),
     plannedEndDate: z.string().openapi({ description: 'Planned end date (YYYY-MM-DD)', example: '2025-12-31' }),
     createdBy: z.string().openapi({ description: 'User UUID who created this project' }),
+    createdByName: z.string().nullable().openapi({ description: 'Display name of the user who created this project', example: 'John Doe' }),
     responsiblesCount: z.number().int().openapi({ description: 'Total number of responsibles', example: 2 }),
     leads: z.array(LeadRefSchema).openapi({ description: 'Lead responsibles' }),
     createdAt: z.string().openapi({ description: 'ISO 8601 timestamp', example: '2024-01-01T00:00:00.000Z' }),

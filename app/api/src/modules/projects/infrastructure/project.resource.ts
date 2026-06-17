@@ -9,7 +9,7 @@ export const projectColumnMap = tableColumnsExcept(projects, ['description', 'de
 
 export const projectSearchCols = [projects.name]
 
-export const projectSortableFields = ['name', 'status', 'startDate', 'plannedEndDate', 'createdAt', 'updatedAt'] as const
+export const projectSortableFields = ['name', 'status', 'currency', 'startDate', 'plannedEndDate', 'createdAt', 'updatedAt'] as const
 
 const projectRawSchema = buildListRawSchema(projectColumnMap)
 

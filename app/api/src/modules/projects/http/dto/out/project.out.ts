@@ -44,6 +44,13 @@ export const ProjectViewSchema = z
     originalPlannedEndDate: z.string().openapi({ description: 'Original planned end date before any extensions (YYYY-MM-DD)', example: '2025-12-31' }),
     plannedEndDate: z.string().openapi({ description: 'Derived planned end date including all extensions (YYYY-MM-DD)', example: '2026-01-14' }),
     createdBy: z.string().openapi({ description: 'User UUID who created this project' }),
+    creator: z
+      .object({
+        id: z.string(),
+        name: z.string(),
+      })
+      .optional()
+      .openapi({ description: 'Creator user data. Present on detail endpoint.' }),
     responsibles: z.array(ResponsibleViewSchema).openapi({ description: 'Project responsibles' }),
     totals: ProjectTotalsSchema.openapi({ description: 'Derived financial totals' }),
     createdAt: z.string().openapi({ description: 'ISO 8601 timestamp', example: '2024-01-01T00:00:00.000Z' }),

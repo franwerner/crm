@@ -4,13 +4,13 @@ import type { ProjectBudgetItem } from '@modules/projects/domain/entities/projec
 import type { ProjectExpense } from '@modules/projects/domain/entities/project-expense'
 import type { ProjectExtension } from '@modules/projects/domain/entities/project-extension'
 import type { ProjectDocument } from '@modules/projects/domain/entities/project-document'
-import type { ProjectListItem } from '@modules/projects/application/project.query'
+import type { ProjectCreatorRef, ProjectListItem } from '@modules/projects/application/project.query'
 
 export function toDateString(d: Date): string {
   return d.toISOString().slice(0, 10)
 }
 
-export function toProjectView(project: Project) {
+export function toProjectView(project: Project, creator?: ProjectCreatorRef | null) {
   const budget = project.totalBudget
   const expenses = project.totalExpenses
   const profit = project.profit
@@ -25,6 +25,7 @@ export function toProjectView(project: Project) {
     originalPlannedEndDate: toDateString(project.originalPlannedEndDate),
     plannedEndDate: toDateString(project.plannedEndDate),
     createdBy: project.createdBy,
+    ...(creator != null ? { creator } : {}),
     responsibles: project.responsibles.map((r) => ({
       id: r.id,
       userId: r.userId,
@@ -108,6 +109,7 @@ export function toProjectListView(item: ProjectListItem) {
     startDate: toDateString(item.startDate),
     plannedEndDate: toDateString(item.plannedEndDate),
     createdBy: item.createdBy,
+    createdByName: item.createdByName,
     responsiblesCount: item.responsiblesCount,
     leads: item.leads,
     createdAt: item.createdAt.toISOString(),
