@@ -11,6 +11,9 @@ import { DnsPhoneChannelChecker } from '@shared/verification/dns-phone-channel-c
 import { BunRedisMxCache } from '@shared/verification/mx-cache.bun-redis'
 import { bootstrapImports } from '@modules/imports/infrastructure/bootstrap'
 import { bootstrapImportsWorker } from '@modules/imports/infrastructure/bootstrap.worker'
+import { bootstrapEnrichment } from '@modules/enrichment/infrastructure/bootstrap'
+import { bootstrapEnrichmentWorker } from '@modules/enrichment/infrastructure/bootstrap.worker'
+import { DrizzleContactReadQuery } from '@modules/enrichment/infrastructure/contact-read.query.drizzle'
 import { DrizzleContactBulkRepository } from '@modules/contacts/infrastructure/repositories/contact-bulk.repo-part'
 import { Contact } from '@modules/contacts/domain/contact'
 import type { ImportContactRecord, ImportBulkContactPort } from '@modules/imports/application/ports'
@@ -20,7 +23,7 @@ const logger = createPinoLogger({
   isDevelopment: !config.isProduction,
 })
 
-const registry = new BullMQAdapter(config.redisUrl)
+const registry = new BullMQAdapter(config.redisUrl, logger)
 
 // Fail-fast: exit immediately if Redis is unreachable.
 try {
@@ -79,8 +82,24 @@ const importBulkPort: ImportBulkContactPort = {
 const imports = bootstrapImports(db, storage, registry, logger, checker, importBulkPort)
 const importsWorker = bootstrapImportsWorker(registry, imports, logger)
 
+// Cross-slice: DrizzleContactReadQuery reads shared schema; wiring lives only here (adr02-5).
+const contactReadQuery = new DrizzleContactReadQuery(db)
+const enrichment = bootstrapEnrichment(db, registry, logger, contactReadQuery)
+const enrichmentWorker = bootstrapEnrichmentWorker(registry, enrichment, logger)
+
+// T1 cross-cut: inject afterCompleted callback into the import process use-case.
+// The callback is off by default; only fires when the import has analyzeOnComplete=true.
+imports.processUseCase.setAfterCompleted(async (contactIds, importRecord) => {
+  if (!importRecord.analyzeOnComplete || !importRecord.enrichmentTemplateId) return
+  await enrichment.enqueueUseCase.executeBatch(
+    contactIds,
+    'post_import',
+    importRecord.enrichmentTemplateId,
+  )
+})
+
 // Register reconciliation jobs — runs once on startup to recover pending/stale imports.
-registry.registerReconciliation([importsWorker.reconciliation])
+registry.registerReconciliation([importsWorker.reconciliation, enrichmentWorker.reconciliation])
 
 // Start consuming — workers begin processing the moment they are registered.
 await registry.start()

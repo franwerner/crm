@@ -28,6 +28,9 @@ export interface ImportProps {
   readonly rejectedCsvKey: string | null
   readonly createdBy: string
   readonly startedAt: Date | null
+  // Fase 2 opt-in: enqueue enrichment after import completes (D5)
+  readonly analyzeOnComplete: boolean
+  readonly enrichmentTemplateId: string | null
   readonly createdAt: Date
   readonly updatedAt: Date
 }
@@ -80,6 +83,8 @@ export class Import {
       rejectedCsvKey: null,
       createdBy: params.createdBy,
       startedAt: null,
+      analyzeOnComplete: false,
+      enrichmentTemplateId: null,
       createdAt: params.createdAt,
       updatedAt: params.updatedAt,
     }
@@ -113,6 +118,8 @@ export class Import {
   get rejectedCsvKey(): string | null { return this.props.rejectedCsvKey }
   get createdBy(): string { return this.props.createdBy }
   get startedAt(): Date | null { return this.props.startedAt }
+  get analyzeOnComplete(): boolean { return this.props.analyzeOnComplete }
+  get enrichmentTemplateId(): string | null { return this.props.enrichmentTemplateId }
   get createdAt(): Date { return this.props.createdAt }
   get updatedAt(): Date { return this.props.updatedAt }
 

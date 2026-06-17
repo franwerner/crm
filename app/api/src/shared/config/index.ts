@@ -27,6 +27,13 @@ const EnvSchema = z.object({
   IMPORT_MAX_FILE_SIZE_MB: z.coerce.number().int().positive().default(50),
   IMPORT_DEFAULT_PHONE_REGION: z.string().min(1).default('AR'),
   IMPORT_PROCESSING_STALE_MS: z.coerce.number().int().positive().default(600000),
+  // --- Fase 2: Enriquecimiento LLM (D9) ---
+  OPENROUTER_API_KEY: z.string().min(1, 'OPENROUTER_API_KEY is required'),
+  OPENROUTER_BASE_URL: z.string().url().default('https://openrouter.ai/api/v1'),
+  // Gateway slug passed to the LLM provider; the gateway is responsible for model selection/rotation
+  OPENROUTER_MODEL: z.string().min(1).default('openrouter/free'),
+  ENRICHMENT_PROCESSING_STALE_MS: z.coerce.number().int().positive().default(600000),
+  ENRICHMENT_BATCH_MAX: z.coerce.number().int().positive().default(1000),
 })
 
 const parsed = EnvSchema.safeParse(Bun.env)
@@ -71,6 +78,13 @@ export const config = {
   importMaxFileSizeBytes: env.IMPORT_MAX_FILE_SIZE_MB * 1024 * 1024,
   importDefaultPhoneRegion: env.IMPORT_DEFAULT_PHONE_REGION,
   importProcessingStaleMs: env.IMPORT_PROCESSING_STALE_MS,
+  // Fase 2: Enriquecimiento LLM (D9)
+  openrouterApiKey: env.OPENROUTER_API_KEY,
+  openrouterBaseUrl: env.OPENROUTER_BASE_URL,
+  // Gateway slug; model selection/rotation is the provider's responsibility (ADR runtime/llm-resilience.md)
+  openrouterModel: env.OPENROUTER_MODEL,
+  enrichmentProcessingStaleMs: env.ENRICHMENT_PROCESSING_STALE_MS,
+  enrichmentBatchMax: env.ENRICHMENT_BATCH_MAX,
 } as const
 
 export type Config = typeof config

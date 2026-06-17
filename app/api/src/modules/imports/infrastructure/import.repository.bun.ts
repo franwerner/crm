@@ -29,6 +29,8 @@ function rowToImport(row: ImportRow): Import {
     rejectedCsvKey: row.rejectedCsvKey,
     createdBy: row.createdBy,
     startedAt: row.startedAt,
+    analyzeOnComplete: row.analyzeOnComplete,
+    enrichmentTemplateId: row.enrichmentTemplateId,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   })
@@ -53,6 +55,8 @@ function importToRow(record: Import): typeof importsTable.$inferInsert {
     rejectedCsvKey: record.rejectedCsvKey,
     createdBy: record.createdBy,
     startedAt: record.startedAt,
+    analyzeOnComplete: record.analyzeOnComplete,
+    enrichmentTemplateId: record.enrichmentTemplateId,
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
   }
@@ -81,6 +85,8 @@ export class DrizzleImportsRepository implements ImportsRepository {
           duplicatedCount: row.duplicatedCount,
           rejectedCsvKey: row.rejectedCsvKey,
           startedAt: row.startedAt,
+          analyzeOnComplete: row.analyzeOnComplete,
+          enrichmentTemplateId: row.enrichmentTemplateId,
           updatedAt: row.updatedAt,
         },
       })

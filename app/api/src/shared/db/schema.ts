@@ -350,6 +350,24 @@ export const projectDocuments = pgTable(
   }),
 )
 
+// --- Enums added for Fase 2: Enriquecimiento LLM ---
+
+export const insightStatusEnum = pgEnum('insight_status', [
+  'queued',
+  'processing',
+  'completed',
+  'failed',
+])
+
+export const triggerKindEnum = pgEnum('trigger_kind', [
+  'post_import',
+  'batch',
+  'individual',
+  'retry',
+])
+
+// --- End Fase 2 enums ---
+
 // --- imports table (Fase 1: Ingesta de Contactos por Excel, D6) ---
 
 export const imports = pgTable(
@@ -380,6 +398,9 @@ export const imports = pgTable(
     startedAt: timestamp('started_at', { withTimezone: true }),
     // Blank-safe resume anchor: the actual Excel row.number of the last committed batch (D7)
     lastRowNumber: integer('last_row_number').notNull().default(0),
+    // Fase 2 opt-in: enqueue enrichment after import completes (D5)
+    analyzeOnComplete: boolean('analyze_on_complete').notNull().default(false),
+    enrichmentTemplateId: uuid('enrichment_template_id'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
@@ -389,3 +410,50 @@ export const imports = pgTable(
     createdByIdx: index('idx_imports_created_by').on(t.createdBy),
   }),
 )
+
+// --- Fase 2: Enriquecimiento LLM tables (D6) ---
+
+export const analysisTemplates = pgTable('analysis_templates', {
+  id: uuid('id').primaryKey(),
+  name: text('name').notNull(),
+  rubro: text('rubro').notNull(),
+  prompt: text('prompt').notNull(),
+  modelProvider: text('model_provider').notNull(),
+  version: integer('version').notNull().default(1),
+  isActive: boolean('is_active').notNull().default(true),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  deletedAt: timestamp('deleted_at', { withTimezone: true }),
+})
+
+export const contactInsights = pgTable(
+  'contact_insights',
+  {
+    id: uuid('id').primaryKey(),
+    contactId: uuid('contact_id')
+      .notNull()
+      .references(() => contacts.id),
+    templateId: uuid('template_id')
+      .notNull()
+      .references(() => analysisTemplates.id),
+    // Snapshot of the template version at enqueue time — frozen so updates don't mutate past insights
+    templateVersion: integer('template_version').notNull(),
+    triggerKind: triggerKindEnum('trigger_kind').notNull(),
+    status: insightStatusEnum('status').notNull().default('queued'),
+    attempts: integer('attempts').notNull().default(0),
+    result: jsonb('result'),
+    modelUsed: text('model_used'),
+    promptTokens: integer('prompt_tokens'),
+    completionTokens: integer('completion_tokens'),
+    costUsd: text('cost_usd'),
+    lastError: text('last_error'),
+    completedAt: timestamp('completed_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    statusIdx: index('idx_contact_insights_status').on(t.status),
+    contactIdIdx: index('idx_contact_insights_contact_id').on(t.contactId),
+  }),)
+
+// --- End Fase 2 tables ---

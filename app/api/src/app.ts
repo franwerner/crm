@@ -10,6 +10,8 @@ import { bootstrapAuth } from '@modules/auth/infrastructure/bootstrap'
 import { bootstrapContacts } from '@modules/contacts/infrastructure/bootstrap'
 import { bootstrapProjects } from '@modules/projects/infrastructure/bootstrap'
 import { bootstrapImports } from '@modules/imports/infrastructure/bootstrap'
+import { bootstrapEnrichment } from '@modules/enrichment/infrastructure/bootstrap'
+import { DrizzleContactReadQuery } from '@modules/enrichment/infrastructure/contact-read.query.drizzle'
 import { BunObjectStorage } from '@shared/storage'
 import { createPinoLogger } from '@shared/logger'
 import { BullMQAdapter } from '@shared/queue/queue.bullmq'
@@ -123,11 +125,16 @@ export function createApp() {
 
   const imports = bootstrapImports(db, storage, queue, logger, checker, importBulkPort)
 
+  // Cross-slice: DrizzleContactReadQuery reads shared schema; wiring lives only here (adr02-5).
+  const contactReadQuery = new DrizzleContactReadQuery(db)
+  const enrichment = bootstrapEnrichment(db, queue, logger, contactReadQuery)
+
   app.route('/', auth.router)
   app.route('/', users.router)
   app.route('/', contacts.router)
   app.route('/', projects.router)
   app.route('/', imports.router)
+  app.route('/', enrichment.router)
 
   // Return queue so server.ts can use it for the ping health check.
   return { app, logger, queue }

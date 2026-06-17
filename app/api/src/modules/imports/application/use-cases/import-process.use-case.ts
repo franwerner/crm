@@ -1,3 +1,4 @@
+import type { Import } from '@modules/imports/domain/import'
 import type { ImportsRepository } from '@modules/imports/domain/import.repository'
 import type { ContactChannelLookup } from '@modules/imports/application/contact-channel.query'
 import type { SpreadsheetReader } from '@modules/imports/application/spreadsheet-reader'
@@ -16,6 +17,9 @@ export interface ProcessImportInput {
 }
 
 export class ImportProcessUseCase {
+  // Injected by the worker composition root — off by default (D5).
+  private afterCompleted?: (contactIds: string[], importRecord: Import) => Promise<void>
+
   constructor(
     private readonly importsRepo: ImportsRepository,
     private readonly contactBulkRepo: ImportBulkContactPort,
@@ -25,6 +29,10 @@ export class ImportProcessUseCase {
     private readonly uow: ImportUnitOfWork,
     private readonly checker: ChannelChecker,
   ) {}
+
+  setAfterCompleted(fn: (contactIds: string[], importRecord: Import) => Promise<void>): void {
+    this.afterCompleted = fn
+  }
 
   async execute(input: ProcessImportInput): Promise<void> {
     const importRecord = await this.importsRepo.findById(input.importId)
@@ -59,6 +67,9 @@ export class ImportProcessUseCase {
       let duplicatedCount = current.duplicatedCount
       let processedRows = current.processedRows
       let lastRowNumber = current.lastRowNumber
+
+      // Accumulates all contact IDs created by this import (used for T1 callback, D5).
+      const createdContactIds: string[] = []
 
       // Batch accumulator.
       let batch: ImportContactRecord[] = []
@@ -204,6 +215,7 @@ export class ImportProcessUseCase {
             updatedAt: channelNow,
             channels,
           })
+          createdContactIds.push(contactId)
           okCount++
 
           // Flush when batch is full.
@@ -235,6 +247,11 @@ export class ImportProcessUseCase {
         now: new Date(),
       })
       await this.importsRepo.save(current)
+
+      // T1 opt-in hook (D5): fire after successful completion if injected by the composition root.
+      if (this.afterCompleted && createdContactIds.length > 0) {
+        await this.afterCompleted(createdContactIds, current)
+      }
     } catch (err) {
       const failed = current.markFailed(new Date())
       await this.importsRepo.save(failed).catch(() => {
