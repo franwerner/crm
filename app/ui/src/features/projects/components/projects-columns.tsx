@@ -1,5 +1,6 @@
 import { MoreHorizontal } from 'lucide-react'
 import { toColumns } from '@shared/lib/data-view'
+import { makeSelectColumn } from '@shared/ui/select-column'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -15,10 +16,12 @@ type ProjectRow = RowOf<typeof projectsDescriptor>
 
 type ActionsColumnHandlers = {
   onViewDetail: (id: string) => void
+  onDelete: (id: string) => void
 }
 
 export function makeProjectActionsColumn({
   onViewDetail,
+  onDelete,
 }: ActionsColumnHandlers): ColumnDef<ProjectRow> {
   return {
     id: 'actions',
@@ -36,10 +39,16 @@ export function makeProjectActionsColumn({
           <DropdownMenuItem onSelect={() => onViewDetail(row.original.id)}>
             Ver detalle
           </DropdownMenuItem>
+          <DropdownMenuItem variant="destructive" onSelect={() => onDelete(row.original.id)}>
+            Eliminar
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
   }
 }
 
-export const projectBaseColumns = toColumns(projectsDescriptor)
+export const projectBaseColumns = [
+  makeSelectColumn<ProjectRow>(),
+  ...toColumns(projectsDescriptor),
+]

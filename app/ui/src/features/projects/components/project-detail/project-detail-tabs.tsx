@@ -17,7 +17,7 @@ type Props = {
 const TAB_LABELS: Record<ProjectTab, string> = {
   summary: 'Datos',
   finance: 'Finanzas',
-  people: 'Personas',
+  people: 'Asignados',
   documents: 'Documentos',
   activity: 'Actividad',
 }

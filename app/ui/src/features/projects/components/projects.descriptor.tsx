@@ -2,13 +2,14 @@ import type { ProjectListItem, ProjectListItemStatusEnumKey } from '@shared/api/
 import type { EntityDescriptor } from '@shared/lib/data-view'
 import { contactRelation } from '@shared/lib/relations/contact.relation'
 import { formatDate, formatDateTime } from '@shared/lib/utils/date'
+import { Avatar } from '@shared/ui/avatar'
 import { Badge } from '@shared/ui/badge'
 import { projectStatusBadge, projectStatusLabels, projectStatusOptions } from '../constants/projects.options'
 
 export const projectsDescriptor: EntityDescriptor<ProjectListItem> = {
   name: 'projects',
-  selectable: false,
-  defaultSort: { field: 'createdAt', dir: 'desc' },
+  selectable: true,
+  defaultSort: { field: 'updatedAt', dir: 'desc' },
   fields: [
     {
       key: 'id',
@@ -56,6 +57,7 @@ export const projectsDescriptor: EntityDescriptor<ProjectListItem> = {
     {
       key: 'currency',
       label: 'Moneda',
+      sortable: true,
       filterable: true,
       filterType: 'text',
       render: (value) => (
@@ -83,12 +85,26 @@ export const projectsDescriptor: EntityDescriptor<ProjectListItem> = {
       ),
     },
     {
+      key: 'createdByName',
+      label: 'Creado por',
+      render: (value) => {
+        const name = value as string | null
+        return name ? (
+          <span className="flex items-center gap-2">
+            <Avatar name={name} size="sm" />
+            <span className="text-foreground">{name}</span>
+          </span>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        )
+      },
+    },
+    {
       key: 'createdAt',
       label: 'Creado',
       sortable: true,
       filterable: true,
       filterType: 'date',
-      hidden: true,
       render: (value) => (
         <span className="text-muted-foreground">{formatDate(value as string)}</span>
       ),
@@ -99,7 +115,6 @@ export const projectsDescriptor: EntityDescriptor<ProjectListItem> = {
       sortable: true,
       filterable: true,
       filterType: 'date',
-      hidden: true,
       render: (value) => (
         <span className="text-muted-foreground">{formatDateTime(value as string)}</span>
       ),

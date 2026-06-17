@@ -19,8 +19,8 @@ export const extensionEditForm: FormDescriptor<ExtensionEditFormValues> = {
   fields: [
     { key: 'additionalDays', label: 'Días adicionales', widget: 'number', required: true, placeholder: '1' },
     { key: 'reason', label: 'Motivo', widget: 'textarea', required: true, placeholder: 'Motivo de la extensión…' },
-    { key: 'cost', label: 'Costo (centavos, opcional)', widget: 'number', placeholder: '0' },
-    { key: 'billedAmount', label: 'Monto facturado (centavos, opcional)', widget: 'number', placeholder: '0' },
+    { key: 'cost', label: 'Gasto adicional (centavos, opcional)', widget: 'number', placeholder: '0' },
+    { key: 'billedAmount', label: 'Presupuesto adicional (centavos, opcional)', widget: 'number', placeholder: '0' },
     { key: 'grantedAt', label: 'Fecha de otorgamiento', widget: 'date', required: true },
   ],
 }

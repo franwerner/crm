@@ -1,5 +1,6 @@
 import { toast } from 'sonner'
 import { usePostProjects } from '@shared/api/hooks/usePostProjects'
+import { usePostProjectsBulkDelete } from '@shared/api/hooks/usePostProjectsBulkDelete'
 import { usePatchProjectsId } from '@shared/api/hooks/usePatchProjectsId'
 import { useDeleteProjectsId } from '@shared/api/hooks/useDeleteProjectsId'
 import { getProjectsQueryKey } from '@shared/api/hooks/useGetProjects'
@@ -8,6 +9,21 @@ import { queryClient } from '@shared/lib/config/query-client'
 import { toUserMessage } from '@shared/lib/utils/problem'
 import type { UpdateProjectBody } from '@shared/api/types/UpdateProjectBody'
 import type { ProjectCreateFormValues } from '@features/projects/constants/project.form'
+
+export function useBulkDeleteProjects() {
+  const mutation = usePostProjectsBulkDelete()
+
+  async function bulkDelete(ids: string[]) {
+    await mutation.mutateAsync({ data: { ids } })
+    await queryClient.invalidateQueries({ queryKey: getProjectsQueryKey() })
+    toast.success(`${ids.length} ${ids.length === 1 ? 'proyecto eliminado' : 'proyectos eliminados'}`)
+  }
+
+  return {
+    bulkDelete,
+    isPending: mutation.isPending,
+  }
+}
 
 export function useCreateProject() {
   const mutation = usePostProjects()

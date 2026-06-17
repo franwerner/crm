@@ -126,10 +126,10 @@ export function ProjectExtensionsPanel({
                     <div className="flex items-center gap-4 text-[length:var(--ds-font-size-xs)] text-muted-foreground">
                       <span>Fin aplicado: {formatDate(ext.appliedEndDate)}</span>
                       {ext.cost !== null && (
-                        <span>Costo: {formatMoney(ext.cost, currency)}</span>
+                        <span>Gasto adicional: {formatMoney(ext.cost, currency)}</span>
                       )}
                       {ext.billedAmount !== null && (
-                        <span>Facturado: {formatMoney(ext.billedAmount, currency)}</span>
+                        <span>Presupuesto adicional: {formatMoney(ext.billedAmount, currency)}</span>
                       )}
                     </div>
                   </li>

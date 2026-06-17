@@ -18,7 +18,7 @@ export const projectsSearchSchema = z.object({
   page: z.number().int().min(1).optional().default(1),
   search: z.string().optional(),
   filterGroups: filterGroupsSchema,
-  sortField: projectsSortFieldEnum.optional().default('createdAt'),
+  sortField: projectsSortFieldEnum.optional().default('updatedAt'),
   sortDir: projectsSortDirEnum.optional().default('desc'),
 })
 
