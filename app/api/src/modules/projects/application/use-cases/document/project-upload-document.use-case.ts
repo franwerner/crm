@@ -1,6 +1,7 @@
 import type { ProjectDocument } from '@modules/projects/domain/entities/project-document'
 import type { ProjectsRepository } from '@modules/projects/domain/project.repository'
 import type { ObjectStorage } from '@shared/storage'
+import type { Logger } from '@shared/logger'
 import { NotFoundError, ValidationError } from '@shared/errors'
 import { newId } from '@shared/utils/id'
 import { MAX_FILE_SIZE_BYTES, ALLOWED_MIME_TYPES } from '@modules/projects/domain/constants'
@@ -19,6 +20,7 @@ export class ProjectUploadDocumentUseCase {
   constructor(
     private readonly repo: ProjectsRepository,
     private readonly storage: ObjectStorage,
+    private readonly logger: Logger,
   ) {}
 
   async execute(input: UploadDocumentInput): Promise<ProjectDocument> {
@@ -66,7 +68,7 @@ export class ProjectUploadDocumentUseCase {
       try {
         await this.storage.deleteObject(storageKey)
       } catch (cleanupErr) {
-        console.warn(`[storage] orphan cleanup failed for key ${storageKey}:`, cleanupErr)
+        this.logger.warn({ storageKey, err: cleanupErr }, '[storage] orphan cleanup failed')
       }
       throw err
     }

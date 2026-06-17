@@ -1,5 +1,6 @@
 import type { ProjectsRepository } from '@modules/projects/domain/project.repository'
 import type { ObjectStorage } from '@shared/storage'
+import type { Logger } from '@shared/logger'
 import { NotFoundError } from '@shared/errors'
 
 export interface DeleteDocumentInput {
@@ -11,6 +12,7 @@ export class ProjectDeleteDocumentUseCase {
   constructor(
     private readonly repo: ProjectsRepository,
     private readonly storage: ObjectStorage,
+    private readonly logger: Logger,
   ) {}
 
   async execute(input: DeleteDocumentInput): Promise<void> {
@@ -30,7 +32,7 @@ export class ProjectDeleteDocumentUseCase {
     try {
       await this.storage.deleteObject(document.storageKey)
     } catch (err) {
-      console.warn(`[storage] failed to delete object ${document.storageKey} after DB delete:`, err)
+      this.logger.warn({ storageKey: document.storageKey, err }, '[storage] failed to delete object after DB delete')
     }
   }
 }
