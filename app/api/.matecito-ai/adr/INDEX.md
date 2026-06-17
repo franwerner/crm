@@ -73,14 +73,14 @@ Dominios canónicos del catálogo que hoy NO tienen ADRs en este paquete:
 |---|---|---|
 | `delivery/testing-strategy.md` | Estrategia de testing completa | Cuando haya lógica de negocio no trivial · **además: conflicto con `Strict TDD Mode: enabled` del harness** |
 | `structure/inter-layer-communication.md` §3.2 | Eventos de dominio in-process | Cuando la orquestación cross-slice ensucie el composition root |
-| `data/data-access.md` §tx | Port de Unit of Work | Cuando un use-case necesite atomicidad sobre más de un repo |
+| ~~`data/data-access.md` §tx~~ | ~~Port de Unit of Work~~ | _Resuelto 2026-06-17 — UoW port Accepted_ |
 | `security/auth.md` §refresh | Refresh token + rotación | Cuando sesiones largas o revocación sean requisito real |
 | `contracts/pagination.md` §cursor | Paginación cursor-based | Cuando offset no escale o el ordenamiento haga inestable la paginación offset |
 | `security/secrets-management.md` | Secret manager dedicado | Cuando se planifique producción seria (rotación, auditoría de acceso) |
 
 ## Estado y mantenimiento
 
-- Última actualización: 2026-06-16
+- Última actualización: 2026-06-17
 - Cada ADR tiene su propio `Status:`.
 - **Actualizar una decisión (cambio menor):** editá el ADR. El historial lo lleva git.
 - **Cambiar una decisión (cambio de fondo):** creá un ADR nuevo, marcá el viejo `Superseded` con link al nuevo. No edites la decisión vieja en el lugar.

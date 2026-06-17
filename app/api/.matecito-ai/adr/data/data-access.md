@@ -1,8 +1,8 @@
 # ADR — Acceso a datos
 
-- **Status:** Accepted (con sub-decisión de transacciones en Pending)
+- **Status:** Accepted
 - **Fecha de creación:** 2026-05-17
-- **Última actualización:** 2026-05-17
+- **Última actualización:** 2026-06-17 (UoW port Pending → Accepted: trigger de atomicidad multi-repo satisfecho por ingesta de contactos)
 - **Decisores:** ifran
 - **Fase:** data-access
 
@@ -18,11 +18,28 @@ Un CRM es datos relacionales con integridad fuerte (clientes, deals, actividades
 - **Migraciones:** gestionadas con `drizzle-kit`, directorio de migraciones versionado en el repo.
 - **Mapeo:** el schema de Drizzle es infraestructura, NO el modelo de dominio. El adapter mapea fila DB ↔ entidad de dominio.
 
-### Transacciones  *(Accepted + sub-Pending)*
-**Accepted (hoy):** las transacciones se inician **dentro del adapter**, por operación. Cubre el CRUD y operaciones de un solo repo.
+### Transacciones
 
-> **Sub-decisión Pending — Port de Unit of Work.**
-> Status: Pending. Trigger: *cuando un use-case necesite atomicidad sobre más de un repositorio*. En ese momento se introduce un puerto `withTransaction(...)` que el use-case invoca (impl con Drizzle en infra), preservando la regla #2 de `../structure/layers-and-dependencies.md` (el use-case no conoce Drizzle).
+**Por operación (default):** las transacciones se inician **dentro del adapter**, por operación. Cubre el CRUD y operaciones de un solo repo.
+
+**Port de Unit of Work (Accepted — 2026-06-17):** cuando un use-case necesita atomicidad sobre más de un repositorio, se usa el puerto `UnitOfWork`. Trigger original satisfecho: la ingesta de contactos (Fase 1) requiere `bulk-insert contacts + checkpoint processedRows en imports` en una sola transacción atómica.
+
+Contrato decidido:
+
+```typescript
+// src/shared/db/uow.ts
+interface UnitOfWork {
+  withTransaction<T>(fn: (tx: DrizzleTx) => Promise<T>): Promise<T>;
+}
+
+// src/shared/db/client.ts
+export type DrizzleTx = Parameters<Parameters<Db['transaction']>[0]>[0];
+```
+
+- Adapter `DrizzleUnitOfWork` en la infraestructura del slice consumidor (p. ej. `imports/infrastructure/drizzle-unit-of-work.ts`).
+- Los repositorios participantes aceptan un `tx?` opcional: cuando está presente usan la tx pasada; cuando está ausente se auto-gestionan (comportamiento existente).
+- El use-case importa solo `@shared/db/uow` (el puerto). **NUNCA importa Drizzle directamente** (regla #2 de `../structure/layers-and-dependencies.md`).
+- `DrizzleTx` se exporta desde `src/shared/db/client.ts` reutilizando el idioma `Parameters<...>` ya establecido en el repo.
 
 ## Alternativas consideradas
 
@@ -35,10 +52,11 @@ Un CRM es datos relacionales con integridad fuerte (clientes, deals, actividades
 
 **Positivas:** acceso a datos type-safe y encapsulado; ORM + migraciones en una herramienta; lógica desacoplada de la DB.
 
-**Negativas / trade-offs:** atomicidad multi-repo no disponible hasta resolver el Pending de UoW.
+**Negativas / trade-offs:** el port de UoW expone `DrizzleTx` como tipo en los firmas de repositorio — los participantes de una UoW ven ese tipo vía el parámetro opcional `tx?`. Es una filtración controlada y explícita: está encapsulada en infra; el use-case nunca ve Drizzle.
 
 ## Reglas concretas
 
-- Drizzle SOLO dentro de `*.repository.bun.ts`. Prohibido importar Drizzle desde use-cases, domain o `*.routes.ts`.
-- El use-case depende del puerto `*.repository.ts`, nunca del adapter ni de Drizzle.
+- Drizzle SOLO dentro de `*.repository.bun.ts` y adapters de UoW (`drizzle-unit-of-work.ts`). Prohibido importar Drizzle desde use-cases, domain o `*.routes.ts`.
+- El use-case depende del puerto `*.repository.ts` y/o `UnitOfWork`, nunca del adapter ni de Drizzle directamente.
 - Migraciones versionadas con drizzle-kit en el repo (no editar a mano la DB en prod).
+- UoW port (`src/shared/db/uow.ts`) y tipo `DrizzleTx` (`src/shared/db/client.ts`) son la única forma de cruzar la barrera transaccional entre repositorios. No crear mecanismos alternativos.

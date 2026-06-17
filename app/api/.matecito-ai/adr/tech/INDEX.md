@@ -76,6 +76,16 @@ _Sin librería — DI manual en el composition root. Ver `../delivery/dependency
 |---|---|---|
 | [dependency-cruiser](dependency-cruiser.md) | latest / sin pinear | Verifica las 7 reglas de `../structure/layers-and-dependencies.md` como globs de path; gate de CI obligatorio |
 
+### Parseo de archivos
+| Tech | Versión | Por qué |
+|---|---|---|
+| [exceljs](exceljs.md) | 4.4.0 | Parseo XLSX en streaming (`WorkbookReader`) con RAM constante ~180 MB independiente del tamaño del archivo. Spike-validado sobre Bun. Usado por el módulo `imports`. |
+
+### Validación de datos de contacto
+| Tech | Versión | Por qué |
+|---|---|---|
+| [libphonenumber-js](libphonenumber-js.md) | latest / sin pinear | Normalización de teléfonos a E.164; puro JS sin deps nativas; funciona en Bun. Usar `/min`. Región default vía config. |
+
 ### Otros
 | Tech | Versión | Por qué |
 |---|---|---|

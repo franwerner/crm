@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Fecha de creación:** 2026-05-26
-- **Última actualización:** 2026-05-26 (lifecycle revisado: hard delete coordinado DB → MinIO; estrategia de bucket corregida: pre-existencia obligatoria porque Bun.S3Client no expone createBucket); 2026-06-12 (storage extraído a capability compartida src/shared/storage/: port ObjectStorage + adapter Bun único vía DI; el prefijo de key y la policy per-resource quedan en el slice consumidor)
+- **Última actualización:** 2026-05-26 (lifecycle revisado: hard delete coordinado DB → MinIO; estrategia de bucket corregida: pre-existencia obligatoria porque Bun.S3Client no expone createBucket); 2026-06-12 (storage extraído a capability compartida src/shared/storage/: port ObjectStorage + adapter Bun único vía DI; el prefijo de key y la policy per-resource quedan en el slice consumidor); 2026-06-17 (variante config-driven per-slice: un slice puede definir su límite de tamaño vía variable de entorno en lugar de constante fija)
 - **Decisores:** ifran
 - **Fase:** file-storage
 
@@ -82,6 +82,18 @@ Razones del rechazo a un endpoint core con listado hardcodeado de features:
 | `PRESIGNED_DOWNLOAD_TTL_SECONDS` | 900 (15 min) | Suficiente para iniciar la descarga en un click sin dejar URLs vivas indefinidamente. |
 
 Se exportan desde el `domain/constants.ts` del slice consumidor (per-resource policy). NO viven en la capability compartida — `src/shared/storage/` es agnóstico de límites de negocio.
+
+#### Variante config-driven per-slice (Accepted — 2026-06-17)
+
+Un slice puede definir su límite de tamaño vía variable de entorno en lugar de una constante fija, cuando el caso de uso lo requiera (p. ej. archivos grandes con streaming donde el límite es operacional, no de RAM).
+
+Reglas para la variante:
+- La variable de entorno se valida con zod en `src/shared/config` (junto con el resto de la config de la app). NO se lee directamente del entorno fuera de ese módulo.
+- El valor resultante se pasa como config al bootstrap del slice y se aplica en la **capa HTTP** — coherente con la regla ya existente "MIME y tamaño se validan en la capa HTTP".
+- El **dominio del slice sigue siendo puro**: no lee variables de entorno, no importa `@shared/config`.
+- La constante en `domain/constants.ts` sigue siendo válida para slices con un límite fijo conocido; la variante config-driven es un override opt-in por slice.
+
+Ejemplo: el módulo `imports` usa `IMPORT_MAX_FILE_SIZE_MB` (env, default `50`). Con streaming, la RAM se desacopla del tamaño del archivo, por lo que el límite de 50 MB es operacional (cap de disco temporal + tiempo + anti-abuso), no de memoria.
 
 ### MIME whitelist
 
