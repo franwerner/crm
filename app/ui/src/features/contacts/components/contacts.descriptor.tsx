@@ -19,7 +19,7 @@ import type {
   PrimaryChannelChannelTypeEnumKey,
 } from '@shared/api/types/ContactListItem'
 import type { EntityDescriptor } from '@shared/lib/data-view'
-import { userRelation } from '@shared/lib/relations/user.relation'
+import { userRelation } from '@shared/lib/data-view/relations/user.relation'
 import { formatDate, formatDateTime } from '@shared/lib/utils/date'
 import { Avatar } from '@shared/ui/avatar'
 import { Badge } from '@shared/ui/badge'

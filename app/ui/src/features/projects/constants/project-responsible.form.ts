@@ -1,7 +1,7 @@
 import { z } from 'zod/v4'
 import type { FormDescriptor } from '@shared/lib/form-view/types'
 import { addResponsibleBodySchema } from '@shared/api/schemas/addResponsibleBodySchema'
-import { makeUserRelation } from '@shared/lib/relations/user.relation'
+import { makeUserRelation } from '@shared/lib/data-view/relations/user.relation'
 
 export const responsibleCreateFormSchema = addResponsibleBodySchema
 

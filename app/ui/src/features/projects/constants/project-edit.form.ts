@@ -2,7 +2,7 @@ import { z } from 'zod/v4'
 import type { FormDescriptor } from '@shared/lib/form-view/types'
 import type { ProjectView } from '@shared/api/types/ProjectView'
 import { createProjectBodySchema } from '@shared/api/schemas/createProjectBodySchema'
-import { contactRelation } from '@shared/lib/relations/contact.relation'
+import { contactRelation } from '@shared/lib/data-view/relations/contact.relation'
 
 function toIsoDate(value: unknown): unknown {
   if (typeof value === 'string' && value.length > 10) return value.slice(0, 10)

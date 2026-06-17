@@ -2,7 +2,7 @@ import { getUsers } from '@shared/api/clients'
 import { getUsersQueryKey } from '@shared/api/hooks/useGetUsers'
 import type { GetUsersQueryParams } from '@shared/api/types/GetUsers'
 import type { RelationResolver } from '@shared/lib/utils/filter'
-import { makeRelationResolver, SEARCH_LIMIT } from '../data-view/make-relation-resolver'
+import { makeRelationResolver, SEARCH_LIMIT } from '../make-relation-resolver'
 
 
 export function makeUserRelation(excludeIds: readonly string[] = []): RelationResolver {
