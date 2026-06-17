@@ -64,6 +64,15 @@ export const channelsChannelTypeEnum = {
 export type ChannelsChannelTypeEnumKey =
   (typeof channelsChannelTypeEnum)[keyof typeof channelsChannelTypeEnum];
 
+export const channelsVerificationStatusEnum = {
+  unverified: "unverified",
+  valid: "valid",
+  invalid: "invalid",
+} as const;
+
+export type ChannelsVerificationStatusEnumKey =
+  (typeof channelsVerificationStatusEnum)[keyof typeof channelsVerificationStatusEnum];
+
 export type ContactView = {
   /**
    * @description Contact UUID
@@ -162,6 +171,14 @@ export type ContactView = {
      * @type boolean
      */
     isPrimary: boolean;
+    /**
+     * @type string
+     */
+    verificationStatus: ChannelsVerificationStatusEnumKey;
+    /**
+     * @type string
+     */
+    verifiedAt: string | null;
   }[];
   /**
    * @description ISO 8601 timestamp

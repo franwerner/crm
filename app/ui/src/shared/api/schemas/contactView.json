@@ -97,9 +97,21 @@
             ]
           },
           "value": { "type": "string" },
-          "isPrimary": { "type": "boolean" }
+          "isPrimary": { "type": "boolean" },
+          "verificationStatus": {
+            "type": "string",
+            "enum": ["unverified", "valid", "invalid"]
+          },
+          "verifiedAt": { "type": "string", "nullable": true }
         },
-        "required": ["id", "channelType", "value", "isPrimary"]
+        "required": [
+          "id",
+          "channelType",
+          "value",
+          "isPrimary",
+          "verificationStatus",
+          "verifiedAt"
+        ]
       },
       "description": "Communication channels"
     },

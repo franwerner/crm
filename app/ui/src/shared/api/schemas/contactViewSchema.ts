@@ -45,6 +45,8 @@ export const contactViewSchema = z.object({
         ]),
         value: z.string(),
         isPrimary: z.boolean(),
+        verificationStatus: z.enum(["unverified", "valid", "invalid"]),
+        verifiedAt: z.nullable(z.string()),
       }),
     )
     .describe("Communication channels"),

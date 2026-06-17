@@ -16,4 +16,14 @@ export type SetMappingBody = {
    * @type string, uuid
    */
   templateId?: string | null;
+  /**
+   * @description When true, enqueues enrichment for all imported contacts on completion.
+   * @type boolean | undefined
+   */
+  analyzeOnComplete?: boolean;
+  /**
+   * @description Analysis template UUID used when analyzeOnComplete is true.
+   * @type string, uuid
+   */
+  enrichmentTemplateId?: string | null;
 };

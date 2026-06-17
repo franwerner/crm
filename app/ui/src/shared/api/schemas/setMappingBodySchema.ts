@@ -16,4 +16,15 @@ export const setMappingBodySchema = z.object({
       "Optional template UUID to associate with this import (no FK in Fase 1).",
     )
     .nullish(),
+  analyzeOnComplete: z.optional(
+    z
+      .boolean()
+      .describe(
+        "When true, enqueues enrichment for all imported contacts on completion.",
+      ),
+  ),
+  enrichmentTemplateId: z
+    .uuid()
+    .describe("Analysis template UUID used when analyzeOnComplete is true.")
+    .nullish(),
 });

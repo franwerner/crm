@@ -17,6 +17,14 @@ export type PostEnrichments201 = {
    * @type integer
    */
   count: number;
+  /**
+   * @type integer | undefined
+   */
+  skipped?: number;
+  /**
+   * @type boolean | undefined
+   */
+  exceededMax?: boolean;
 };
 
 /**

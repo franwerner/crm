@@ -12,6 +12,8 @@ import { z } from "zod/v4";
 export const postEnrichmentsBatch201Schema = z.object({
   insightIds: z.array(z.uuid()),
   count: z.int(),
+  skipped: z.optional(z.int()),
+  exceededMax: z.optional(z.boolean()),
 });
 
 /**
@@ -29,10 +31,54 @@ export const postEnrichmentsBatch401Schema = z.lazy(() => problemSchema);
  */
 export const postEnrichmentsBatch422Schema = z.lazy(() => problemSchema);
 
-export const postEnrichmentsBatchMutationRequestSchema = z.object({
-  contactIds: z.array(z.uuid()).min(1),
-  templateId: z.uuid(),
-});
+export const postEnrichmentsBatchMutationRequestSchema = z.union([
+  z.object({
+    kind: z.enum(["filter"]),
+    filterGroups: z
+      .array(
+        z
+          .array(
+            z.object({
+              field: z.string().min(1),
+              op: z.enum([
+                "eq",
+                "ne",
+                "in",
+                "nin",
+                "gt",
+                "gte",
+                "lt",
+                "lte",
+                "between",
+                "ilike",
+                "isNull",
+                "isNotNull",
+              ]),
+              value: z.optional(
+                z.union([
+                  z.boolean(),
+                  z.any(),
+                  z.array(
+                    z.union([z.boolean(), z.any(), z.string(), z.number()]),
+                  ),
+                  z.string(),
+                  z.number(),
+                ]),
+              ),
+            }),
+          )
+          .max(25),
+      )
+      .max(10),
+    search: z.optional(z.string().min(1)),
+    templateId: z.uuid(),
+  }),
+  z.object({
+    kind: z.enum(["ids"]),
+    contactIds: z.array(z.uuid()).min(1),
+    templateId: z.uuid(),
+  }),
+]);
 
 export const postEnrichmentsBatchMutationResponseSchema = z.lazy(
   () => postEnrichmentsBatch201Schema,

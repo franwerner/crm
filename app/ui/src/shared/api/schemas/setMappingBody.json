@@ -13,6 +13,18 @@
       "format": "uuid",
       "description": "Optional template UUID to associate with this import (no FK in Fase 1).",
       "example": "01938b0c-0000-7000-0000-000000000001"
+    },
+    "analyzeOnComplete": {
+      "type": "boolean",
+      "description": "When true, enqueues enrichment for all imported contacts on completion.",
+      "example": true
+    },
+    "enrichmentTemplateId": {
+      "type": "string",
+      "nullable": true,
+      "format": "uuid",
+      "description": "Analysis template UUID used when analyzeOnComplete is true.",
+      "example": "01938b0c-0000-7000-0000-000000000002"
     }
   },
   "required": ["mapping"],

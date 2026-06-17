@@ -25,12 +25,16 @@ export type { GetContactsIdSuspenseQueryKey } from "./hooks/useGetContactsIdSusp
 export type { GetContactsKpisQueryKey } from "./hooks/useGetContactsKpis.ts";
 export type { GetContactsKpisSuspenseQueryKey } from "./hooks/useGetContactsKpisSuspense.ts";
 export type { GetContactsSuspenseQueryKey } from "./hooks/useGetContactsSuspense.ts";
+export type { GetEnrichmentsQueryKey } from "./hooks/useGetEnrichments.ts";
 export type { GetEnrichmentsIdQueryKey } from "./hooks/useGetEnrichmentsId.ts";
 export type { GetEnrichmentsIdSuspenseQueryKey } from "./hooks/useGetEnrichmentsIdSuspense.ts";
+export type { GetEnrichmentsSuspenseQueryKey } from "./hooks/useGetEnrichmentsSuspense.ts";
 export type { GetHealthQueryKey } from "./hooks/useGetHealth.ts";
 export type { GetHealthSuspenseQueryKey } from "./hooks/useGetHealthSuspense.ts";
+export type { GetImportsQueryKey } from "./hooks/useGetImports.ts";
 export type { GetImportsIdQueryKey } from "./hooks/useGetImportsId.ts";
 export type { GetImportsIdSuspenseQueryKey } from "./hooks/useGetImportsIdSuspense.ts";
+export type { GetImportsSuspenseQueryKey } from "./hooks/useGetImportsSuspense.ts";
 export type { GetProjectsQueryKey } from "./hooks/useGetProjects.ts";
 export type { GetProjectsIdQueryKey } from "./hooks/useGetProjectsId.ts";
 export type { GetProjectsIdBudgetItemsQueryKey } from "./hooks/useGetProjectsIdBudgetItems.ts";
@@ -138,6 +142,7 @@ export type {
 } from "./types/ContactStateChangeView.ts";
 export type {
   ChannelsChannelTypeEnumKey,
+  ChannelsVerificationStatusEnumKey,
   ContactView,
   ContactViewContactTypeEnumKey,
   ContactViewInterestLevelEnumKey,
@@ -333,6 +338,16 @@ export type {
   GetContactsKpisQueryResponse,
 } from "./types/GetContactsKpis.ts";
 export type {
+  GetEnrichments200,
+  GetEnrichments200StatusEnumKey,
+  GetEnrichments200TriggerKindEnumKey,
+  GetEnrichments400,
+  GetEnrichments401,
+  GetEnrichmentsQuery,
+  GetEnrichmentsQueryParams,
+  GetEnrichmentsQueryResponse,
+} from "./types/GetEnrichments.ts";
+export type {
   GetEnrichmentsId200,
   GetEnrichmentsId200StatusEnumKey,
   GetEnrichmentsId200TriggerKindEnumKey,
@@ -348,6 +363,13 @@ export type {
   GetHealthQuery,
   GetHealthQueryResponse,
 } from "./types/GetHealth.ts";
+export type {
+  GetImports200,
+  GetImports401,
+  GetImportsQuery,
+  GetImportsQueryParams,
+  GetImportsQueryResponse,
+} from "./types/GetImports.ts";
 export type {
   GetImportsId200,
   GetImportsId401,
@@ -463,6 +485,8 @@ export type {
   GetUsersIdQuery,
   GetUsersIdQueryResponse,
 } from "./types/GetUsersId.ts";
+export type { ImportListItem } from "./types/ImportListItem.ts";
+export type { ImportListResponse } from "./types/ImportListResponse.ts";
 export type { ImportSetMappingResponse } from "./types/ImportSetMappingResponse.ts";
 export type { ImportStatusResponse } from "./types/ImportStatusResponse.ts";
 export type { ImportUploadResponse } from "./types/ImportUploadResponse.ts";
@@ -642,12 +666,15 @@ export type {
   PostEnrichmentsMutationResponse,
 } from "./types/PostEnrichments.ts";
 export type {
+  FilterGroupsOpEnumKey,
   PostEnrichmentsBatch201,
   PostEnrichmentsBatch400,
   PostEnrichmentsBatch401,
   PostEnrichmentsBatch422,
   PostEnrichmentsBatchMutation,
   PostEnrichmentsBatchMutationRequest,
+  PostEnrichmentsBatchMutationRequestKindEnum2Key,
+  PostEnrichmentsBatchMutationRequestKindEnumKey,
   PostEnrichmentsBatchMutationResponse,
 } from "./types/PostEnrichmentsBatch.ts";
 export type {
@@ -826,8 +853,10 @@ export { getContactsIdAssignments } from "./clients/getContactsIdAssignments.ts"
 export { getContactsIdEvents } from "./clients/getContactsIdEvents.ts";
 export { getContactsIdStateChanges } from "./clients/getContactsIdStateChanges.ts";
 export { getContactsKpis } from "./clients/getContactsKpis.ts";
+export { getEnrichments } from "./clients/getEnrichments.ts";
 export { getEnrichmentsId } from "./clients/getEnrichmentsId.ts";
 export { getHealth } from "./clients/getHealth.ts";
+export { getImports } from "./clients/getImports.ts";
 export { getImportsId } from "./clients/getImportsId.ts";
 export { getProjects } from "./clients/getProjects.ts";
 export { getProjectsId } from "./clients/getProjectsId.ts";
@@ -953,24 +982,36 @@ export { useGetContactsKpisSuspense } from "./hooks/useGetContactsKpisSuspense.t
 export { getContactsSuspenseQueryKey } from "./hooks/useGetContactsSuspense.ts";
 export { getContactsSuspenseQueryOptions } from "./hooks/useGetContactsSuspense.ts";
 export { useGetContactsSuspense } from "./hooks/useGetContactsSuspense.ts";
+export { getEnrichmentsQueryKey } from "./hooks/useGetEnrichments.ts";
+export { getEnrichmentsQueryOptions } from "./hooks/useGetEnrichments.ts";
+export { useGetEnrichments } from "./hooks/useGetEnrichments.ts";
 export { getEnrichmentsIdQueryKey } from "./hooks/useGetEnrichmentsId.ts";
 export { getEnrichmentsIdQueryOptions } from "./hooks/useGetEnrichmentsId.ts";
 export { useGetEnrichmentsId } from "./hooks/useGetEnrichmentsId.ts";
 export { getEnrichmentsIdSuspenseQueryKey } from "./hooks/useGetEnrichmentsIdSuspense.ts";
 export { getEnrichmentsIdSuspenseQueryOptions } from "./hooks/useGetEnrichmentsIdSuspense.ts";
 export { useGetEnrichmentsIdSuspense } from "./hooks/useGetEnrichmentsIdSuspense.ts";
+export { getEnrichmentsSuspenseQueryKey } from "./hooks/useGetEnrichmentsSuspense.ts";
+export { getEnrichmentsSuspenseQueryOptions } from "./hooks/useGetEnrichmentsSuspense.ts";
+export { useGetEnrichmentsSuspense } from "./hooks/useGetEnrichmentsSuspense.ts";
 export { getHealthQueryKey } from "./hooks/useGetHealth.ts";
 export { getHealthQueryOptions } from "./hooks/useGetHealth.ts";
 export { useGetHealth } from "./hooks/useGetHealth.ts";
 export { getHealthSuspenseQueryKey } from "./hooks/useGetHealthSuspense.ts";
 export { getHealthSuspenseQueryOptions } from "./hooks/useGetHealthSuspense.ts";
 export { useGetHealthSuspense } from "./hooks/useGetHealthSuspense.ts";
+export { getImportsQueryKey } from "./hooks/useGetImports.ts";
+export { getImportsQueryOptions } from "./hooks/useGetImports.ts";
+export { useGetImports } from "./hooks/useGetImports.ts";
 export { getImportsIdQueryKey } from "./hooks/useGetImportsId.ts";
 export { getImportsIdQueryOptions } from "./hooks/useGetImportsId.ts";
 export { useGetImportsId } from "./hooks/useGetImportsId.ts";
 export { getImportsIdSuspenseQueryKey } from "./hooks/useGetImportsIdSuspense.ts";
 export { getImportsIdSuspenseQueryOptions } from "./hooks/useGetImportsIdSuspense.ts";
 export { useGetImportsIdSuspense } from "./hooks/useGetImportsIdSuspense.ts";
+export { getImportsSuspenseQueryKey } from "./hooks/useGetImportsSuspense.ts";
+export { getImportsSuspenseQueryOptions } from "./hooks/useGetImportsSuspense.ts";
+export { useGetImportsSuspense } from "./hooks/useGetImportsSuspense.ts";
 export { getProjectsQueryKey } from "./hooks/useGetProjects.ts";
 export { getProjectsQueryOptions } from "./hooks/useGetProjects.ts";
 export { useGetProjects } from "./hooks/useGetProjects.ts";
@@ -1291,6 +1332,13 @@ export {
   getEnrichmentsIdQueryResponseSchema,
 } from "./schemas/getEnrichmentsIdSchema.ts";
 export {
+  getEnrichments200Schema,
+  getEnrichments400Schema,
+  getEnrichments401Schema,
+  getEnrichmentsQueryParamsSchema,
+  getEnrichmentsQueryResponseSchema,
+} from "./schemas/getEnrichmentsSchema.ts";
+export {
   getHealth200Schema,
   getHealthQueryResponseSchema,
 } from "./schemas/getHealthSchema.ts";
@@ -1301,6 +1349,12 @@ export {
   getImportsIdPathParamsSchema,
   getImportsIdQueryResponseSchema,
 } from "./schemas/getImportsIdSchema.ts";
+export {
+  getImports200Schema,
+  getImports401Schema,
+  getImportsQueryParamsSchema,
+  getImportsQueryResponseSchema,
+} from "./schemas/getImportsSchema.ts";
 export {
   getProjectsIdBudgetItems200Schema,
   getProjectsIdBudgetItems401Schema,
@@ -1379,6 +1433,8 @@ export {
   getUsersQueryParamsSchema,
   getUsersQueryResponseSchema,
 } from "./schemas/getUsersSchema.ts";
+export { importListItemSchema } from "./schemas/importListItemSchema.ts";
+export { importListResponseSchema } from "./schemas/importListResponseSchema.ts";
 export { importSetMappingResponseSchema } from "./schemas/importSetMappingResponseSchema.ts";
 export { importStatusResponseSchema } from "./schemas/importStatusResponseSchema.ts";
 export { importUploadResponseSchema } from "./schemas/importUploadResponseSchema.ts";
@@ -1673,6 +1729,7 @@ export { primaryChannelChannelTypeEnum } from "./types/ContactListItem.ts";
 export { contactStateChangeViewNextStateEnum } from "./types/ContactStateChangeView.ts";
 export { contactStateChangeViewPreviousStateEnum } from "./types/ContactStateChangeView.ts";
 export { channelsChannelTypeEnum } from "./types/ContactView.ts";
+export { channelsVerificationStatusEnum } from "./types/ContactView.ts";
 export { contactViewContactTypeEnum } from "./types/ContactView.ts";
 export { contactViewInterestLevelEnum } from "./types/ContactView.ts";
 export { contactViewPipelineStateEnum } from "./types/ContactView.ts";
@@ -1713,6 +1770,8 @@ export { sourceChannelIsNotNullEnum } from "./types/GetContacts.ts";
 export { sourceChannelIsNullEnum } from "./types/GetContacts.ts";
 export { sourceChannelNeEnum } from "./types/GetContacts.ts";
 export { sourceChannelNinEnum } from "./types/GetContacts.ts";
+export { getEnrichments200StatusEnum } from "./types/GetEnrichments.ts";
+export { getEnrichments200TriggerKindEnum } from "./types/GetEnrichments.ts";
 export { getEnrichmentsId200StatusEnum } from "./types/GetEnrichmentsId.ts";
 export { getEnrichmentsId200TriggerKindEnum } from "./types/GetEnrichmentsId.ts";
 export { getHealth200StatusEnum } from "./types/GetHealth.ts";
@@ -1734,6 +1793,9 @@ export { previousStateIsNotNullEnum } from "./types/GetProjectsIdStateChanges.ts
 export { previousStateIsNullEnum } from "./types/GetProjectsIdStateChanges.ts";
 export { previousStateNeEnum } from "./types/GetProjectsIdStateChanges.ts";
 export { previousStateNinEnum } from "./types/GetProjectsIdStateChanges.ts";
+export { filterGroupsOpEnum } from "./types/PostEnrichmentsBatch.ts";
+export { postEnrichmentsBatchMutationRequestKindEnum } from "./types/PostEnrichmentsBatch.ts";
+export { postEnrichmentsBatchMutationRequestKindEnum2 } from "./types/PostEnrichmentsBatch.ts";
 export { statesStateEnum2 } from "./types/ProjectKpisResponse.ts";
 export { leadsRoleEnum } from "./types/ProjectListItem.ts";
 export { projectListItemStatusEnum } from "./types/ProjectListItem.ts";

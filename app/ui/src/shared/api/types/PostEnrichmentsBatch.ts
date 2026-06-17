@@ -17,6 +17,14 @@ export type PostEnrichmentsBatch201 = {
    * @type integer
    */
   count: number;
+  /**
+   * @type integer | undefined
+   */
+  skipped?: number;
+  /**
+   * @type boolean | undefined
+   */
+  exceededMax?: boolean;
 };
 
 /**
@@ -34,16 +42,88 @@ export type PostEnrichmentsBatch401 = Problem;
  */
 export type PostEnrichmentsBatch422 = Problem;
 
-export type PostEnrichmentsBatchMutationRequest = {
-  /**
-   * @type array
-   */
-  contactIds: string[];
-  /**
-   * @type string, uuid
-   */
-  templateId: string;
-};
+export const postEnrichmentsBatchMutationRequestKindEnum = {
+  filter: "filter",
+} as const;
+
+export type PostEnrichmentsBatchMutationRequestKindEnumKey =
+  (typeof postEnrichmentsBatchMutationRequestKindEnum)[keyof typeof postEnrichmentsBatchMutationRequestKindEnum];
+
+export const filterGroupsOpEnum = {
+  eq: "eq",
+  ne: "ne",
+  in: "in",
+  nin: "nin",
+  gt: "gt",
+  gte: "gte",
+  lt: "lt",
+  lte: "lte",
+  between: "between",
+  ilike: "ilike",
+  isNull: "isNull",
+  isNotNull: "isNotNull",
+} as const;
+
+export type FilterGroupsOpEnumKey =
+  (typeof filterGroupsOpEnum)[keyof typeof filterGroupsOpEnum];
+
+export const postEnrichmentsBatchMutationRequestKindEnum2 = {
+  ids: "ids",
+} as const;
+
+export type PostEnrichmentsBatchMutationRequestKindEnum2Key =
+  (typeof postEnrichmentsBatchMutationRequestKindEnum2)[keyof typeof postEnrichmentsBatchMutationRequestKindEnum2];
+
+export type PostEnrichmentsBatchMutationRequest =
+  | {
+      /**
+       * @type string
+       */
+      kind: PostEnrichmentsBatchMutationRequestKindEnumKey;
+      /**
+       * @type array
+       */
+      filterGroups: {
+        /**
+         * @minLength 1
+         * @type string
+         */
+        field: string;
+        /**
+         * @type string
+         */
+        op: FilterGroupsOpEnumKey;
+        value?:
+          | string
+          | number
+          | boolean
+          | any
+          | (string | number | boolean | any)[];
+      }[][];
+      /**
+       * @minLength 1
+       * @type string | undefined
+       */
+      search?: string;
+      /**
+       * @type string, uuid
+       */
+      templateId: string;
+    }
+  | {
+      /**
+       * @type string
+       */
+      kind: PostEnrichmentsBatchMutationRequestKindEnum2Key;
+      /**
+       * @type array
+       */
+      contactIds: string[];
+      /**
+       * @type string, uuid
+       */
+      templateId: string;
+    };
 
 export type PostEnrichmentsBatchMutationResponse = PostEnrichmentsBatch201;
 

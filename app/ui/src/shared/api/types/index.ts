@@ -51,6 +51,7 @@ export type {
 } from "./ContactStateChangeView.ts";
 export type {
   ChannelsChannelTypeEnumKey,
+  ChannelsVerificationStatusEnumKey,
   ContactView,
   ContactViewContactTypeEnumKey,
   ContactViewInterestLevelEnumKey,
@@ -246,6 +247,16 @@ export type {
   GetContactsKpisQueryResponse,
 } from "./GetContactsKpis.ts";
 export type {
+  GetEnrichments200,
+  GetEnrichments200StatusEnumKey,
+  GetEnrichments200TriggerKindEnumKey,
+  GetEnrichments400,
+  GetEnrichments401,
+  GetEnrichmentsQuery,
+  GetEnrichmentsQueryParams,
+  GetEnrichmentsQueryResponse,
+} from "./GetEnrichments.ts";
+export type {
   GetEnrichmentsId200,
   GetEnrichmentsId200StatusEnumKey,
   GetEnrichmentsId200TriggerKindEnumKey,
@@ -261,6 +272,13 @@ export type {
   GetHealthQuery,
   GetHealthQueryResponse,
 } from "./GetHealth.ts";
+export type {
+  GetImports200,
+  GetImports401,
+  GetImportsQuery,
+  GetImportsQueryParams,
+  GetImportsQueryResponse,
+} from "./GetImports.ts";
 export type {
   GetImportsId200,
   GetImportsId401,
@@ -376,6 +394,8 @@ export type {
   GetUsersIdQuery,
   GetUsersIdQueryResponse,
 } from "./GetUsersId.ts";
+export type { ImportListItem } from "./ImportListItem.ts";
+export type { ImportListResponse } from "./ImportListResponse.ts";
 export type { ImportSetMappingResponse } from "./ImportSetMappingResponse.ts";
 export type { ImportStatusResponse } from "./ImportStatusResponse.ts";
 export type { ImportUploadResponse } from "./ImportUploadResponse.ts";
@@ -555,12 +575,15 @@ export type {
   PostEnrichmentsMutationResponse,
 } from "./PostEnrichments.ts";
 export type {
+  FilterGroupsOpEnumKey,
   PostEnrichmentsBatch201,
   PostEnrichmentsBatch400,
   PostEnrichmentsBatch401,
   PostEnrichmentsBatch422,
   PostEnrichmentsBatchMutation,
   PostEnrichmentsBatchMutationRequest,
+  PostEnrichmentsBatchMutationRequestKindEnum2Key,
+  PostEnrichmentsBatchMutationRequestKindEnumKey,
   PostEnrichmentsBatchMutationResponse,
 } from "./PostEnrichmentsBatch.ts";
 export type {
@@ -736,6 +759,7 @@ export { primaryChannelChannelTypeEnum } from "./ContactListItem.ts";
 export { contactStateChangeViewNextStateEnum } from "./ContactStateChangeView.ts";
 export { contactStateChangeViewPreviousStateEnum } from "./ContactStateChangeView.ts";
 export { channelsChannelTypeEnum } from "./ContactView.ts";
+export { channelsVerificationStatusEnum } from "./ContactView.ts";
 export { contactViewContactTypeEnum } from "./ContactView.ts";
 export { contactViewInterestLevelEnum } from "./ContactView.ts";
 export { contactViewPipelineStateEnum } from "./ContactView.ts";
@@ -776,6 +800,8 @@ export { sourceChannelIsNotNullEnum } from "./GetContacts.ts";
 export { sourceChannelIsNullEnum } from "./GetContacts.ts";
 export { sourceChannelNeEnum } from "./GetContacts.ts";
 export { sourceChannelNinEnum } from "./GetContacts.ts";
+export { getEnrichments200StatusEnum } from "./GetEnrichments.ts";
+export { getEnrichments200TriggerKindEnum } from "./GetEnrichments.ts";
 export { getEnrichmentsId200StatusEnum } from "./GetEnrichmentsId.ts";
 export { getEnrichmentsId200TriggerKindEnum } from "./GetEnrichmentsId.ts";
 export { getHealth200StatusEnum } from "./GetHealth.ts";
@@ -797,6 +823,9 @@ export { previousStateIsNotNullEnum } from "./GetProjectsIdStateChanges.ts";
 export { previousStateIsNullEnum } from "./GetProjectsIdStateChanges.ts";
 export { previousStateNeEnum } from "./GetProjectsIdStateChanges.ts";
 export { previousStateNinEnum } from "./GetProjectsIdStateChanges.ts";
+export { filterGroupsOpEnum } from "./PostEnrichmentsBatch.ts";
+export { postEnrichmentsBatchMutationRequestKindEnum } from "./PostEnrichmentsBatch.ts";
+export { postEnrichmentsBatchMutationRequestKindEnum2 } from "./PostEnrichmentsBatch.ts";
 export { statesStateEnum2 } from "./ProjectKpisResponse.ts";
 export { leadsRoleEnum } from "./ProjectListItem.ts";
 export { projectListItemStatusEnum } from "./ProjectListItem.ts";

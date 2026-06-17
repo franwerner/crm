@@ -12,6 +12,8 @@ import { z } from "zod/v4";
 export const postEnrichments201Schema = z.object({
   insightIds: z.array(z.uuid()),
   count: z.int(),
+  skipped: z.optional(z.int()),
+  exceededMax: z.optional(z.boolean()),
 });
 
 /**
