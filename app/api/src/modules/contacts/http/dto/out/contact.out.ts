@@ -7,11 +7,16 @@ const ContactTypeEnum = z.enum(['Person', 'Company'])
 const SexEnum = z.enum(['Male', 'Female', 'Other', 'Unspecified'])
 const ChannelTypeEnum = z.enum(['Phone', 'Email', 'WhatsApp', 'Instagram', 'Website', 'Other'])
 
+const ChannelVerificationStatusEnum = z.enum(['unverified', 'valid', 'invalid'])
+
 const ChannelViewSchema = z.object({
   id: z.string(),
   channelType: ChannelTypeEnum,
   value: z.string(),
   isPrimary: z.boolean(),
+  // Fase 3 E: expose verification state so the UI can render trust indicators per channel.
+  verificationStatus: ChannelVerificationStatusEnum,
+  verifiedAt: z.string().nullable(),
 })
 
 export const ContactViewSchema = z

@@ -24,6 +24,9 @@ export function toContactView(contact: Contact, creator?: ContactCreatorRef | nu
       channelType: ch.channelType,
       value: ch.value,
       isPrimary: ch.isPrimary,
+      // Fase 3 E: expose verification fields from the domain entity (present since Fase 1 R8.1).
+      verificationStatus: ch.verificationStatus,
+      verifiedAt: ch.verifiedAt?.toISOString() ?? null,
     })),
     createdAt: contact.createdAt.toISOString(),
     updatedAt: contact.updatedAt.toISOString(),
