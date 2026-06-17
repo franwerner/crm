@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { useGetAnalysisTemplates } from '@shared/api/hooks/useGetAnalysisTemplates'
 import { Button } from '@shared/ui/button'
@@ -12,35 +12,50 @@ import {
   DialogBody,
   DialogFooter,
 } from '@shared/ui/dialog'
+import { FilterBuilder } from '@shared/ui/filter-builder/filter-builder'
+import { contactsFilterSchema } from '@features/contacts/constants/contacts-filter-schema'
 import { useBatchEnrichByFilter } from '@features/contacts/hooks/use-batch-enrich-by-filter'
+import { useContacts } from '@features/contacts/hooks/use-contacts'
 import type { FilterGroups } from '@shared/lib/utils/filter'
 
 type Props = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  filteredCount: number
-  filterGroups: FilterGroups
-  search?: string
 }
 
-export function ContactsBulkAnalyzeModal({
-  open,
-  onOpenChange,
-  filteredCount,
-  filterGroups,
-  search,
-}: Props) {
+export function ContactsBulkAnalyzeModal({ open, onOpenChange }: Props) {
+  // draft = what the FilterBuilder edits; applied = what the count and the batch use.
+  // Decoupling them avoids re-running the (costly) count query on every input change —
+  // the count only refreshes when the user presses "Calcular total".
+  const [filterGroups, setFilterGroups] = useState<FilterGroups>([])
+  const [appliedFilters, setAppliedFilters] = useState<FilterGroups>([])
   const [selectedTemplateId, setSelectedTemplateId] = useState('')
+
+  useEffect(() => {
+    if (open) {
+      setFilterGroups([])
+      setAppliedFilters([])
+      setSelectedTemplateId('')
+    }
+  }, [open])
 
   const { data: templates, isLoading: isLoadingTemplates } = useGetAnalysisTemplates()
   const activeTemplates = templates?.filter((t) => t.isActive) ?? []
 
+  // Count query keyed on appliedFilters only — does not react to draft edits.
+  const { total: contactCount, isLoading: isCountLoading } = useContacts({
+    page: 1,
+    filterGroups: appliedFilters,
+  })
+
   const { batchEnrichByFilter, isPending } = useBatchEnrichByFilter()
+
+  const isStale = JSON.stringify(filterGroups) !== JSON.stringify(appliedFilters)
 
   async function handleConfirm() {
     if (!selectedTemplateId) return
     try {
-      const result = await batchEnrichByFilter({ filterGroups, search, templateId: selectedTemplateId })
+      const result = await batchEnrichByFilter({ filterGroups: appliedFilters, templateId: selectedTemplateId })
 
       const lines: string[] = [`${result.count} contacto${result.count !== 1 ? 's' : ''} encolado${result.count !== 1 ? 's' : ''} para análisis.`]
       if (result.skipped && result.skipped > 0) {
@@ -52,30 +67,49 @@ export function ContactsBulkAnalyzeModal({
 
       toast.success(lines.join(' '))
       onOpenChange(false)
-      setSelectedTemplateId('')
     } catch {
       toast.error('Error al iniciar el análisis masivo.')
     }
   }
 
-  function handleOpenChange(nextOpen: boolean) {
-    if (!nextOpen) setSelectedTemplateId('')
-    onOpenChange(nextOpen)
-  }
+  const counterLabel = isStale
+    ? 'Calculá el total con los filtros actuales'
+    : isCountLoading
+      ? 'Calculando…'
+      : `${contactCount} contacto${contactCount !== 1 ? 's' : ''} serán analizados`
+
+  const canConfirm =
+    !!selectedTemplateId && activeTemplates.length > 0 && !isStale && contactCount > 0 && !isPending
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent size="sm">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent size="lg">
         <DialogHeader>
-          <DialogTitle>Analizar {filteredCount} contacto{filteredCount !== 1 ? 's' : ''} filtrado{filteredCount !== 1 ? 's' : ''}</DialogTitle>
+          <DialogTitle>Analizar masivo</DialogTitle>
           <DialogCloseButton />
         </DialogHeader>
 
-        <DialogBody className="flex flex-col gap-4">
-          <p className="text-[length:var(--ds-font-size-sm)]">
-            Se encolará el análisis LLM para los <strong>{filteredCount}</strong> contacto{filteredCount !== 1 ? 's' : ''} que coinciden con el filtro activo.
-            Los que ya tienen análisis para la plantilla seleccionada serán salteados.
-          </p>
+        <DialogBody className="flex flex-col gap-6">
+          <FilterBuilder
+            schema={contactsFilterSchema}
+            groups={filterGroups}
+            onChange={setFilterGroups}
+          />
+
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-[length:var(--ds-font-size-sm)] text-muted-foreground">
+              {counterLabel}
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setAppliedFilters(filterGroups)}
+              disabled={!isStale || isCountLoading}
+              className="shrink-0"
+            >
+              Calcular total
+            </Button>
+          </div>
 
           <div className="flex flex-col gap-1.5">
             <label className="text-[length:var(--ds-font-size-xs)] font-medium text-muted-foreground">
@@ -104,16 +138,20 @@ export function ContactsBulkAnalyzeModal({
               </p>
             )}
           </div>
+
+          <p className="text-[length:var(--ds-font-size-xs)] text-muted-foreground">
+            Los que ya tienen análisis para la plantilla seleccionada serán salteados.
+          </p>
         </DialogBody>
 
         <DialogFooter>
-          <Button variant="outline" size="sm" onClick={() => handleOpenChange(false)} disabled={isPending}>
+          <Button variant="outline" size="sm" onClick={() => onOpenChange(false)} disabled={isPending}>
             Cancelar
           </Button>
           <Button
             size="sm"
             onClick={handleConfirm}
-            disabled={!selectedTemplateId || isPending || activeTemplates.length === 0}
+            disabled={!canConfirm}
           >
             {isPending ? 'Encolando…' : 'Confirmar análisis'}
           </Button>
