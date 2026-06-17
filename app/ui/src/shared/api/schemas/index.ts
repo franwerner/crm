@@ -21,6 +21,13 @@ export { createContactBodySchema } from "./createContactBodySchema.ts";
 export { createProjectBodySchema } from "./createProjectBodySchema.ts";
 export { createUserBodySchema } from "./createUserBodySchema.ts";
 export {
+  deleteAnalysisTemplatesId200Schema,
+  deleteAnalysisTemplatesId401Schema,
+  deleteAnalysisTemplatesId404Schema,
+  deleteAnalysisTemplatesIdMutationResponseSchema,
+  deleteAnalysisTemplatesIdPathParamsSchema,
+} from "./deleteAnalysisTemplatesIdSchema.ts";
+export {
   deleteContactsIdAssignmentsUserid200Schema,
   deleteContactsIdAssignmentsUserid401Schema,
   deleteContactsIdAssignmentsUserid404Schema,
@@ -93,6 +100,11 @@ export {
 } from "./deleteUsersIdSchema.ts";
 export { filterGroupObjectSchema } from "./filterGroupObjectSchema.ts";
 export {
+  getAnalysisTemplates200Schema,
+  getAnalysisTemplates401Schema,
+  getAnalysisTemplatesQueryResponseSchema,
+} from "./getAnalysisTemplatesSchema.ts";
+export {
   getAuthMe200Schema,
   getAuthMe401Schema,
   getAuthMeQueryResponseSchema,
@@ -136,6 +148,13 @@ export {
   getContactsQueryParamsSchema,
   getContactsQueryResponseSchema,
 } from "./getContactsSchema.ts";
+export {
+  getEnrichmentsId200Schema,
+  getEnrichmentsId401Schema,
+  getEnrichmentsId404Schema,
+  getEnrichmentsIdPathParamsSchema,
+  getEnrichmentsIdQueryResponseSchema,
+} from "./getEnrichmentsIdSchema.ts";
 export {
   getHealth200Schema,
   getHealthQueryResponseSchema,
@@ -232,6 +251,15 @@ export { meResponseSchema } from "./meResponseSchema.ts";
 export { moneySchema } from "./moneySchema.ts";
 export { paginationSchema } from "./paginationSchema.ts";
 export {
+  patchAnalysisTemplatesId200Schema,
+  patchAnalysisTemplatesId400Schema,
+  patchAnalysisTemplatesId401Schema,
+  patchAnalysisTemplatesId404Schema,
+  patchAnalysisTemplatesIdMutationRequestSchema,
+  patchAnalysisTemplatesIdMutationResponseSchema,
+  patchAnalysisTemplatesIdPathParamsSchema,
+} from "./patchAnalysisTemplatesIdSchema.ts";
+export {
   patchContactsIdAssignmentsUserid200Schema,
   patchContactsIdAssignmentsUserid401Schema,
   patchContactsIdAssignmentsUserid404Schema,
@@ -313,6 +341,13 @@ export {
   patchUsersIdPathParamsSchema,
 } from "./patchUsersIdSchema.ts";
 export {
+  postAnalysisTemplates201Schema,
+  postAnalysisTemplates400Schema,
+  postAnalysisTemplates401Schema,
+  postAnalysisTemplatesMutationRequestSchema,
+  postAnalysisTemplatesMutationResponseSchema,
+} from "./postAnalysisTemplatesSchema.ts";
+export {
   postAuthLogin200Schema,
   postAuthLogin401Schema,
   postAuthLoginMutationRequestSchema,
@@ -358,6 +393,31 @@ export {
   postContactsMutationRequestSchema,
   postContactsMutationResponseSchema,
 } from "./postContactsSchema.ts";
+export {
+  postEnrichmentsBatch201Schema,
+  postEnrichmentsBatch400Schema,
+  postEnrichmentsBatch401Schema,
+  postEnrichmentsBatch422Schema,
+  postEnrichmentsBatchMutationRequestSchema,
+  postEnrichmentsBatchMutationResponseSchema,
+} from "./postEnrichmentsBatchSchema.ts";
+export {
+  postEnrichmentsIdRetry200Schema,
+  postEnrichmentsIdRetry401Schema,
+  postEnrichmentsIdRetry404Schema,
+  postEnrichmentsIdRetry422Schema,
+  postEnrichmentsIdRetryMutationResponseSchema,
+  postEnrichmentsIdRetryPathParamsSchema,
+} from "./postEnrichmentsIdRetrySchema.ts";
+export {
+  postEnrichments201Schema,
+  postEnrichments400Schema,
+  postEnrichments401Schema,
+  postEnrichments404Schema,
+  postEnrichments422Schema,
+  postEnrichmentsMutationRequestSchema,
+  postEnrichmentsMutationResponseSchema,
+} from "./postEnrichmentsSchema.ts";
 export {
   postImports201Schema,
   postImports400Schema,

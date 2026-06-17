@@ -1,3 +1,4 @@
+export type { DeleteAnalysisTemplatesIdMutationKey } from "./hooks/useDeleteAnalysisTemplatesId.ts";
 export type { DeleteContactsIdMutationKey } from "./hooks/useDeleteContactsId.ts";
 export type { DeleteContactsIdAssignmentsUseridMutationKey } from "./hooks/useDeleteContactsIdAssignmentsUserid.ts";
 export type { DeleteContactsIdChannelsChannelidMutationKey } from "./hooks/useDeleteContactsIdChannelsChannelid.ts";
@@ -8,6 +9,8 @@ export type { DeleteProjectsIdExpensesExpenseidMutationKey } from "./hooks/useDe
 export type { DeleteProjectsIdExtensionsExtidMutationKey } from "./hooks/useDeleteProjectsIdExtensionsExtid.ts";
 export type { DeleteProjectsIdResponsiblesUseridMutationKey } from "./hooks/useDeleteProjectsIdResponsiblesUserid.ts";
 export type { DeleteUsersIdMutationKey } from "./hooks/useDeleteUsersId.ts";
+export type { GetAnalysisTemplatesQueryKey } from "./hooks/useGetAnalysisTemplates.ts";
+export type { GetAnalysisTemplatesSuspenseQueryKey } from "./hooks/useGetAnalysisTemplatesSuspense.ts";
 export type { GetAuthMeQueryKey } from "./hooks/useGetAuthMe.ts";
 export type { GetAuthMeSuspenseQueryKey } from "./hooks/useGetAuthMeSuspense.ts";
 export type { GetContactsQueryKey } from "./hooks/useGetContacts.ts";
@@ -22,6 +25,8 @@ export type { GetContactsIdSuspenseQueryKey } from "./hooks/useGetContactsIdSusp
 export type { GetContactsKpisQueryKey } from "./hooks/useGetContactsKpis.ts";
 export type { GetContactsKpisSuspenseQueryKey } from "./hooks/useGetContactsKpisSuspense.ts";
 export type { GetContactsSuspenseQueryKey } from "./hooks/useGetContactsSuspense.ts";
+export type { GetEnrichmentsIdQueryKey } from "./hooks/useGetEnrichmentsId.ts";
+export type { GetEnrichmentsIdSuspenseQueryKey } from "./hooks/useGetEnrichmentsIdSuspense.ts";
 export type { GetHealthQueryKey } from "./hooks/useGetHealth.ts";
 export type { GetHealthSuspenseQueryKey } from "./hooks/useGetHealthSuspense.ts";
 export type { GetImportsIdQueryKey } from "./hooks/useGetImportsId.ts";
@@ -48,6 +53,7 @@ export type { GetUsersQueryKey } from "./hooks/useGetUsers.ts";
 export type { GetUsersIdQueryKey } from "./hooks/useGetUsersId.ts";
 export type { GetUsersIdSuspenseQueryKey } from "./hooks/useGetUsersIdSuspense.ts";
 export type { GetUsersSuspenseQueryKey } from "./hooks/useGetUsersSuspense.ts";
+export type { PatchAnalysisTemplatesIdMutationKey } from "./hooks/usePatchAnalysisTemplatesId.ts";
 export type { PatchContactsIdMutationKey } from "./hooks/usePatchContactsId.ts";
 export type { PatchContactsIdAssignmentsUseridMutationKey } from "./hooks/usePatchContactsIdAssignmentsUserid.ts";
 export type { PatchContactsIdChannelsChannelidMutationKey } from "./hooks/usePatchContactsIdChannelsChannelid.ts";
@@ -58,6 +64,7 @@ export type { PatchProjectsIdExpensesExpenseidMutationKey } from "./hooks/usePat
 export type { PatchProjectsIdExtensionsExtidMutationKey } from "./hooks/usePatchProjectsIdExtensionsExtid.ts";
 export type { PatchProjectsIdResponsiblesUseridMutationKey } from "./hooks/usePatchProjectsIdResponsiblesUserid.ts";
 export type { PatchUsersIdMutationKey } from "./hooks/usePatchUsersId.ts";
+export type { PostAnalysisTemplatesMutationKey } from "./hooks/usePostAnalysisTemplates.ts";
 export type { PostAuthLoginMutationKey } from "./hooks/usePostAuthLogin.ts";
 export type { PostAuthLogoutMutationKey } from "./hooks/usePostAuthLogout.ts";
 export type { PostContactsMutationKey } from "./hooks/usePostContacts.ts";
@@ -65,6 +72,9 @@ export type { PostContactsBulkDeleteMutationKey } from "./hooks/usePostContactsB
 export type { PostContactsIdAssignmentsMutationKey } from "./hooks/usePostContactsIdAssignments.ts";
 export type { PostContactsIdChannelsMutationKey } from "./hooks/usePostContactsIdChannels.ts";
 export type { PostContactsIdEventsMutationKey } from "./hooks/usePostContactsIdEvents.ts";
+export type { PostEnrichmentsMutationKey } from "./hooks/usePostEnrichments.ts";
+export type { PostEnrichmentsBatchMutationKey } from "./hooks/usePostEnrichmentsBatch.ts";
+export type { PostEnrichmentsIdRetryMutationKey } from "./hooks/usePostEnrichmentsIdRetry.ts";
 export type { PostImportsMutationKey } from "./hooks/usePostImports.ts";
 export type { PostProjectsMutationKey } from "./hooks/usePostProjects.ts";
 export type { PostProjectsBulkDeleteMutationKey } from "./hooks/usePostProjectsBulkDelete.ts";
@@ -145,6 +155,14 @@ export type {
 } from "./types/CreateContactBody.ts";
 export type { CreateProjectBody } from "./types/CreateProjectBody.ts";
 export type { CreateUserBody } from "./types/CreateUserBody.ts";
+export type {
+  DeleteAnalysisTemplatesId200,
+  DeleteAnalysisTemplatesId401,
+  DeleteAnalysisTemplatesId404,
+  DeleteAnalysisTemplatesIdMutation,
+  DeleteAnalysisTemplatesIdMutationResponse,
+  DeleteAnalysisTemplatesIdPathParams,
+} from "./types/DeleteAnalysisTemplatesId.ts";
 export type {
   DeleteContactsId204,
   DeleteContactsId401,
@@ -228,6 +246,12 @@ export type {
 } from "./types/DeleteUsersId.ts";
 export type { FilterGroupObject } from "./types/FilterGroupObject.ts";
 export type {
+  GetAnalysisTemplates200,
+  GetAnalysisTemplates401,
+  GetAnalysisTemplatesQuery,
+  GetAnalysisTemplatesQueryResponse,
+} from "./types/GetAnalysisTemplates.ts";
+export type {
   GetAuthMe200,
   GetAuthMe401,
   GetAuthMeQuery,
@@ -308,6 +332,16 @@ export type {
   GetContactsKpisQuery,
   GetContactsKpisQueryResponse,
 } from "./types/GetContactsKpis.ts";
+export type {
+  GetEnrichmentsId200,
+  GetEnrichmentsId200StatusEnumKey,
+  GetEnrichmentsId200TriggerKindEnumKey,
+  GetEnrichmentsId401,
+  GetEnrichmentsId404,
+  GetEnrichmentsIdPathParams,
+  GetEnrichmentsIdQuery,
+  GetEnrichmentsIdQueryResponse,
+} from "./types/GetEnrichmentsId.ts";
 export type {
   GetHealth200,
   GetHealth200StatusEnumKey,
@@ -436,6 +470,16 @@ export type { MeResponse } from "./types/MeResponse.ts";
 export type { Money } from "./types/Money.ts";
 export type { Pagination } from "./types/Pagination.ts";
 export type {
+  PatchAnalysisTemplatesId200,
+  PatchAnalysisTemplatesId400,
+  PatchAnalysisTemplatesId401,
+  PatchAnalysisTemplatesId404,
+  PatchAnalysisTemplatesIdMutation,
+  PatchAnalysisTemplatesIdMutationRequest,
+  PatchAnalysisTemplatesIdMutationResponse,
+  PatchAnalysisTemplatesIdPathParams,
+} from "./types/PatchAnalysisTemplatesId.ts";
+export type {
   PatchContactsId200,
   PatchContactsId401,
   PatchContactsId404,
@@ -527,6 +571,14 @@ export type {
   PatchUsersIdPathParams,
 } from "./types/PatchUsersId.ts";
 export type {
+  PostAnalysisTemplates201,
+  PostAnalysisTemplates400,
+  PostAnalysisTemplates401,
+  PostAnalysisTemplatesMutation,
+  PostAnalysisTemplatesMutationRequest,
+  PostAnalysisTemplatesMutationResponse,
+} from "./types/PostAnalysisTemplates.ts";
+export type {
   PostAuthLogin200,
   PostAuthLogin401,
   PostAuthLoginMutation,
@@ -579,6 +631,34 @@ export type {
   PostContactsIdEventsMutationResponse,
   PostContactsIdEventsPathParams,
 } from "./types/PostContactsIdEvents.ts";
+export type {
+  PostEnrichments201,
+  PostEnrichments400,
+  PostEnrichments401,
+  PostEnrichments404,
+  PostEnrichments422,
+  PostEnrichmentsMutation,
+  PostEnrichmentsMutationRequest,
+  PostEnrichmentsMutationResponse,
+} from "./types/PostEnrichments.ts";
+export type {
+  PostEnrichmentsBatch201,
+  PostEnrichmentsBatch400,
+  PostEnrichmentsBatch401,
+  PostEnrichmentsBatch422,
+  PostEnrichmentsBatchMutation,
+  PostEnrichmentsBatchMutationRequest,
+  PostEnrichmentsBatchMutationResponse,
+} from "./types/PostEnrichmentsBatch.ts";
+export type {
+  PostEnrichmentsIdRetry200,
+  PostEnrichmentsIdRetry401,
+  PostEnrichmentsIdRetry404,
+  PostEnrichmentsIdRetry422,
+  PostEnrichmentsIdRetryMutation,
+  PostEnrichmentsIdRetryMutationResponse,
+  PostEnrichmentsIdRetryPathParams,
+} from "./types/PostEnrichmentsIdRetry.ts";
 export type {
   PostImports201,
   PostImports400,
@@ -727,6 +807,7 @@ export type {
 export type { UpdateUserBody } from "./types/UpdateUserBody.ts";
 export type { UserListResponse } from "./types/UserListResponse.ts";
 export type { UserView } from "./types/UserView.ts";
+export { deleteAnalysisTemplatesId } from "./clients/deleteAnalysisTemplatesId.ts";
 export { deleteContactsId } from "./clients/deleteContactsId.ts";
 export { deleteContactsIdAssignmentsUserid } from "./clients/deleteContactsIdAssignmentsUserid.ts";
 export { deleteContactsIdChannelsChannelid } from "./clients/deleteContactsIdChannelsChannelid.ts";
@@ -737,6 +818,7 @@ export { deleteProjectsIdExpensesExpenseid } from "./clients/deleteProjectsIdExp
 export { deleteProjectsIdExtensionsExtid } from "./clients/deleteProjectsIdExtensionsExtid.ts";
 export { deleteProjectsIdResponsiblesUserid } from "./clients/deleteProjectsIdResponsiblesUserid.ts";
 export { deleteUsersId } from "./clients/deleteUsersId.ts";
+export { getAnalysisTemplates } from "./clients/getAnalysisTemplates.ts";
 export { getAuthMe } from "./clients/getAuthMe.ts";
 export { getContacts } from "./clients/getContacts.ts";
 export { getContactsId } from "./clients/getContactsId.ts";
@@ -744,6 +826,7 @@ export { getContactsIdAssignments } from "./clients/getContactsIdAssignments.ts"
 export { getContactsIdEvents } from "./clients/getContactsIdEvents.ts";
 export { getContactsIdStateChanges } from "./clients/getContactsIdStateChanges.ts";
 export { getContactsKpis } from "./clients/getContactsKpis.ts";
+export { getEnrichmentsId } from "./clients/getEnrichmentsId.ts";
 export { getHealth } from "./clients/getHealth.ts";
 export { getImportsId } from "./clients/getImportsId.ts";
 export { getProjects } from "./clients/getProjects.ts";
@@ -757,6 +840,7 @@ export { getProjectsIdStateChanges } from "./clients/getProjectsIdStateChanges.t
 export { getProjectsKpis } from "./clients/getProjectsKpis.ts";
 export { getUsers } from "./clients/getUsers.ts";
 export { getUsersId } from "./clients/getUsersId.ts";
+export { patchAnalysisTemplatesId } from "./clients/patchAnalysisTemplatesId.ts";
 export { patchContactsId } from "./clients/patchContactsId.ts";
 export { patchContactsIdAssignmentsUserid } from "./clients/patchContactsIdAssignmentsUserid.ts";
 export { patchContactsIdChannelsChannelid } from "./clients/patchContactsIdChannelsChannelid.ts";
@@ -767,6 +851,7 @@ export { patchProjectsIdExpensesExpenseid } from "./clients/patchProjectsIdExpen
 export { patchProjectsIdExtensionsExtid } from "./clients/patchProjectsIdExtensionsExtid.ts";
 export { patchProjectsIdResponsiblesUserid } from "./clients/patchProjectsIdResponsiblesUserid.ts";
 export { patchUsersId } from "./clients/patchUsersId.ts";
+export { postAnalysisTemplates } from "./clients/postAnalysisTemplates.ts";
 export { postAuthLogin } from "./clients/postAuthLogin.ts";
 export { postAuthLogout } from "./clients/postAuthLogout.ts";
 export { postContacts } from "./clients/postContacts.ts";
@@ -774,6 +859,9 @@ export { postContactsBulkDelete } from "./clients/postContactsBulkDelete.ts";
 export { postContactsIdAssignments } from "./clients/postContactsIdAssignments.ts";
 export { postContactsIdChannels } from "./clients/postContactsIdChannels.ts";
 export { postContactsIdEvents } from "./clients/postContactsIdEvents.ts";
+export { postEnrichments } from "./clients/postEnrichments.ts";
+export { postEnrichmentsBatch } from "./clients/postEnrichmentsBatch.ts";
+export { postEnrichmentsIdRetry } from "./clients/postEnrichmentsIdRetry.ts";
 export { postImports } from "./clients/postImports.ts";
 export { postProjects } from "./clients/postProjects.ts";
 export { postProjectsBulkDelete } from "./clients/postProjectsBulkDelete.ts";
@@ -784,6 +872,9 @@ export { postProjectsIdExtensions } from "./clients/postProjectsIdExtensions.ts"
 export { postProjectsIdResponsibles } from "./clients/postProjectsIdResponsibles.ts";
 export { postProjectsIdState } from "./clients/postProjectsIdState.ts";
 export { postUsers } from "./clients/postUsers.ts";
+export { deleteAnalysisTemplatesIdMutationKey } from "./hooks/useDeleteAnalysisTemplatesId.ts";
+export { deleteAnalysisTemplatesIdMutationOptions } from "./hooks/useDeleteAnalysisTemplatesId.ts";
+export { useDeleteAnalysisTemplatesId } from "./hooks/useDeleteAnalysisTemplatesId.ts";
 export { deleteContactsIdMutationKey } from "./hooks/useDeleteContactsId.ts";
 export { deleteContactsIdMutationOptions } from "./hooks/useDeleteContactsId.ts";
 export { useDeleteContactsId } from "./hooks/useDeleteContactsId.ts";
@@ -814,6 +905,12 @@ export { useDeleteProjectsIdResponsiblesUserid } from "./hooks/useDeleteProjects
 export { deleteUsersIdMutationKey } from "./hooks/useDeleteUsersId.ts";
 export { deleteUsersIdMutationOptions } from "./hooks/useDeleteUsersId.ts";
 export { useDeleteUsersId } from "./hooks/useDeleteUsersId.ts";
+export { getAnalysisTemplatesQueryKey } from "./hooks/useGetAnalysisTemplates.ts";
+export { getAnalysisTemplatesQueryOptions } from "./hooks/useGetAnalysisTemplates.ts";
+export { useGetAnalysisTemplates } from "./hooks/useGetAnalysisTemplates.ts";
+export { getAnalysisTemplatesSuspenseQueryKey } from "./hooks/useGetAnalysisTemplatesSuspense.ts";
+export { getAnalysisTemplatesSuspenseQueryOptions } from "./hooks/useGetAnalysisTemplatesSuspense.ts";
+export { useGetAnalysisTemplatesSuspense } from "./hooks/useGetAnalysisTemplatesSuspense.ts";
 export { getAuthMeQueryKey } from "./hooks/useGetAuthMe.ts";
 export { getAuthMeQueryOptions } from "./hooks/useGetAuthMe.ts";
 export { useGetAuthMe } from "./hooks/useGetAuthMe.ts";
@@ -856,6 +953,12 @@ export { useGetContactsKpisSuspense } from "./hooks/useGetContactsKpisSuspense.t
 export { getContactsSuspenseQueryKey } from "./hooks/useGetContactsSuspense.ts";
 export { getContactsSuspenseQueryOptions } from "./hooks/useGetContactsSuspense.ts";
 export { useGetContactsSuspense } from "./hooks/useGetContactsSuspense.ts";
+export { getEnrichmentsIdQueryKey } from "./hooks/useGetEnrichmentsId.ts";
+export { getEnrichmentsIdQueryOptions } from "./hooks/useGetEnrichmentsId.ts";
+export { useGetEnrichmentsId } from "./hooks/useGetEnrichmentsId.ts";
+export { getEnrichmentsIdSuspenseQueryKey } from "./hooks/useGetEnrichmentsIdSuspense.ts";
+export { getEnrichmentsIdSuspenseQueryOptions } from "./hooks/useGetEnrichmentsIdSuspense.ts";
+export { useGetEnrichmentsIdSuspense } from "./hooks/useGetEnrichmentsIdSuspense.ts";
 export { getHealthQueryKey } from "./hooks/useGetHealth.ts";
 export { getHealthQueryOptions } from "./hooks/useGetHealth.ts";
 export { useGetHealth } from "./hooks/useGetHealth.ts";
@@ -934,6 +1037,9 @@ export { useGetUsersIdSuspense } from "./hooks/useGetUsersIdSuspense.ts";
 export { getUsersSuspenseQueryKey } from "./hooks/useGetUsersSuspense.ts";
 export { getUsersSuspenseQueryOptions } from "./hooks/useGetUsersSuspense.ts";
 export { useGetUsersSuspense } from "./hooks/useGetUsersSuspense.ts";
+export { patchAnalysisTemplatesIdMutationKey } from "./hooks/usePatchAnalysisTemplatesId.ts";
+export { patchAnalysisTemplatesIdMutationOptions } from "./hooks/usePatchAnalysisTemplatesId.ts";
+export { usePatchAnalysisTemplatesId } from "./hooks/usePatchAnalysisTemplatesId.ts";
 export { patchContactsIdMutationKey } from "./hooks/usePatchContactsId.ts";
 export { patchContactsIdMutationOptions } from "./hooks/usePatchContactsId.ts";
 export { usePatchContactsId } from "./hooks/usePatchContactsId.ts";
@@ -964,6 +1070,9 @@ export { usePatchProjectsIdResponsiblesUserid } from "./hooks/usePatchProjectsId
 export { patchUsersIdMutationKey } from "./hooks/usePatchUsersId.ts";
 export { patchUsersIdMutationOptions } from "./hooks/usePatchUsersId.ts";
 export { usePatchUsersId } from "./hooks/usePatchUsersId.ts";
+export { postAnalysisTemplatesMutationKey } from "./hooks/usePostAnalysisTemplates.ts";
+export { postAnalysisTemplatesMutationOptions } from "./hooks/usePostAnalysisTemplates.ts";
+export { usePostAnalysisTemplates } from "./hooks/usePostAnalysisTemplates.ts";
 export { postAuthLoginMutationKey } from "./hooks/usePostAuthLogin.ts";
 export { postAuthLoginMutationOptions } from "./hooks/usePostAuthLogin.ts";
 export { usePostAuthLogin } from "./hooks/usePostAuthLogin.ts";
@@ -985,6 +1094,15 @@ export { usePostContactsIdChannels } from "./hooks/usePostContactsIdChannels.ts"
 export { postContactsIdEventsMutationKey } from "./hooks/usePostContactsIdEvents.ts";
 export { postContactsIdEventsMutationOptions } from "./hooks/usePostContactsIdEvents.ts";
 export { usePostContactsIdEvents } from "./hooks/usePostContactsIdEvents.ts";
+export { postEnrichmentsMutationKey } from "./hooks/usePostEnrichments.ts";
+export { postEnrichmentsMutationOptions } from "./hooks/usePostEnrichments.ts";
+export { usePostEnrichments } from "./hooks/usePostEnrichments.ts";
+export { postEnrichmentsBatchMutationKey } from "./hooks/usePostEnrichmentsBatch.ts";
+export { postEnrichmentsBatchMutationOptions } from "./hooks/usePostEnrichmentsBatch.ts";
+export { usePostEnrichmentsBatch } from "./hooks/usePostEnrichmentsBatch.ts";
+export { postEnrichmentsIdRetryMutationKey } from "./hooks/usePostEnrichmentsIdRetry.ts";
+export { postEnrichmentsIdRetryMutationOptions } from "./hooks/usePostEnrichmentsIdRetry.ts";
+export { usePostEnrichmentsIdRetry } from "./hooks/usePostEnrichmentsIdRetry.ts";
 export { postImportsMutationKey } from "./hooks/usePostImports.ts";
 export { postImportsMutationOptions } from "./hooks/usePostImports.ts";
 export { usePostImports } from "./hooks/usePostImports.ts";
@@ -1037,6 +1155,13 @@ export { contactViewSchema } from "./schemas/contactViewSchema.ts";
 export { createContactBodySchema } from "./schemas/createContactBodySchema.ts";
 export { createProjectBodySchema } from "./schemas/createProjectBodySchema.ts";
 export { createUserBodySchema } from "./schemas/createUserBodySchema.ts";
+export {
+  deleteAnalysisTemplatesId200Schema,
+  deleteAnalysisTemplatesId401Schema,
+  deleteAnalysisTemplatesId404Schema,
+  deleteAnalysisTemplatesIdMutationResponseSchema,
+  deleteAnalysisTemplatesIdPathParamsSchema,
+} from "./schemas/deleteAnalysisTemplatesIdSchema.ts";
 export {
   deleteContactsIdAssignmentsUserid200Schema,
   deleteContactsIdAssignmentsUserid401Schema,
@@ -1110,6 +1235,11 @@ export {
 } from "./schemas/deleteUsersIdSchema.ts";
 export { filterGroupObjectSchema } from "./schemas/filterGroupObjectSchema.ts";
 export {
+  getAnalysisTemplates200Schema,
+  getAnalysisTemplates401Schema,
+  getAnalysisTemplatesQueryResponseSchema,
+} from "./schemas/getAnalysisTemplatesSchema.ts";
+export {
   getAuthMe200Schema,
   getAuthMe401Schema,
   getAuthMeQueryResponseSchema,
@@ -1153,6 +1283,13 @@ export {
   getContactsQueryParamsSchema,
   getContactsQueryResponseSchema,
 } from "./schemas/getContactsSchema.ts";
+export {
+  getEnrichmentsId200Schema,
+  getEnrichmentsId401Schema,
+  getEnrichmentsId404Schema,
+  getEnrichmentsIdPathParamsSchema,
+  getEnrichmentsIdQueryResponseSchema,
+} from "./schemas/getEnrichmentsIdSchema.ts";
 export {
   getHealth200Schema,
   getHealthQueryResponseSchema,
@@ -1249,6 +1386,15 @@ export { meResponseSchema } from "./schemas/meResponseSchema.ts";
 export { moneySchema } from "./schemas/moneySchema.ts";
 export { paginationSchema } from "./schemas/paginationSchema.ts";
 export {
+  patchAnalysisTemplatesId200Schema,
+  patchAnalysisTemplatesId400Schema,
+  patchAnalysisTemplatesId401Schema,
+  patchAnalysisTemplatesId404Schema,
+  patchAnalysisTemplatesIdMutationRequestSchema,
+  patchAnalysisTemplatesIdMutationResponseSchema,
+  patchAnalysisTemplatesIdPathParamsSchema,
+} from "./schemas/patchAnalysisTemplatesIdSchema.ts";
+export {
   patchContactsIdAssignmentsUserid200Schema,
   patchContactsIdAssignmentsUserid401Schema,
   patchContactsIdAssignmentsUserid404Schema,
@@ -1330,6 +1476,13 @@ export {
   patchUsersIdPathParamsSchema,
 } from "./schemas/patchUsersIdSchema.ts";
 export {
+  postAnalysisTemplates201Schema,
+  postAnalysisTemplates400Schema,
+  postAnalysisTemplates401Schema,
+  postAnalysisTemplatesMutationRequestSchema,
+  postAnalysisTemplatesMutationResponseSchema,
+} from "./schemas/postAnalysisTemplatesSchema.ts";
+export {
   postAuthLogin200Schema,
   postAuthLogin401Schema,
   postAuthLoginMutationRequestSchema,
@@ -1375,6 +1528,31 @@ export {
   postContactsMutationRequestSchema,
   postContactsMutationResponseSchema,
 } from "./schemas/postContactsSchema.ts";
+export {
+  postEnrichmentsBatch201Schema,
+  postEnrichmentsBatch400Schema,
+  postEnrichmentsBatch401Schema,
+  postEnrichmentsBatch422Schema,
+  postEnrichmentsBatchMutationRequestSchema,
+  postEnrichmentsBatchMutationResponseSchema,
+} from "./schemas/postEnrichmentsBatchSchema.ts";
+export {
+  postEnrichmentsIdRetry200Schema,
+  postEnrichmentsIdRetry401Schema,
+  postEnrichmentsIdRetry404Schema,
+  postEnrichmentsIdRetry422Schema,
+  postEnrichmentsIdRetryMutationResponseSchema,
+  postEnrichmentsIdRetryPathParamsSchema,
+} from "./schemas/postEnrichmentsIdRetrySchema.ts";
+export {
+  postEnrichments201Schema,
+  postEnrichments400Schema,
+  postEnrichments401Schema,
+  postEnrichments404Schema,
+  postEnrichments422Schema,
+  postEnrichmentsMutationRequestSchema,
+  postEnrichmentsMutationResponseSchema,
+} from "./schemas/postEnrichmentsSchema.ts";
 export {
   postImports201Schema,
   postImports400Schema,
@@ -1535,6 +1713,8 @@ export { sourceChannelIsNotNullEnum } from "./types/GetContacts.ts";
 export { sourceChannelIsNullEnum } from "./types/GetContacts.ts";
 export { sourceChannelNeEnum } from "./types/GetContacts.ts";
 export { sourceChannelNinEnum } from "./types/GetContacts.ts";
+export { getEnrichmentsId200StatusEnum } from "./types/GetEnrichmentsId.ts";
+export { getEnrichmentsId200TriggerKindEnum } from "./types/GetEnrichmentsId.ts";
 export { getHealth200StatusEnum } from "./types/GetHealth.ts";
 export { statusEqEnum } from "./types/GetProjects.ts";
 export { statusInEnum } from "./types/GetProjects.ts";

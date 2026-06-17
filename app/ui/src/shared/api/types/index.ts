@@ -69,6 +69,14 @@ export type {
 export type { CreateProjectBody } from "./CreateProjectBody.ts";
 export type { CreateUserBody } from "./CreateUserBody.ts";
 export type {
+  DeleteAnalysisTemplatesId200,
+  DeleteAnalysisTemplatesId401,
+  DeleteAnalysisTemplatesId404,
+  DeleteAnalysisTemplatesIdMutation,
+  DeleteAnalysisTemplatesIdMutationResponse,
+  DeleteAnalysisTemplatesIdPathParams,
+} from "./DeleteAnalysisTemplatesId.ts";
+export type {
   DeleteContactsId204,
   DeleteContactsId401,
   DeleteContactsId404,
@@ -151,6 +159,12 @@ export type {
 } from "./DeleteUsersId.ts";
 export type { FilterGroupObject } from "./FilterGroupObject.ts";
 export type {
+  GetAnalysisTemplates200,
+  GetAnalysisTemplates401,
+  GetAnalysisTemplatesQuery,
+  GetAnalysisTemplatesQueryResponse,
+} from "./GetAnalysisTemplates.ts";
+export type {
   GetAuthMe200,
   GetAuthMe401,
   GetAuthMeQuery,
@@ -231,6 +245,16 @@ export type {
   GetContactsKpisQuery,
   GetContactsKpisQueryResponse,
 } from "./GetContactsKpis.ts";
+export type {
+  GetEnrichmentsId200,
+  GetEnrichmentsId200StatusEnumKey,
+  GetEnrichmentsId200TriggerKindEnumKey,
+  GetEnrichmentsId401,
+  GetEnrichmentsId404,
+  GetEnrichmentsIdPathParams,
+  GetEnrichmentsIdQuery,
+  GetEnrichmentsIdQueryResponse,
+} from "./GetEnrichmentsId.ts";
 export type {
   GetHealth200,
   GetHealth200StatusEnumKey,
@@ -359,6 +383,16 @@ export type { MeResponse } from "./MeResponse.ts";
 export type { Money } from "./Money.ts";
 export type { Pagination } from "./Pagination.ts";
 export type {
+  PatchAnalysisTemplatesId200,
+  PatchAnalysisTemplatesId400,
+  PatchAnalysisTemplatesId401,
+  PatchAnalysisTemplatesId404,
+  PatchAnalysisTemplatesIdMutation,
+  PatchAnalysisTemplatesIdMutationRequest,
+  PatchAnalysisTemplatesIdMutationResponse,
+  PatchAnalysisTemplatesIdPathParams,
+} from "./PatchAnalysisTemplatesId.ts";
+export type {
   PatchContactsId200,
   PatchContactsId401,
   PatchContactsId404,
@@ -450,6 +484,14 @@ export type {
   PatchUsersIdPathParams,
 } from "./PatchUsersId.ts";
 export type {
+  PostAnalysisTemplates201,
+  PostAnalysisTemplates400,
+  PostAnalysisTemplates401,
+  PostAnalysisTemplatesMutation,
+  PostAnalysisTemplatesMutationRequest,
+  PostAnalysisTemplatesMutationResponse,
+} from "./PostAnalysisTemplates.ts";
+export type {
   PostAuthLogin200,
   PostAuthLogin401,
   PostAuthLoginMutation,
@@ -502,6 +544,34 @@ export type {
   PostContactsIdEventsMutationResponse,
   PostContactsIdEventsPathParams,
 } from "./PostContactsIdEvents.ts";
+export type {
+  PostEnrichments201,
+  PostEnrichments400,
+  PostEnrichments401,
+  PostEnrichments404,
+  PostEnrichments422,
+  PostEnrichmentsMutation,
+  PostEnrichmentsMutationRequest,
+  PostEnrichmentsMutationResponse,
+} from "./PostEnrichments.ts";
+export type {
+  PostEnrichmentsBatch201,
+  PostEnrichmentsBatch400,
+  PostEnrichmentsBatch401,
+  PostEnrichmentsBatch422,
+  PostEnrichmentsBatchMutation,
+  PostEnrichmentsBatchMutationRequest,
+  PostEnrichmentsBatchMutationResponse,
+} from "./PostEnrichmentsBatch.ts";
+export type {
+  PostEnrichmentsIdRetry200,
+  PostEnrichmentsIdRetry401,
+  PostEnrichmentsIdRetry404,
+  PostEnrichmentsIdRetry422,
+  PostEnrichmentsIdRetryMutation,
+  PostEnrichmentsIdRetryMutationResponse,
+  PostEnrichmentsIdRetryPathParams,
+} from "./PostEnrichmentsIdRetry.ts";
 export type {
   PostImports201,
   PostImports400,
@@ -706,6 +776,8 @@ export { sourceChannelIsNotNullEnum } from "./GetContacts.ts";
 export { sourceChannelIsNullEnum } from "./GetContacts.ts";
 export { sourceChannelNeEnum } from "./GetContacts.ts";
 export { sourceChannelNinEnum } from "./GetContacts.ts";
+export { getEnrichmentsId200StatusEnum } from "./GetEnrichmentsId.ts";
+export { getEnrichmentsId200TriggerKindEnum } from "./GetEnrichmentsId.ts";
 export { getHealth200StatusEnum } from "./GetHealth.ts";
 export { statusEqEnum } from "./GetProjects.ts";
 export { statusInEnum } from "./GetProjects.ts";
