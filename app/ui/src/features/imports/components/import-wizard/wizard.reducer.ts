@@ -20,7 +20,11 @@ export interface WizardState {
 
 export type WizardAction =
   | { type: 'UPLOAD_COMPLETE'; importId: string; columnHeaders: string[] }
+  // Skips upload and lands directly on the mapping step for awaiting_mapping imports
+  | { type: 'RESUME_MAPPING'; importId: string; columnHeaders: string[] }
   | { type: 'MAPPING_COMPLETE'; mapping: Record<string, string> }
+  // Return from the template step to mapping, keeping importId/columnHeaders/pendingMapping
+  | { type: 'BACK_TO_MAPPING' }
   | { type: 'TEMPLATE_COMPLETE'; analyzeOnComplete: boolean; enrichmentTemplateId: string | null }
   | { type: 'RESET' }
 
@@ -36,6 +40,7 @@ export const initialWizardState: WizardState = {
 export function wizardReducer(state: WizardState, action: WizardAction): WizardState {
   switch (action.type) {
     case 'UPLOAD_COMPLETE':
+    case 'RESUME_MAPPING':
       return {
         ...state,
         step: 'mapping',
@@ -46,6 +51,9 @@ export function wizardReducer(state: WizardState, action: WizardAction): WizardS
       // Store the mapping locally; the actual PATCH is fired in the template step
       // so analyzeOnComplete/enrichmentTemplateId are sent in a single request.
       return { ...state, step: 'template', pendingMapping: action.mapping }
+    case 'BACK_TO_MAPPING':
+      // Keep pendingMapping so the mapping step is pre-filled; no re-upload needed.
+      return { ...state, step: 'mapping' }
     case 'TEMPLATE_COMPLETE':
       return {
         ...state,

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, Download } from 'lucide-react'
+import { Plus, Download, Play } from 'lucide-react'
 import { PanelCard } from '@shared/ui/panel-card'
 import { Button } from '@shared/ui/button'
 import { Badge } from '@shared/ui/badge'
@@ -8,7 +8,12 @@ import { getImportStatusBadge } from '@features/imports/constants/import-status-
 import { ImportWizard } from '@features/imports/components/import-wizard/import-wizard'
 import type { ImportListItem } from '@features/imports/hooks/use-imports'
 
-function ImportRow({ item }: { item: ImportListItem }) {
+interface ImportRowProps {
+  item: ImportListItem
+  onResume: (id: string) => void
+}
+
+function ImportRow({ item, onResume }: ImportRowProps) {
   const badge = getImportStatusBadge(item.status)
   const progressPct =
     item.totalRows && item.totalRows > 0
@@ -30,6 +35,18 @@ function ImportRow({ item }: { item: ImportListItem }) {
 
         <div className="flex shrink-0 items-center gap-2">
           <Badge variant={badge.variant}>{badge.label}</Badge>
+
+          {/* Resume wizard at the mapping step for imports that are awaiting column mapping */}
+          {item.status === 'awaiting_mapping' && (
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Continuar mapeo"
+              onClick={() => onResume(item.id)}
+            >
+              <Play className="size-4" />
+            </Button>
+          )}
 
           {/* Only show download when there are rejected rows with a CSV URL */}
           {item.rejectedCsvUrl && item.failedCount > 0 && (
@@ -57,7 +74,26 @@ function ImportRow({ item }: { item: ImportListItem }) {
 
 export function ImportsPage() {
   const [wizardOpen, setWizardOpen] = useState(false)
+  const [resumeImportId, setResumeImportId] = useState<string | null>(null)
   const { imports, isLoading, isError, refetch } = useImports()
+
+  function handleNewImport() {
+    setResumeImportId(null)
+    setWizardOpen(true)
+  }
+
+  function handleResumeImport(id: string) {
+    setResumeImportId(id)
+    setWizardOpen(true)
+  }
+
+  function handleWizardOpenChange(open: boolean) {
+    setWizardOpen(open)
+    if (!open) {
+      setResumeImportId(null)
+      refetch()
+    }
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -73,7 +109,7 @@ export function ImportsPage() {
       <PanelCard
         title="Historial de ingestas"
         action={
-          <Button variant="default" size="sm" onClick={() => setWizardOpen(true)}>
+          <Button variant="default" size="sm" onClick={handleNewImport}>
             <Plus />
             Nueva ingesta
           </Button>
@@ -99,7 +135,7 @@ export function ImportsPage() {
             <p className="text-[length:var(--ds-font-size-sm)] text-muted-foreground">
               No hay ingestas todavía.
             </p>
-            <Button variant="outline" size="sm" onClick={() => setWizardOpen(true)}>
+            <Button variant="outline" size="sm" onClick={handleNewImport}>
               <Plus />
               Crear la primera ingesta
             </Button>
@@ -107,13 +143,17 @@ export function ImportsPage() {
         ) : (
           <ul className="flex flex-col divide-y divide-border">
             {imports.map((item) => (
-              <ImportRow key={item.id} item={item} />
+              <ImportRow key={item.id} item={item} onResume={handleResumeImport} />
             ))}
           </ul>
         )}
       </PanelCard>
 
-      <ImportWizard open={wizardOpen} onOpenChange={setWizardOpen} />
+      <ImportWizard
+        open={wizardOpen}
+        onOpenChange={handleWizardOpenChange}
+        resumeImportId={resumeImportId}
+      />
     </div>
   )
 }

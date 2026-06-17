@@ -11,15 +11,17 @@ export interface MappingStepData {
 
 interface MappingStepProps {
   columnHeaders: string[]
+  // Pre-fills the selects when returning from the template step (BACK_TO_MAPPING).
+  initialMapping?: Record<string, string>
   // Mapping is stored locally and passed to the parent; the PATCH is fired in the template step
   // so analyzeOnComplete/enrichmentTemplateId can be sent together in a single request.
   onComplete: (data: MappingStepData) => void
 }
 
-export function MappingStep({ columnHeaders, onComplete }: MappingStepProps) {
-  // Maps header → contact field. Starts empty so user must explicitly choose.
+export function MappingStep({ columnHeaders, initialMapping, onComplete }: MappingStepProps) {
+  // Maps header → contact field. Pre-filled from initialMapping when coming back from template.
   const [mapping, setMapping] = useState<Record<string, string>>(() =>
-    Object.fromEntries(columnHeaders.map((h) => [h, ''])),
+    Object.fromEntries(columnHeaders.map((h) => [h, initialMapping?.[h] ?? ''])),
   )
 
   function handleSelect(header: string, field: string) {

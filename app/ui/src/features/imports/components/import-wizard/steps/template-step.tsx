@@ -18,10 +18,11 @@ interface TemplateStepProps {
   // The column mapping collected in the previous step — submitted here alongside analyze options
   // so a single PATCH sends mapping + analyzeOnComplete + enrichmentTemplateId together.
   pendingMapping: Record<string, string>
+  onBack: () => void
   onComplete: (data: TemplateStepData) => void
 }
 
-export function TemplateStep({ importId, pendingMapping, onComplete }: TemplateStepProps) {
+export function TemplateStep({ importId, pendingMapping, onBack, onComplete }: TemplateStepProps) {
   const [analyzeOnComplete, setAnalyzeOnComplete] = useState(false)
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>('')
 
@@ -114,7 +115,10 @@ export function TemplateStep({ importId, pendingMapping, onComplete }: TemplateS
         <p className="text-[length:var(--ds-font-size-sm)] text-destructive">{errorMessage}</p>
       )}
 
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        <Button variant="outline" onClick={onBack} disabled={isPending}>
+          Volver
+        </Button>
         <Button onClick={handleSubmit} disabled={!canProceed || isPending}>
           {isPending ? 'Iniciando…' : 'Iniciar ingesta'}
         </Button>
