@@ -257,7 +257,7 @@ tiene dos mitades que **no se mezclan**:
 > Follow-up de documentación pendiente (no bloqueante): anexar a `auth.md` de
 > `app/api` la resolución "sin roles en el producto", y registrar el set de
 > convenciones de datos (UUIDv7, timestamps, soft-delete, pgEnum, naming) como
-> ADR del paquete.
+> EDR del paquete.
 
 ---
 

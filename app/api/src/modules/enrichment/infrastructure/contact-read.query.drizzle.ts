@@ -1,5 +1,5 @@
 // Drizzle adapter — queries contacts and contact_channels via shared schema only.
-// Never imports from src/modules/contacts (ADR layers, slice-isolation).
+// Never imports from src/modules/contacts (EDR layers, slice-isolation).
 import { eq, isNull, getTableColumns } from 'drizzle-orm'
 import type { Db } from '@shared/db/client'
 import { contacts, contactChannels } from '@shared/db/schema'
@@ -7,7 +7,7 @@ import { applyFilterGroups, applySearch, combineWhere } from '@shared/db/drizzle
 import type { ContactReadQuery, ContactReadDto, ContactFilterInput } from '@modules/enrichment/application/ports'
 
 // Column map built locally from @shared/db — never imported from @modules/contacts
-// (ADR cross-slice-id-resolution, rule: obtain columns with getTableColumns locally).
+// (EDR cross-slice-id-resolution, rule: obtain columns with getTableColumns locally).
 const contactColumnMap = getTableColumns(contacts)
 
 // Search columns mirrored from contacts list: name only.
@@ -50,7 +50,7 @@ export class DrizzleContactReadQuery implements ContactReadQuery {
    * reusing the same grammar as the contacts list endpoint.
    *
    * Soft-delete guard (isNull deletedAt) is always applied OUTSIDE the OR groups,
-   * per ADR filter-grammar.md §Invariante de soft-delete.
+   * per EDR filter-grammar.md §Invariante de soft-delete.
    * Never resolves deleted contacts regardless of what the filter says.
    */
   async resolveByFilter(input: ContactFilterInput): Promise<string[]> {

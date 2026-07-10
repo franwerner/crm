@@ -1,5 +1,5 @@
 // Read-port for import list queries — no Drizzle/DB import allowed here
-// (ADR adr02-1b-port-contract). Kept separate from ImportsRepository because
+// (EDR adr02-1b-port-contract). Kept separate from ImportsRepository because
 // list reads are projections, not aggregate root operations.
 import type { ImportStatus } from '@modules/imports/domain/types/import-status'
 import type { ImportStage } from '@modules/imports/domain/types/import-stage'

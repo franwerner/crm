@@ -1,4 +1,4 @@
-// Port — zero runtime dependencies; no Drizzle/DB import allowed here (ADR adr02-1b-port-contract).
+// Port — zero runtime dependencies; no Drizzle/DB import allowed here (EDR adr02-1b-port-contract).
 // Separate from ContactsRepository so imports only depends on the narrow bulk contract.
 import type { Contact } from '@modules/contacts/domain/contact'
 

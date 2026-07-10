@@ -1,5 +1,5 @@
 // OpenRouter adapter using the OpenAI-compatible SDK.
-// The SDK v4+ uses fetch natively; on Bun this maps to the native Bun fetch (ADR D3).
+// The SDK v4+ uses fetch natively; on Bun this maps to the native Bun fetch (EDR D3).
 import OpenAI from 'openai'
 import type { LLMProvider, LLMCompletion } from '@modules/enrichment/domain/llm-provider'
 

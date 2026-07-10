@@ -82,7 +82,7 @@ export function createApp() {
     region: config.minioRegion,
   })
 
-  // MxCache backed by Bun.redis native client (D6, ADR redis.md).
+  // MxCache backed by Bun.redis native client (D6, EDR redis.md).
   // Replaces the no-op placeholder from Phase 2/3; now MX lookups are cached with 1h TTL.
   const mxCache = new BunRedisMxCache(config.redisUrl)
 

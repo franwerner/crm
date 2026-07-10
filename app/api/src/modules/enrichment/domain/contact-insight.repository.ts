@@ -1,4 +1,4 @@
-// Port — no Drizzle/DB import allowed here (ADR adr02-1b-port-contract).
+// Port — no Drizzle/DB import allowed here (EDR adr02-1b-port-contract).
 import type { ContactInsight } from '@modules/enrichment/domain/entities/contact-insight'
 
 export interface ContactInsightRepository {

@@ -15,7 +15,7 @@ en procesos separados). La DB es la fuente de verdad; las colas son transporte d
   Docker log driver** (`max-size`/`max-file`), no archivos en disco. Por capa: **domain no loggea**
   (lanza errores), **application solo vía puerto inyectado**, **infrastructure + http** son los que
   loggean. Request logging = **middleware Hono propio** con `reqId` (`logger.child`); descartar el
-  `hono/logger` built-in y `pino-http`. Cierra el ADR `observability/logging` (Pending → Accepted).
+  `hono/logger` built-in y `pino-http`. Cierra el EDR `observability/logging` (Pending → Accepted).
 - **Resiliencia del import** (caída a mitad): batch **transaccional** (insert + checkpoint
   `processedRows` en el mismo commit) + **resume desde offset** al reintentar + **dedup idempotente**
   como red. BullMQ reintenta el job stalled; reconciliación por DB como red última. Peor caso:
@@ -62,8 +62,8 @@ en procesos separados). La DB es la fuente de verdad; las colas son transporte d
 - [x] Logger **pino**: interface `Logger` en `src/shared`, impl pino, inyectada en el composition root
 - [x] Formato por entorno (`pino-pretty` dev / JSON stdout prod), nivel por `LOG_LEVEL`; rotación por Docker log driver
 - [x] Middleware de request logging propio para Hono (pino + `reqId` vía `logger.child`)
-- [x] Registrar techs nuevas en el catálogo de ADRs (`redis`, `bullmq`, `pino`); cerrar ADR `observability/logging`
-- [x] ADR de **background-jobs** (hoy marcado N/A en runtime)
+- [x] Registrar techs nuevas en el catálogo de ADRs (`redis`, `bullmq`, `pino`); cerrar EDR `observability/logging`
+- [x] EDR de **background-jobs** (hoy marcado N/A en runtime)
 
 ## Fase 1 — Ingesta de contactos por Excel ✅ COMPLETADA
 
@@ -115,7 +115,7 @@ en procesos separados). La DB es la fuente de verdad; las colas son transporte d
 - [x] Validar el output contra el shape fijo `{resumen, recomendaciones, observaciones}` (+ parsing robusto)
 - [x] Transiciones de estado `processing` → `completed` | reintento → `failed` (`lastError`)
 - [x] Reconciliación de insights `queued`/`processing` colgados
-- [x] ADR de **resilience** (reescrito: resiliencia = retry BullMQ + reconciliación; rotación al gateway)
+- [x] EDR de **resilience** (reescrito: resiliencia = retry BullMQ + reconciliación; rotación al gateway)
 
 ## Fase 3 — UI ✅ COMPLETADA
 
@@ -199,4 +199,4 @@ en procesos separados). La DB es la fuente de verdad; las colas son transporte d
 ## Pendientes (detalle al design / implementación)
 
 - [x] ~~Detalle fino del fallback de modelos~~ — **obsoleto**: la rotación se delegó al gateway externo (Fase 2)
-- [x] ~~ADR `event-contract` (SSE)~~ — **N/A**: solo polling
+- [x] ~~EDR `event-contract` (SSE)~~ — **N/A**: solo polling

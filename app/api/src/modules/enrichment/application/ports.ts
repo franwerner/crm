@@ -30,7 +30,7 @@ export interface ContactReadDto {
 }
 
 /**
- * Input for filter-based ID resolution (ADR cross-slice-id-resolution).
+ * Input for filter-based ID resolution (EDR cross-slice-id-resolution).
  * Types from @shared/types/filters are allowed by adr02-2b-read-port.
  */
 export interface ContactFilterInput {
@@ -40,10 +40,10 @@ export interface ContactFilterInput {
 
 /**
  * Cross-slice read-port for loading a contact's data without importing contacts module.
- * The adapter queries @shared/db/schema directly (ADR inter-layer-communication §3.3).
+ * The adapter queries @shared/db/schema directly (EDR inter-layer-communication §3.3).
  *
  * resolveByFilter: Fase 3 addition — returns only the IDs that match the given
- * filter, reusing the DNF grammar from contacts (ADR cross-slice-id-resolution).
+ * filter, reusing the DNF grammar from contacts (EDR cross-slice-id-resolution).
  */
 export interface ContactReadQuery {
   findById(contactId: string): Promise<ContactReadDto | null>

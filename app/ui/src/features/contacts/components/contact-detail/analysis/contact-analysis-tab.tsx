@@ -40,7 +40,7 @@ export function ContactAnalysisTab({ contactId }: Props) {
   const { enrichContact, isPending: isEnriching } = useEnrichContact()
   const { retryInsight, isPending: isRetrying } = useRetryInsight()
 
-  // Polling hook: enabled only when insightId is set; stops at terminal state per ADR polling-with-refetchinterval.
+  // Polling hook: enabled only when insightId is set; stops at terminal state per EDR polling-with-refetchinterval.
   const { insight: polledInsight, isLoading: isLoadingPolled } = useInsightStatus(insightId)
 
   // The canonical insight to render in the active polling slot (polled wins over the pre-loaded snapshot).

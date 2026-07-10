@@ -53,7 +53,7 @@ export class EnrichmentProcessUseCase {
     const systemPrompt = this.buildSystemPrompt(template.prompt)
     const userContent = this.buildUserContent(contact)
 
-    // Model rotation/fallback is the gateway's responsibility (ADR runtime/llm-resilience.md).
+    // Model rotation/fallback is the gateway's responsibility (EDR runtime/llm-resilience.md).
     // The CRM passes the configured gateway slug and lets the provider resolve internally.
     let completion
     try {

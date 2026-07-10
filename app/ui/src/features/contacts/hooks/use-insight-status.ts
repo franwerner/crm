@@ -2,7 +2,7 @@ import { useGetEnrichmentsId } from '@shared/api/hooks/useGetEnrichmentsId'
 import type { GetEnrichmentsIdQueryResponse } from '@shared/api/types/GetEnrichmentsId'
 
 // Terminal states for enrichment insights — polling must stop when one of these is reached.
-// ADR: frontend/polling-with-refetchinterval — refetchInterval as conditional function.
+// EDR: frontend/polling-with-refetchinterval — refetchInterval as conditional function.
 const TERMINAL_STATUSES = new Set(['completed', 'failed'])
 
 const POLL_INTERVAL_MS = 3000

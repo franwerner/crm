@@ -1,4 +1,4 @@
-// Drizzle adapter — Drizzle ONLY inside this file (ADR data-access.md).
+// Drizzle adapter — Drizzle ONLY inside this file (EDR data-access.md).
 import { eq, inArray } from 'drizzle-orm'
 import type { Db, DrizzleTx } from '@shared/db/client'
 import { imports as importsTable } from '@shared/db/schema'
@@ -114,7 +114,7 @@ export class DrizzleImportsRepository implements ImportsRepository {
 
   async saveProgress(record: Import, tx?: unknown): Promise<void> {
     // Cast to DrizzleTx — callers that pass a UoW tx always supply a DrizzleTx.
-    // The port accepts `unknown` to avoid importing DB types at the domain boundary (ADR adr02-1b-port-contract).
+    // The port accepts `unknown` to avoid importing DB types at the domain boundary (EDR adr02-1b-port-contract).
     const drizzleTx = tx as DrizzleTx | undefined
 
     const values = {

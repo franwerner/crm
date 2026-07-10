@@ -1,5 +1,5 @@
 // Wizard state machine for the import flow.
-// ADR: frontend/multistep-wizard-usereducer — useReducer + Dialog, reducer pure, each step has onComplete(data).
+// EDR: frontend/multistep-wizard-usereducer — useReducer + Dialog, reducer pure, each step has onComplete(data).
 //
 // Flow: upload → mapping (collect mapping locally) → template (confirm analyze options + fire PATCH) → processing
 // The PATCH /imports/:id/mapping is submitted at the template step so analyzeOnComplete/enrichmentTemplateId

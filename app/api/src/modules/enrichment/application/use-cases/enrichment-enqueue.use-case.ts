@@ -43,7 +43,7 @@ export class EnrichmentEnqueueUseCase {
     private readonly insightRepo: ContactInsightRepository,
     private readonly templateRepo: AnalysisTemplateRepository,
     private readonly queue: QueueProducer,
-    // Optional: only needed for filter-based batch (Fase 3, ADR cross-slice-id-resolution).
+    // Optional: only needed for filter-based batch (Fase 3, EDR cross-slice-id-resolution).
     private readonly contactReadQuery?: ContactReadQuery,
   ) {}
 

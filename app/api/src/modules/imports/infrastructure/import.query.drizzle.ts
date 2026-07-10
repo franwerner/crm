@@ -1,4 +1,4 @@
-// Drizzle adapter — Drizzle ONLY inside this file (ADR data-access.md).
+// Drizzle adapter — Drizzle ONLY inside this file (EDR data-access.md).
 import { desc, sql } from 'drizzle-orm'
 import type { Db } from '@shared/db/client'
 import { imports as importsTable } from '@shared/db/schema'

@@ -1,5 +1,5 @@
 // Drizzle adapter — queries contact_channels via shared schema only.
-// Never imports from src/modules/contacts (ADR layers, slice-isolation).
+// Never imports from src/modules/contacts (EDR layers, slice-isolation).
 import { eq, or } from 'drizzle-orm'
 import type { Db } from '@shared/db/client'
 import { contactChannels } from '@shared/db/schema'

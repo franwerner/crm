@@ -81,7 +81,7 @@ export const config = {
   // Fase 2: Enriquecimiento LLM (D9)
   openrouterApiKey: env.OPENROUTER_API_KEY,
   openrouterBaseUrl: env.OPENROUTER_BASE_URL,
-  // Gateway slug; model selection/rotation is the provider's responsibility (ADR runtime/llm-resilience.md)
+  // Gateway slug; model selection/rotation is the provider's responsibility (EDR runtime/llm-resilience.md)
   openrouterModel: env.OPENROUTER_MODEL,
   enrichmentProcessingStaleMs: env.ENRICHMENT_PROCESSING_STALE_MS,
   enrichmentBatchMax: env.ENRICHMENT_BATCH_MAX,

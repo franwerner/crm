@@ -2,7 +2,7 @@ import { useGetImportsId } from '@shared/api/hooks/useGetImportsId'
 import type { GetImportsIdQueryResponse } from '@shared/api/types/GetImportsId'
 
 // Terminal states for imports — polling must stop when one of these is reached.
-// ADR: frontend/polling-with-refetchinterval — refetchInterval as conditional function.
+// EDR: frontend/polling-with-refetchinterval — refetchInterval as conditional function.
 const TERMINAL_STATUSES = new Set(['completed', 'failed'])
 
 const POLL_INTERVAL_MS = 2000

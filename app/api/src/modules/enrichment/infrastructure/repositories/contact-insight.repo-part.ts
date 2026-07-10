@@ -1,4 +1,4 @@
-// Drizzle adapter — Drizzle ONLY inside this file (ADR data-access.md).
+// Drizzle adapter — Drizzle ONLY inside this file (EDR data-access.md).
 import { and, lt, or, eq, desc } from 'drizzle-orm'
 import type { Db } from '@shared/db/client'
 import { contactInsights } from '@shared/db/schema'
@@ -85,7 +85,7 @@ export class DrizzleContactInsightRepository implements ContactInsightRepository
 
   async findStale(olderThanMs: number): Promise<ContactInsight[]> {
     // Fetch BOTH processing (stuck workers) AND queued (jobs lost from BullMQ before pickup)
-    // insights older than the stale threshold — per ADR runtime/llm-resilience.md and spec.
+    // insights older than the stale threshold — per EDR runtime/llm-resilience.md and spec.
     const staleThreshold = new Date(Date.now() - olderThanMs)
     const rows = await this.db
       .select()

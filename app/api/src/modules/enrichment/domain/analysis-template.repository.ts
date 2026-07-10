@@ -1,4 +1,4 @@
-// Port — no Drizzle/DB import allowed here (ADR adr02-1b-port-contract).
+// Port — no Drizzle/DB import allowed here (EDR adr02-1b-port-contract).
 import type { AnalysisTemplate } from '@modules/enrichment/domain/entities/analysis-template'
 
 export interface AnalysisTemplateRepository {

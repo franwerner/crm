@@ -1,6 +1,6 @@
 // Bun.redis adapter for MxCache — uses the native Bun.RedisClient (no ioredis).
-// Per ADR redis.md: Bun.redis is used for all non-BullMQ Redis uses;
-// ioredis is exclusive to queue.bullmq.ts (ADR ioredis.md).
+// Per EDR redis.md: Bun.redis is used for all non-BullMQ Redis uses;
+// ioredis is exclusive to queue.bullmq.ts (EDR ioredis.md).
 import type { MxCache } from './mx-cache'
 
 const MX_KEY_PREFIX = 'mx:'

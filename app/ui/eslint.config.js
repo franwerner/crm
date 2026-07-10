@@ -51,7 +51,7 @@ export default tseslint.config(
         'error',
         {
           default: 'disallow',
-          message: '${file.type} no puede importar ${dependency.type} (ADR 02).',
+          message: '${file.type} no puede importar ${dependency.type} (EDR 02).',
           rules: [
             {
               from: ['app'],
@@ -106,7 +106,7 @@ export default tseslint.config(
             {
               from: ['shared-ui', 'feature-components'],
               disallow: ['@tanstack/react-query', '@tanstack/react-router', 'kubb', '@kubb/*'],
-              message: 'Presentacional no importa libs de datos/routing (ADR 02 #4/#6).',
+              message: 'Presentacional no importa libs de datos/routing (EDR 02 #4/#6).',
             },
           ],
         },

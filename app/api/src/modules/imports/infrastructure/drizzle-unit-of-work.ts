@@ -1,4 +1,4 @@
-// Drizzle UoW adapter — Drizzle ONLY inside this file (ADR data-access.md).
+// Drizzle UoW adapter — Drizzle ONLY inside this file (EDR data-access.md).
 import type { Db, DrizzleTx } from '@shared/db/client'
 import type { UnitOfWork } from '@shared/db/uow'
 import type { ImportUnitOfWork } from '@modules/imports/application/ports'
